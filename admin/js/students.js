@@ -245,9 +245,9 @@ async function openPaymentHistory(studentId) {
             </div>
         `;
 
+        // Query without orderBy to avoid index requirement, sort in JS
         const paymentsSnapshot = await db.collection('payments')
             .where('studentId', '==', studentId)
-            .orderBy('createdAt', 'desc')
             .get();
 
         const timeline = document.getElementById('paymentTimeline');
@@ -259,10 +259,25 @@ async function openPaymentHistory(studentId) {
                     <h3>No payments recorded</h3>
                 </div>
             `;
+            currentStudentData.payments = [];
         } else {
-            let timelineHTML = '';
+            // Get payments and sort by date (newest first)
+            let payments = [];
             paymentsSnapshot.forEach(doc => {
-                const payment = doc.data();
+                payments.push({ id: doc.id, ...doc.data() });
+            });
+
+            // Sort by createdAt descending
+            payments.sort((a, b) => {
+                const dateA = a.createdAt?.toDate?.() || new Date(0);
+                const dateB = b.createdAt?.toDate?.() || new Date(0);
+                return dateB - dateA;
+            });
+
+            currentStudentData.payments = payments;
+
+            let timelineHTML = '';
+            payments.forEach(payment => {
                 const date = payment.createdAt?.toDate?.()
                     ? payment.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
                     : 'Unknown';
@@ -292,6 +307,160 @@ async function openPaymentHistory(studentId) {
         console.error('Error loading payment history:', error);
         showToast('Error loading history', 'error');
     }
+}
+
+// ============================================
+// PDF RECEIPT GENERATION
+// ============================================
+function downloadReceiptPDF() {
+    if (!currentStudentData) {
+        showToast('No student data available', 'error');
+        return;
+    }
+
+    const student = currentStudentData;
+    const pending = student.totalFee - student.paidAmount;
+    const status = pending <= 0 ? 'FULLY PAID' : 'PARTIAL';
+
+    // Initialize jsPDF
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Colors
+    const primaryColor = [40, 150, 205];
+    const textColor = [15, 23, 42];
+    const grayColor = [100, 116, 139];
+    const successColor = [16, 185, 129];
+
+    // Header background
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, 210, 45, 'F');
+
+    // Company Name
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(24);
+    doc.setFont('helvetica', 'bold');
+    doc.text("Abhi's Craft Soft", 105, 18, { align: 'center' });
+
+    // Tagline
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Professional IT Training Institute', 105, 26, { align: 'center' });
+
+    // Contact
+    doc.setFontSize(9);
+    doc.text('Vanasthalipuram, Hyderabad | +91 7842239090 | www.craftsoft.co.in', 105, 35, { align: 'center' });
+
+    // Receipt Title
+    doc.setTextColor(...textColor);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('PAYMENT RECEIPT', 105, 60, { align: 'center' });
+
+    // Divider
+    doc.setDrawColor(...primaryColor);
+    doc.setLineWidth(0.5);
+    doc.line(20, 65, 190, 65);
+
+    // Student Details Section
+    let yPos = 80;
+
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...grayColor);
+    doc.text('STUDENT DETAILS', 20, yPos);
+
+    yPos += 10;
+    doc.setTextColor(...textColor);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Name:', 20, yPos);
+    doc.setFont('helvetica', 'bold');
+    doc.text(student.name || '-', 60, yPos);
+
+    yPos += 8;
+    doc.setFont('helvetica', 'normal');
+    doc.text('Phone:', 20, yPos);
+    doc.text(student.phone || '-', 60, yPos);
+
+    yPos += 8;
+    doc.text('Course:', 20, yPos);
+    doc.text(student.course || '-', 60, yPos);
+
+    // Payment Summary Section
+    yPos += 20;
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...grayColor);
+    doc.text('PAYMENT SUMMARY', 20, yPos);
+
+    yPos += 10;
+    doc.setTextColor(...textColor);
+    doc.setFont('helvetica', 'normal');
+
+    // Total Fee
+    doc.text('Total Fee:', 20, yPos);
+    doc.text(formatCurrency(student.totalFee), 120, yPos);
+
+    yPos += 8;
+    // Amount Paid
+    doc.text('Amount Paid:', 20, yPos);
+    doc.setTextColor(...successColor);
+    doc.text(formatCurrency(student.paidAmount), 120, yPos);
+
+    yPos += 8;
+    // Balance
+    doc.setTextColor(...textColor);
+    doc.text('Balance:', 20, yPos);
+    doc.setTextColor(pending > 0 ? 239 : 16, pending > 0 ? 68 : 185, pending > 0 ? 68 : 129);
+    doc.text(formatCurrency(pending), 120, yPos);
+
+    yPos += 8;
+    doc.setTextColor(...textColor);
+    doc.text('Status:', 20, yPos);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(pending <= 0 ? 16 : 239, pending <= 0 ? 185 : 68, pending <= 0 ? 129 : 68);
+    doc.text(status, 120, yPos);
+
+    // Payment History
+    if (student.payments && student.payments.length > 0) {
+        yPos += 20;
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(...grayColor);
+        doc.text('PAYMENT HISTORY', 20, yPos);
+
+        yPos += 8;
+        doc.setFontSize(9);
+        doc.setTextColor(...textColor);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Date', 20, yPos);
+        doc.text('Amount', 70, yPos);
+        doc.text('Mode', 110, yPos);
+        doc.text('Receipt #', 140, yPos);
+
+        doc.setFont('helvetica', 'normal');
+        student.payments.forEach(payment => {
+            yPos += 7;
+            const date = payment.createdAt?.toDate?.()
+                ? payment.createdAt.toDate().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+                : '-';
+            doc.text(date, 20, yPos);
+            doc.text(formatCurrency(payment.amount), 70, yPos);
+            doc.text((payment.mode || '-').toUpperCase(), 110, yPos);
+            doc.text(payment.receiptNumber || '-', 140, yPos);
+        });
+    }
+
+    // Footer
+    yPos = 270;
+    doc.setFontSize(9);
+    doc.setTextColor(...grayColor);
+    doc.text('This is a computer-generated receipt.', 105, yPos, { align: 'center' });
+    doc.text('Generated on: ' + new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }), 105, yPos + 6, { align: 'center' });
+
+    // Save PDF
+    const fileName = `Receipt_${student.name?.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.pdf`;
+    doc.save(fileName);
+
+    showToast('PDF downloaded!', 'success');
 }
 
 // WhatsApp Share
@@ -502,6 +671,7 @@ window.shareViaWhatsApp = shareViaWhatsApp;
 window.shareReceiptWhatsApp = shareReceiptWhatsApp;
 window.deleteStudent = deleteStudent;
 window.openEditStudentModal = openEditStudentModal;
+window.downloadReceiptPDF = downloadReceiptPDF;
 
 // Load data on page load
 document.addEventListener('DOMContentLoaded', () => {
