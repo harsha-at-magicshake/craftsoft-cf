@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Students - Craft Soft Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-logo">
+                    <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <span>Craft Soft</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="students.html" class="nav-item active">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Students</span>
+                </a>
+                <a href="payments.html" class="nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Payments</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div class="user-details">
+                        <div class="name" id="userName">Admin</div>
+                        <div class="role">Administrator</div>
+                    </div>
+                    <button class="btn-logout" onclick="logout()" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1>Students</h1>
+                    <p class="date">Manage all student admissions</p>
+                </div>
+                <button class="btn btn-primary" onclick="openAddStudentModal()">
+                    <i class="fas fa-plus"></i> New Admission
+                </button>
+            </div>
+
+            <!-- Search & Filter -->
+            <div class="card" style="margin-bottom: 20px;">
+                <div class="card-body" style="padding: 16px 24px;">
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <input type="text" id="searchInput" placeholder="Search by name or phone..."
+                                style="width: 100%; padding: 10px 14px; border: 2px solid var(--gray-200); border-radius: 8px;">
+                        </div>
+                        <select id="courseFilter"
+                            style="padding: 10px 14px; border: 2px solid var(--gray-200); border-radius: 8px; min-width: 180px;">
+                            <option value="">All Courses</option>
+                            <option value="Full Stack Development">Full Stack Development</option>
+                            <option value="UI/UX Design">UI/UX Design</option>
+                            <option value="Graphic Design">Graphic Design</option>
+                            <option value="DevOps Engineering">DevOps Engineering</option>
+                            <option value="AWS Cloud">AWS Cloud</option>
+                            <option value="Python Full Stack">Python Full Stack</option>
+                            <option value="Java Full Stack">Java Full Stack</option>
+                            <option value="Data Analytics">Data Analytics</option>
+                        </select>
+                        <select id="statusFilter"
+                            style="padding: 10px 14px; border: 2px solid var(--gray-200); border-radius: 8px; min-width: 140px;">
+                            <option value="">All Status</option>
+                            <option value="paid">Fully Paid</option>
+                            <option value="partial">Partial</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Table -->
+            <div class="card">
+                <div class="card-body" style="padding: 0;">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Course</th>
+                                    <th>Admission Date</th>
+                                    <th>Total Fee</th>
+                                    <th>Paid</th>
+                                    <th>Balance</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTable">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 40px;">
+                                        <div class="loading-spinner"></div>
+                                        <p style="margin-top: 10px; color: var(--gray-500);">Loading students...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="modal-overlay" id="addStudentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> New Admission</h3>
+                <button class="modal-close" onclick="closeModal('addStudentModal')">&times;</button>
+            </div>
+            <form id="addStudentForm">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="studentName" required placeholder="Enter full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="studentPhone" required placeholder="10-digit number" maxlength="10">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email (Optional)</label>
+                        <input type="email" id="studentEmail" placeholder="email@example.com">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Course *</label>
+                            <select id="studentCourse" required>
+                                <option value="">Select Course</option>
+                                <option value="Full Stack Development">Full Stack Development</option>
+                                <option value="UI/UX Design">UI/UX Design</option>
+                                <option value="Graphic Design">Graphic Design</option>
+                                <option value="DevOps Engineering">DevOps Engineering</option>
+                                <option value="AWS Cloud">AWS Cloud</option>
+                                <option value="Python Full Stack">Python Full Stack</option>
+                                <option value="Java Full Stack">Java Full Stack</option>
+                                <option value="Data Analytics">Data Analytics</option>
+                                <option value="Salesforce">Salesforce</option>
+                                <option value="DSA Mastery">DSA Mastery</option>
+                                <option value="Soft Skills">Soft Skills</option>
+                                <option value="Spoken English">Spoken English</option>
+                                <option value="Resume & Interview">Resume & Interview Prep</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Total Fee (₹) *</label>
+                            <input type="number" id="totalFee" required placeholder="e.g., 25000" min="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Initial Payment (₹)</label>
+                            <input type="number" id="initialPayment" placeholder="e.g., 10000" min="0" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Mode</label>
+                            <select id="paymentMode">
+                                <option value="cash">Cash</option>
+                                <option value="razorpay">Razorpay / Online</option>
+                                <option value="upi">UPI</option>
+                                <option value="bank">Bank Transfer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes (Optional)</label>
+                        <textarea id="studentNotes" rows="2" placeholder="Any additional notes..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline"
+                        onclick="closeModal('addStudentModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Create Admission
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Payment Modal -->
+    <div class="modal-overlay" id="addPaymentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-rupee-sign"></i> Record Payment</h3>
+                <button class="modal-close" onclick="closeModal('addPaymentModal')">&times;</button>
+            </div>
+            <form id="addPaymentForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Student</label>
+                        <input type="text" id="paymentStudentName" readonly>
+                        <input type="hidden" id="paymentStudentId">
+                    </div>
+                    <div class="form-group">
+                        <label>Pending Amount</label>
+                        <input type="text" id="pendingDisplayAmount" readonly style="color: #E17055; font-weight: 600;">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Amount (₹) *</label>
+                            <input type="number" id="paymentAmount" required placeholder="Enter amount" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Mode *</label>
+                            <select id="paymentModeRecord" required>
+                                <option value="cash">Cash</option>
+                                <option value="razorpay">Razorpay / Online</option>
+                                <option value="upi">UPI</option>
+                                <option value="bank">Bank Transfer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes (Optional)</label>
+                        <textarea id="paymentNotes" rows="2" placeholder="Payment reference or notes..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline"
+                        onclick="closeModal('addPaymentModal')">Cancel</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Record Payment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/students.js"></script>
+</body>
+
+</html>
