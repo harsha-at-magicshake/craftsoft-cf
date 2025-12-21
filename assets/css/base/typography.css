@@ -25,3 +25,11 @@ h6 {
 .highlight {
     color: var(--primary-600);
 }
+
+/* Signature Style for "Abhi's" in logo */
+.logo-signature {
+    font-family: 'Dancing Script', cursive;
+    font-weight: 600;
+    font-size: 1.3em;
+    letter-spacing: 0.5px;
+}
