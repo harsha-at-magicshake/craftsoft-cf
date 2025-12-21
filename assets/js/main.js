@@ -438,15 +438,28 @@ document.addEventListener('DOMContentLoaded', function () {
    CONTACT FORM HANDLER
    ============================================ */
 function initContactForm() {
-    const form = document.getElementById('contactForm');
+    const form = document.getElementById('contactForm') || document.getElementById('service-contact-form');
     if (!form) return;
 
-    // Form now submits to Formspree via action attribute
-    // This just handles success feedback after redirect back
+    // Phone number validation logic
+    const phoneInputs = document.querySelectorAll('input[type="tel"]');
+    phoneInputs.forEach(input => {
+        input.addEventListener('input', function (e) {
+            // Remove non-numeric characters
+            this.value = this.value.replace(/[^0-9]/g, '');
+
+            // Limit to 10 digits
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+    });
+
+    // Form submission feedback
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('submitted') === 'true') {
         // Show success message if redirected back after submission
-        const formCard = form.closest('.contact-form-card');
+        const formCard = form.closest('.contact-form-card') || document.querySelector('.contact-form-wrapper');
         if (formCard) {
             formCard.innerHTML = `
                 <div style="text-align: center; padding: 40px;">

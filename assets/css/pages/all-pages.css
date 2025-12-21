@@ -457,6 +457,39 @@
     font-family: inherit;
 }
 
+.services-contact-section .phone-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    transition: var(--transition-base);
+    overflow: hidden;
+}
+
+.services-contact-section .phone-input-wrapper .country-code {
+    padding: var(--spacing-md) 0 var(--spacing-md) var(--spacing-lg);
+    font-weight: 700;
+    color: var(--gray-700);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    background: transparent;
+}
+
+.services-contact-section .phone-input-wrapper input {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding-left: 8px !important;
+}
+
+.services-contact-section .phone-input-wrapper:focus-within {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+}
+
+
 .services-contact-section .form-group input:focus,
 .services-contact-section .form-group select:focus,
 .services-contact-section .form-group textarea:focus {
