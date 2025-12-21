@@ -3,13 +3,6 @@
 [build]
   publish = "."
 
-# Redirects for SPA-like behavior (not needed for static site but good to have)
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
-
 # Headers for performance and security
 [[headers]]
   for = "/*"
