@@ -479,49 +479,27 @@ function initContactForm() {
 function initCurriculumTabs() {
     const tabs = document.querySelectorAll('.curriculum-tab');
     const levels = document.querySelectorAll('.curriculum-level');
-    const dropdown = document.getElementById('curriculum-level-select');
 
     if (tabs.length === 0) return;
 
-    // Function to switch levels
-    function switchLevel(level) {
-        // Update active tab
-        tabs.forEach(t => {
-            if (t.dataset.level === level) {
-                t.classList.add('active');
-            } else {
-                t.classList.remove('active');
-            }
-        });
-
-        // Update active level content
-        levels.forEach(l => {
-            if (l.dataset.level === level) {
-                l.classList.add('active');
-            } else {
-                l.classList.remove('active');
-            }
-        });
-
-        // Sync dropdown if exists
-        if (dropdown) {
-            dropdown.value = level;
-        }
-    }
-
-    // Tab click handlers
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            switchLevel(tab.dataset.level);
+            const level = tab.dataset.level;
+
+            // Update active tab
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Update active level content
+            levels.forEach(l => {
+                if (l.dataset.level === level) {
+                    l.classList.add('active');
+                } else {
+                    l.classList.remove('active');
+                }
+            });
         });
     });
-
-    // Dropdown change handler
-    if (dropdown) {
-        dropdown.addEventListener('change', (e) => {
-            switchLevel(e.target.value);
-        });
-    }
 }
 
 /* ============================================
