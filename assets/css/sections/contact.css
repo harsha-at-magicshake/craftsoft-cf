@@ -174,10 +174,29 @@
 
     .contact-text-side {
         padding-right: 0;
+        text-align: center;
+    }
+
+    .contact-text-side .section-tag {
+        display: inline-block;
+    }
+
+    .contact-text-side .section-title {
+        text-align: center !important;
+    }
+
+    .contact-text-side .section-description {
+        text-align: center !important;
     }
 
     .contact-form-side {
         position: static;
+    }
+
+    .method-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
 }
 
