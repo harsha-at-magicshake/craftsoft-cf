@@ -123,95 +123,192 @@
             <!-- Curriculum -->
             <div class="course-curriculum">
                 <h2>Course Curriculum</h2>
+                <p style="color: var(--gray-600); margin-bottom: var(--spacing-xl);">Build solid web fundamentals,
+                    create real full-stack applications, and think like a professional MERN developer.</p>
 
-                <div class="curriculum-module">
-                    <div class="module-header">
-                        <h4><span class="module-number">1</span> Web Fundamentals</h4>
+                <!-- Curriculum Level Tabs (Desktop) -->
+                <div class="curriculum-tabs">
+                    <button class="curriculum-tab active" data-level="beginner">
+                        <span class="tab-icon">🔰</span> Beginner
+                    </button>
+                    <button class="curriculum-tab" data-level="intermediate">
+                        <span class="tab-icon">⚙️</span> Intermediate
+                    </button>
+                    <button class="curriculum-tab" data-level="advanced">
+                        <span class="tab-icon">🚀</span> Advanced
+                    </button>
+                </div>
+
+                <!-- Curriculum Level Dropdown (Mobile) -->
+                <div class="curriculum-tabs-dropdown">
+                    <select id="curriculum-level-select">
+                        <option value="beginner">🔰 Beginner – Web & JavaScript Foundations</option>
+                        <option value="intermediate">⚙️ Intermediate – Frontend & Backend Core</option>
+                        <option value="advanced">🚀 Advanced – Production & System Thinking</option>
+                    </select>
+                </div>
+
+                <!-- Beginner Level -->
+                <div class="curriculum-level active" data-level="beginner">
+                    <div class="level-header">
+                        <h3>🔰 Beginner – Web & JavaScript Foundations</h3>
+                        <p class="level-goal"><strong>Goal:</strong> Build solid web fundamentals and programming
+                            mindset.</p>
                     </div>
-                    <div class="module-content">
+
+                    <div class="curriculum-module">
+                        <div class="module-header">
+                            <h4><span class="module-number">1</span> How the Web Works</h4>
+                        </div>
+                        <div class="module-content">
+                            <ul>
+                                <li>Client-server architecture</li>
+                                <li>HTTP basics & browsers</li>
+                                <li>Intro to programming logic & debugging</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="curriculum-module">
+                        <div class="module-header">
+                            <h4><span class="module-number">2</span> HTML5 & CSS Fundamentals</h4>
+                        </div>
+                        <div class="module-content">
+                            <ul>
+                                <li>HTML5 & semantic structure</li>
+                                <li>CSS fundamentals (layouts, Flexbox)</li>
+                                <li>Basic responsiveness</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="curriculum-module">
+                        <div class="module-header">
+                            <h4><span class="module-number">3</span> JavaScript Basics</h4>
+                        </div>
+                        <div class="module-content">
+                            <ul>
+                                <li>Variables, functions, loops</li>
+                                <li>DOM manipulation</li>
+                                <li>Git & GitHub basics</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="level-outcomes">
+                        <h4><i class="fas fa-trophy"></i> Beginner Outcomes</h4>
                         <ul>
-                            <li>HTML5 & Semantic Markup</li>
-                            <li>CSS3 & Modern Layouts (Flexbox, Grid)</li>
-                            <li>JavaScript Fundamentals & ES6+</li>
-                            <li>DOM Manipulation & Events</li>
-                            <li>Version Control with Git & GitHub</li>
+                            <li>Able to build static websites</li>
+                            <li>Write basic JavaScript logic</li>
+                            <li>Use Git for version control</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="curriculum-module">
-                    <div class="module-header">
-                        <h4><span class="module-number">2</span> React.js Frontend</h4>
+                <!-- Intermediate Level -->
+                <div class="curriculum-level" data-level="intermediate">
+                    <div class="level-header">
+                        <h3>⚙️ Intermediate – Frontend & Backend Core</h3>
+                        <p class="level-goal"><strong>Goal:</strong> Build real full-stack applications.</p>
                     </div>
-                    <div class="module-content">
+
+                    <div class="curriculum-module">
+                        <div class="module-header">
+                            <h4><span class="module-number">1</span> React Fundamentals</h4>
+                        </div>
+                        <div class="module-content">
+                            <ul>
+                                <li>Components, props, state</li>
+                                <li>React hooks & routing</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="curriculum-module">
+                        <div class="module-header">
+                            <h4><span class="module-number">2</span> Node.js & Express</h4>
+                        </div>
+                        <div class="module-content">
+                            <ul>
+                                <li>Node.js & Express fundamentals</li>
+                                <li>REST APIs & CRUD operations</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="curriculum-module">
+                        <div class="module-header">
+                            <h4><span class="module-number">3</span> MongoDB & Authentication</h4>
+                        </div>
+                        <div class="module-content">
+                            <ul>
+                                <li>MongoDB & Mongoose</li>
+                                <li>Authentication basics (JWT)</li>
+                                <li>Connecting frontend with backend</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="level-outcomes">
+                        <h4><i class="fas fa-trophy"></i> Intermediate Outcomes</h4>
                         <ul>
-                            <li>React Fundamentals & JSX</li>
-                            <li>Components, Props & State</li>
-                            <li>React Hooks (useState, useEffect, etc.)</li>
-                            <li>React Router & Navigation</li>
-                            <li>State Management with Redux/Context</li>
-                            <li>API Integration & Axios</li>
+                            <li>Build and deploy a working MERN application</li>
+                            <li>Create secure REST APIs</li>
+                            <li>Connect frontend and backend</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="curriculum-module">
-                    <div class="module-header">
-                        <h4><span class="module-number">3</span> Node.js & Express Backend</h4>
+                <!-- Advanced Level -->
+                <div class="curriculum-level" data-level="advanced">
+                    <div class="level-header">
+                        <h3>🚀 Advanced – Production & System Thinking</h3>
+                        <p class="level-goal"><strong>Goal:</strong> Think like a professional full-stack developer.</p>
                     </div>
-                    <div class="module-content">
-                        <ul>
-                            <li>Node.js Fundamentals</li>
-                            <li>Express.js Framework</li>
-                            <li>RESTful API Design</li>
-                            <li>Middleware & Error Handling</li>
-                            <li>Authentication with JWT</li>
-                            <li>File Uploads & Validation</li>
-                        </ul>
-                    </div>
-                </div>
 
-                <div class="curriculum-module">
-                    <div class="module-header">
-                        <h4><span class="module-number">4</span> MongoDB & Database</h4>
+                    <div class="curriculum-module">
+                        <div class="module-header">
+                            <h4><span class="module-number">1</span> Advanced React Patterns</h4>
+                        </div>
+                        <div class="module-content">
+                            <ul>
+                                <li>Advanced React patterns & performance</li>
+                                <li>Role-based authentication & authorization</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="module-content">
-                        <ul>
-                            <li>MongoDB Fundamentals</li>
-                            <li>Mongoose ODM</li>
-                            <li>Schema Design & Relationships</li>
-                            <li>CRUD Operations</li>
-                            <li>Aggregation & Indexing</li>
-                        </ul>
-                    </div>
-                </div>
 
-                <div class="curriculum-module">
-                    <div class="module-header">
-                        <h4><span class="module-number">5</span> Deployment & DevOps</h4>
+                    <div class="curriculum-module">
+                        <div class="module-header">
+                            <h4><span class="module-number">2</span> API Security & Database</h4>
+                        </div>
+                        <div class="module-content">
+                            <ul>
+                                <li>API security & validations</li>
+                                <li>Database optimization & indexing</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="module-content">
-                        <ul>
-                            <li>Environment Variables & Config</li>
-                            <li>Deployment on Vercel/Netlify</li>
-                            <li>Backend Deployment on Render/Railway</li>
-                            <li>CI/CD Basics</li>
-                            <li>Performance Optimization</li>
-                        </ul>
-                    </div>
-                </div>
 
-                <div class="curriculum-module">
-                    <div class="module-header">
-                        <h4><span class="module-number">6</span> Capstone Projects</h4>
+                    <div class="curriculum-module">
+                        <div class="module-header">
+                            <h4><span class="module-number">3</span> Deployment & Career</h4>
+                        </div>
+                        <div class="module-content">
+                            <ul>
+                                <li>Deployment (Netlify / Vercel / Cloud)</li>
+                                <li>Real-world project architecture</li>
+                                <li>Interview prep & system design basics</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="module-content">
+
+                    <div class="level-outcomes">
+                        <h4><i class="fas fa-trophy"></i> Advanced Outcomes</h4>
                         <ul>
-                            <li>E-commerce Platform</li>
-                            <li>Social Media Application</li>
-                            <li>Real-time Chat Application</li>
-                            <li>Portfolio Website</li>
-                            <li>Industry-level Final Project</li>
+                            <li>Job-ready MERN developer</li>
+                            <li>Production-level understanding</li>
+                            <li>System design fundamentals</li>
                         </ul>
                     </div>
                 </div>
