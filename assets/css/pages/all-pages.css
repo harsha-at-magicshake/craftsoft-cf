@@ -558,6 +558,78 @@
     font-weight: bold;
 }
 
+/* Share Course Section */
+.share-course {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--gray-200);
+    text-align: center;
+}
+
+.share-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    margin-bottom: var(--spacing-md);
+}
+
+.share-label i {
+    color: var(--primary-500);
+}
+
+.share-icons {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.share-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: var(--white);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.share-icon:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.share-icon.linkedin {
+    background: #0A66C2;
+}
+
+.share-icon.instagram {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+
+.share-icon.sms {
+    background: #25D366;
+}
+
+.share-icon.twitter {
+    background: #000000;
+}
+
+.share-icon.copy {
+    background: var(--gray-600);
+}
+
+.share-icon.copy.copied {
+    background: var(--success);
+}
+
 /* Page CTA */
 .page-cta {
     background: var(--accent-gradient);

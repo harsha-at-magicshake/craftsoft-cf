@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initActiveNavLink();
     initCourseFilter();
     initCurriculumTabs();
+    initShareCourse();
 });
 
 /* ============================================
@@ -498,6 +499,81 @@ function initCurriculumTabs() {
                 }
             });
         });
+    });
+}
+
+/* ============================================
+   SHARE COURSE FUNCTIONALITY
+   ============================================ */
+function initShareCourse() {
+    const shareIcons = document.querySelectorAll('.share-icon');
+
+    if (shareIcons.length === 0) return;
+
+    const pageUrl = encodeURIComponent(window.location.href);
+    const pageTitle = encodeURIComponent(document.title);
+    const shareText = encodeURIComponent(`Check out this course: ${document.title}`);
+
+    shareIcons.forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            e.preventDefault();
+            const shareType = icon.dataset.share;
+            let shareUrl = '';
+
+            switch (shareType) {
+                case 'linkedin':
+                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}`;
+                    window.open(shareUrl, '_blank', 'width=600,height=500');
+                    break;
+
+                case 'instagram':
+                    // Instagram doesn't have direct share URL, copy link instead
+                    copyToClipboard(window.location.href, icon);
+                    alert('Link copied! You can now paste it in your Instagram story or bio.');
+                    return;
+
+                case 'sms':
+                    // SMS sharing - works on mobile
+                    const smsBody = `Check out this course at Abhi's Craft Soft: ${window.location.href}`;
+                    shareUrl = `sms:?body=${encodeURIComponent(smsBody)}`;
+                    window.location.href = shareUrl;
+                    break;
+
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${shareText}`;
+                    window.open(shareUrl, '_blank', 'width=600,height=400');
+                    break;
+
+                case 'copy':
+                    copyToClipboard(window.location.href, icon);
+                    break;
+            }
+        });
+    });
+}
+
+function copyToClipboard(text, iconElement) {
+    navigator.clipboard.writeText(text).then(() => {
+        // Visual feedback
+        const originalIcon = iconElement.innerHTML;
+        iconElement.classList.add('copied');
+        iconElement.innerHTML = '<i class="fas fa-check"></i>';
+
+        setTimeout(() => {
+            iconElement.classList.remove('copied');
+            iconElement.innerHTML = originalIcon;
+        }, 2000);
+    }).catch(err => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+
+        iconElement.classList.add('copied');
+        setTimeout(() => iconElement.classList.remove('copied'), 2000);
     });
 }
 
