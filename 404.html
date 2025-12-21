@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Page not found - Abhi's Craft Soft">
+    <title>404 - Page Not Found | Abhi's Craft Soft</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.03) 0%, rgba(9, 132, 227, 0.05) 100%);
+            padding: var(--spacing-2xl);
+            text-align: center;
+        }
+
+        .error-content {
+            max-width: 600px;
+        }
+
+        .error-code {
+            font-size: clamp(120px, 20vw, 200px);
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: var(--spacing-lg);
+            font-family: var(--font-secondary);
+        }
+
+        .error-title {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--gray-900);
+            margin-bottom: var(--spacing-md);
+            font-family: var(--font-secondary);
+        }
+
+        .error-description {
+            font-size: 1.1rem;
+            color: var(--gray-600);
+            margin-bottom: var(--spacing-2xl);
+            line-height: 1.7;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .error-illustration {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .error-illustration i {
+            font-size: 80px;
+            color: var(--primary-500);
+            opacity: 0.3;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .quick-links {
+            margin-top: var(--spacing-3xl);
+            padding-top: var(--spacing-2xl);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .quick-links h4 {
+            color: var(--gray-700);
+            margin-bottom: var(--spacing-lg);
+            font-size: 1rem;
+        }
+
+        .quick-links-grid {
+            display: flex;
+            gap: var(--spacing-lg);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--gray-600);
+            text-decoration: none;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            transition: var(--transition-base);
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .quick-link:hover {
+            color: var(--primary-500);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .quick-link i {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-placeholder"><i class="fas fa-graduation-cap"></i></div>
+                <span class="logo-text"><span class="logo-signature">Abhi's</span> <span class="highlight">Craft
+                        Soft</span></span>
+            </a>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="pages/courses.html" class="nav-link">Courses</a></li>
+                <li><a href="pages/services.html" class="nav-link">Services</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Error Section -->
+    <section class="error-page">
+        <div class="error-content">
+            <div class="error-illustration">
+                <i class="fas fa-compass"></i>
+            </div>
+            <div class="error-code">404</div>
+            <h1 class="error-title">Oops! Page Not Found</h1>
+            <p class="error-description">
+                The page you're looking for seems to have wandered off.
+                Don't worry, even the best explorers get lost sometimes!
+            </p>
+            <div class="error-actions">
+                <a href="index.html" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+                <a href="pages/courses.html" class="btn btn-secondary">
+                    <i class="fas fa-graduation-cap"></i> Explore Courses
+                </a>
+            </div>
+
+            <div class="quick-links">
+                <h4>Or try one of these:</h4>
+                <div class="quick-links-grid">
+                    <a href="about.html" class="quick-link">
+                        <i class="fas fa-info-circle"></i> About Us
+                    </a>
+                    <a href="pages/services.html" class="quick-link">
+                        <i class="fas fa-cogs"></i> Services
+                    </a>
+                    <a href="index.html#contact" class="quick-link">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/917842239090?text=Hi! I need some help." class="whatsapp-float" target="_blank"
+        aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i><span class="whatsapp-tooltip">Chat with us!</span>
+    </a>
+
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
