@@ -12,15 +12,6 @@ document.getElementById('currentDate').textContent = new Date().toLocaleDateStri
     day: 'numeric'
 });
 
-// Update user info
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        const initial = user.email.charAt(0).toUpperCase();
-        document.getElementById('userAvatar').textContent = initial;
-        document.getElementById('userName').textContent = user.email.split('@')[0];
-    }
-});
-
 // Load Dashboard Data
 async function loadDashboardData() {
     try {
@@ -68,18 +59,18 @@ function animateValue(elementId, value) {
     element.textContent = value;
 }
 
-// Update Recent Students Table
+// Update Recent Students Table (View-only, no actions)
 function updateRecentStudentsTable(students) {
     const tbody = document.getElementById('recentStudentsTable');
 
     if (students.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="6">
+                <td colspan="5">
                     <div class="empty-state">
                         <span class="material-icons">group</span>
                         <h3>No students yet</h3>
-                        <p>Click "New Admission" to add your first student</p>
+                        <p>Add students from the Students page</p>
                     </div>
                 </td>
             </tr>
@@ -110,19 +101,6 @@ function updateRecentStudentsTable(students) {
                 <td>${formatCurrency(student.totalFee)}</td>
                 <td style="color: #10B981; font-weight: 600;">${formatCurrency(student.paidAmount)}</td>
                 <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                <td>
-                    <div class="action-buttons">
-                        ${pending > 0 ? `<button class="btn btn-success btn-sm btn-icon" onclick="openPaymentModal('${student.id}', '${student.name}', ${pending})" title="Add Payment">
-                            <span class="material-icons">add</span>
-                        </button>` : ''}
-                        <button class="btn btn-outline btn-sm btn-icon" onclick="openPaymentHistory('${student.id}')" title="Payment History">
-                            <span class="material-icons">receipt_long</span>
-                        </button>
-                        <button class="btn btn-whatsapp btn-sm btn-icon" onclick="shareViaWhatsApp('${student.id}')" title="Share via WhatsApp">
-                            <span class="material-icons">share</span>
-                        </button>
-                    </div>
-                </td>
             </tr>
         `;
     }).join('');
