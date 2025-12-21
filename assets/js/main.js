@@ -425,6 +425,46 @@ document.addEventListener('DOMContentLoaded', function () {
     initCounterAnimation();
     initScrollToTop();
     initTestimonialsSlider();
+    initContactForm();
 });
+
+/* ============================================
+   CONTACT FORM HANDLER
+   ============================================ */
+function initContactForm() {
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Get form values
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const interest = document.getElementById('interest').options[document.getElementById('interest').selectedIndex].text;
+        const message = document.getElementById('message').value;
+
+        // Create WhatsApp message
+        const whatsappMsg = `Hi Abhi's Craftsoft!%0A%0AI'm interested in: *${interest}*%0A%0A*Name:* ${name}%0A*Email:* ${email}%0A*Phone:* ${phone}%0A*Message:* ${message}`;
+
+        // Redirect to WhatsApp
+        window.open(`https://wa.me/917584223909?text=${whatsappMsg}`, '_blank');
+
+        // Optional: Show success message on current page
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Message Sent! ✅';
+        submitBtn.disabled = true;
+        submitBtn.style.background = '#00B894';
+
+        setTimeout(() => {
+            form.reset();
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            submitBtn.style.background = '';
+        }, 5000);
+    });
+}
 
 console.log('Abhi\'s Craft Soft website initialized successfully! 🚀');
