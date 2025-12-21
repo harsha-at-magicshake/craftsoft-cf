@@ -234,6 +234,10 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label>Demo Date (Optional)</label>
+                        <input type="date" id="studentDemoDate">
+                    </div>
+                    <div class="form-group">
                         <label>Notes (Optional)</label>
                         <textarea id="studentNotes" rows="2" placeholder="Any additional notes..."></textarea>
                     </div>
@@ -322,6 +326,77 @@
                 </button>
                 <button type="button" class="btn btn-outline" onclick="closeModal('paymentHistoryModal')">Close</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div class="modal-overlay" id="editStudentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><span class="material-icons">edit</span> Edit Student</h3>
+                <button class="modal-close" onclick="closeModal('editStudentModal')">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <form id="editStudentForm">
+                <div class="modal-body">
+                    <input type="hidden" id="editStudentId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="editStudentName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="editStudentPhone" required maxlength="10">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="editStudentEmail">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Course *</label>
+                            <select id="editStudentCourse" required>
+                                <option value="Full Stack Development">Full Stack Development</option>
+                                <option value="UI/UX Design">UI/UX Design</option>
+                                <option value="Graphic Design">Graphic Design</option>
+                                <option value="DevOps Engineering">DevOps Engineering</option>
+                                <option value="AWS Cloud">AWS Cloud</option>
+                                <option value="Python Full Stack">Python Full Stack</option>
+                                <option value="Java Full Stack">Java Full Stack</option>
+                                <option value="Data Analytics">Data Analytics</option>
+                                <option value="Salesforce">Salesforce</option>
+                                <option value="DSA Mastery">DSA Mastery</option>
+                                <option value="Soft Skills">Soft Skills</option>
+                                <option value="Spoken English">Spoken English</option>
+                                <option value="Resume & Interview">Resume & Interview Prep</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Total Fee (₹) *</label>
+                            <input type="number" id="editTotalFee" required min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Demo Date</label>
+                        <input type="date" id="editDemoDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="editStudentNotes" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline"
+                        onclick="closeModal('editStudentModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="material-icons">save</span> Save Changes
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

@@ -1,4 +1,4 @@
-// Students Page Logic - Enhanced with WhatsApp and Payment History
+// Students Page Logic - Enhanced with Edit and Demo Date
 
 let allStudents = [];
 let currentStudentData = null;
@@ -41,7 +41,7 @@ function renderStudents(students) {
                     <div class="empty-state">
                         <span class="material-icons">group</span>
                         <h3>No students found</h3>
-                        <p>Click "New Admission" to add a student</p>
+                        <p>Click "+" to add a student</p>
                     </div>
                 </td>
             </tr>
@@ -62,11 +62,19 @@ function renderStudents(students) {
             statusText = 'Partial';
         }
 
+        // Format demo date
+        let demoInfo = '';
+        if (student.demoDate) {
+            const demoDate = new Date(student.demoDate);
+            demoInfo = demoDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+        }
+
         return `
             <tr>
                 <td>
                     <strong>${student.name}</strong>
                     <br><small style="color: #64748b;">${student.phone || '-'}</small>
+                    ${demoInfo ? `<br><small style="color: #6C5CE7;">📅 Demo: ${demoInfo}</small>` : ''}
                 </td>
                 <td style="font-size: 0.8rem;">${student.course}</td>
                 <td>${formatCurrency(student.totalFee)}</td>
@@ -74,6 +82,9 @@ function renderStudents(students) {
                 <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                 <td>
                     <div class="action-buttons">
+                        <button class="btn btn-outline btn-sm btn-icon" onclick="openEditStudentModal('${student.id}')" title="Edit">
+                            <span class="material-icons">edit</span>
+                        </button>
                         ${pending > 0 ? `<button class="btn btn-success btn-sm btn-icon" onclick="openPaymentModal('${student.id}', '${student.name}', ${pending})" title="Pay">
                             <span class="material-icons">add</span>
                         </button>` : ''}
@@ -119,10 +130,67 @@ function filterStudents() {
     renderStudents(filtered);
 }
 
-// Event listeners for filters
 document.getElementById('searchInput').addEventListener('input', filterStudents);
 document.getElementById('courseFilter').addEventListener('change', filterStudents);
 document.getElementById('statusFilter').addEventListener('change', filterStudents);
+
+// ============================================
+// EDIT STUDENT - New Feature
+// ============================================
+async function openEditStudentModal(studentId) {
+    try {
+        const doc = await db.collection('students').doc(studentId).get();
+        const student = { id: doc.id, ...doc.data() };
+
+        document.getElementById('editStudentId').value = studentId;
+        document.getElementById('editStudentName').value = student.name || '';
+        document.getElementById('editStudentPhone').value = student.phone || '';
+        document.getElementById('editStudentEmail').value = student.email || '';
+        document.getElementById('editStudentCourse').value = student.course || '';
+        document.getElementById('editTotalFee').value = student.totalFee || 0;
+        document.getElementById('editDemoDate').value = student.demoDate || '';
+        document.getElementById('editStudentNotes').value = student.notes || '';
+
+        document.getElementById('editStudentModal').classList.add('active');
+    } catch (error) {
+        console.error('Error loading student:', error);
+        showToast('Error loading student', 'error');
+    }
+}
+
+// Edit Student Form Handler
+document.getElementById('editStudentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const studentId = document.getElementById('editStudentId').value;
+    const name = document.getElementById('editStudentName').value.trim();
+    const phone = document.getElementById('editStudentPhone').value.trim();
+    const email = document.getElementById('editStudentEmail').value.trim();
+    const course = document.getElementById('editStudentCourse').value;
+    const totalFee = parseInt(document.getElementById('editTotalFee').value) || 0;
+    const demoDate = document.getElementById('editDemoDate').value;
+    const notes = document.getElementById('editStudentNotes').value.trim();
+
+    try {
+        await db.collection('students').doc(studentId).update({
+            name,
+            phone,
+            email,
+            course,
+            totalFee,
+            demoDate: demoDate || null,
+            notes,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        showToast('Student updated successfully!', 'success');
+        closeModal('editStudentModal');
+        loadStudents();
+    } catch (error) {
+        console.error('Error updating student:', error);
+        showToast('Error updating student', 'error');
+    }
+});
 
 // Delete Student
 async function deleteStudent(studentId) {
@@ -295,7 +363,6 @@ function closeModal(modalId) {
     document.getElementById(modalId).classList.remove('active');
 }
 
-// Close modal on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) {
@@ -315,6 +382,7 @@ document.getElementById('addStudentForm').addEventListener('submit', async (e) =
     const totalFee = parseInt(document.getElementById('totalFee').value) || 0;
     const initialPayment = parseInt(document.getElementById('initialPayment').value) || 0;
     const paymentMode = document.getElementById('paymentMode').value;
+    const demoDate = document.getElementById('studentDemoDate').value;
     const notes = document.getElementById('studentNotes').value.trim();
 
     try {
@@ -327,6 +395,7 @@ document.getElementById('addStudentForm').addEventListener('submit', async (e) =
             course,
             totalFee,
             paidAmount: initialPayment,
+            demoDate: demoDate || null,
             notes,
             receiptPrefix: receiptNum,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -432,6 +501,7 @@ window.openPaymentHistory = openPaymentHistory;
 window.shareViaWhatsApp = shareViaWhatsApp;
 window.shareReceiptWhatsApp = shareReceiptWhatsApp;
 window.deleteStudent = deleteStudent;
+window.openEditStudentModal = openEditStudentModal;
 
 // Load data on page load
 document.addEventListener('DOMContentLoaded', () => {
