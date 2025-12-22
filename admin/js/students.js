@@ -6,13 +6,23 @@ let currentStudentData = null;
 // Load Students
 async function loadStudents() {
     try {
-        const snapshot = await db.collection('students').orderBy('createdAt', 'desc').get();
+        console.log('Loading students...');
+        // Query without orderBy to avoid index requirement
+        const snapshot = await db.collection('students').get();
 
         allStudents = [];
         snapshot.forEach(doc => {
             allStudents.push({ id: doc.id, ...doc.data() });
         });
 
+        // Sort by createdAt in JS (newest first)
+        allStudents.sort((a, b) => {
+            const dateA = a.createdAt?.toDate?.() || new Date(0);
+            const dateB = b.createdAt?.toDate?.() || new Date(0);
+            return dateB - dateA;
+        });
+
+        console.log('Students loaded:', allStudents.length);
         renderStudents(allStudents);
 
     } catch (error) {

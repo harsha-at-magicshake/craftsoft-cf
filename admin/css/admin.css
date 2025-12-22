@@ -1165,6 +1165,77 @@ tr:hover {
     opacity: 1;
 }
 
+/* Logout Modal */
+.logout-modal {
+    text-align: center;
+    padding: 32px 24px;
+}
+
+.logout-modal .logout-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.logout-modal .logout-icon .material-icons {
+    font-size: 32px;
+    color: var(--danger);
+}
+
+.logout-modal h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--gray-900);
+}
+
+.logout-modal p {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+}
+
+.logout-modal .logout-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.logout-modal .btn-cancel {
+    padding: 12px 24px;
+    background: var(--gray-100);
+    color: var(--gray-700);
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.logout-modal .btn-cancel:hover {
+    background: var(--gray-200);
+}
+
+.logout-modal .btn-logout-confirm {
+    padding: 12px 24px;
+    background: var(--danger);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.logout-modal .btn-logout-confirm:hover {
+    background: #DC2626;
+}
+
 /* ============================================
    MOBILE RESPONSIVE - APP-LIKE FEEL
    ============================================ */

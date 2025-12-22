@@ -71,13 +71,38 @@ function togglePassword() {
     }
 }
 
-// Logout Function with confirmation
+// Logout Function with custom dialog
 function logout() {
-    if (confirm('Are you sure you want to logout?')) {
-        auth.signOut().then(() => {
-            window.location.href = 'index.html';
-        });
+    // Show custom logout modal
+    const modal = document.getElementById('logoutModal');
+    if (modal) {
+        modal.classList.add('active');
+    } else {
+        // Fallback if modal doesn't exist
+        if (confirm('Are you sure you want to logout?')) {
+            performLogout();
+        }
     }
+}
+
+// Confirm logout (called from modal)
+function confirmLogout() {
+    performLogout();
+}
+
+// Cancel logout (called from modal)
+function cancelLogout() {
+    const modal = document.getElementById('logoutModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+// Perform the actual logout
+function performLogout() {
+    auth.signOut().then(() => {
+        window.location.href = 'index.html';
+    });
 }
 
 // Error Messages
@@ -97,3 +122,5 @@ function getErrorMessage(errorCode) {
 // Make functions global
 window.togglePassword = togglePassword;
 window.logout = logout;
+window.confirmLogout = confirmLogout;
+window.cancelLogout = cancelLogout;

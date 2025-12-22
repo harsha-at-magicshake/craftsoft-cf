@@ -15,7 +15,9 @@ document.getElementById('currentDate').textContent = new Date().toLocaleDateStri
 // Load Dashboard Data
 async function loadDashboardData() {
     try {
-        const studentsSnapshot = await db.collection('students').orderBy('createdAt', 'desc').get();
+        console.log('Loading dashboard data...');
+        // Query without orderBy to avoid index requirement
+        const studentsSnapshot = await db.collection('students').get();
 
         let totalStudents = 0;
         let totalRevenue = 0;
@@ -37,6 +39,15 @@ async function loadDashboardData() {
                 fullyPaid++;
             }
         });
+
+        // Sort by createdAt (newest first)
+        students.sort((a, b) => {
+            const dateA = a.createdAt?.toDate?.() || new Date(0);
+            const dateB = b.createdAt?.toDate?.() || new Date(0);
+            return dateB - dateA;
+        });
+
+        console.log('Dashboard loaded:', totalStudents, 'students');
 
         // Update stats with animation
         animateValue('totalStudents', totalStudents);

@@ -68,12 +68,7 @@
         <main class="main-content">
             <!-- Mobile Header -->
             <div class="mobile-header" style="display: none;">
-                <div class="mobile-header-left">
-                    <button class="menu-toggle" onclick="toggleSidebar()">
-                        <span class="material-icons">menu</span>
-                    </button>
-                    <h1 style="font-size: 1.25rem;">Dashboard</h1>
-                </div>
+                <h1 style="font-size: 1.25rem; font-weight: 600;">Dashboard</h1>
                 <button class="mobile-logout-btn" onclick="logout()" title="Logout">
                     <span class="material-icons">logout</span>
                 </button>
@@ -178,6 +173,23 @@
             <span>Payments</span>
         </a>
     </nav>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal-overlay" id="logoutModal">
+        <div class="modal" style="max-width: 360px;">
+            <div class="logout-modal">
+                <div class="logout-icon">
+                    <span class="material-icons">logout</span>
+                </div>
+                <h3>Logout</h3>
+                <p>Are you sure you want to logout?</p>
+                <div class="logout-actions">
+                    <button class="btn-cancel" onclick="cancelLogout()">Cancel</button>
+                    <button class="btn-logout-confirm" onclick="confirmLogout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Add Student Modal -->
     <div class="modal-overlay" id="addStudentModal">
