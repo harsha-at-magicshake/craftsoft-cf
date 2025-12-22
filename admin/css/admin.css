@@ -2005,3 +2005,113 @@ select:focus {
     font-size: 0.85rem;
     margin: 0 12px;
 }
+
+/* 13. Multi-Step Form Wizard */
+.wizard-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding: 0 10px;
+}
+
+.wizard-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+}
+
+.wizard-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--gray-200);
+    z-index: 0;
+}
+
+.wizard-step.completed:not(:last-child)::after {
+    background: var(--primary);
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    color: var(--gray-500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.wizard-step.active .step-number {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.2);
+}
+
+.wizard-step.completed .step-number {
+    background: var(--success);
+    color: white;
+}
+
+.step-label {
+    font-size: 0.7rem;
+    color: var(--gray-400);
+    margin-top: 6px;
+    text-align: center;
+}
+
+.wizard-step.active .step-label,
+.wizard-step.completed .step-label {
+    color: var(--gray-700);
+    font-weight: 500;
+}
+
+/* Wizard Content */
+.wizard-content {
+    min-height: 200px;
+}
+
+.wizard-panel {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.wizard-panel.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Wizard Navigation */
+.wizard-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--gray-200);
+    margin-top: 16px;
+}
+
+.wizard-nav .btn {
+    min-width: 100px;
+}
