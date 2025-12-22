@@ -513,15 +513,103 @@
                 <h3>
                     <span class="material-icons" style="color: var(--warning);">storage</span> Data Maintenance
                 </h3>
-                <div class="setting-item" style="border: none;">
-                    <div class="setting-info">
-                        <h4>Migrate Existing Data</h4>
-                        <p>Format existing phone numbers (+91) and update receipt numbers to new format.</p>
+                <div class="setting-item" style="border: none; flex-direction: column; align-items: stretch;">
+
+                    <!-- Subject Codes Banner -->
+                    <style>
+                        .info-banner {
+                            background-color: #f0fdf4;
+                            border: 1px solid #bbf7d0;
+                            border-radius: 8px;
+                            padding: 12px 16px;
+                            margin-bottom: 20px;
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 12px;
+                        }
+
+                        .info-banner .icon {
+                            color: #16a34a;
+                            font-size: 20px;
+                            margin-top: 2px;
+                            flex-shrink: 0;
+                        }
+
+                        .info-banner-content {
+                            flex: 1;
+                        }
+
+                        .subject-codes-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                            /* Smaller min-width for mobile */
+                            gap: 8px;
+                            font-size: 0.8rem;
+                            color: #166534;
+                            margin-top: 4px;
+                        }
+
+                        .subject-code-item {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            background: rgba(255, 255, 255, 0.6);
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            white-space: nowrap;
+                        }
+
+                        /* Mobile Adjustments */
+                        @media (max-width: 480px) {
+                            .info-banner {
+                                padding: 10px;
+                                gap: 8px;
+                            }
+
+                            .subject-codes-grid {
+                                grid-template-columns: repeat(2, 1fr);
+                                /* Force 2 columns on very small screens */
+                                gap: 6px;
+                            }
+
+                            .subject-code-item {
+                                font-size: 0.75rem;
+                            }
+                        }
+                    </style>
+                    <div class="info-banner">
+                        <span class="material-icons icon">info</span>
+                        <div class="info-banner-content">
+                            <div class="subject-codes-grid">
+                                <div class="subject-code-item"><span>Full Stack</span> <strong>01</strong></div>
+                                <div class="subject-code-item"><span>UI/UX</span> <strong>02</strong></div>
+                                <div class="subject-code-item"><span>Graphic</span> <strong>03</strong></div>
+                                <div class="subject-code-item"><span>DevOps</span> <strong>04</strong></div>
+                                <div class="subject-code-item"><span>AWS</span> <strong>05</strong></div>
+                                <div class="subject-code-item"><span>Python</span> <strong>06</strong></div>
+                                <div class="subject-code-item"><span>Java</span> <strong>07</strong></div>
+                                <div class="subject-code-item"><span>Data Analytics</span> <strong>08</strong></div>
+                                <div class="subject-code-item"><span>Salesforce</span> <strong>09</strong></div>
+                                <div class="subject-code-item"><span>DSA</span> <strong>10</strong></div>
+                                <div class="subject-code-item"><span>Soft Skills</span> <strong>11</strong></div>
+                                <div class="subject-code-item"><span>English</span> <strong>12</strong></div>
+                                <div class="subject-code-item"><span>Resume</span> <strong>13</strong></div>
+                                <div class="subject-code-item"><span>Other</span> <strong>99</strong></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="setting-value">
-                        <button class="btn btn-warning" onclick="migrateExistingData()">
-                            <span class="material-icons">sync</span> Start Migration
-                        </button>
+
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div class="setting-info" style="margin-bottom: 0;">
+                            <h4 style="margin-bottom: 4px;">Migrate Existing Data</h4>
+                            <p style="margin: 0;">Format existing phone numbers (+91) and update receipt numbers.</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-warning" onclick="migrateExistingData()">
+                                <span class="material-icons">sync</span> Start Migration
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

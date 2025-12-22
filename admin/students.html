@@ -322,6 +322,10 @@
                             <option value="dropped">Dropped</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label>Joining Date</label>
+                        <input type="date" id="studentJoiningDate">
+                    </div>
 
                     <!-- Payment Information -->
                     <div style="border-top: 1px solid #e2e8f0; margin: 16px 0; padding-top: 16px;">
@@ -499,6 +503,60 @@
                             <input type="number" id="editTotalFee" required min="0">
                         </div>
                     </div>
+
+                    <!-- Edit Batch Info -->
+                    <div style="border-top: 1px solid #e2e8f0; margin: 16px 0; padding-top: 16px;">
+                        <h4 style="margin: 0 0 12px; font-size: 0.9rem; color: #64748b;">Batch & Status</h4>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Batch Name</label>
+                            <input type="text" id="editBatchName">
+                        </div>
+                        <div class="form-group">
+                            <label>Timing</label>
+                            <select id="editBatchTiming">
+                                <option value="">Select Timing</option>
+                                <option value="Morning (9AM - 12PM)">Morning (9AM - 12PM)</option>
+                                <option value="Afternoon (12PM - 3PM)">Afternoon (12PM - 3PM)</option>
+                                <option value="Evening (6PM - 9PM)">Evening (6PM - 9PM)</option>
+                                <option value="Weekend">Weekend</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mode</label>
+                            <select id="editBatchMode">
+                                <option value="offline">Offline</option>
+                                <option value="online">Online</option>
+                                <option value="hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tutor</label>
+                            <select id="editTutorName">
+                                <option value="">Select Tutor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Joining Date</label>
+                            <input type="date" id="editJoiningDate">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="editStudentStatus">
+                                <option value="active">Active</option>
+                                <option value="completed">Completed</option>
+                                <option value="on-hold">On Hold</option>
+                                <option value="dropped">Dropped</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label>Demo Date</label>
                         <input type="date" id="editDemoDate">

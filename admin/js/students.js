@@ -248,6 +248,31 @@ async function openEditStudentModal(studentId) {
         document.getElementById('editDemoDate').value = student.demoDate || '';
         document.getElementById('editStudentNotes').value = student.notes || '';
 
+        // Batch Info
+        document.getElementById('editBatchName').value = student.batchName || '';
+        document.getElementById('editBatchTiming').value = student.batchTiming || '';
+        document.getElementById('editBatchMode').value = student.batchMode || 'offline';
+        document.getElementById('editStudentStatus').value = student.status || 'active';
+
+        // Populate edit tutor dropdown
+        const tutorSelect = document.getElementById('editTutorName');
+        if (tutorSelect && allTutors.length > 0) {
+            tutorSelect.innerHTML = '<option value="">Select Tutor</option>';
+            allTutors.forEach(tutor => {
+                const selected = tutor.name === (student.tutorName || '') ? 'selected' : '';
+                tutorSelect.innerHTML += `<option value="${tutor.name}" ${selected}>${tutor.name} - ${tutor.subject}</option>`;
+            });
+        }
+
+        // Joining Date
+        if (student.joiningDate) {
+            document.getElementById('editJoiningDate').value = student.joiningDate;
+        } else if (student.createdAt?.toDate) {
+            document.getElementById('editJoiningDate').value = student.createdAt.toDate().toISOString().split('T')[0];
+        } else {
+            document.getElementById('editJoiningDate').value = '';
+        }
+
         document.getElementById('editStudentModal').classList.add('active');
     } catch (error) {
         console.error('Error loading student:', error);
@@ -268,6 +293,13 @@ document.getElementById('editStudentForm').addEventListener('submit', async (e) 
     const demoDate = document.getElementById('editDemoDate').value;
     const notes = document.getElementById('editStudentNotes').value.trim();
 
+    const batchName = document.getElementById('editBatchName').value.trim();
+    const batchTiming = document.getElementById('editBatchTiming').value;
+    const batchMode = document.getElementById('editBatchMode').value;
+    const tutorName = document.getElementById('editTutorName').value;
+    const status = document.getElementById('editStudentStatus').value;
+    const joiningDate = document.getElementById('editJoiningDate').value;
+
     try {
         await db.collection('students').doc(studentId).update({
             name,
@@ -277,6 +309,13 @@ document.getElementById('editStudentForm').addEventListener('submit', async (e) 
             totalFee,
             demoDate: demoDate || null,
             notes,
+            // Batch & Status updates
+            batchName,
+            batchTiming,
+            batchMode,
+            tutorName,
+            status,
+            joiningDate: joiningDate || null,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
@@ -685,6 +724,7 @@ document.getElementById('addStudentForm').addEventListener('submit', async (e) =
     const startDate = document.getElementById('startDate')?.value || null;
     const endDate = document.getElementById('endDate')?.value || null;
     const studentStatus = document.getElementById('studentStatus')?.value || 'active';
+    const joiningDate = document.getElementById('studentJoiningDate')?.value || new Date().toISOString().split('T')[0];
 
     try {
         // Check for duplicate phone number
@@ -706,7 +746,7 @@ document.getElementById('addStudentForm').addEventListener('submit', async (e) =
             }
         }
 
-        // Generate initials from student name (first letters of first 2 words)
+        // Generate initials
         const nameParts = name.trim().split(/\s+/);
         const initials = nameParts.length >= 2
             ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()
@@ -716,14 +756,8 @@ document.getElementById('addStudentForm').addEventListener('submit', async (e) =
         const primarySubject = course;
         const subjectCode = subjectCodes[primarySubject] || '99';
 
-        // Get next sequence number for this subject
-        const existingStudents = await db.collection('students')
-            .where('course', '==', course)
-            .get();
-        const seqNum = (existingStudents.size + 1).toString().padStart(3, '0');
-
-        // Receipt format: ACS-{Initials}-{SubjectCode}{SEQ}
-        const receiptNum = `ACS-${initials}-${subjectCode}${seqNum}`;
+        // Receipt format: ACS-{Initials}-{SubjectCode} (No Student Sequence)
+        const receiptNum = `ACS-${initials}-${subjectCode}`;
 
         const studentRef = await db.collection('students').add({
             name,
@@ -747,19 +781,38 @@ document.getElementById('addStudentForm').addEventListener('submit', async (e) =
             endDate: endDate || null,
             status: studentStatus,
             // System fields
-            receiptPrefix: receiptNum,
+            joiningDate: joiningDate,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
         if (initialPayment > 0) {
+            // Get next Global Receipt ID
+            const metaRef = db.collection('settings').doc('metadata');
+            let nextReceiptId = 1;
+
+            await db.runTransaction(async (transaction) => {
+                const metaDoc = await transaction.get(metaRef);
+                if (!metaDoc.exists) {
+                    transaction.set(metaRef, { receiptSequence: 1 });
+                    nextReceiptId = 1;
+                } else {
+                    nextReceiptId = (metaDoc.data().receiptSequence || 0) + 1;
+                    transaction.update(metaRef, { receiptSequence: nextReceiptId });
+                }
+            });
+
+            // Receipt format: {GlobalID}-ACS-{Initials}{CourseCode}{PaymentCount(01)}
+            const paymentCount = '01'; // Initial payment is always 01
+            const receiptNumber = `${nextReceiptId}-ACS-${initials}${subjectCode}${paymentCount}`;
+
             await db.collection('payments').add({
                 studentId: studentRef.id,
                 studentName: name,
                 amount: initialPayment,
                 mode: paymentMode,
                 notes: 'Initial payment at admission',
-                receiptNumber: receiptNum + '-001',
+                receiptNumber: receiptNumber,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
         }
@@ -806,19 +859,45 @@ document.getElementById('addPaymentForm').addEventListener('submit', async (e) =
     }
 
     try {
+        // 1. Get Initials & Subject Code from student
         const studentDoc = await db.collection('students').doc(studentId).get();
-        const student = studentDoc.data();
+        const studentData = studentDoc.data();
 
-        const paymentsSnapshot = await db.collection('payments')
+        const nameParts = (studentData.name || 'Anonymous').trim().split(/\s+/);
+        const initials = nameParts.length >= 2
+            ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()
+            : nameParts[0].substring(0, 2).toUpperCase();
+
+        const primarySubject = studentData.course || 'Other';
+        const subjectCode = subjectCodes[primarySubject] || '99';
+
+        // 2. Count existing payments for this student to determine Payment Count (01, 02...)
+        const existingPayments = await db.collection('payments')
             .where('studentId', '==', studentId)
             .get();
-        const paymentCount = paymentsSnapshot.size + 1;
-        const receiptNumber = (student.receiptPrefix || 'CS-' + Date.now().toString().slice(-8)) + '-' + paymentCount.toString().padStart(3, '0');
+        const nextPaymentCount = (existingPayments.size + 1).toString().padStart(2, '0');
 
-        // Use selected date or current timestamp
-        const paymentDate = paymentDateInput
-            ? firebase.firestore.Timestamp.fromDate(new Date(paymentDateInput + 'T12:00:00'))
-            : firebase.firestore.FieldValue.serverTimestamp();
+        // 3. Get next Global Receipt ID
+        const metaRef = db.collection('settings').doc('metadata');
+        let nextReceiptId = 1;
+
+        await db.runTransaction(async (transaction) => {
+            const metaDoc = await transaction.get(metaRef);
+            if (!metaDoc.exists) {
+                transaction.set(metaRef, { receiptSequence: 1 });
+                nextReceiptId = 1;
+            } else {
+                nextReceiptId = (metaDoc.data().receiptSequence || 0) + 1;
+                transaction.update(metaRef, { receiptSequence: nextReceiptId });
+            }
+        });
+
+        // Format: {GlobalID}-ACS-{Initials}{CourseCode}{PaymentCount}
+        // Example: 1-ACS-KS0501
+        const receiptNumber = `${nextReceiptId}-ACS-${initials}${subjectCode}${nextPaymentCount}`;
+
+        // Prepare payment object
+        const paymentDate = paymentDateInput ? new Date(paymentDateInput) : firebase.firestore.FieldValue.serverTimestamp();
 
         await db.collection('payments').add({
             studentId,
@@ -836,7 +915,7 @@ document.getElementById('addPaymentForm').addEventListener('submit', async (e) =
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        showToast('Payment recorded!', 'success');
+        showToast(`Payment recorded!`, 'success');
         closeModal('addPaymentModal');
         loadStudents();
 
@@ -865,68 +944,113 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-// Receipt & Data Migration (One-time or periodic)
+// Receipt & Data Migration
 async function migrateExistingData() {
     try {
-        showToast('Starting data migration...', 'info');
+        showToast('Starting migration (Global Receipt Sequence)...', 'info');
+        console.log('Starting migration...');
+
+        // 1. Fetch Students
         const snapshot = await db.collection('students').get();
         const students = [];
         snapshot.forEach(doc => students.push({ id: doc.id, ...doc.data() }));
 
-        // Sort by createdAt ASC for sequential numbering
-        students.sort((a, b) => {
+        // 2. Fetch ALL Payments
+        const paymentsSnapshot = await db.collection('payments').get();
+        const payments = [];
+        paymentsSnapshot.forEach(doc => payments.push({ id: doc.id, ...doc.data() }));
+
+        // Sort payments by createdAt ASC to assign sequential global IDs based on historical order
+        payments.sort((a, b) => {
             const dateA = a.createdAt?.toDate?.() || new Date(0);
             const dateB = b.createdAt?.toDate?.() || new Date(0);
             return dateA - dateB;
         });
 
-        const courseSequences = {};
-        let updatedCount = 0;
+        console.log(`Found ${students.length} students and ${payments.length} payments.`);
 
+        const formatPhoneFn = window.formatPhoneNumber || (p => p);
+
+        // Update Students Phones Only
+        let updatedStudents = 0;
         for (let student of students) {
-            const updates = {};
-
-            // 1. Update Phone Number Format
-            const newPhone = formatPhoneNumber(student.phone);
+            const newPhone = formatPhoneFn(student.phone);
             if (newPhone !== student.phone) {
-                updates.phone = newPhone;
-            }
-
-            // 2. Update Receipt Prefix if needed (or if it's in old format)
-            const primarySubject = student.course;
-            const subjectCode = subjectCodes[primarySubject] || '99';
-
-            if (!courseSequences[primarySubject]) courseSequences[primarySubject] = 0;
-            courseSequences[primarySubject]++;
-
-            const seqNum = courseSequences[primarySubject].toString().padStart(3, '0');
-
-            // Generate initials
-            const nameParts = (student.name || 'Anonymous').trim().split(/\s+/);
-            const initials = nameParts.length >= 2
-                ? (nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '')).toUpperCase()
-                : (nameParts[0].substring(0, 2)).toUpperCase();
-
-            const expectedPrefix = `ACS-${initials}-${subjectCode}${seqNum}`;
-
-            if (student.receiptPrefix !== expectedPrefix) {
-                updates.receiptPrefix = expectedPrefix;
-            }
-
-            if (Object.keys(updates).length > 0) {
-                await db.collection('students').doc(student.id).update({
-                    ...updates,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                updatedCount++;
+                await db.collection('students').doc(student.id).update({ phone: newPhone });
+                updatedStudents++;
             }
         }
 
-        showToast(`Migration complete! Updated ${updatedCount} records.`, 'success');
+        // Global Receipt Counter Logic
+        let globalReceiptCounter = 0;
+        let updatedPayments = 0;
+        const batch = db.batch();
+        let batchCount = 0;
+
+        // Track payment counts per student
+        const studentPaymentCounts = {}; // { studentId: count }
+
+        for (let payment of payments) {
+            globalReceiptCounter++;
+            const studentId = payment.studentId;
+            // Handle case where student might have been deleted but payment exists
+            const student = students.find(s => s.id === studentId);
+
+            // Increment student's payment count (1-based)
+            if (!studentPaymentCounts[studentId]) studentPaymentCounts[studentId] = 0;
+            studentPaymentCounts[studentId]++;
+
+            const paymentCount = studentPaymentCounts[studentId].toString().padStart(2, '0');
+
+            // Generate Receipt String: {GlobalID}-ACS-{Initials}{CourseCode}{PaymentCount}
+            // Example: 1-ACS-KS0501
+            let receiptNumber = 'UNKNOWN';
+            if (student) {
+                const nameParts = (student.name || 'Anonymous').trim().split(/\s+/);
+                const initials = nameParts.length >= 2
+                    ? (nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '')).toUpperCase()
+                    : (nameParts[0].substring(0, 2)).toUpperCase();
+
+                const primarySubject = student.course || 'Other';
+                const subjectCode = subjectCodes[primarySubject] || '99';
+
+                receiptNumber = `${globalReceiptCounter}-ACS-${initials}${subjectCode}${paymentCount}`;
+            } else {
+                receiptNumber = `${globalReceiptCounter}-ACS-UNK99${paymentCount}`;
+            }
+
+            if (payment.receiptNumber !== receiptNumber) {
+                const paymentRef = db.collection('payments').doc(payment.id);
+                batch.update(paymentRef, { receiptNumber: receiptNumber });
+                batchCount++;
+                updatedPayments++;
+            }
+
+            if (batchCount >= 450) {
+                await batch.commit();
+                if (payments.length > 450) console.warn('Reached batch limit. Run again for remaining.');
+                batchCount = 0;
+                if (payments.length > 450) break;
+            }
+        }
+
+        if (batchCount > 0) {
+            await batch.commit();
+        }
+
+        // Save the last receipt sequence to metadata
+        await db.collection('settings').doc('metadata').set({
+            receiptSequence: globalReceiptCounter
+        }, { merge: true });
+
+        const msg = `Done! Updated phones & ${updatedPayments} receipts. Max Receipt ID: ${globalReceiptCounter}`;
+        console.log(msg);
+        showToast(msg, 'success');
         loadStudents();
+
     } catch (error) {
         console.error('Migration error:', error);
-        showToast('Migration failed', 'error');
+        showToast('Migration failed. Check console.', 'error');
     }
 }
 
