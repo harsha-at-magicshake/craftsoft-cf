@@ -176,10 +176,10 @@ function toggleEditBusiness() {
 }
 
 function cancelEditBusiness() {
-    businessEditMode = false;
-    loadSettings(); // Reload values
-    toggleEditBusiness(); // This will flip back to view mode
-    businessEditMode = false; // Reset after toggle
+    // Same logic as payment cancel: Force state to true before toggling to false
+    businessEditMode = true;
+    toggleEditBusiness(); // Switch to View Mode
+    loadSettings(); // Reload original data
 }
 
 
