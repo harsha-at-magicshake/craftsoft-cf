@@ -1483,9 +1483,14 @@ tr:hover {
     .desktop-only {
         display: none !important;
     }
+
+    /* Show mobile cards on mobile */
+    .mobile-cards {
+        display: block !important;
+    }
 }
 
-/* Desktop: show tables, hide mobile cards */
+/* Desktop: hide mobile cards (default) */
 .mobile-cards {
     display: none;
 }
