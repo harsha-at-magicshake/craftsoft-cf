@@ -731,6 +731,11 @@ function formatCurrency(amount) {
 // Modal Functions
 function openAddStudentModal() {
     document.getElementById('addStudentForm').reset();
+    document.getElementById('totalFee').value = '';
+    // Reset wizard to step 1
+    if (typeof resetWizard === 'function') {
+        resetWizard();
+    }
     document.getElementById('addStudentModal').classList.add('active');
 }
 
@@ -816,6 +821,111 @@ function calculateFinalFee() {
 
 // Make calculateFinalFee global
 window.calculateFinalFee = calculateFinalFee;
+
+// ============================================
+// WIZARD NAVIGATION
+// ============================================
+let currentWizardStep = 1;
+const totalWizardSteps = 3;
+
+function wizardNext() {
+    // Validate current step before proceeding
+    if (!validateWizardStep(currentWizardStep)) return;
+
+    if (currentWizardStep < totalWizardSteps) {
+        currentWizardStep++;
+        updateWizardUI();
+    }
+}
+
+function wizardPrev() {
+    if (currentWizardStep > 1) {
+        currentWizardStep--;
+        updateWizardUI();
+    }
+}
+
+function goToStep(step) {
+    if (step >= 1 && step <= totalWizardSteps) {
+        currentWizardStep = step;
+        updateWizardUI();
+    }
+}
+
+function validateWizardStep(step) {
+    if (step === 1) {
+        const name = document.getElementById('studentName').value.trim();
+        const phone = document.getElementById('studentPhone').value.trim();
+        if (!name) {
+            showToast('Please enter student name', 'error');
+            document.getElementById('studentName').focus();
+            return false;
+        }
+        if (!phone || phone.length < 10) {
+            showToast('Please enter valid phone number', 'error');
+            document.getElementById('studentPhone').focus();
+            return false;
+        }
+    } else if (step === 2) {
+        const course = document.getElementById('studentCourse').value;
+        const fee = document.getElementById('originalFee').value;
+        if (!course) {
+            showToast('Please select a course', 'error');
+            document.getElementById('studentCourse').focus();
+            return false;
+        }
+        if (!fee || parseInt(fee) <= 0) {
+            showToast('Please enter fee amount', 'error');
+            document.getElementById('originalFee').focus();
+            return false;
+        }
+    }
+    return true;
+}
+
+function updateWizardUI() {
+    // Update step indicators
+    document.querySelectorAll('.wizard-step').forEach(step => {
+        const stepNum = parseInt(step.dataset.step);
+        step.classList.remove('active', 'completed');
+        if (stepNum === currentWizardStep) {
+            step.classList.add('active');
+        } else if (stepNum < currentWizardStep) {
+            step.classList.add('completed');
+        }
+    });
+
+    // Update panels
+    document.querySelectorAll('.wizard-panel').forEach(panel => {
+        const panelNum = parseInt(panel.dataset.panel);
+        panel.classList.remove('active');
+        if (panelNum === currentWizardStep) {
+            panel.classList.add('active');
+        }
+    });
+
+    // Update navigation buttons
+    const prevBtn = document.getElementById('wizardPrevBtn');
+    const nextBtn = document.getElementById('wizardNextBtn');
+    const submitBtn = document.getElementById('wizardSubmitBtn');
+
+    prevBtn.style.display = currentWizardStep > 1 ? 'inline-flex' : 'none';
+    nextBtn.style.display = currentWizardStep < totalWizardSteps ? 'inline-flex' : 'none';
+    submitBtn.style.display = currentWizardStep === totalWizardSteps ? 'inline-flex' : 'none';
+}
+
+function resetWizard() {
+    currentWizardStep = 1;
+    updateWizardUI();
+    document.getElementById('addStudentForm').reset();
+    document.getElementById('totalFee').value = '';
+}
+
+// Make wizard functions global
+window.wizardNext = wizardNext;
+window.wizardPrev = wizardPrev;
+window.goToStep = goToStep;
+window.resetWizard = resetWizard;
 
 // Add Student Form Handler
 document.getElementById('addStudentForm').addEventListener('submit', async (e) => {
