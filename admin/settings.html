@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Abhi's Craft Soft Admin</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        .settings-section {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--elevation-1);
+        }
+
+        .settings-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 1rem;
+            color: var(--gray-800);
+        }
+
+        .settings-section h3 .material-icons {
+            color: var(--primary);
+            font-size: 22px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info h4 {
+            margin: 0 0 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .setting-info p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        .setting-value {
+            text-align: right;
+            max-width: 200px;
+        }
+
+        .setting-value input,
+        .setting-value textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-family: var(--font-secondary);
+        }
+
+        .setting-value input:focus,
+        .setting-value textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .nav-item-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+        }
+
+        .nav-item-toggle .nav-item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-item-toggle .material-icons {
+            color: var(--primary);
+        }
+
+        .toggle-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.add {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+        }
+
+        .toggle-btn.add:hover {
+            background: rgba(16, 185, 129, 0.25);
+        }
+
+        .toggle-btn.remove {
+            background: rgba(239, 68, 68, 0.15);
+            color: #EF4444;
+        }
+
+        .toggle-btn.remove:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .selected-nav-items {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .selected-nav-items .chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .selected-nav-items .chip .material-icons {
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .setting-value {
+                width: 100%;
+                max-width: none;
+                text-align: left;
+            }
+
+            .settings-section {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body class="admin-body">
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-logo">
+                    <div class="logo-icon"><span class="material-icons">school</span></div>
+                    <span>Abhi's Craft Soft</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="inquiries.html" class="nav-item">
+                    <span class="material-icons">contact_phone</span>
+                    <span>Inquiries</span>
+                </a>
+                <a href="students.html" class="nav-item">
+                    <span class="material-icons">people</span>
+                    <span>Students</span>
+                </a>
+                <a href="payments.html" class="nav-item">
+                    <span class="material-icons">payments</span>
+                    <span>Payments</span>
+                </a>
+                <a href="tutors.html" class="nav-item">
+                    <span class="material-icons">person</span>
+                    <span>Tutors</span>
+                </a>
+                <a href="settings.html" class="nav-item active">
+                    <span class="material-icons">settings</span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div class="user-details">
+                        <div class="name">Admin</div>
+                    </div>
+                    <button class="btn-logout" onclick="logout()" title="Logout">
+                        <span class="material-icons">logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Mobile Header -->
+            <div class="mobile-header" style="display: none;">
+                <h1 style="font-size: 1.25rem; font-weight: 600;">Settings</h1>
+                <button class="mobile-logout-btn" onclick="logout()" title="Logout">
+                    <span class="material-icons">logout</span>
+                </button>
+            </div>
+
+            <div class="page-header desktop-only">
+                <div>
+                    <h1>Settings</h1>
+                    <p class="date">Configure your admin panel</p>
+                </div>
+            </div>
+
+            <!-- Payment Configuration -->
+            <div class="settings-section">
+                <h3><span class="material-icons">account_balance</span> Payment Configuration</h3>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Bank Account Name</h4>
+                        <p>Account holder name</p>
+                    </div>
+                    <div class="setting-value">
+                        <input type="text" id="bankName" placeholder="Account Name">
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Bank Account Number</h4>
+                        <p>Your bank account number</p>
+                    </div>
+                    <div class="setting-value">
+                        <input type="text" id="bankAccount" placeholder="Account Number">
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>IFSC Code</h4>
+                        <p>Bank IFSC code</p>
+                    </div>
+                    <div class="setting-value">
+                        <input type="text" id="bankIFSC" placeholder="IFSC Code">
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>UPI ID</h4>
+                        <p>Your UPI address for payments</p>
+                    </div>
+                    <div class="setting-value">
+                        <input type="text" id="upiId" placeholder="name@upi">
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Razorpay Link</h4>
+                        <p>Payment link for online payments</p>
+                    </div>
+                    <div class="setting-value">
+                        <input type="url" id="razorpayLink" placeholder="https://rzp.io/...">
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px; text-align: right;">
+                    <button class="btn btn-primary" onclick="savePaymentSettings()">
+                        <span class="material-icons">save</span> Save Payment Settings
+                    </button>
+                </div>
+            </div>
+
+            <!-- Business Information -->
+            <div class="settings-section">
+                <h3><span class="material-icons">business</span> Business Information</h3>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Institute Name</h4>
+                        <p>Your business name</p>
+                    </div>
+                    <div class="setting-value">
+                        <input type="text" id="businessName" placeholder="Abhi's Craft Soft">
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Contact Phone</h4>
+                        <p>Primary contact number</p>
+                    </div>
+                    <div class="setting-value">
+                        <input type="tel" id="businessPhone" placeholder="Phone Number">
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Address</h4>
+                        <p>Business address</p>
+                    </div>
+                    <div class="setting-value">
+                        <textarea id="businessAddress" rows="2" placeholder="Full address"></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px; text-align: right;">
+                    <button class="btn btn-primary" onclick="saveBusinessSettings()">
+                        <span class="material-icons">save</span> Save Business Info
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div class="settings-section">
+                <h3><span class="material-icons">phone_android</span> Mobile Navigation</h3>
+                <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 16px;">
+                    Select up to 4 items to show in mobile bottom navigation. Click + to add, – to remove.
+                </p>
+
+                <div class="selected-nav-items" id="selectedNavItems">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div id="navItemsList">
+                    <!-- Navigation item toggles -->
+                </div>
+
+                <div style="margin-top: 16px; text-align: right;">
+                    <button class="btn btn-primary" onclick="saveNavigationSettings()">
+                        <span class="material-icons">save</span> Save Navigation
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Bottom Navigation - Mobile -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="bottom-nav-item">
+            <span class="material-icons">dashboard</span>
+            <span>Home</span>
+        </a>
+        <a href="inquiries.html" class="bottom-nav-item">
+            <span class="material-icons">contact_phone</span>
+            <span>Inquiries</span>
+        </a>
+        <a href="students.html" class="bottom-nav-item">
+            <span class="material-icons">people</span>
+            <span>Students</span>
+        </a>
+        <a href="payments.html" class="bottom-nav-item">
+            <span class="material-icons">payments</span>
+            <span>Payments</span>
+        </a>
+    </nav>
+
+    <!-- Logout Modal -->
+    <div class="modal-overlay" id="logoutModal">
+        <div class="modal" style="max-width: 360px;">
+            <div class="logout-modal">
+                <div class="logout-icon">
+                    <span class="material-icons">logout</span>
+                </div>
+                <h3>Logout</h3>
+                <p>Are you sure you want to logout?</p>
+                <div class="logout-actions">
+                    <button class="btn-cancel" onclick="cancelLogout()">Cancel</button>
+                    <button class="btn-logout-confirm" onclick="confirmLogout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/settings.js"></script>
+
+    <script>
+        // Mobile responsiveness
+        if (window.innerWidth <= 768) {
+            document.querySelector('.mobile-header').style.display = 'flex';
+        }
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 768) {
+                document.querySelector('.mobile-header').style.display = 'flex';
+            } else {
+                document.querySelector('.mobile-header').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
