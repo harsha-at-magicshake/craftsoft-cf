@@ -1069,8 +1069,15 @@ window.formatPhoneNumber = formatPhoneNumber;
 
 // Load data on page load
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(loadStudents, 500);
-    loadTutors(); // Load tutors for dropdown
+    // Only load students if we are on the students page (table exists)
+    if (document.getElementById('studentsTable')) {
+        setTimeout(loadStudents, 500);
+    }
+
+    // Only load tutors if we are on the students page (tutor select exists)
+    if (document.getElementById('tutorName') || document.getElementById('studentsTable')) {
+        loadTutors();
+    }
 });
 
 // Phone input validation
