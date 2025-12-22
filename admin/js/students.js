@@ -176,8 +176,7 @@ function renderStudents(students) {
 
         let demoInfo = '';
         if (student.demoDate) {
-            const demoDate = new Date(student.demoDate);
-            demoInfo = demoDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+            demoInfo = formatDate(student.demoDate);
         }
 
         return `
@@ -491,9 +490,7 @@ async function openPaymentHistory(studentId) {
 
             let timelineHTML = '';
             payments.forEach(payment => {
-                const date = payment.createdAt?.toDate?.()
-                    ? payment.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-                    : 'Unknown';
+                const date = formatDate(payment.createdAt);
 
                 const iconClass = payment.mode === 'cash' ? 'cash' : 'online';
                 const modeIcon = payment.mode === 'cash' ? 'payments' : 'credit_card';
@@ -537,144 +534,126 @@ function downloadReceiptPDF() {
     }
 
     const student = currentStudentData;
+    const payments = student.payments || [];
     const pending = student.totalFee - student.paidAmount;
-    const status = pending <= 0 ? 'FULLY PAID' : 'PARTIAL';
 
     // Initialize jsPDF
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    // Colors
-    const primaryColor = [40, 150, 205];
+    // Theming Colors
+    const primaryColor = [40, 150, 205]; // #2896cd
     const textColor = [15, 23, 42];
     const grayColor = [100, 116, 139];
-    const successColor = [16, 185, 129];
 
-    // Header background
+    // Header Area
     doc.setFillColor(...primaryColor);
     doc.rect(0, 0, 210, 45, 'F');
 
-    // Company Name
+    // Logo Placeholder/Text
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(24);
     doc.setFont('helvetica', 'bold');
-    doc.text("Abhi's Craft Soft", 105, 18, { align: 'center' });
+    doc.text("ABHI'S CRAFT SOFT", 20, 22);
 
-    // Tagline
+    // Dynamic Receipt Info
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    doc.text('Professional IT Training Institute', 105, 26, { align: 'center' });
+    doc.text(`RECEIPT NO: ACS-${student.name?.substring(0, 2).toUpperCase()}-${new Date().getTime().toString().slice(-6)}`, 190, 20, { align: 'right' });
+    doc.text(`DATE: ${formatDate(new Date())}`, 190, 28, { align: 'right' });
 
-    // Contact
+    // Company Address (Updated)
     doc.setFontSize(9);
-    doc.text('Vanasthalipuram, Hyderabad | +91 7842239090 | www.craftsoft.co.in', 105, 35, { align: 'center' });
+    doc.text('Plot No. 163, Vijayasree Colony', 20, 30);
+    doc.text('Vanasthalipuram, Hyderabad 500070', 20, 35);
+    doc.text('+91 7842239090 | team.craftsoft@gmail.com', 20, 40);
 
-    // Receipt Title
+    // Bill To Section
+    let yPos = 65;
     doc.setTextColor(...textColor);
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('PAYMENT RECEIPT', 105, 60, { align: 'center' });
-
-    // Divider
-    doc.setDrawColor(...primaryColor);
-    doc.setLineWidth(0.5);
-    doc.line(20, 65, 190, 65);
-
-    // Student Details Section
-    let yPos = 80;
-
     doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...grayColor);
-    doc.text('STUDENT DETAILS', 20, yPos);
+    doc.text('BILL TO:', 20, yPos);
 
+    yPos += 8;
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Name: ${student.name || '-'}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Phone: ${student.phone || '-'}`, 20, yPos);
+
+    // Items Table Header
+    yPos += 15;
+    doc.setFillColor(248, 250, 252); // Light bg for header
+    doc.rect(20, yPos, 170, 10, 'F');
+    doc.setDrawColor(226, 232, 240);
+    doc.rect(20, yPos, 170, 10);
+
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.text('ITEM #', 25, yPos + 7);
+    doc.text('ITEM DESCRIPTION', 45, yPos + 7);
+    doc.text('PAYMENT MODE', 125, yPos + 7);
+    doc.text('AMOUNT (₹)', 185, yPos + 7, { align: 'right' });
+
+    // Items Logic (All Payments)
     yPos += 10;
-    doc.setTextColor(...textColor);
-    doc.setFont('helvetica', 'normal');
-    doc.text('Name:', 20, yPos);
-    doc.setFont('helvetica', 'bold');
-    doc.text(student.name || '-', 60, yPos);
-
-    yPos += 8;
-    doc.setFont('helvetica', 'normal');
-    doc.text('Phone:', 20, yPos);
-    doc.text(student.phone || '-', 60, yPos);
-
-    yPos += 8;
-    doc.text('Course:', 20, yPos);
-    doc.text(student.course || '-', 60, yPos);
-
-    // Payment Summary Section
-    yPos += 20;
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...grayColor);
-    doc.text('PAYMENT SUMMARY', 20, yPos);
-
-    yPos += 10;
-    doc.setTextColor(...textColor);
     doc.setFont('helvetica', 'normal');
 
-    // Total Fee
-    doc.text('Total Fee:', 20, yPos);
-    doc.text(formatCurrency(student.totalFee), 120, yPos);
+    if (payments.length === 0) {
+        doc.rect(20, yPos, 170, 10);
+        doc.text('No payments recorded', 105, yPos + 7, { align: 'center' });
+        yPos += 10;
+    } else {
+        payments.forEach((payment, index) => {
+            const rowHeight = 10;
+            doc.rect(20, yPos, 170, rowHeight);
 
-    yPos += 8;
-    // Amount Paid
-    doc.text('Amount Paid:', 20, yPos);
-    doc.setTextColor(...successColor);
-    doc.text(formatCurrency(student.paidAmount), 120, yPos);
+            doc.text((index + 1).toString(), 28, yPos + 7, { align: 'center' });
+            doc.text(`${student.course} (Paid on ${formatDate(payment.createdAt)})`, 45, yPos + 7);
+            doc.text((payment.mode || 'N/A').toUpperCase(), 125, yPos + 7);
+            doc.text(payment.amount.toLocaleString('en-IN'), 185, yPos + 7, { align: 'right' });
 
-    yPos += 8;
-    // Balance
-    doc.setTextColor(...textColor);
-    doc.text('Balance:', 20, yPos);
-    doc.setTextColor(pending > 0 ? 239 : 16, pending > 0 ? 68 : 185, pending > 0 ? 68 : 129);
-    doc.text(formatCurrency(pending), 120, yPos);
-
-    yPos += 8;
-    doc.setTextColor(...textColor);
-    doc.text('Status:', 20, yPos);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(pending <= 0 ? 16 : 239, pending <= 0 ? 185 : 68, pending <= 0 ? 129 : 68);
-    doc.text(status, 120, yPos);
-
-    // Payment History
-    if (student.payments && student.payments.length > 0) {
-        yPos += 20;
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(...grayColor);
-        doc.text('PAYMENT HISTORY', 20, yPos);
-
-        yPos += 8;
-        doc.setFontSize(9);
-        doc.setTextColor(...textColor);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Date', 20, yPos);
-        doc.text('Amount', 70, yPos);
-        doc.text('Mode', 110, yPos);
-        doc.text('Receipt #', 140, yPos);
-
-        doc.setFont('helvetica', 'normal');
-        student.payments.forEach(payment => {
-            yPos += 7;
-            const date = payment.createdAt?.toDate?.()
-                ? payment.createdAt.toDate().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
-                : '-';
-            doc.text(date, 20, yPos);
-            doc.text(formatCurrency(payment.amount), 70, yPos);
-            doc.text((payment.mode || '-').toUpperCase(), 110, yPos);
-            doc.text(payment.receiptNumber || '-', 140, yPos);
+            yPos += rowHeight;
         });
     }
 
-    // Footer
-    yPos = 270;
-    doc.setFontSize(9);
-    doc.setTextColor(...grayColor);
-    doc.text('This is a computer-generated receipt.', 105, yPos, { align: 'center' });
-    doc.text('Generated on: ' + new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }), 105, yPos + 6, { align: 'center' });
+    // Totals Area
+    yPos += 10;
+    const totalsX = 130;
 
-    // Save PDF
+    doc.setFont('helvetica', 'bold');
+    doc.text('TOTAL PAID:', totalsX, yPos);
+    doc.text(`₹ ${student.paidAmount.toLocaleString('en-IN')}`, 190, yPos, { align: 'right' });
+
+    yPos += 8;
+    doc.setFont('helvetica', 'normal');
+    doc.text('COURSE FEE:', totalsX, yPos);
+    doc.text(`₹ ${student.totalFee.toLocaleString('en-IN')}`, 190, yPos, { align: 'right' });
+
+    yPos += 4;
+    doc.setDrawColor(148, 163, 184);
+    doc.line(totalsX, yPos, 190, yPos);
+
+    yPos += 8;
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(pending > 0 ? 239 : 16, pending > 0 ? 68 : 185, pending > 0 ? 68 : 129);
+    doc.text('BALANCE DUE:', totalsX, yPos);
+    doc.text(`₹ ${pending.toLocaleString('en-IN')}`, 190, yPos, { align: 'right' });
+
+    // Personalized Footer
+    yPos = 270;
+    doc.setTextColor(...grayColor);
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Thank You for enrolling in Craftsoft', 105, yPos, { align: 'center' });
+
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.text('This is a computer-generated receipt. No signature required.', 105, yPos + 7, { align: 'center' });
+    doc.text('Generated on: ' + formatDate(new Date()), 105, yPos + 12, { align: 'center' });
+
+    // Save File
     const fileName = `Receipt_${student.name?.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.pdf`;
     doc.save(fileName);
 

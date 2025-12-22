@@ -68,15 +68,13 @@ function renderInquiries(inquiries) {
     }
 
     container.innerHTML = inquiries.map(inquiry => {
-        const createdDate = inquiry.createdAt?.toDate?.()
-            ? inquiry.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
-            : '-';
+        const createdDate = formatDate(inquiry.createdAt);
 
         let demoInfo = '';
         if (inquiry.demoDate) {
             const demoDate = new Date(inquiry.demoDate);
             const isUpcoming = demoDate > new Date();
-            const demoStr = demoDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+            const demoStr = formatDate(demoDate);
             demoInfo = `<span class="demo-time"><span class="material-icons">${isUpcoming ? 'schedule' : 'event_available'}</span> ${demoStr}</span>`;
         }
 

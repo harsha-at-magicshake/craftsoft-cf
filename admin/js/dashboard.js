@@ -5,12 +5,7 @@
 let currentStudentData = null;
 
 // Set current date
-document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-IN', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-});
+document.getElementById('currentDate').textContent = formatDate(new Date());
 
 // Load Dashboard Data
 async function loadDashboardData() {
@@ -179,9 +174,7 @@ function showQuickView(student) {
         statusText = 'Partial';
     }
 
-    const joinDate = student.createdAt?.toDate?.()
-        ? student.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-        : '-';
+    const joinDate = formatDate(student.createdAt);
 
     const content = `
         <div style="text-align: center; margin-bottom: 20px;">
@@ -323,11 +316,9 @@ async function openPaymentHistory(studentId) {
             let timelineHTML = '';
             paymentsSnapshot.forEach(doc => {
                 const payment = doc.data();
-                const date = payment.createdAt?.toDate?.()
-                    ? payment.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-                    : 'Unknown';
+                const date = formatDate(payment.createdAt);
                 const time = payment.createdAt?.toDate?.()
-                    ? payment.createdAt.toDate().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
+                    ? payment.createdAt.toDate().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
                     : '';
 
                 const iconClass = payment.mode === 'cash' ? 'cash' : 'online';
@@ -404,7 +395,7 @@ ${lastPaymentInfo}
 🏷️ *Status:* ${status}
 
 ━━━━━━━━━━━━━━━━━━
-📍 Vanasthalipuram, Hyderabad
+📍 Plot No. 163, Vijayasree Colony, Vanasthalipuram, Hyderabad 500070
 📞 +91 7842239090
 🌐 www.craftsoft.co.in
 

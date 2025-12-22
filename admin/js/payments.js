@@ -72,9 +72,7 @@ function renderPayments(payments) {
 
     // Desktop Table
     tbody.innerHTML = payments.map(payment => {
-        const paymentDate = payment.createdAt?.toDate?.()
-            ? payment.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-            : '-';
+        const paymentDate = formatDate(payment.createdAt);
 
         const modeIcons = {
             'cash': '<span class="material-icons" style="color: #10B981; font-size: 18px; vertical-align: middle;">payments</span> Cash',
@@ -102,9 +100,7 @@ function renderPayments(payments) {
     // Mobile Cards
     if (mobileCards) {
         mobileCards.innerHTML = payments.map(payment => {
-            const paymentDate = payment.createdAt?.toDate?.()
-                ? payment.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-                : '-';
+            const paymentDate = formatDate(payment.createdAt);
 
             const modeLabels = {
                 'cash': 'Cash',
@@ -146,12 +142,10 @@ function showQuickView(paymentId) {
         return;
     }
 
-    const paymentDate = payment.createdAt?.toDate?.()
-        ? payment.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-        : '-';
+    const paymentDate = formatDate(payment.createdAt);
 
     const paymentTime = payment.createdAt?.toDate?.()
-        ? payment.createdAt.toDate().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
+        ? payment.createdAt.toDate().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
         : '';
 
     const modeLabels = {

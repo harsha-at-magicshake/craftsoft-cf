@@ -134,6 +134,30 @@ function formatPhoneNumber(phone) {
     return phone;
 }
 
+// Global Date Formatter: DD/MM/YYYY
+function formatDate(date) {
+    if (!date) return '-';
+    let d = date;
+
+    // Handle Firestore Timestamp
+    if (date && typeof date.toDate === 'function') {
+        d = date.toDate();
+    } else if (date && date.seconds) {
+        // Fallback for objects that look like Timestamps
+        d = new Date(date.seconds * 1000);
+    } else if (!(date instanceof Date)) {
+        d = new Date(date);
+    }
+
+    if (isNaN(d.getTime())) return '-';
+
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+
+    return `${day}/${month}/${year}`;
+}
+
 // Custom Confirmation Dialog Utility
 function showConfirm(options = {}) {
     const {
@@ -295,6 +319,7 @@ window.togglePassword = togglePassword;
 window.logout = logout;
 window.showConfirm = showConfirm;
 window.formatPhoneNumber = formatPhoneNumber;
+window.formatDate = formatDate;
 window.initializeBottomNav = initializeBottomNav;
 window.showTableSkeleton = showTableSkeleton;
 window.showCardSkeleton = showCardSkeleton;
