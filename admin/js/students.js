@@ -614,7 +614,30 @@ document.getElementById('addStudentForm').addEventListener('submit', async (e) =
     const demoDate = document.getElementById('studentDemoDate').value;
     const notes = document.getElementById('studentNotes').value.trim();
 
+    // New batch fields
+    const batchName = document.getElementById('batchName')?.value?.trim() || '';
+    const batchTiming = document.getElementById('batchTiming')?.value || '';
+    const batchMode = document.getElementById('batchMode')?.value || 'offline';
+    const tutorName = document.getElementById('tutorName')?.value?.trim() || '';
+    const startDate = document.getElementById('startDate')?.value || null;
+    const endDate = document.getElementById('endDate')?.value || null;
+    const studentStatus = document.getElementById('studentStatus')?.value || 'active';
+
     try {
+        // Check for duplicate phone number
+        if (phone) {
+            const duplicateCheck = await db.collection('students')
+                .where('phone', '==', phone)
+                .get();
+
+            if (!duplicateCheck.empty) {
+                const existingStudent = duplicateCheck.docs[0].data();
+                if (!confirm(`A student with this phone (${phone}) already exists:\n\n${existingStudent.name} - ${existingStudent.course}\n\nDo you still want to add this student?`)) {
+                    return;
+                }
+            }
+        }
+
         const receiptNum = 'CS-' + Date.now().toString().slice(-8);
 
         const studentRef = await db.collection('students').add({
@@ -626,6 +649,15 @@ document.getElementById('addStudentForm').addEventListener('submit', async (e) =
             paidAmount: initialPayment,
             demoDate: demoDate || null,
             notes,
+            // Batch info
+            batchName,
+            batchTiming,
+            batchMode,
+            tutorName,
+            startDate: startDate || null,
+            endDate: endDate || null,
+            status: studentStatus,
+            // System fields
             receiptPrefix: receiptNum,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -645,6 +677,7 @@ document.getElementById('addStudentForm').addEventListener('submit', async (e) =
 
         showToast('Student added successfully!', 'success');
         closeModal('addStudentModal');
+        document.getElementById('addStudentForm').reset();
         loadStudents();
 
     } catch (error) {

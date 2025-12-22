@@ -224,6 +224,72 @@
                             <input type="number" id="totalFee" required placeholder="e.g., 25000" min="0">
                         </div>
                     </div>
+
+                    <!-- Batch Information -->
+                    <div style="border-top: 1px solid #e2e8f0; margin: 16px 0; padding-top: 16px;">
+                        <h4 style="margin: 0 0 12px; font-size: 0.9rem; color: #64748b;">
+                            <span class="material-icons"
+                                style="font-size: 18px; vertical-align: middle;">schedule</span> Batch Information
+                        </h4>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Batch Name (Optional)</label>
+                            <input type="text" id="batchName" placeholder="e.g., Batch 1, Morning Batch">
+                        </div>
+                        <div class="form-group">
+                            <label>Timing</label>
+                            <select id="batchTiming">
+                                <option value="">Select Timing</option>
+                                <option value="Morning (9AM - 12PM)">Morning (9AM - 12PM)</option>
+                                <option value="Afternoon (12PM - 3PM)">Afternoon (12PM - 3PM)</option>
+                                <option value="Evening (6PM - 9PM)">Evening (6PM - 9PM)</option>
+                                <option value="Weekend">Weekend</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mode</label>
+                            <select id="batchMode">
+                                <option value="offline">Offline</option>
+                                <option value="online">Online</option>
+                                <option value="hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tutor Name</label>
+                            <input type="text" id="tutorName" placeholder="Tutor name">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" id="startDate">
+                        </div>
+                        <div class="form-group">
+                            <label>Expected Completion</label>
+                            <input type="date" id="endDate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Student Status</label>
+                        <select id="studentStatus">
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                            <option value="on-hold">On Hold</option>
+                            <option value="dropped">Dropped</option>
+                        </select>
+                    </div>
+
+                    <!-- Payment Information -->
+                    <div style="border-top: 1px solid #e2e8f0; margin: 16px 0; padding-top: 16px;">
+                        <h4 style="margin: 0 0 12px; font-size: 0.9rem; color: #64748b;">
+                            <span class="material-icons"
+                                style="font-size: 18px; vertical-align: middle;">payments</span> Payment Information
+                        </h4>
+                    </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Initial Payment (₹)</label>
