@@ -687,9 +687,56 @@ function closeModal(modalId) {
     document.getElementById(modalId).classList.remove('active');
 }
 
+// Check if a form has any filled inputs (to detect unsaved changes)
+function hasFormData(formId) {
+    const form = document.getElementById(formId);
+    if (!form) return false;
+    const inputs = form.querySelectorAll('input:not([type="hidden"]), textarea, select');
+    for (let input of inputs) {
+        if (input.type === 'checkbox' || input.type === 'radio') {
+            if (input.checked) return true;
+        } else if (input.value && input.value.trim() !== '' && !input.readOnly) {
+            // Skip readonly fields and fields with default values
+            if (input.tagName === 'SELECT' && input.selectedIndex === 0) continue;
+            return true;
+        }
+    }
+    return false;
+}
+
+// Close modal with unsaved changes check
+async function closeModalWithCheck(modalId, formId) {
+    if (hasFormData(formId)) {
+        const confirmed = await showConfirm({
+            title: 'Unsaved Changes',
+            message: 'You have unsaved changes. Are you sure you want to close?',
+            confirmText: 'Yes, Discard',
+            type: 'danger'
+        });
+        if (!confirmed) return;
+    }
+    closeModal(modalId);
+}
+
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', (e) => {
+    overlay.addEventListener('click', async (e) => {
         if (e.target === overlay) {
+            // Check for unsaved data in common forms
+            const modalId = overlay.id;
+            let formId = null;
+            if (modalId === 'addStudentModal') formId = 'addStudentForm';
+            else if (modalId === 'addPaymentModal') formId = 'addPaymentForm';
+            else if (modalId === 'editStudentModal') formId = 'editStudentForm';
+
+            if (formId && hasFormData(formId)) {
+                const confirmed = await showConfirm({
+                    title: 'Unsaved Changes',
+                    message: 'You have unsaved data. Are you sure you want to close?',
+                    confirmText: 'Yes, Discard',
+                    type: 'danger'
+                });
+                if (!confirmed) return;
+            }
             overlay.classList.remove('active');
         }
     });

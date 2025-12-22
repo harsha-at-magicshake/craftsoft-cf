@@ -47,6 +47,12 @@ async function loadSettings() {
             if (data.mobileNavItems && data.mobileNavItems.length > 0) {
                 selectedNavItems = data.mobileNavItems;
             }
+
+            // Display last saved timestamp
+            if (data.updatedAt) {
+                const lastSaved = data.updatedAt.toDate ? data.updatedAt.toDate() : new Date(data.updatedAt);
+                updateLastSavedText('paymentLastSaved', lastSaved);
+            }
         }
 
         renderNavigationSettings();
@@ -54,6 +60,31 @@ async function loadSettings() {
     } catch (error) {
         console.error('Error loading settings:', error);
     }
+}
+
+// Update "Last saved" text
+function updateLastSavedText(elementId, date) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    let timeAgo = '';
+    if (diffMins < 1) {
+        timeAgo = 'Just now';
+    } else if (diffMins < 60) {
+        timeAgo = `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
+    } else if (diffHours < 24) {
+        timeAgo = `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    } else {
+        timeAgo = `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    }
+
+    el.innerHTML = `<span class="material-icons">schedule</span> Last saved: ${timeAgo}`;
 }
 
 // Update display values for payment settings
@@ -306,6 +337,7 @@ async function savePaymentSettings() {
         showToast('Payment settings saved!', 'success');
         paymentEditMode = true; // Set to true so toggle flips it to false (view mode)
         toggleEditPayment();
+        updateLastSavedText('paymentLastSaved', new Date()); // Show "Just now"
     } catch (error) {
         console.error('Error saving payment settings:', error);
         showToast('Error saving settings', 'error');
