@@ -191,7 +191,8 @@ function openEditTutorModal(tutorId) {
     document.getElementById('editTutorMode').value = tutor.mode || 'offline';
     document.getElementById('editTutorAvailability').value = tutor.availability || 'weekdays';
     document.getElementById('editTutorStatus').value = tutor.status || 'active';
-    document.getElementById('editTutorRate').value = tutor.rate || '';
+    const rateField = document.getElementById('editTutorRate');
+    if (rateField) rateField.value = tutor.rate || '';
     document.getElementById('editTutorNotes').value = tutor.notes || '';
 
     document.getElementById('editTutorModal').classList.add('active');
@@ -256,7 +257,8 @@ document.getElementById('addTutorForm').addEventListener('submit', async (e) => 
     const mode = document.getElementById('tutorMode').value;
     const availability = document.getElementById('tutorAvailability').value;
     const status = document.getElementById('tutorStatus').value;
-    const rate = parseInt(document.getElementById('tutorRate').value) || 0;
+    const rateElement = document.getElementById('tutorRate');
+    const rate = rateElement ? (parseInt(rateElement.value) || 0) : 0;
     const notes = document.getElementById('tutorNotes').value.trim();
 
     try {
@@ -306,7 +308,7 @@ document.getElementById('editTutorForm').addEventListener('submit', async (e) =>
             mode: document.getElementById('editTutorMode').value,
             availability: document.getElementById('editTutorAvailability').value,
             status: document.getElementById('editTutorStatus').value,
-            rate: parseInt(document.getElementById('editTutorRate').value) || 0,
+            rate: parseInt(document.getElementById('editTutorRate')?.value || 0) || 0,
             notes: document.getElementById('editTutorNotes').value.trim(),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
@@ -418,6 +420,9 @@ document.querySelectorAll('.multi-select-dropdown input[type="checkbox"]').forEa
 });
 
 window.toggleMultiSelect = toggleMultiSelect;
+window.updateMultiSelectLabel = updateMultiSelectLabel;
+window.getSelectedSubjects = getSelectedSubjects;
+window.setSelectedSubjects = setSelectedSubjects;
 
 // Load tutors on page load
 document.addEventListener('DOMContentLoaded', () => {

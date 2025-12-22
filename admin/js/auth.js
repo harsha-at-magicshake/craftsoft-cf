@@ -204,12 +204,26 @@ async function updateDynamicDropdowns() {
     // Update all dynamic course containers
     const containers = document.querySelectorAll('.multi-select-options');
     containers.forEach(container => {
-        if (container.id !== 'navOrderOptions') { // Skip navigation settings if any
+        if (container.id !== 'navOrderOptions') {
             container.innerHTML = checkboxesHTML;
-            // Re-attach listeners
+            const dropdown = container.closest('.multi-select-dropdown');
+
+            // Re-attach listeners based on page context
             container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-                cb.addEventListener('change', updateCourseSelectionDisplay);
+                cb.addEventListener('change', () => {
+                    if (typeof updateCourseSelectionDisplay === 'function') {
+                        updateCourseSelectionDisplay();
+                    }
+                    if (dropdown && typeof updateMultiSelectLabel === 'function') {
+                        updateMultiSelectLabel(dropdown.id);
+                    }
+                });
             });
+
+            // Initial label update
+            if (dropdown && typeof updateMultiSelectLabel === 'function') {
+                updateMultiSelectLabel(dropdown.id);
+            }
         }
     });
 
