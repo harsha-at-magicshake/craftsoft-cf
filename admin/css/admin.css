@@ -1821,12 +1821,25 @@ tr:hover {
 
 /* 6. Empty State with Action Button */
 .empty-state-action {
-    margin-top: 16px;
+    margin-top: 20px;
 }
 
 .empty-state-action .btn {
-    padding: 12px 24px;
-    font-size: 1rem;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    background: transparent;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+    font-weight: 500;
+}
+
+.empty-state-action .btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.empty-state-action .btn .material-icons {
+    font-size: 16px;
 }
 
 /* 7. Last Saved Timestamp */

@@ -46,12 +46,12 @@ function renderTutors(tutors) {
     if (tutors.length === 0) {
         const emptyHTML = `
             <div class="empty-state" style="padding: 40px; text-align: center;">
-                <span class="material-icons" style="font-size: 48px; color: #94a3b8;">person</span>
-                <h3 style="margin-top: 12px;">No tutors found</h3>
-                <p style="color: #64748b;">Get started by adding your first tutor</p>
+                <span class="material-icons" style="font-size: 40px; color: #cbd5e1;">person_outline</span>
+                <h3 style="margin-top: 12px; font-size: 1rem; font-weight: 600;">No tutors found</h3>
+                <p style="color: #94a3b8; font-size: 0.85rem;">Get started by adding your first tutor</p>
                 <div class="empty-state-action">
-                    <button class="btn btn-primary" onclick="openAddTutorModal()">
-                        <span class="material-icons">person_add</span> Add Tutor
+                    <button class="btn" onclick="openAddTutorModal()">
+                        <span class="material-icons">add</span> New Tutor
                     </button>
                 </div>
             </div>

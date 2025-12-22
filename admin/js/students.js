@@ -80,12 +80,12 @@ function renderStudents(students) {
     if (students.length === 0) {
         const emptyHTML = `
             <div class="empty-state" style="padding: 40px; text-align: center;">
-                <span class="material-icons" style="font-size: 48px; color: #94a3b8;">group</span>
-                <h3 style="margin-top: 12px;">No students found</h3>
-                <p style="color: #64748b;">Get started by adding your first student</p>
+                <span class="material-icons" style="font-size: 40px; color: #cbd5e1;">group</span>
+                <h3 style="margin-top: 12px; font-size: 1rem; font-weight: 600;">No students found</h3>
+                <p style="color: #94a3b8; font-size: 0.85rem;">Get started by adding your first student</p>
                 <div class="empty-state-action">
-                    <button class="btn btn-primary" onclick="openAddStudentModal()">
-                        <span class="material-icons">person_add</span> Add Student
+                    <button class="btn" onclick="openAddStudentModal()">
+                        <span class="material-icons">add</span> New Student
                     </button>
                 </div>
             </div>
