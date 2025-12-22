@@ -245,12 +245,12 @@ function initCourseFilter() {
                 }
             });
 
-            // Smooth scroll to courses section
-            const coursesSection = document.querySelector('.courses-page');
-            if (coursesSection) {
+            // Smooth scroll to section
+            const scrollTarget = document.querySelector('.courses-page') || document.querySelector('.services-page');
+            if (scrollTarget) {
                 const navbarHeight = document.getElementById('navbar')?.offsetHeight || 0;
                 window.scrollTo({
-                    top: coursesSection.offsetTop - navbarHeight - 20,
+                    top: scrollTarget.offsetTop - navbarHeight - 20,
                     behavior: 'smooth'
                 });
             }
