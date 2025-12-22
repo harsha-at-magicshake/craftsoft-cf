@@ -48,7 +48,12 @@ function renderTutors(tutors) {
             <div class="empty-state" style="padding: 40px; text-align: center;">
                 <span class="material-icons" style="font-size: 48px; color: #94a3b8;">person</span>
                 <h3 style="margin-top: 12px;">No tutors found</h3>
-                <p style="color: #64748b;">Click "+ Add Tutor" to add one</p>
+                <p style="color: #64748b;">Get started by adding your first tutor</p>
+                <div class="empty-state-action">
+                    <button class="btn btn-primary" onclick="openAddTutorModal()">
+                        <span class="material-icons">person_add</span> Add Tutor
+                    </button>
+                </div>
             </div>
         `;
         tbody.innerHTML = `<tr><td colspan="6">${emptyHTML}</td></tr>`;

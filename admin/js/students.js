@@ -82,7 +82,12 @@ function renderStudents(students) {
             <div class="empty-state" style="padding: 40px; text-align: center;">
                 <span class="material-icons" style="font-size: 48px; color: #94a3b8;">group</span>
                 <h3 style="margin-top: 12px;">No students found</h3>
-                <p style="color: #64748b;">Click "+" to add a student</p>
+                <p style="color: #64748b;">Get started by adding your first student</p>
+                <div class="empty-state-action">
+                    <button class="btn btn-primary" onclick="openAddStudentModal()">
+                        <span class="material-icons">person_add</span> Add Student
+                    </button>
+                </div>
             </div>
         `;
         tbody.innerHTML = `<tr><td colspan="6">${emptyHTML}</td></tr>`;
@@ -434,7 +439,12 @@ async function openPaymentHistory(studentId) {
                         <div class="timeline-content">
                             <div class="amount">${formatCurrency(payment.amount)}</div>
                             <div class="meta">${date} • ${payment.mode?.toUpperCase() || 'N/A'}</div>
-                            <div class="receipt-num"># ${payment.receiptNumber || '-'}</div>
+                            <div class="receipt-badge">
+                                <span>${payment.receiptNumber || '-'}</span>
+                                <button class="copy-btn" onclick="copyReceipt('${payment.receiptNumber || ''}')" title="Copy">
+                                    <span class="material-icons">content_copy</span>
+                                </button>
+                            </div>
                         </div>
                     </li>
                 `;
@@ -1057,6 +1067,16 @@ async function migrateExistingData() {
     }
 }
 
+// Copy Receipt Number to Clipboard
+function copyReceipt(receiptNumber) {
+    if (!receiptNumber) return;
+    navigator.clipboard.writeText(receiptNumber).then(() => {
+        showToast('Receipt number copied!', 'success');
+    }).catch(() => {
+        showToast('Failed to copy', 'error');
+    });
+}
+
 // Make functions global
 window.openAddStudentModal = openAddStudentModal;
 window.openPaymentModal = openPaymentModal;
@@ -1068,6 +1088,7 @@ window.deleteStudent = deleteStudent;
 window.openEditStudentModal = openEditStudentModal;
 window.downloadReceiptPDF = downloadReceiptPDF;
 window.migrateExistingData = migrateExistingData;
+window.copyReceipt = copyReceipt;
 window.formatPhoneNumber = formatPhoneNumber;
 
 // Load data on page load

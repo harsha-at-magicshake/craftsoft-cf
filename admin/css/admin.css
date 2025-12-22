@@ -1644,3 +1644,258 @@ tr:hover {
     background: var(--danger);
     color: white;
 }
+
+/* ============================================
+   UX ENHANCEMENTS
+   ============================================ */
+
+/* 1. Inline Form Validation Errors */
+.form-group .error-text {
+    display: none;
+    color: var(--danger);
+    font-size: 0.75rem;
+    margin-top: 4px;
+}
+
+.form-group.has-error input,
+.form-group.has-error select,
+.form-group.has-error textarea {
+    border-color: var(--danger) !important;
+}
+
+.form-group.has-error .error-text {
+    display: block;
+}
+
+/* 2. Sticky Search/Filter Bar on Mobile */
+@media (max-width: 768px) {
+
+    .filters-row,
+    .search-filter-row {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--gray-50);
+        padding: 12px 0;
+        margin: -12px 0 12px;
+        border-bottom: 1px solid var(--gray-200);
+    }
+}
+
+/* 3. Loading Skeleton Animation */
+.skeleton {
+    background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: var(--radius);
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.skeleton-text {
+    height: 14px;
+    margin-bottom: 8px;
+}
+
+.skeleton-text.short {
+    width: 60%;
+}
+
+.skeleton-text.medium {
+    width: 80%;
+}
+
+.skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.skeleton-card {
+    padding: 16px;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    margin-bottom: 12px;
+}
+
+/* 4. Receipt Number Badge */
+.receipt-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.receipt-badge .copy-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.receipt-badge .copy-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.receipt-badge .copy-btn .material-icons {
+    font-size: 14px;
+    color: white;
+}
+
+/* 5. Mobile Action Menu (3-dot) */
+.mobile-actions-menu {
+    position: relative;
+}
+
+.mobile-actions-toggle {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.mobile-actions-toggle:hover {
+    background: var(--gray-100);
+}
+
+.mobile-actions-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--elevation-3);
+    min-width: 140px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.mobile-actions-menu.open .mobile-actions-dropdown {
+    display: block;
+}
+
+.mobile-actions-dropdown button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.15s;
+}
+
+.mobile-actions-dropdown button:hover {
+    background: var(--gray-50);
+}
+
+.mobile-actions-dropdown button.danger {
+    color: var(--danger);
+}
+
+/* 6. Empty State with Action Button */
+.empty-state-action {
+    margin-top: 16px;
+}
+
+.empty-state-action .btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+}
+
+/* 7. Last Saved Timestamp */
+.last-saved-text {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.last-saved-text .material-icons {
+    font-size: 14px;
+}
+
+/* 8. Quick Actions Card */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.quick-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px 16px;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: var(--gray-700);
+}
+
+.quick-action-btn:hover {
+    border-color: var(--primary);
+    background: rgba(40, 150, 205, 0.05);
+    transform: translateY(-2px);
+}
+
+.quick-action-btn .material-icons {
+    font-size: 28px;
+    color: var(--primary);
+}
+
+.quick-action-btn span:last-child {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* 9. Form Unsaved Changes Indicator */
+.form-unsaved-indicator {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    color: var(--warning);
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+}
+
+.form-unsaved-indicator.visible {
+    display: flex;
+}
+
+.form-unsaved-indicator .material-icons {
+    font-size: 16px;
+}
