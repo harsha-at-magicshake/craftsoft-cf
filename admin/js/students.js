@@ -1046,7 +1046,10 @@ async function migrateExistingData() {
         const msg = `Done! Updated phones & ${updatedPayments} receipts. Max Receipt ID: ${globalReceiptCounter}`;
         console.log(msg);
         showToast(msg, 'success');
-        loadStudents();
+
+        if (document.getElementById('studentsTable')) {
+            loadStudents();
+        }
 
     } catch (error) {
         console.error('Migration error:', error);
