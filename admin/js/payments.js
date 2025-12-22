@@ -1,20 +1,13 @@
-// Payments Page Logic - Enhanced with Material Icons
+// Payments Page Logic - Enhanced with Mobile Cards
 
 let allPayments = [];
-
-// Update user info
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        const initial = user.email.charAt(0).toUpperCase();
-        document.getElementById('userAvatar').textContent = initial;
-        document.getElementById('userName').textContent = user.email.split('@')[0];
-    }
-});
 
 // Load Payments
 async function loadPayments() {
     try {
-        const snapshot = await db.collection('payments').orderBy('createdAt', 'desc').get();
+        console.log('Loading payments...');
+        // Query without orderBy to avoid index requirement
+        const snapshot = await db.collection('payments').get();
 
         allPayments = [];
         let totalCollected = 0;
@@ -34,6 +27,15 @@ async function loadPayments() {
             }
         });
 
+        // Sort by createdAt (newest first)
+        allPayments.sort((a, b) => {
+            const dateA = a.createdAt?.toDate?.() || new Date(0);
+            const dateB = b.createdAt?.toDate?.() || new Date(0);
+            return dateB - dateA;
+        });
+
+        console.log('Payments loaded:', allPayments.length);
+
         // Update stats
         document.getElementById('totalCollected').textContent = formatCurrency(totalCollected);
         document.getElementById('cashPayments').textContent = formatCurrency(cashTotal);
@@ -47,25 +49,25 @@ async function loadPayments() {
     }
 }
 
-// Render Payments Table
+// Render Payments Table + Mobile Cards
 function renderPayments(payments) {
     const tbody = document.getElementById('paymentsTable');
+    const mobileCards = document.getElementById('paymentsMobileCards');
 
     if (payments.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="5">
-                    <div class="empty-state">
-                        <span class="material-icons">receipt</span>
-                        <h3>No payments found</h3>
-                        <p>Payment records will appear here</p>
-                    </div>
-                </td>
-            </tr>
+        const emptyHTML = `
+            <div class="empty-state" style="padding: 40px; text-align: center;">
+                <span class="material-icons" style="font-size: 48px; color: #94a3b8;">receipt</span>
+                <h3 style="margin-top: 12px;">No payments found</h3>
+                <p style="color: #64748b;">Payment records will appear here</p>
+            </div>
         `;
+        tbody.innerHTML = `<tr><td colspan="5">${emptyHTML}</td></tr>`;
+        if (mobileCards) mobileCards.innerHTML = emptyHTML;
         return;
     }
 
+    // Desktop Table
     tbody.innerHTML = payments.map(payment => {
         const paymentDate = payment.createdAt?.toDate?.()
             ? payment.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -88,6 +90,44 @@ function renderPayments(payments) {
             </tr>
         `;
     }).join('');
+
+    // Mobile Cards
+    if (mobileCards) {
+        mobileCards.innerHTML = payments.map(payment => {
+            const paymentDate = payment.createdAt?.toDate?.()
+                ? payment.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+                : '-';
+
+            const modeLabels = {
+                'cash': 'Cash',
+                'razorpay': 'Razorpay',
+                'upi': 'UPI',
+                'bank': 'Bank'
+            };
+
+            return `
+                <div class="mobile-card">
+                    <div class="mobile-card-header">
+                        <div>
+                            <div class="mobile-card-name">${payment.studentName || '-'}</div>
+                            <div class="mobile-card-sub">${payment.receiptNumber || '-'}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 1.1rem; font-weight: 700; color: #10B981;">${formatCurrency(payment.amount)}</div>
+                        </div>
+                    </div>
+                    <div class="mobile-card-row">
+                        <span>Mode</span>
+                        <span>${modeLabels[payment.mode] || payment.mode}</span>
+                    </div>
+                    <div class="mobile-card-row">
+                        <span>Date</span>
+                        <span>${paymentDate}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
 }
 
 // Filter Payments
