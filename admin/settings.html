@@ -521,21 +521,26 @@
                     <!-- Subject Codes Banner -->
                     <style>
                         .info-banner {
-                            background-color: #f0fdf4;
-                            border: 1px solid #bbf7d0;
-                            border-radius: 8px;
-                            padding: 12px 16px;
-                            margin-bottom: 20px;
+                            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+                            border: 1px solid rgba(22, 163, 74, 0.15);
+                            border-radius: 12px;
+                            padding: 16px 20px;
+                            margin-bottom: 24px;
                             display: flex;
                             align-items: flex-start;
-                            gap: 12px;
+                            gap: 16px;
+                            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
                         }
 
                         .info-banner .icon {
                             color: #16a34a;
-                            font-size: 20px;
+                            font-size: 22px;
                             margin-top: 2px;
                             flex-shrink: 0;
+                            background: white;
+                            padding: 4px;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
                         }
 
                         .info-banner-content {
@@ -545,21 +550,42 @@
                         .subject-codes-grid {
                             display: flex;
                             flex-wrap: wrap;
-                            gap: 6px;
+                            gap: 8px;
                             font-size: 0.75rem;
                             color: #166534;
-                            margin-top: 4px;
+                            margin-top: 6px;
                         }
 
                         .subject-code-item {
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
-                            background: rgba(255, 255, 255, 0.6);
-                            padding: 3px 8px;
-                            border-radius: 4px;
+                            background: rgba(255, 255, 255, 0.7);
+                            padding: 4px 10px;
+                            border-radius: 6px;
                             white-space: nowrap;
-                            gap: 6px;
+                            gap: 8px;
+                            border: 1px solid rgba(22, 101, 52, 0.08);
+                            backdrop-filter: blur(4px);
+                            transition: all 0.2s ease;
+                        }
+
+                        .subject-code-item:hover {
+                            background: white;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                        }
+
+                        .subject-code-item span {
+                            font-weight: 500;
+                        }
+
+                        .subject-code-item strong {
+                            color: #16a34a;
+                            background: rgba(22, 163, 74, 0.1);
+                            padding: 2px 6px;
+                            border-radius: 4px;
+                            font-family: monospace;
                         }
 
                         /* Desktop - Proper Grid Layout */
