@@ -256,6 +256,16 @@ function initCourseFilter() {
             }
         });
     });
+
+    // Handle URL parameters for filtering
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterParam = urlParams.get('filter');
+    if (filterParam) {
+        const targetTab = Array.from(filterTabs).find(tab => tab.getAttribute('data-filter') === filterParam);
+        if (targetTab) {
+            setTimeout(() => targetTab.click(), 100);
+        }
+    }
 }
 
 /* ============================================
@@ -474,15 +484,15 @@ function initContactForm() {
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
-            // Save to Firestore
+            // Save to Firestore (Silent fail if it fails, so user still gets success message)
             if (window.db) {
-                await window.db.collection('inquiries').add(inquiryData);
-                console.log('Inquiry synced to Firestore');
+                try {
+                    await window.db.collection('inquiries').add(inquiryData);
+                    console.log('Inquiry synced to Firestore');
+                } catch (dbError) {
+                    console.error('Firestore sync failed:', dbError);
+                }
             }
-
-            // After syncing, we can either submit the form naturally to Formspree 
-            // or just show a success message if we want to rely solely on Firestore
-            // For now, let's just do both for safety
 
             // Show success UI
             const formCard = form.closest('.contact-form-card') || document.querySelector('.contact-form-wrapper');

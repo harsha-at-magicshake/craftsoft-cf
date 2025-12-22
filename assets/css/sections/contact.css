@@ -209,11 +209,12 @@
 
     .contact-text-side {
         padding-right: 0;
+        text-align: center;
     }
 
     .contact-text-side .section-tag {
-        display: block;
-        text-align: center;
+        display: inline-block;
+        margin: 0 auto var(--spacing-md);
     }
 
     .contact-text-side .section-title {
