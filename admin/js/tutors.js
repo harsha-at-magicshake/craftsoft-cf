@@ -191,7 +191,14 @@ function openEditTutorModal(tutorId) {
 
 // Delete Tutor
 async function deleteTutor(tutorId) {
-    if (!confirm('Are you sure you want to delete this tutor?')) return;
+    const confirmed = await showConfirm({
+        title: 'Delete Tutor?',
+        message: 'Are you sure you want to delete this tutor record?',
+        confirmText: 'Yes, Delete',
+        type: 'danger'
+    });
+
+    if (!confirmed) return;
 
     try {
         await db.collection('tutors').doc(tutorId).delete();

@@ -291,9 +291,14 @@ document.getElementById('editStudentForm').addEventListener('submit', async (e) 
 
 // Delete Student
 async function deleteStudent(studentId) {
-    if (!confirm('Are you sure you want to delete this student? This will also delete all their payment records.')) {
-        return;
-    }
+    const confirmed = await showConfirm({
+        title: 'Delete Student?',
+        message: 'Are you sure you want to delete this student? This will also delete all their payment records.',
+        confirmText: 'Yes, Delete',
+        type: 'danger'
+    });
+
+    if (!confirmed) return;
 
     try {
         const paymentsSnapshot = await db.collection('payments')
@@ -690,13 +695,35 @@ document.getElementById('addStudentForm').addEventListener('submit', async (e) =
 
             if (!duplicateCheck.empty) {
                 const existingStudent = duplicateCheck.docs[0].data();
-                if (!confirm(`A student with this phone (${phone}) already exists:\n\n${existingStudent.name} - ${existingStudent.course}\n\nDo you still want to add this student?`)) {
-                    return;
-                }
+                const confirmed = await showConfirm({
+                    title: 'Duplicate Phone Number',
+                    message: `A student with this phone (${phone}) already exists:\n\n${existingStudent.name} - ${existingStudent.course}\n\nDo you still want to add this student?`,
+                    confirmText: 'Yes, Add Anyway',
+                    type: 'primary'
+                });
+
+                if (!confirmed) return;
             }
         }
 
-        const receiptNum = 'CS-' + Date.now().toString().slice(-8);
+        // Generate initials from student name (first letters of first 2 words)
+        const nameParts = name.trim().split(/\s+/);
+        const initials = nameParts.length >= 2
+            ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()
+            : nameParts[0].substring(0, 2).toUpperCase();
+
+        // Get subject code (use first/primary subject)
+        const primarySubject = course;
+        const subjectCode = subjectCodes[primarySubject] || '99';
+
+        // Get next sequence number for this subject
+        const existingStudents = await db.collection('students')
+            .where('course', '==', course)
+            .get();
+        const seqNum = (existingStudents.size + 1).toString().padStart(3, '0');
+
+        // Receipt format: ACS-{Initials}-{SubjectCode}{SEQ}
+        const receiptNum = `ACS-${initials}-${subjectCode}${seqNum}`;
 
         const studentRef = await db.collection('students').add({
             name,

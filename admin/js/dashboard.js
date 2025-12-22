@@ -527,8 +527,14 @@ document.getElementById('addStudentForm').addEventListener('submit', async (e) =
 
         // Offer to share via WhatsApp
         if (phone) {
-            setTimeout(() => {
-                if (confirm('Send admission confirmation via WhatsApp?')) {
+            setTimeout(async () => {
+                const confirmed = await showConfirm({
+                    title: 'WhatsApp Confirmation',
+                    message: 'Send admission confirmation via WhatsApp?',
+                    confirmText: 'Send now',
+                    type: 'primary'
+                });
+                if (confirmed) {
                     shareViaWhatsApp(studentRef.id);
                 }
             }, 500);
@@ -589,8 +595,14 @@ document.getElementById('addPaymentForm').addEventListener('submit', async (e) =
         loadDashboardData();
 
         // Offer to share receipt via WhatsApp
-        setTimeout(() => {
-            if (confirm('Send payment receipt via WhatsApp?')) {
+        setTimeout(async () => {
+            const confirmed = await showConfirm({
+                title: 'WhatsApp Receipt',
+                message: 'Send payment receipt via WhatsApp?',
+                confirmText: 'Send now',
+                type: 'primary'
+            });
+            if (confirmed) {
                 shareViaWhatsApp(studentId);
             }
         }, 500);

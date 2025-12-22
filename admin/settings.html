@@ -218,6 +218,20 @@
             font-size: 16px;
         }
 
+        .display-value {
+            font-weight: 500;
+            color: var(--gray-800);
+        }
+
+        .display-value.empty {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .settings-section h3 {
+            display: flex !important;
+        }
+
         @media (max-width: 768px) {
             .setting-item {
                 flex-direction: column;
@@ -308,7 +322,13 @@
 
             <!-- Payment Configuration -->
             <div class="settings-section">
-                <h3><span class="material-icons">account_balance</span> Payment Configuration</h3>
+                <h3>
+                    <span class="material-icons">account_balance</span> Payment Configuration
+                    <button class="btn btn-outline" style="margin-left: auto; padding: 6px 12px; font-size: 0.8rem;"
+                        id="editPaymentBtn" onclick="toggleEditPayment()">
+                        <span class="material-icons" style="font-size: 16px;">edit</span> Edit
+                    </button>
+                </h3>
 
                 <div class="setting-item">
                     <div class="setting-info">
@@ -316,7 +336,9 @@
                         <p>Account holder name</p>
                     </div>
                     <div class="setting-value">
-                        <input type="text" id="bankName" placeholder="Account Name">
+                        <span class="display-value" id="bankNameDisplay">Not set</span>
+                        <input type="text" id="bankName" placeholder="Account Name" class="edit-input"
+                            style="display: none;">
                     </div>
                 </div>
 
@@ -326,7 +348,9 @@
                         <p>Your bank account number</p>
                     </div>
                     <div class="setting-value">
-                        <input type="text" id="bankAccount" placeholder="Account Number">
+                        <span class="display-value" id="bankAccountDisplay">Not set</span>
+                        <input type="text" id="bankAccount" placeholder="Account Number" class="edit-input"
+                            style="display: none;">
                     </div>
                 </div>
 
@@ -336,7 +360,9 @@
                         <p>Bank IFSC code</p>
                     </div>
                     <div class="setting-value">
-                        <input type="text" id="bankIFSC" placeholder="IFSC Code">
+                        <span class="display-value" id="bankIFSCDisplay">Not set</span>
+                        <input type="text" id="bankIFSC" placeholder="IFSC Code" class="edit-input"
+                            style="display: none;">
                     </div>
                 </div>
 
@@ -346,7 +372,8 @@
                         <p>Your UPI address for payments</p>
                     </div>
                     <div class="setting-value">
-                        <input type="text" id="upiId" placeholder="name@upi">
+                        <span class="display-value" id="upiIdDisplay">Not set</span>
+                        <input type="text" id="upiId" placeholder="name@upi" class="edit-input" style="display: none;">
                     </div>
                 </div>
 
@@ -356,20 +383,30 @@
                         <p>Payment link for online payments</p>
                     </div>
                     <div class="setting-value">
-                        <input type="url" id="razorpayLink" placeholder="https://rzp.io/...">
+                        <span class="display-value" id="razorpayLinkDisplay">Not set</span>
+                        <input type="url" id="razorpayLink" placeholder="https://rzp.io/..." class="edit-input"
+                            style="display: none;">
                     </div>
                 </div>
 
-                <div style="margin-top: 16px; text-align: right;">
+                <div id="paymentEditActions" style="margin-top: 16px; text-align: right; display: none;">
+                    <button class="btn btn-outline" onclick="cancelEditPayment()"
+                        style="margin-right: 8px;">Cancel</button>
                     <button class="btn btn-primary" onclick="savePaymentSettings()">
-                        <span class="material-icons">save</span> Save Payment Settings
+                        <span class="material-icons">save</span> Save Changes
                     </button>
                 </div>
             </div>
 
             <!-- Business Information -->
             <div class="settings-section">
-                <h3><span class="material-icons">business</span> Business Information</h3>
+                <h3>
+                    <span class="material-icons">business</span> Business Information
+                    <button class="btn btn-outline" style="margin-left: auto; padding: 6px 12px; font-size: 0.8rem;"
+                        id="editBusinessBtn" onclick="toggleEditBusiness()">
+                        <span class="material-icons" style="font-size: 16px;">edit</span> Edit
+                    </button>
+                </h3>
 
                 <div class="setting-item">
                     <div class="setting-info">
@@ -377,7 +414,9 @@
                         <p>Your business name</p>
                     </div>
                     <div class="setting-value">
-                        <input type="text" id="businessName" placeholder="Abhi's Craft Soft">
+                        <span class="display-value" id="businessNameDisplay">Not set</span>
+                        <input type="text" id="businessName" placeholder="Abhi's Craft Soft" class="edit-input"
+                            style="display: none;">
                     </div>
                 </div>
 
@@ -387,7 +426,9 @@
                         <p>Primary contact number</p>
                     </div>
                     <div class="setting-value">
-                        <input type="tel" id="businessPhone" placeholder="Phone Number">
+                        <span class="display-value" id="businessPhoneDisplay">Not set</span>
+                        <input type="tel" id="businessPhone" placeholder="Phone Number" class="edit-input"
+                            style="display: none;">
                     </div>
                 </div>
 
@@ -397,13 +438,17 @@
                         <p>Business address</p>
                     </div>
                     <div class="setting-value">
-                        <textarea id="businessAddress" rows="2" placeholder="Full address"></textarea>
+                        <span class="display-value" id="businessAddressDisplay">Not set</span>
+                        <textarea id="businessAddress" rows="2" placeholder="Full address" class="edit-input"
+                            style="display: none;"></textarea>
                     </div>
                 </div>
 
-                <div style="margin-top: 16px; text-align: right;">
+                <div id="businessEditActions" style="margin-top: 16px; text-align: right; display: none;">
+                    <button class="btn btn-outline" onclick="cancelEditBusiness()"
+                        style="margin-right: 8px;">Cancel</button>
                     <button class="btn btn-primary" onclick="saveBusinessSettings()">
-                        <span class="material-icons">save</span> Save Business Info
+                        <span class="material-icons">save</span> Save Changes
                     </button>
                 </div>
             </div>

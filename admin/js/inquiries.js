@@ -246,7 +246,14 @@ async function convertToStudent() {
 
 // Delete Inquiry
 async function deleteInquiry(id) {
-    if (!confirm('Delete this inquiry?')) return;
+    const confirmed = await showConfirm({
+        title: 'Delete Inquiry?',
+        message: 'Are you sure you want to delete this lead?',
+        confirmText: 'Yes, Delete',
+        type: 'danger'
+    });
+
+    if (!confirmed) return;
 
     try {
         await db.collection('inquiries').doc(id).delete();

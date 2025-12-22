@@ -27,12 +27,16 @@ async function loadSettings() {
         if (doc.exists) {
             const data = doc.data();
 
-            // Payment settings
+            // Payment settings - both input and display
             document.getElementById('bankName').value = data.bankName || '';
             document.getElementById('bankAccount').value = data.bankAccount || '';
             document.getElementById('bankIFSC').value = data.bankIFSC || '';
             document.getElementById('upiId').value = data.upiId || '';
             document.getElementById('razorpayLink').value = data.razorpayLink || '';
+
+            // Update display values
+            updatePaymentDisplayValues(data);
+            updateBusinessDisplayValues(data);
 
             // Business settings
             document.getElementById('businessName').value = data.businessName || '';
@@ -52,19 +56,202 @@ async function loadSettings() {
     }
 }
 
-// Save Payment Settings
+// Update display values for payment settings
+function updatePaymentDisplayValues(data) {
+    const setDisplayValue = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (value) {
+                el.textContent = value;
+                el.classList.remove('empty');
+            } else {
+                el.textContent = 'Not set';
+                el.classList.add('empty');
+            }
+        }
+    };
+
+    setDisplayValue('bankNameDisplay', data.bankName);
+    setDisplayValue('bankAccountDisplay', data.bankAccount ? '••••' + data.bankAccount.slice(-4) : '');
+    setDisplayValue('bankIFSCDisplay', data.bankIFSC);
+    setDisplayValue('upiIdDisplay', data.upiId);
+    setDisplayValue('razorpayLinkDisplay', data.razorpayLink ? 'Configured ✓' : '');
+}
+
+// Update display values for business settings
+function updateBusinessDisplayValues(data) {
+    const setDisplayValue = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (value) {
+                el.textContent = value;
+                el.classList.remove('empty');
+            } else {
+                el.textContent = 'Not set';
+                el.classList.add('empty');
+            }
+        }
+    };
+
+    setDisplayValue('businessNameDisplay', data.businessName);
+    setDisplayValue('businessPhoneDisplay', data.businessPhone);
+    setDisplayValue('businessAddressDisplay', data.businessAddress);
+}
+
+// Toggle edit mode for payment settings
+let paymentEditMode = false;
+
+function toggleEditPayment() {
+    paymentEditMode = !paymentEditMode;
+
+    const displayValues = document.querySelectorAll('#bankNameDisplay, #bankAccountDisplay, #bankIFSCDisplay, #upiIdDisplay, #razorpayLinkDisplay');
+    const editInputs = document.querySelectorAll('#bankName, #bankAccount, #bankIFSC, #upiId, #razorpayLink');
+    const editBtn = document.getElementById('editPaymentBtn');
+    const actionsDiv = document.getElementById('paymentEditActions');
+
+    if (paymentEditMode) {
+        displayValues.forEach(el => el.style.display = 'none');
+        editInputs.forEach(el => el.style.display = 'block');
+        editBtn.style.display = 'none';
+        actionsDiv.style.display = 'block';
+    } else {
+        displayValues.forEach(el => el.style.display = 'inline');
+        editInputs.forEach(el => el.style.display = 'none');
+        editBtn.style.display = 'inline-flex';
+        actionsDiv.style.display = 'none';
+
+        // Refresh display values from inputs
+        updatePaymentDisplayValues({
+            bankName: document.getElementById('bankName').value,
+            bankAccount: document.getElementById('bankAccount').value,
+            bankIFSC: document.getElementById('bankIFSC').value,
+            upiId: document.getElementById('upiId').value,
+            razorpayLink: document.getElementById('razorpayLink').value
+        });
+    }
+}
+
+function cancelEditPayment() {
+    paymentEditMode = false;
+    loadSettings(); // Reload values
+    toggleEditPayment(); // This will flip back to view mode
+    paymentEditMode = false; // Reset after toggle
+}
+
+// Toggle edit mode for business settings
+let businessEditMode = false;
+
+function toggleEditBusiness() {
+    businessEditMode = !businessEditMode;
+
+    const displayValues = document.querySelectorAll('#businessNameDisplay, #businessPhoneDisplay, #businessAddressDisplay');
+    const editInputs = document.querySelectorAll('#businessName, #businessPhone, #businessAddress');
+    const editBtn = document.getElementById('editBusinessBtn');
+    const actionsDiv = document.getElementById('businessEditActions');
+
+    if (businessEditMode) {
+        displayValues.forEach(el => el.style.display = 'none');
+        editInputs.forEach(el => el.style.display = 'block');
+        editBtn.style.display = 'none';
+        actionsDiv.style.display = 'block';
+    } else {
+        displayValues.forEach(el => el.style.display = 'inline');
+        editInputs.forEach(el => el.style.display = 'none');
+        editBtn.style.display = 'inline-flex';
+        actionsDiv.style.display = 'none';
+
+        // Refresh display values from inputs
+        updateBusinessDisplayValues({
+            businessName: document.getElementById('businessName').value,
+            businessPhone: document.getElementById('businessPhone').value,
+            businessAddress: document.getElementById('businessAddress').value
+        });
+    }
+}
+
+function cancelEditBusiness() {
+    businessEditMode = false;
+    loadSettings(); // Reload values
+    toggleEditBusiness(); // This will flip back to view mode
+    businessEditMode = false; // Reset after toggle
+}
+
+
+// Validation patterns
+const validationPatterns = {
+    ifsc: /^[A-Z]{4}0[A-Z0-9]{6}$/,
+    upi: /^[\w.-]+@[\w]+$/,
+    bankAccount: /^\d{9,18}$/,
+    razorpayLink: /^https:\/\/(rzp\.io|razorpay\.me)\/.+$/
+};
+
+// Validate IFSC via Razorpay API
+async function validateIFSC(ifsc) {
+    try {
+        const response = await fetch(`https://ifsc.razorpay.com/${ifsc}`);
+        if (response.ok) {
+            const data = await response.json();
+            return { valid: true, bank: data.BANK, branch: data.BRANCH };
+        }
+        return { valid: false };
+    } catch {
+        return { valid: false };
+    }
+}
+
+// Save Payment Settings with validation
 async function savePaymentSettings() {
+    const bankName = document.getElementById('bankName').value.trim();
+    const bankAccount = document.getElementById('bankAccount').value.trim();
+    const bankIFSC = document.getElementById('bankIFSC').value.trim().toUpperCase();
+    const upiId = document.getElementById('upiId').value.trim();
+    const razorpayLink = document.getElementById('razorpayLink').value.trim();
+
+    // Validate fields
+    if (bankAccount && !validationPatterns.bankAccount.test(bankAccount)) {
+        showToast('Bank account should be 9-18 digits', 'error');
+        return;
+    }
+
+    if (bankIFSC && !validationPatterns.ifsc.test(bankIFSC)) {
+        showToast('Invalid IFSC format (e.g., SBIN0001234)', 'error');
+        return;
+    }
+
+    // Validate IFSC via API if provided
+    if (bankIFSC) {
+        showToast('Verifying IFSC...', 'success');
+        const ifscResult = await validateIFSC(bankIFSC);
+        if (!ifscResult.valid) {
+            showToast('IFSC code not found. Please verify.', 'error');
+            return;
+        }
+        showToast(`✓ ${ifscResult.bank}, ${ifscResult.branch}`, 'success');
+    }
+
+    if (upiId && !validationPatterns.upi.test(upiId)) {
+        showToast('Invalid UPI format (e.g., name@upi)', 'error');
+        return;
+    }
+
+    if (razorpayLink && !validationPatterns.razorpayLink.test(razorpayLink)) {
+        showToast('Invalid Razorpay link (must start with https://rzp.io/)', 'error');
+        return;
+    }
+
     try {
         await db.collection('settings').doc('config').set({
-            bankName: document.getElementById('bankName').value.trim(),
-            bankAccount: document.getElementById('bankAccount').value.trim(),
-            bankIFSC: document.getElementById('bankIFSC').value.trim().toUpperCase(),
-            upiId: document.getElementById('upiId').value.trim(),
-            razorpayLink: document.getElementById('razorpayLink').value.trim(),
+            bankName,
+            bankAccount,
+            bankIFSC,
+            upiId,
+            razorpayLink,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
 
         showToast('Payment settings saved!', 'success');
+        paymentEditMode = true; // Set to true so toggle flips it to false (view mode)
+        toggleEditPayment();
     } catch (error) {
         console.error('Error saving payment settings:', error);
         showToast('Error saving settings', 'error');
@@ -73,15 +260,21 @@ async function savePaymentSettings() {
 
 // Save Business Settings
 async function saveBusinessSettings() {
+    const businessName = document.getElementById('businessName').value.trim();
+    const businessPhone = document.getElementById('businessPhone').value.trim();
+    const businessAddress = document.getElementById('businessAddress').value.trim();
+
     try {
         await db.collection('settings').doc('config').set({
-            businessName: document.getElementById('businessName').value.trim(),
-            businessPhone: document.getElementById('businessPhone').value.trim(),
-            businessAddress: document.getElementById('businessAddress').value.trim(),
+            businessName,
+            businessPhone,
+            businessAddress,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
 
-        showToast('Business info saved!', 'success');
+        showToast('Business settings saved!', 'success');
+        businessEditMode = true; // Set to true so toggle flips it to false (view mode)
+        toggleEditBusiness();
     } catch (error) {
         console.error('Error saving business settings:', error);
         showToast('Error saving settings', 'error');
@@ -257,3 +450,7 @@ window.saveBusinessSettings = saveBusinessSettings;
 window.saveNavigationSettings = saveNavigationSettings;
 window.addNavItem = addNavItem;
 window.removeNavItem = removeNavItem;
+window.toggleEditPayment = toggleEditPayment;
+window.cancelEditPayment = cancelEditPayment;
+window.toggleEditBusiness = toggleEditBusiness;
+window.cancelEditBusiness = cancelEditBusiness;
