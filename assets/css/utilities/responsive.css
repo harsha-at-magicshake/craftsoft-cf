@@ -340,6 +340,20 @@
     .whatsapp-tooltip {
         display: none;
     }
+
+    /* Quiz CTA Mobile */
+    .quiz-cta-card {
+        padding: 30px 20px !important;
+        border-radius: 20px !important;
+    }
+
+    .quiz-cta-content h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .quiz-cta-image {
+        display: none !important;
+    }
 }
 
 /* Small Mobile Devices */

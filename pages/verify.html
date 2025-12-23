@@ -21,7 +21,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: var(--spacing-2xl) 0;
+            padding: var(--spacing-2xl) var(--spacing-md);
             background: linear-gradient(135deg, rgba(9, 132, 227, 0.03) 0%, rgba(108, 92, 231, 0.03) 100%);
         }
 
@@ -62,7 +62,7 @@
             margin-bottom: var(--spacing-sm);
         }
 
-        .verify-card p {
+        .verify-card>p {
             color: var(--text-muted);
             margin-bottom: var(--spacing-xl);
         }
@@ -104,6 +104,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .verify-btn:hover {
@@ -208,20 +209,32 @@
             margin-right: 6px;
         }
 
+        .download-pdf-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #10B981, #34D399);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: var(--spacing-lg);
+        }
+
+        .download-pdf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
         .error-message {
             color: #EF4444;
             margin-top: var(--spacing-sm);
-        }
-
-        .help-text {
-            margin-top: var(--spacing-xl);
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        .help-text a {
-            color: var(--primary);
-            font-weight: 500;
         }
 
         @media (max-width: 576px) {
@@ -235,6 +248,19 @@
 
             .verify-card {
                 padding: var(--spacing-lg);
+            }
+
+            .verify-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .verify-icon i {
+                font-size: 24px;
+            }
+
+            .verify-card h1 {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -280,10 +306,6 @@
 
                 <!-- Result Section -->
                 <div id="resultCard" class="result-card"></div>
-
-                <p class="help-text">
-                    Need to download a copy? <a href="receiptdownload.html">Download Receipt</a>
-                </p>
             </div>
         </div>
     </section>
@@ -321,6 +343,10 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- jsPDF for Receipt Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <script>
         // Firebase Config
         const firebaseConfig = {
@@ -334,6 +360,8 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+
+        let currentReceiptData = null;
 
         async function verifyReceipt() {
             const receiptId = document.getElementById('receiptId').value.trim().toUpperCase();
@@ -363,7 +391,7 @@
 
                 if (receiptDoc.exists) {
                     found = true;
-                    receiptData = receiptDoc.data();
+                    receiptData = { ...receiptDoc.data(), receiptId };
                 } else {
                     // Search in students -> payments subcollections (for old receipts)
                     const studentsSnapshot = await db.collection('students').get();
@@ -388,12 +416,15 @@
                             }
 
                             receiptData = {
+                                receiptId: receiptId,
                                 studentName: student.name,
                                 phone: student.phone,
                                 course: student.course,
                                 amount: payment.amount,
-                                mode: payment.mode,
+                                mode: payment.mode || 'Cash',
                                 date: dateStr,
+                                totalFee: student.totalFee,
+                                paidAmount: student.paidAmount,
                                 status: (student.totalFee - student.paidAmount) <= 0 ? 'Fully Paid' : 'Partial Payment'
                             };
                             break;
@@ -402,6 +433,7 @@
                 }
 
                 if (found && receiptData) {
+                    currentReceiptData = receiptData;
                     resultCard.className = 'result-card verified';
                     resultCard.innerHTML = `
                         <div class="result-header">
@@ -433,8 +465,12 @@
                             <i class="fas fa-check-circle"></i>
                             This receipt was issued by Abhi's Craft Soft and is verified as authentic.
                         </div>
+                        <button class="download-pdf-btn" onclick="downloadPDF()">
+                            <i class="fas fa-download"></i> Download Receipt
+                        </button>
                     `;
                 } else {
+                    currentReceiptData = null;
                     resultCard.className = 'result-card not-found';
                     resultCard.innerHTML = `
                         <div class="result-header">
@@ -460,6 +496,147 @@
 
             verifyBtn.disabled = false;
             verifyBtn.innerHTML = '<i class="fas fa-search"></i> Verify';
+        }
+
+        function downloadPDF() {
+            if (!currentReceiptData) {
+                alert('No receipt data found.');
+                return;
+            }
+
+            const data = currentReceiptData;
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+
+            // Colors
+            const primary = [16, 185, 129];
+            const dark = [17, 24, 39];
+            const gray = [107, 114, 128];
+            const lightGray = [156, 163, 175];
+            const border = [229, 231, 235];
+
+            const margin = 25;
+            const pageWidth = 210;
+            let y = margin;
+
+            // Header
+            doc.setFontSize(20);
+            doc.setTextColor(...primary);
+            doc.setFont('helvetica', 'bold');
+            doc.text("Abhi's Craft Soft", margin, y);
+
+            y += 10;
+            doc.setDrawColor(...border);
+            doc.setLineWidth(0.4);
+            doc.line(margin, y, pageWidth - margin, y);
+
+            y += 15;
+
+            // Title
+            doc.setFontSize(22);
+            doc.setTextColor(...dark);
+            doc.text('Payment Receipt', margin, y);
+
+            y += 6;
+
+            // Receipt ID
+            doc.setFontSize(11);
+            doc.setTextColor(...gray);
+            doc.setFont('courier', 'normal');
+            doc.text(data.receiptId, margin, y);
+
+            y += 8;
+
+            // Subtitle
+            doc.setFontSize(10);
+            doc.setTextColor(...lightGray);
+            doc.setFont('helvetica', 'normal');
+            doc.text('This is a payment receipt for your enrollment in ' + (data.course || 'Course') + '.', margin, y);
+
+            y += 20;
+
+            // Amount Section
+            doc.setFontSize(9);
+            doc.setTextColor(...lightGray);
+            doc.setFont('helvetica', 'bold');
+            doc.text('AMOUNT PAID', margin, y);
+
+            doc.setDrawColor(...primary);
+            doc.setLineWidth(1.2);
+            doc.line(margin, y + 1.5, margin + 25, y + 1.5);
+
+            y += 12;
+
+            doc.setFontSize(28);
+            doc.setTextColor(...dark);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Rs. ' + Number(data.amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), margin, y);
+
+            y += 7;
+
+            doc.setFontSize(10);
+            doc.setTextColor(...lightGray);
+            doc.setFont('helvetica', 'normal');
+            doc.text('via ' + (data.mode || 'Cash'), margin, y);
+
+            y += 15;
+
+            // Issued To
+            doc.setDrawColor(...border);
+            doc.setLineWidth(0.2);
+            doc.line(margin, y - 3, pageWidth - margin, y - 3);
+
+            y += 8;
+
+            doc.setFontSize(8);
+            doc.setTextColor(...lightGray);
+            doc.setFont('helvetica', 'bold');
+            doc.text('ISSUED TO', margin, y);
+            doc.text('PAID ON', 115, y);
+
+            y += 6;
+
+            doc.setFontSize(12);
+            doc.setTextColor(...dark);
+            doc.setFont('helvetica', 'normal');
+            doc.text(data.studentName || 'Student', margin, y);
+            doc.text(data.date || '-', 115, y);
+
+            y += 5;
+
+            doc.setFontSize(10);
+            doc.setTextColor(...gray);
+            doc.text(data.phone || '', margin, y);
+
+            // Footer
+            const footerY = 297 - 40;
+
+            doc.setDrawColor(...border);
+            doc.setLineWidth(0.3);
+            doc.line(margin, footerY, pageWidth - margin, footerY);
+
+            doc.setFontSize(10);
+            doc.setTextColor(...dark);
+            doc.setFont('helvetica', 'bold');
+            doc.text("Abhi's Craft Soft", margin, footerY + 8);
+
+            doc.setFontSize(8);
+            doc.setTextColor(...gray);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Plot No. 163, Vijayasree Colony, Vanasthalipuram, Hyderabad 500070', margin, footerY + 14);
+            doc.text('Phone: +91 7842239090  |  Email: team.craftsoft@gmail.com', margin, footerY + 20);
+
+            doc.setFontSize(7);
+            doc.setTextColor(...lightGray);
+            doc.text('This is a system-generated receipt and does not require a signature.', margin, footerY + 28);
+
+            // Verify link
+            doc.setFontSize(7);
+            doc.setTextColor(...primary);
+            doc.text('Verify this receipt at: craftsoft.co.in/pages/verify', pageWidth - margin - 60, footerY + 28);
+
+            // Save
+            doc.save('Receipt_' + data.receiptId + '.pdf');
         }
 
         // Allow Enter key to verify

@@ -93,16 +93,18 @@
     <section class="quiz-cta-section" style="padding: 60px 0; background: #fff;">
         <div class="container">
             <div class="quiz-cta-card"
-                style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); padding: 50px; border-radius: 30px; display: flex; align-items: center; justify-content: space-between; overflow: hidden; position: relative; color: white; box-shadow: 0 20px 40px rgba(108, 92, 231, 0.2);">
-                <div class="quiz-cta-content" style="flex: 1; position: relative; z-index: 2;">
+                style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); padding: 50px; border-radius: 30px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; overflow: hidden; position: relative; color: white; box-shadow: 0 20px 40px rgba(108, 92, 231, 0.2);">
+                <div class="quiz-cta-content" style="flex: 1; min-width: 280px; position: relative; z-index: 2;">
                     <span
                         style="background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: inline-block;">Confused
                         about where to start?</span>
-                    <h2 style="font-size: 2.5rem; margin-bottom: 15px; font-family: 'Outfit', sans-serif;">Find Your
+                    <h2
+                        style="font-size: clamp(1.5rem, 5vw, 2.5rem); margin-bottom: 15px; font-family: 'Outfit', sans-serif;">
+                        Find Your
                         <span style="color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3);">Perfect Career</span> in
                         30 Seconds
                     </h2>
-                    <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; max-width: 500px;">Don't guess your
+                    <p style="font-size: 1rem; opacity: 0.9; margin-bottom: 30px; max-width: 500px;">Don't guess your
                         path. Take our interactive quiz and get a personalized course recommendation based on your
                         skills and interests.</p>
                     <button id="startQuizBtn" class="btn"
@@ -110,9 +112,9 @@
                         <i class="fas fa-magic" style="margin-right: 10px;"></i> Start The Quiz
                     </button>
                 </div>
-                <div class="quiz-cta-image" style="flex: 0.8; text-align: right; position: relative; z-index: 2;">
+                <div class="quiz-cta-image" style="flex: 0.5; text-align: right; position: relative; z-index: 2;">
                     <i class="fas fa-user-astronaut"
-                        style="font-size: 12rem; opacity: 0.2; transform: rotate(-15deg);"></i>
+                        style="font-size: 10rem; opacity: 0.2; transform: rotate(-15deg);"></i>
                 </div>
                 <!-- Decorative elements -->
                 <div
@@ -522,12 +524,10 @@
                             class="fas fa-chevron-down"></i></button>
                     <div class="faq-answer">
                         <p>All payment receipts come with a unique Receipt ID. You can
-                            <a href="pages/verify.html" style="color: var(--primary); font-weight: 500;">verify the
+                            <a href="pages/verify.html"
+                                style="color: var(--primary); font-weight: 500; text-decoration: underline;">verify the
                                 authenticity</a>
-                            of your receipt or
-                            <a href="pages/receiptdownload.html"
-                                style="color: var(--primary); font-weight: 500;">download a copy</a>
-                            anytime.
+                            of your receipt anytime.
                         </p>
                     </div>
                 </div>
