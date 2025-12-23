@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initScrollToTop();
     initTestimonialsSlider();
     initContactForm();
+    initChatWidget();
 });
 
 /* ============================================
@@ -468,7 +469,9 @@ function initContactForm() {
             e.preventDefault();
 
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.classList.add('btn-loading');
+            submitBtn.setAttribute('data-original-text', originalText);
+            submitBtn.innerHTML = '<span class="loading-spinner"></span> Sending...';
 
             const formData = new FormData(form);
 
@@ -521,10 +524,10 @@ function initContactForm() {
             // Show success UI (even if one method failed, as long as we tried)
             const formCard = form.closest('.contact-form-card') || document.querySelector('.contact-form-wrapper');
             if (formCard) {
-                const successMessage = formspreeSuccess || firestoreSuccess 
+                const successMessage = formspreeSuccess || firestoreSuccess
                     ? `Thank you for reaching out, <strong>${inquiryData.name}</strong>. Your inquiry has been received and we'll get back to you shortly.`
                     : `Thank you for reaching out, <strong>${inquiryData.name}</strong>. If you don't hear from us soon, please contact us directly via WhatsApp or phone.`;
-                
+
                 formCard.innerHTML = `
                     <div class="success-message-container" style="text-align: center; padding: 40px; animation: fadeIn 0.5s ease;">
                         <div class="success-icon" style="width: 80px; height: 80px; background: rgba(0, 184, 148, 0.1); color: #00B894; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2.5rem;">
@@ -545,7 +548,7 @@ function initContactForm() {
         } catch (error) {
             console.error('Error submitting form:', error);
             const formCard = form.closest('.contact-form-card') || document.querySelector('.contact-form-wrapper');
-            
+
             // Show user-friendly error message
             const errorMessage = `
                 <div style="text-align: center; padding: 40px; background: rgba(239, 68, 68, 0.1); border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.2);">
@@ -567,7 +570,7 @@ function initContactForm() {
                     </div>
                 </div>
             `;
-            
+
             if (formCard) {
                 formCard.innerHTML = errorMessage;
             } else {
@@ -696,6 +699,34 @@ function copyToClipboard(text, iconElement) {
 
         iconElement.classList.add('copied');
         setTimeout(() => iconElement.classList.remove('copied'), 2000);
+    });
+}
+
+/* ============================================
+   CHAT WIDGET
+   ============================================ */
+function initChatWidget() {
+    const chatWidget = document.getElementById('chatWidget');
+    const chatToggle = document.getElementById('chatToggle');
+
+    if (!chatWidget || !chatToggle) return;
+
+    chatToggle.addEventListener('click', () => {
+        chatWidget.classList.toggle('active');
+    });
+
+    // Close chat when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!chatWidget.contains(e.target) && chatWidget.classList.contains('active')) {
+            chatWidget.classList.remove('active');
+        }
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && chatWidget.classList.contains('active')) {
+            chatWidget.classList.remove('active');
+        }
     });
 }
 

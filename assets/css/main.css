@@ -16,6 +16,7 @@
 @import url('components/faq.css');
 @import url('components/footer.css');
 @import url('components/floating.css');
+@import url('components/extras.css');
 
 /* Sections */
 @import url('sections/hero.css');

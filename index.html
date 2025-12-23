@@ -25,6 +25,133 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="assets/css/main.css">
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Abhi's Craft Soft",
+        "alternateName": "Craftsoft",
+        "url": "https://www.craftsoft.co.in",
+        "logo": "https://www.craftsoft.co.in/favicon.svg",
+        "image": "https://www.craftsoft.co.in/assets/images/og-image.png",
+        "description": "IT Training Institute & Design Services in Hyderabad offering courses in Graphic Design, UI/UX, Full Stack Development, DevOps, AWS and more.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Plot No. 163, Vijayasree Colony",
+            "addressLocality": "Vanasthalipuram",
+            "addressRegion": "Hyderabad",
+            "postalCode": "500070",
+            "addressCountry": "IN"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "17.3215",
+            "longitude": "78.5519"
+        },
+        "telephone": "+91-7842239090",
+        "email": "team.craftsoft@gmail.com",
+        "sameAs": [
+            "https://www.instagram.com/craftsoft_",
+            "https://www.linkedin.com/company/abhis-craftsoft"
+        ],
+        "foundingDate": "2019",
+        "founder": {
+            "@type": "Person",
+            "name": "Abhinav Gurram"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "100",
+            "bestRating": "5"
+        },
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "IT Training Courses",
+            "itemListElement": [
+                {
+                    "@type": "Course",
+                    "name": "Graphic Design",
+                    "description": "Master Adobe Creative Suite, branding, and visual communication",
+                    "provider": {"@type": "Organization", "name": "Abhi's Craft Soft"},
+                    "courseMode": "blended"
+                },
+                {
+                    "@type": "Course",
+                    "name": "UI/UX Design",
+                    "description": "Create stunning user interfaces with Figma and modern design principles",
+                    "provider": {"@type": "Organization", "name": "Abhi's Craft Soft"},
+                    "courseMode": "blended"
+                },
+                {
+                    "@type": "Course",
+                    "name": "Full Stack Development",
+                    "description": "Master MERN stack - MongoDB, Express, React, and Node.js",
+                    "provider": {"@type": "Organization", "name": "Abhi's Craft Soft"},
+                    "courseMode": "blended"
+                },
+                {
+                    "@type": "Course",
+                    "name": "DevOps Engineering",
+                    "description": "Learn Docker, Kubernetes, Jenkins, and CI/CD pipelines",
+                    "provider": {"@type": "Organization", "name": "Abhi's Craft Soft"},
+                    "courseMode": "blended"
+                },
+                {
+                    "@type": "Course",
+                    "name": "AWS Cloud Excellence",
+                    "description": "Master AWS cloud services and prepare for certification",
+                    "provider": {"@type": "Organization", "name": "Abhi's Craft Soft"},
+                    "courseMode": "blended"
+                }
+            ]
+        }
+    }
+    </script>
+
+    <!-- FAQ Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Do I need prior experience to enroll?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Not at all! Our courses are designed for both beginners and professionals. We start from the basics and gradually move to advanced topics."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How long are the courses?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Course duration varies based on the program. Most courses range from 2-4 months. We also offer intensive bootcamps and flexible weekend batches."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Do you provide placement support?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! We provide complete placement assistance including resume building, mock interviews, LinkedIn optimization, and job referrals to our hiring partners."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Are courses available online?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! We offer Hybrid, Online, and Offline modes. You can attend classes at our Vanasthalipuram center in Hyderabad, or join our live online sessions from anywhere."
+                }
+            }
+        ]
+    }
+    </script>
 </head>
 
 <body>
@@ -93,42 +220,29 @@
     </section>
 
     <!-- Quiz CTA Section -->
-    <section class="quiz-cta-section" style="padding: 60px 0; background: #fff;">
+    <section class="quiz-cta-section">
         <div class="container">
-            <div class="quiz-cta-card"
-                style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); padding: 50px; border-radius: 30px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; overflow: hidden; position: relative; color: white; box-shadow: 0 20px 40px rgba(108, 92, 231, 0.2);">
-                <div class="quiz-cta-content" style="flex: 1; min-width: 280px; position: relative; z-index: 2;">
-                    <span
-                        style="background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: inline-block;">Confused
-                        about where to start?</span>
-                    <h2
-                        style="font-size: clamp(1.5rem, 5vw, 2.5rem); margin-bottom: 15px; font-family: 'Outfit', sans-serif;">
-                        Find Your
-                        <span style="color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3);">Perfect Career</span> in
-                        30 Seconds
+            <div class="quiz-cta-card">
+                <div class="quiz-cta-content">
+                    <span class="quiz-cta-badge">Confused about where to start?</span>
+                    <h2 class="quiz-cta-title">
+                        Find Your <span>Perfect Career</span> in 30 Seconds
                     </h2>
-                    <p style="font-size: 1rem; opacity: 0.9; margin-bottom: 30px; max-width: 500px;">Don't guess your
-                        path. Take our interactive quiz and get a personalized course recommendation based on your
-                        skills and interests.</p>
-                    <button id="startQuizBtn" class="btn"
-                        style="background: white; color: #6c5ce7; font-weight: 700; padding: 15px 35px; border-radius: 12px; border: none; font-size: 1.1rem; cursor: pointer; transition: transform 0.3s ease;">
-                        <i class="fas fa-magic" style="margin-right: 10px;"></i> Start The Quiz
+                    <p class="quiz-cta-description">Don't guess your path. Take our interactive quiz and get a
+                        personalized course recommendation based on your skills and interests.</p>
+                    <button id="startQuizBtn" class="quiz-cta-btn">
+                        <i class="fas fa-magic"></i> Start The Quiz
                     </button>
                 </div>
-                <div class="quiz-cta-image" style="flex: 0.5; text-align: right; position: relative; z-index: 2;">
-                    <i class="fas fa-user-astronaut"
-                        style="font-size: 10rem; opacity: 0.2; transform: rotate(-15deg);"></i>
+                <div class="quiz-cta-image">
+                    <i class="fas fa-user-astronaut"></i>
                 </div>
-                <!-- Decorative elements -->
-                <div
-                    style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%;">
-                </div>
-                <div
-                    style="position: absolute; bottom: -30px; left: 10%; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;">
-                </div>
+                <div class="quiz-cta-decoration-1"></div>
+                <div class="quiz-cta-decoration-2"></div>
             </div>
         </div>
     </section>
+
 
     <!-- Courses Preview Section -->
     <section class="courses-preview" style="background: rgba(108, 92, 231, 0.03);">
@@ -709,11 +823,48 @@
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/917842239090?text=Hi! I'd like to know more about your courses." class="whatsapp-float"
-        target="_blank" aria-label="Chat on WhatsApp">
-        <i class="fab fa-whatsapp"></i><span class="whatsapp-tooltip">Chat with us!</span>
-    </a>
+    <!-- Live Chat Widget -->
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-window">
+            <div class="chat-header">
+                <h4>👋 How can we help?</h4>
+                <p>Choose how you'd like to connect with us</p>
+            </div>
+            <div class="chat-body">
+                <div class="chat-options">
+                    <a href="https://wa.me/917842239090?text=Hi! I'd like to know more about your courses."
+                        target="_blank" class="chat-option whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        <div class="chat-option-text">
+                            <h5>WhatsApp</h5>
+                            <span>Fastest response</span>
+                        </div>
+                    </a>
+                    <a href="tel:+917842239090" class="chat-option phone">
+                        <i class="fas fa-phone"></i>
+                        <div class="chat-option-text">
+                            <h5>Call Us</h5>
+                            <span>+91 7842239090</span>
+                        </div>
+                    </a>
+                    <a href="mailto:team.craftsoft@gmail.com" class="chat-option email">
+                        <i class="fas fa-envelope"></i>
+                        <div class="chat-option-text">
+                            <h5>Email</h5>
+                            <span>team.craftsoft@gmail.com</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="chat-footer">
+                We typically respond within 30 minutes
+            </div>
+        </div>
+        <button class="chat-toggle-btn" id="chatToggle" aria-label="Open chat">
+            <i class="fas fa-comments icon-chat"></i>
+            <i class="fas fa-times icon-close"></i>
+        </button>
+    </div>
 
     <!-- Scroll to Top Button -->
     <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
