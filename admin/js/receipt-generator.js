@@ -26,7 +26,7 @@ class ReceiptGenerator {
         };
     }
 
-    generate(data) {
+    async generate(data) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
 
@@ -58,8 +58,8 @@ class ReceiptGenerator {
         // === TOTALS SECTION (with background) ===
         y = this.drawTotals(doc, y, data);
 
-        // === FOOTER ===
-        this.drawFooter(doc);
+        // === FOOTER with QR Code ===
+        await this.drawFooter(doc, data.receiptId);
 
         // Save
         const fileName = 'Receipt_' + data.receiptId + '_' + data.studentName.replace(/\s+/g, '_') + '.pdf';
@@ -343,40 +343,77 @@ class ReceiptGenerator {
         return y;
     }
 
-    drawFooter(doc) {
-        const footerY = this.pageHeight - 40;
+    async drawFooter(doc, receiptId) {
+        const footerY = this.pageHeight - 45;
 
-        // Top line
-        doc.setDrawColor(...this.colors.border);
-        doc.setLineWidth(0.3);
+        // Top line - Primary color accent
+        doc.setDrawColor(...this.colors.primary);
+        doc.setLineWidth(0.5);
         doc.line(this.margin, footerY, this.pageWidth - this.margin, footerY);
 
-        // Company name
+        // Footer Left - Company Info
         doc.setFontSize(10);
         doc.setTextColor(...this.colors.dark);
         doc.setFont('helvetica', 'bold');
         doc.text("Abhi's Craft Soft", this.margin, footerY + 8);
 
-        // Address
         doc.setFontSize(8);
         doc.setTextColor(...this.colors.gray);
         doc.setFont('helvetica', 'normal');
-        doc.text('Plot No. 163, Vijayasree Colony, Vanasthalipuram, Hyderabad 500070', this.margin, footerY + 14);
+        doc.text('Plot No. 163, Vijayasree Colony,', this.margin, footerY + 14);
+        doc.text('Vanasthalipuram, Hyderabad 500070', this.margin, footerY + 19);
+        doc.text('Phone: +91 7842230900 | Email: team.craftsoft@gmail.com', this.margin, footerY + 26);
 
-        // Contact
-        doc.text('Phone: +91 7842239090  |  Email: team.craftsoft@gmail.com', this.margin, footerY + 20);
+        // Footer Center - Verify instructions
+        doc.setFontSize(9);
+        doc.setTextColor(...this.colors.gray);
+        doc.text('Scan to verify or visit', 105, footerY + 10);
+        doc.setTextColor(...this.colors.primary);
+        doc.setFont('helvetica', 'bold');
+        doc.text('craftsoft.co.in/verify', 105, footerY + 16);
+        doc.setTextColor(...this.colors.gray);
+        doc.setFont('helvetica', 'normal');
+        doc.text('and enter Receipt ID.', 105, footerY + 22);
 
-        // Legal disclaimer - Professional touch
+        // QR Code - Generate and add
+        if (receiptId && typeof QRCode !== 'undefined') {
+            const qrUrl = 'https://craftsoft.co.in/pages/verify.html?id=' + receiptId;
+
+            const qrContainer = document.createElement('div');
+            qrContainer.style.cssText = 'position:absolute;left:-9999px;';
+            document.body.appendChild(qrContainer);
+
+            new QRCode(qrContainer, {
+                text: qrUrl,
+                width: 200,
+                height: 200,
+                colorDark: '#111827',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            const qrCanvas = qrContainer.querySelector('canvas');
+            if (qrCanvas) {
+                const qrDataUrl = qrCanvas.toDataURL('image/png');
+                doc.addImage(qrDataUrl, 'PNG', this.pageWidth - this.margin - 25, footerY + 4, 22, 22);
+            }
+
+            document.body.removeChild(qrContainer);
+        }
+
+        // Bottom disclaimer
         doc.setFontSize(7);
         doc.setTextColor(...this.colors.lightGray);
-        doc.text('This is a system-generated receipt and does not require a signature.', this.margin, footerY + 28);
+        doc.text('This is a system-generated receipt and does not require a signature.', this.margin, footerY + 35);
 
-        // Timestamp
+        // Version timestamp
         const timestamp = new Date().toLocaleString('en-IN', {
             day: '2-digit', month: 'short', year: 'numeric',
-            hour: '2-digit', minute: '2-digit'
+            hour: '2-digit', minute: '2-digit', hour12: true
         });
-        doc.text('Generated: ' + timestamp, this.pageWidth - this.margin, footerY + 28, { align: 'right' });
+        doc.text('Version: ' + timestamp, this.pageWidth - this.margin, footerY + 35, { align: 'right' });
     }
 
     formatCurrency(amount) {

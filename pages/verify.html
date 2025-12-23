@@ -39,6 +39,10 @@
             text-align: center;
         }
 
+        .verify-input-group {
+            text-align: left;
+        }
+
         .verify-icon {
             width: 72px;
             height: 72px;
@@ -366,6 +370,8 @@
 
     <!-- jsPDF for Receipt Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- QR Code Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <script>
         // Firebase Config
@@ -518,7 +524,7 @@
             verifyBtn.innerHTML = '<i class="fas fa-search"></i> Verify';
         }
 
-        function downloadPDF() {
+        async function downloadPDF() {
             if (!currentReceiptData) {
                 alert('No receipt data found.');
                 return;
@@ -534,12 +540,15 @@
             const gray = [107, 114, 128];
             const lightGray = [156, 163, 175];
             const border = [229, 231, 235];
+            const totalsBg = [249, 250, 251];
+            const badgeOrange = [249, 115, 22];
 
             const margin = 25;
             const pageWidth = 210;
+            const contentWidth = pageWidth - (margin * 2);
             let y = margin;
 
-            // Header
+            // Header - Brand
             doc.setFontSize(20);
             doc.setTextColor(...primary);
             doc.setFont('helvetica', 'bold');
@@ -552,16 +561,21 @@
 
             y += 15;
 
-            // Title
+            // Title & Receipt ID
             doc.setFontSize(22);
             doc.setTextColor(...dark);
             doc.text('Payment Receipt', margin, y);
 
+            // Receipt ID on right
+            doc.setFontSize(10);
+            doc.setTextColor(...gray);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Receipt ID: ' + data.receiptId, pageWidth - margin, y, { align: 'right' });
+
             y += 6;
 
-            // Receipt ID
+            // Receipt ID (left)
             doc.setFontSize(11);
-            doc.setTextColor(...gray);
             doc.setFont('courier', 'normal');
             doc.text(data.receiptId, margin, y);
 
@@ -573,7 +587,21 @@
             doc.setFont('helvetica', 'normal');
             doc.text('This is a payment receipt for your enrollment in ' + (data.course || 'Course') + '.', margin, y);
 
-            y += 20;
+            y += 12;
+
+            // Status Badge
+            const isFullPayment = data.status === 'Full Payment' || data.status === 'Paid';
+            const badgeColor = isFullPayment ? primary : badgeOrange;
+            const badgeText = isFullPayment ? 'FULL PAYMENT' : 'PARTIAL PAYMENT';
+
+            doc.setFillColor(...badgeColor);
+            doc.roundedRect(margin, y, 40, 8, 2, 2, 'F');
+            doc.setFontSize(8);
+            doc.setTextColor(255, 255, 255);
+            doc.setFont('helvetica', 'bold');
+            doc.text(badgeText, margin + 20, y + 5.5, { align: 'center' });
+
+            y += 18;
 
             // Amount Section
             doc.setFontSize(9);
@@ -590,7 +618,8 @@
             doc.setFontSize(28);
             doc.setTextColor(...dark);
             doc.setFont('helvetica', 'bold');
-            doc.text('Rs. ' + Number(data.amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), margin, y);
+            const amountFormatted = Number(data.amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            doc.text('Rs. ' + amountFormatted, margin, y);
 
             y += 7;
 
@@ -601,13 +630,14 @@
 
             y += 15;
 
-            // Issued To
+            // Divider
             doc.setDrawColor(...border);
             doc.setLineWidth(0.2);
             doc.line(margin, y - 3, pageWidth - margin, y - 3);
 
             y += 8;
 
+            // Issued To & Paid On
             doc.setFontSize(8);
             doc.setTextColor(...lightGray);
             doc.setFont('helvetica', 'bold');
@@ -625,16 +655,79 @@
             y += 5;
 
             doc.setFontSize(10);
-            doc.setTextColor(...gray);
+            doc.setTextColor(...primary);
             doc.text(data.phone || '', margin, y);
 
-            // Footer
-            const footerY = 297 - 40;
+            y += 15;
 
+            // Divider
+            doc.setDrawColor(...border);
+            doc.line(margin, y - 3, pageWidth - margin, y - 3);
+
+            y += 8;
+
+            // Payment Table Header
+            doc.setFontSize(8);
+            doc.setTextColor(...lightGray);
+            doc.setFont('helvetica', 'bold');
+            doc.text('NAME OF THE COURSE', margin, y);
+            doc.text('MODE OF PAYMENT', 100, y);
+            doc.text('AMOUNT PAID', pageWidth - margin, y, { align: 'right' });
+
+            y += 8;
+
+            doc.setFontSize(11);
+            doc.setTextColor(...dark);
+            doc.setFont('helvetica', 'normal');
+            doc.text(data.course || 'Course', margin, y);
+            doc.text(data.mode || 'Cash', 100, y);
+            doc.setTextColor(...primary);
+            doc.text('Rs. ' + amountFormatted, pageWidth - margin, y, { align: 'right' });
+
+            y += 20;
+
+            // Totals Box
+            const totalFee = data.totalFee || data.amount;
+            const amountPaid = data.amount;
+            const balanceDue = totalFee - amountPaid;
+
+            doc.setFillColor(...totalsBg);
+            doc.rect(100, y - 5, pageWidth - margin - 95, 35, 'F');
             doc.setDrawColor(...border);
             doc.setLineWidth(0.3);
+            doc.rect(100, y - 5, pageWidth - margin - 95, 35);
+
+            // Total Fee
+            doc.setFontSize(10);
+            doc.setTextColor(...gray);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Total Fee', 105, y + 3);
+            doc.setTextColor(...dark);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Rs. ' + Number(totalFee).toLocaleString('en-IN', { minimumFractionDigits: 2 }), pageWidth - margin - 5, y + 3, { align: 'right' });
+
+            // Amount Paid
+            doc.setTextColor(...primary);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Amount Paid', 105, y + 13);
+            doc.text('Rs. ' + amountFormatted, pageWidth - margin - 5, y + 13, { align: 'right' });
+
+            // Balance Due
+            if (balanceDue > 0) {
+                doc.setTextColor(239, 68, 68);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Balance Due', 105, y + 23);
+                doc.text('Rs. ' + Number(balanceDue).toLocaleString('en-IN', { minimumFractionDigits: 2 }), pageWidth - margin - 5, y + 23, { align: 'right' });
+            }
+
+            // Footer
+            const footerY = 297 - 45;
+
+            doc.setDrawColor(...primary);
+            doc.setLineWidth(0.5);
             doc.line(margin, footerY, pageWidth - margin, footerY);
 
+            // Footer Left - Company Info
             doc.setFontSize(10);
             doc.setTextColor(...dark);
             doc.setFont('helvetica', 'bold');
@@ -643,17 +736,59 @@
             doc.setFontSize(8);
             doc.setTextColor(...gray);
             doc.setFont('helvetica', 'normal');
-            doc.text('Plot No. 163, Vijayasree Colony, Vanasthalipuram, Hyderabad 500070', margin, footerY + 14);
-            doc.text('Phone: +91 7842239090  |  Email: team.craftsoft@gmail.com', margin, footerY + 20);
+            doc.text('Plot No. 163, Vijayasree Colony,', margin, footerY + 14);
+            doc.text('Vanasthalipuram, Hyderabad 500070', margin, footerY + 19);
+            doc.text('Phone: +91 7842230900 | Email: team.craftsoft@gmail.com', margin, footerY + 26);
 
+            // Footer Center - Verify instructions
+            doc.setFontSize(9);
+            doc.setTextColor(...gray);
+            doc.text('Scan to verify or visit', 105, footerY + 10);
+            doc.setTextColor(...primary);
+            doc.setFont('helvetica', 'bold');
+            doc.text('craftsoft.co.in/verify', 105, footerY + 16);
+            doc.setTextColor(...gray);
+            doc.setFont('helvetica', 'normal');
+            doc.text('and enter Receipt ID.', 105, footerY + 22);
+
+            // QR Code - Generate and add
+            const qrUrl = 'https://craftsoft.co.in/pages/verify.html?id=' + data.receiptId;
+
+            // Create temporary QR code element
+            const qrContainer = document.createElement('div');
+            qrContainer.style.cssText = 'position:absolute;left:-9999px;';
+            document.body.appendChild(qrContainer);
+
+            const qrCode = new QRCode(qrContainer, {
+                text: qrUrl,
+                width: 200,
+                height: 200,
+                colorDark: '#111827',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+
+            // Wait for QR code to render
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            const qrCanvas = qrContainer.querySelector('canvas');
+            if (qrCanvas) {
+                const qrDataUrl = qrCanvas.toDataURL('image/png');
+                doc.addImage(qrDataUrl, 'PNG', pageWidth - margin - 25, footerY + 4, 22, 22);
+            }
+
+            // Clean up QR container
+            document.body.removeChild(qrContainer);
+
+            // Bottom disclaimer
             doc.setFontSize(7);
             doc.setTextColor(...lightGray);
-            doc.text('This is a system-generated receipt and does not require a signature.', margin, footerY + 28);
+            doc.text('This is a system-generated receipt and does not require a signature.', margin, footerY + 35);
 
-            // Verify link
-            doc.setFontSize(7);
-            doc.setTextColor(...primary);
-            doc.text('Verify this receipt at: craftsoft.co.in/pages/verify', pageWidth - margin - 60, footerY + 28);
+            // Version timestamp
+            const now = new Date();
+            const versionText = 'Version: ' + now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+            doc.text(versionText, pageWidth - margin, footerY + 35, { align: 'right' });
 
             // Save
             doc.save('Receipt_' + data.receiptId + '.pdf');
