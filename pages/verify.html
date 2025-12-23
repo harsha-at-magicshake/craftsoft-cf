@@ -686,38 +686,46 @@
 
             y += 20;
 
-            // Totals Box
+            // Totals Box - Same dimensions as admin
             const totalFee = data.totalFee || data.amount;
             const amountPaid = data.amount;
             const balanceDue = totalFee - amountPaid;
 
+            const labelX = 115;
+            const valueX = pageWidth - margin;
+
             doc.setFillColor(...totalsBg);
-            doc.rect(100, y - 5, pageWidth - margin - 95, 35, 'F');
+            doc.rect(labelX - 5, y - 5, pageWidth - margin - labelX + 10, 38, 'F');
             doc.setDrawColor(...border);
             doc.setLineWidth(0.3);
-            doc.rect(100, y - 5, pageWidth - margin - 95, 35);
+            doc.rect(labelX - 5, y - 5, pageWidth - margin - labelX + 10, 38);
 
             // Total Fee
             doc.setFontSize(10);
             doc.setTextColor(...gray);
             doc.setFont('helvetica', 'normal');
-            doc.text('Total Fee', 105, y + 3);
+            doc.text('Total Fee', labelX, y);
             doc.setTextColor(...dark);
             doc.setFont('helvetica', 'bold');
-            doc.text('Rs. ' + Number(totalFee).toLocaleString('en-IN', { minimumFractionDigits: 2 }), pageWidth - margin - 5, y + 3, { align: 'right' });
+            doc.text('Rs. ' + Number(totalFee).toLocaleString('en-IN', { minimumFractionDigits: 2 }), valueX, y, { align: 'right' });
+
+            y += 10;
 
             // Amount Paid
             doc.setTextColor(...primary);
             doc.setFont('helvetica', 'normal');
-            doc.text('Amount Paid', 105, y + 13);
-            doc.text('Rs. ' + amountFormatted, pageWidth - margin - 5, y + 13, { align: 'right' });
+            doc.text('Amount Paid', labelX, y);
+            doc.text('Rs. ' + amountFormatted, valueX, y, { align: 'right' });
+
+            y += 10;
 
             // Balance Due
             if (balanceDue > 0) {
                 doc.setTextColor(239, 68, 68);
                 doc.setFont('helvetica', 'bold');
-                doc.text('Balance Due', 105, y + 23);
-                doc.text('Rs. ' + Number(balanceDue).toLocaleString('en-IN', { minimumFractionDigits: 2 }), pageWidth - margin - 5, y + 23, { align: 'right' });
+                doc.setFontSize(11);
+                doc.text('Balance Due', labelX, y);
+                doc.text('Rs. ' + Number(balanceDue).toLocaleString('en-IN', { minimumFractionDigits: 2 }), valueX, y, { align: 'right' });
             }
 
             // Footer

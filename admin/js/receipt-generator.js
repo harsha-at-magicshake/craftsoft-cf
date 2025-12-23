@@ -90,6 +90,12 @@ class ReceiptGenerator {
         doc.setFont('helvetica', 'bold');
         doc.text('Payment Receipt', this.margin, y);
 
+        // Receipt ID on right side
+        doc.setFontSize(10);
+        doc.setTextColor(...this.colors.gray);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Receipt ID: ' + data.receiptId, this.pageWidth - this.margin, y, { align: 'right' });
+
         y += 6;
 
         // Receipt ID - Prominent, mono-style feel
@@ -205,9 +211,9 @@ class ReceiptGenerator {
 
         y += 5;
 
-        // Phone
+        // Phone - Green/Primary color
         doc.setFontSize(10);
-        doc.setTextColor(...this.colors.gray);
+        doc.setTextColor(...this.colors.primary);
         doc.text(data.phone || '', this.margin, y);
 
         y += 15;
