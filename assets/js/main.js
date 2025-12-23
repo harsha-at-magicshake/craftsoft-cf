@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
     initCourseFilter();
     initCurriculumTabs();
     initShareCourse();
+    initCounterAnimation();
+    initScrollToTop();
+    initTestimonialsSlider();
+    initContactForm();
 });
 
 /* ============================================
@@ -436,13 +440,7 @@ function initTestimonialsSlider() {
     });
 }
 
-// Initialize new features
-document.addEventListener('DOMContentLoaded', function () {
-    initCounterAnimation();
-    initScrollToTop();
-    initTestimonialsSlider();
-    initContactForm();
-});
+// All initialization is now handled in the main DOMContentLoaded listener above
 
 /* ============================================
    CONTACT FORM HANDLER
@@ -492,43 +490,92 @@ function initContactForm() {
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
-            // Save to Firestore (Silent fail if it fails, so user still gets success message)
+            // Try to save to Firestore, but don't fail the whole submission if it fails
+            let firestoreSuccess = false;
             if (window.db) {
                 try {
                     await window.db.collection('inquiries').add(inquiryData);
+                    firestoreSuccess = true;
                     console.log('Inquiry synced to Firestore');
                 } catch (dbError) {
                     console.error('Firestore sync failed:', dbError);
+                    // Continue with form submission even if Firestore fails
                 }
+            } else {
+                console.warn('Firebase not initialized, skipping Firestore save');
             }
 
-            // Show success UI
+            // Also submit to Formspree for email notification
+            let formspreeSuccess = false;
+            try {
+                const formspreeResponse = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+                formspreeSuccess = formspreeResponse.ok;
+            } catch (fetchError) {
+                console.error('Formspree submission failed:', fetchError);
+            }
+
+            // Show success UI (even if one method failed, as long as we tried)
             const formCard = form.closest('.contact-form-card') || document.querySelector('.contact-form-wrapper');
             if (formCard) {
+                const successMessage = formspreeSuccess || firestoreSuccess 
+                    ? `Thank you for reaching out, <strong>${inquiryData.name}</strong>. Your inquiry has been received and we'll get back to you shortly.`
+                    : `Thank you for reaching out, <strong>${inquiryData.name}</strong>. If you don't hear from us soon, please contact us directly via WhatsApp or phone.`;
+                
                 formCard.innerHTML = `
                     <div class="success-message-container" style="text-align: center; padding: 40px; animation: fadeIn 0.5s ease;">
                         <div class="success-icon" style="width: 80px; height: 80px; background: rgba(0, 184, 148, 0.1); color: #00B894; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2.5rem;">
                             <i class="fas fa-check"></i>
                         </div>
                         <h3 style="margin-bottom: 10px; font-size: 1.5rem; color: var(--text-dark);">Inquiry Received!</h3>
-                        <p style="color: var(--text-light); line-height: 1.6;">Thank you for reaching out, <strong>${inquiryData.name}</strong>. Your inquiry has been logged in our system and we'll get back to you shortly.</p>
-                        <button class="btn btn-outline" style="margin-top: 24px;" onclick="window.location.reload()">Send Another Message</button>
+                        <p style="color: var(--text-light); line-height: 1.6; margin-bottom: 20px;">${successMessage}</p>
+                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn btn-outline" style="margin-top: 0;" onclick="window.location.reload()">Send Another Message</button>
+                            <a href="https://wa.me/917842239090?text=Hi! I just submitted an inquiry." target="_blank" class="btn btn-primary" style="margin-top: 0;">
+                                <i class="fab fa-whatsapp"></i> Contact on WhatsApp
+                            </a>
+                        </div>
                     </div>
                 `;
             }
 
-            // Optional: Also ping Formspree in the background so you still get the email
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
-
         } catch (error) {
             console.error('Error submitting form:', error);
-            alert('Something went wrong. Please try again or contact us via WhatsApp.');
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
+            const formCard = form.closest('.contact-form-card') || document.querySelector('.contact-form-wrapper');
+            
+            // Show user-friendly error message
+            const errorMessage = `
+                <div style="text-align: center; padding: 40px; background: rgba(239, 68, 68, 0.1); border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                    <div style="width: 80px; height: 80px; background: rgba(239, 68, 68, 0.1); color: #EF4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2.5rem;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 style="margin-bottom: 10px; font-size: 1.5rem; color: var(--text-dark);">Something Went Wrong</h3>
+                    <p style="color: var(--text-light); line-height: 1.6; margin-bottom: 20px;">
+                        We couldn't process your inquiry right now. Please try again or contact us directly.
+                    </p>
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-outline" onclick="window.location.reload()">Try Again</button>
+                        <a href="https://wa.me/917842239090" target="_blank" class="btn btn-primary">
+                            <i class="fab fa-whatsapp"></i> Contact on WhatsApp
+                        </a>
+                        <a href="tel:+917842239090" class="btn btn-secondary">
+                            <i class="fas fa-phone"></i> Call Us
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            if (formCard) {
+                formCard.innerHTML = errorMessage;
+            } else {
+                // Fallback to alert if form card not found
+                alert('Something went wrong. Please try again or contact us via WhatsApp at +91 7842239090.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
         }
     });
 

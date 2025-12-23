@@ -56,13 +56,13 @@ function initQuiz() {
         const modalHtml = `
             <div id="quizModal" class="quiz-modal">
                 <div class="quiz-modal-content">
-                    <button class="quiz-close" onclick="closeQuizModal()">&times;</button>
+                    <button class="quiz-close" id="quizCloseBtn" aria-label="Close quiz">&times;</button>
                     <div id="quizBody">
                         <div class="quiz-intro">
                             <i class="fas fa-graduation-cap quiz-main-icon"></i>
                             <h2>Find Your Perfect Career Path</h2>
                             <p>Answer 3 quick questions and we'll recommend the best course for you!</p>
-                            <button class="btn btn-primary" onclick="startQuiz()">Get Started</button>
+                            <button class="btn btn-primary" id="quizStartBtn">Get Started</button>
                         </div>
                     </div>
                 </div>
@@ -70,6 +70,35 @@ function initQuiz() {
         `;
         document.body.insertAdjacentHTML('beforeend', modalHtml);
         injectQuizStyles();
+        
+        // Add event listeners instead of inline handlers
+        const closeBtn = document.getElementById('quizCloseBtn');
+        const startBtn = document.getElementById('quizStartBtn');
+        const modal = document.getElementById('quizModal');
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeQuizModal);
+        }
+        
+        if (startBtn) {
+            startBtn.addEventListener('click', startQuiz);
+        }
+        
+        // Close on background click
+        if (modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeQuizModal();
+                }
+            });
+        }
+        
+        // Close on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+                closeQuizModal();
+            }
+        });
     }
 }
 
@@ -120,13 +149,22 @@ function renderQuestion() {
             <h3>${question.question}</h3>
             <div class="quiz-options">
                 ${question.options.map((opt, idx) => `
-                    <button class="quiz-option" onclick="handleOptionSelect(${idx})">
+                    <button class="quiz-option" data-option-index="${idx}">
                         ${opt.text}
                     </button>
                 `).join('')}
             </div>
         </div>
     `;
+    
+    // Add event listeners to options
+    const options = quizBody.querySelectorAll('.quiz-option');
+    options.forEach(option => {
+        option.addEventListener('click', function() {
+            const optionIdx = parseInt(this.getAttribute('data-option-index'));
+            handleOptionSelect(optionIdx);
+        });
+    });
 }
 
 function handleOptionSelect(optionIdx) {
@@ -175,9 +213,15 @@ function renderResult() {
                     <i class="fab fa-whatsapp"></i> I'd like to enroll
                 </a>
             </div>
-            <button class="quiz-restart" onclick="startQuiz()">Try Again</button>
+            <button class="quiz-restart" id="quizRestartBtn">Try Again</button>
         </div>
     `;
+    
+    // Add event listener for restart button
+    const restartBtn = quizBody.querySelector('#quizRestartBtn');
+    if (restartBtn) {
+        restartBtn.addEventListener('click', startQuiz);
+    }
 }
 
 function injectQuizStyles() {
