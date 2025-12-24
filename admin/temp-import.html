@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JSON to Supabase Import Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            padding: 40px;
+            background: #f0f9ff;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #0369a1;
+        }
+
+        .upload-area {
+            border: 2px dashed #bae6fd;
+            padding: 40px;
+            text-align: center;
+            border-radius: 12px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            border-color: #38bdf8;
+            background: #f1f5f9;
+        }
+
+        .btn {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #0369a1;
+        }
+
+        .btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        #log {
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 16px;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .stat-card {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0284c7;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📥 Supabase Data Importer</h1>
+        <p>Upload the JSON file you just exported to migrate your data to the new Supabase database.</p>
+
+        <input type="file" id="fileInput" accept=".json" style="display: none;">
+        <div class="upload-area" id="dropZone">
+            <span class="material-icons" style="font-size: 48px; color: #0284c7;">cloud_upload</span>
+            <p id="fileLabel">Click to upload or drag JSON file here</p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <button id="importBtn" class="btn" style="display: none;">▶ Start Migration</button>
+        <div id="log"></div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileLabel = document.getElementById('fileLabel');
+        const importBtn = document.getElementById('importBtn');
+        const statsGrid = document.getElementById('statsGrid');
+        const logEl = document.getElementById('log');
+
+        let jsonData = null;
+
+        dropZone.onclick = () => fileInput.click();
+        fileInput.onchange = (e) => handleFile(e.target.files[0]);
+
+        function log(msg, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.textContent = `[${time}] ${msg}`;
+            if (type === 'error') entry.style.color = '#f87171';
+            if (type === 'success') entry.style.color = '#4ade80';
+            logEl.appendChild(entry);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function handleFile(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    jsonData = JSON.parse(e.target.result);
+                    fileLabel.textContent = `File loaded: ${file.name}`;
+                    showStats();
+                    importBtn.style.display = 'inline-flex';
+                    logEl.style.display = 'block';
+                    log('File parsed successfully. Ready to import.');
+                } catch (err) {
+                    alert('Invalid JSON file');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function showStats() {
+            statsGrid.innerHTML = '';
+            statsGrid.style.display = 'grid';
+            for (const key in jsonData) {
+                const count = Array.isArray(jsonData[key]) ? jsonData[key].length : 0;
+                statsGrid.innerHTML += `
+                    <div class="stat-card">
+                        <div class="stat-val">${count}</div>
+                        <div class="stat-label">${key}</div>
+                    </div>`;
+            }
+        }
+
+        importBtn.onclick = async () => {
+            importBtn.disabled = true;
+            log('Starting migration sequence...');
+
+            // 1. Import Students
+            if (jsonData.students) {
+                log('Importing students...');
+                for (const s of jsonData.students) {
+                    const mapped = {
+                        id: s.id,
+                        name: s.name,
+                        phone: s.phone,
+                        email: s.email,
+                        course: s.course,
+                        total_fee: parseInt(s.totalFee || 0),
+                        paid_amount: parseInt(s.paidAmount || 0),
+                        joining_date: s.joiningDate || s.createdAt,
+                        status: s.status || 'active',
+                        notes: s.notes,
+                        created_at: s.createdAt,
+                        updated_at: s.updatedAt || s.createdAt
+                    };
+                    const { error } = await supabase.from('students').upsert(mapped);
+                    if (error) log(`Error student ${s.name}: ${error.message}`, 'error');
+                }
+                log('Students completed.', 'success');
+            }
+
+            // 2. Import Payments
+            if (jsonData.payments) {
+                log('Importing payments...');
+                const payments = jsonData.payments.map(p => ({
+                    id: p.id,
+                    student_id: p.studentId,
+                    amount: parseInt(p.amount || 0),
+                    mode: p.mode,
+                    receipt_number: p.receiptNumber,
+                    notes: p.notes,
+                    date: p.date || p.createdAt,
+                    created_at: p.createdAt
+                }));
+                const { error } = await supabase.from('payments').upsert(payments);
+                if (error) log(`Error payments: ${error.message}`, 'error');
+                else log('Payments completed.', 'success');
+            }
+
+            // 3. Import Inquiries
+            if (jsonData.inquiries) {
+                log('Importing inquiries...');
+                const inquiries = jsonData.inquiries.map(i => ({
+                    id: i.id,
+                    name: i.name,
+                    phone: i.phone,
+                    email: i.email,
+                    course: i.course,
+                    status: i.status || 'new',
+                    notes: i.notes,
+                    created_at: i.createdAt
+                }));
+                const { error } = await supabase.from('inquiries').upsert(inquiries);
+                if (error) log(`Error inquiries: ${error.message}`, 'error');
+                else log('Inquiries completed.', 'success');
+            }
+
+            // 4. Import Tutors/Experts
+            if (jsonData.tutors) {
+                log('Importing tutors...');
+                const tutors = jsonData.tutors.map(t => ({ id: t.id, name: t.name, phone: t.phone, subject: t.subject, mode: t.mode, status: t.status }));
+                await supabase.from('tutors').upsert(tutors);
+            }
+            if (jsonData.experts) {
+                log('Importing experts...');
+                const experts = jsonData.experts.map(e => ({ id: e.id, name: e.name, phone: e.phone, skills: e.skills, experience: e.experience, status: e.status }));
+                await supabase.from('experts').upsert(experts);
+            }
+
+            // 5. Build Receipt Sequence
+            if (jsonData.settings) {
+                const config = jsonData.settings.find(s => s.id === 'config') || {};
+                const sequence = config.receiptSequence || 0;
+                log(`Setting receipt sequence to ${sequence}`);
+                await supabase.from('settings').upsert({ id: 'config', metadata: { receiptSequence: sequence } });
+            }
+
+            log('✅ MIGRATION COMPLETE!', 'success');
+            alert('Migration finished! Check your dashboard.');
+        };
+    </script>
+</body>
+
+</html>
