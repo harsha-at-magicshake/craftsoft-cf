@@ -25,13 +25,15 @@
                 <span class="logo-text"><span class="logo-signature">Abhi's</span> <span class="highlight">Craft
                         Soft</span></span>
             </a>
-            <ul class="nav-menu" id="nav-menu">                <button class="nav-close" id="navClose" aria-label="Close menu">&times;</button>
+            <ul class="nav-menu" id="nav-menu"> <button class="nav-close" id="navClose"
+                    aria-label="Close menu">&times;</button>
                 <li><a href="../../index.html" class="nav-link">Home</a></li>
                 <li><a href="../../about.html" class="nav-link">About</a></li>
                 <li><a href="../courses.html" class="nav-link active">Courses</a></li>
                 <li><a href="../services.html" class="nav-link">Services</a></li>
                 <li><a href="../../index.html#contact" class="nav-link">Contact</a></li>
-                <li><a href="../../admin/index.html" class="nav-admin-link"><i class="fas fa-lock"></i> Admin Login</a></li>
+                <li><a href="../../admin/index.html" class="nav-admin-link"><i class="fas fa-lock"></i> Admin Login</a>
+                </li>
             </ul>
             <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                 <span class="bar"></span><span class="bar"></span><span class="bar"></span>
@@ -255,6 +257,104 @@
         </div>
     </section>
 
+
+    <!-- Courses Contact Section -->
+    <section class="courses-contact-section" id="counseling">
+        <div class="container">
+            <div class="courses-contact-wrapper">
+                <div class="courses-contact-left">
+                    <span class="section-tag">Start Your Journey</span>
+                    <h2 class="section-title" style="text-align: left; margin-bottom: var(--spacing-md);">
+                        Need Help Choosing<br>
+                        <span class="gradient-text">the Right Course?</span>
+                    </h2>
+                    <p class="section-description"
+                        style="max-width: 100%; text-align: left; margin-bottom: var(--spacing-xl);">
+                        Book a free counseling session with our experts. We'll understand your goals and
+                        recommend the perfect learning path for you.
+                    </p>
+
+                    <div class="counseling-benefits">
+                        <div class="benefit-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Free Career Counseling</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Personalized Course Roadmap</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Flexible Batch Options</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Placement Assistance</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="courses-contact-right">
+                    <div class="contact-form-card">
+                        <h3>Get Free Counseling</h3>
+                        <form id="courses-inquiry-form" action="https://formspree.io/f/xeejwkrk" method="POST">
+                            <div class="form-group">
+                                <label for="counseling-name">Full Name *</label>
+                                <input type="text" id="counseling-name" name="name" placeholder="Enter your name"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="counseling-email">Email *</label>
+                                <input type="email" id="counseling-email" name="email" placeholder="Enter your email"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="counseling-phone">Phone *</label>
+                                <input type="tel" id="counseling-phone" name="phone" placeholder="10-digit number"
+                                    maxlength="10" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="counseling-course">Interested Course</label>
+                                <select id="counseling-course" name="course">
+                                    <option value="">Select a course...</option>
+                                    <option value="Full Stack Development (MERN)">Full Stack Development (MERN)</option>
+                                    <option value="UI/UX Design">UI/UX Design</option>
+                                    <option value="DevOps Engineering">DevOps Engineering</option>
+                                    <option value="Python Programming" selected>Python Programming</option>
+                                    <option value="React JS">React JS</option>
+                                    <option value="Microsoft Azure">Microsoft Azure</option>
+                                    <option value="AWS Cloud">AWS Cloud</option>
+                                    <option value="Data Analytics">Data Analytics</option>
+                                    <option value="Graphic Design">Graphic Design</option>
+                                    <option value="Not Sure - Need Guidance">Not Sure - Need Guidance</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="counseling-query">Your Query</label>
+                                <textarea id="counseling-query" name="query"
+                                    placeholder="Tell us about your learning goals..." rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">
+                                <i class="fas fa-calendar-check"></i> Book Free Session
+                            </button>
+                            <p class="form-legal">By submitting this form, you agree to our <a
+                                    href="../terms-of-service.html">Terms of Service</a> and <a
+                                    href="../privacy-policy.html">Privacy Policy</a>.</p>
+                        </form>
+                    </div>
+
+                    <div class="whatsapp-alternative">
+                        <span>Or reach us directly</span>
+                        <a href="https://wa.me/917842239090?text=Hi! I need help choosing the right course for me."
+                            target="_blank" class="btn btn-whatsapp">
+                            <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -353,4 +453,3 @@
 </body>
 
 </html>
-
