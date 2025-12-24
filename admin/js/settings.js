@@ -91,7 +91,7 @@ function updateLastSavedText(elementId, date) {
     el.innerHTML = `<span class="material-icons">schedule</span> Last saved: ${timeAgo}`;
 }
 
-// Update display values for payment settings
+// Update display values for payment settings (with masking for sensitive data)
 function updatePaymentDisplayValues(data) {
     const setDisplayValue = (id, value) => {
         const el = document.getElementById(id);
@@ -106,10 +106,24 @@ function updatePaymentDisplayValues(data) {
         }
     };
 
+    // Mask sensitive values
+    const maskValue = (value, showFirst = 4) => {
+        if (!value) return '';
+        if (value.length <= showFirst) return '•'.repeat(value.length);
+        return value.substring(0, showFirst) + '•'.repeat(Math.min(value.length - showFirst, 6));
+    };
+
+    const maskUPI = (upi) => {
+        if (!upi) return '';
+        const parts = upi.split('@');
+        if (parts.length < 2) return '••••@•••';
+        return '••••@' + parts[1];
+    };
+
     setDisplayValue('bankNameDisplay', data.bankName);
-    setDisplayValue('bankAccountDisplay', data.bankAccount ? '••••' + data.bankAccount.slice(-4) : '');
-    setDisplayValue('bankIFSCDisplay', data.bankIFSC);
-    setDisplayValue('upiIdDisplay', data.upiId);
+    setDisplayValue('bankAccountDisplay', data.bankAccount ? '••••••' + data.bankAccount.slice(-4) : '');
+    setDisplayValue('bankIFSCDisplay', data.bankIFSC ? maskValue(data.bankIFSC, 4) : '');
+    setDisplayValue('upiIdDisplay', data.upiId ? maskUPI(data.upiId) : '');
     setDisplayValue('razorpayLinkDisplay', data.razorpayLink ? 'Configured ✓' : '');
 }
 

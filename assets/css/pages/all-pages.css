@@ -1145,10 +1145,20 @@
     .service-card-actions {
         flex-direction: column;
         width: 100%;
+        margin-top: var(--spacing-lg);
     }
 
     .service-card-actions .btn {
         width: 100%;
         justify-content: center;
+    }
+
+    /* Ensure cards stack properly on mobile */
+    .course-card-full {
+        flex-wrap: wrap;
+    }
+
+    .course-card-full .service-card-actions {
+        flex-basis: 100%;
     }
 }

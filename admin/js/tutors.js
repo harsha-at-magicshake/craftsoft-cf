@@ -120,6 +120,16 @@ function renderTutors(tutors) {
             'both': 'Both'
         };
 
+        // Render subjects as individual chips
+        const renderSubjectChips = (subjectString) => {
+            if (!subjectString) return '<span class="text-muted">-</span>';
+            const subjects = subjectString.split(',').map(s => s.trim()).filter(s => s);
+            if (subjects.length === 0) return '<span class="text-muted">-</span>';
+            return subjects.map(s =>
+                `<span class="subject-chip">${s}</span>`
+            ).join('');
+        };
+
         return `
             <div class="mobile-card">
                 <div class="mobile-card-header">
@@ -131,9 +141,11 @@ function renderTutors(tutors) {
                         <span class="status-badge ${statusClass}">${statusText}</span>
                     </div>
                 </div>
-                <div class="mobile-card-row">
-                    <span>Subject</span>
-                    <span>${tutor.subject || '-'}</span>
+                <div class="mobile-card-row subjects-row">
+                    <span>Subjects</span>
+                    <div class="subjects-chips">
+                        ${renderSubjectChips(tutor.subject)}
+                    </div>
                 </div>
                 <div class="mobile-card-row">
                     <span>Mode</span>

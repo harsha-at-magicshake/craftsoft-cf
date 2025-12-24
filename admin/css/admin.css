@@ -6,7 +6,7 @@
 /* MDC Web Imports */
 @import url('https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Dancing+Script:wght@500;600;700&display=swap');
 
 :root {
     /* Material Design Color System */
@@ -387,10 +387,29 @@ body {
     font-size: 24px;
 }
 
-.sidebar-logo span {
+.sidebar-logo .logo-text {
     font-size: 1rem;
     font-weight: 700;
     color: var(--gray-900);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.sidebar-logo .logo-text .logo-signature {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.sidebar-logo .logo-text .highlight {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
 }
 
 .sidebar-nav {
@@ -2381,4 +2400,40 @@ select:focus {
 
 .loading-table-row td {
     padding: 16px;
+}
+
+/* Subject Chips for Tutors Mobile View */
+.subjects-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 8px;
+}
+
+.subjects-row>span:first-child {
+    font-weight: 600;
+    color: var(--gray-600);
+    font-size: 0.8rem;
+}
+
+.subjects-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    width: 100%;
+}
+
+.subject-chip {
+    display: inline-block;
+    background: rgba(40, 150, 205, 0.1);
+    color: var(--primary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.text-muted {
+    color: var(--gray-400);
+    font-style: italic;
 }
