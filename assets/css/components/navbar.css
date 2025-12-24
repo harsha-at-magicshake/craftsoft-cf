@@ -72,6 +72,10 @@
     gap: var(--spacing-lg);
 }
 
+.nav-close {
+    display: none;
+}
+
 .nav-link {
     font-weight: 500;
     font-size: 0.95rem;
