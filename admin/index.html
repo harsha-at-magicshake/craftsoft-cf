@@ -86,23 +86,17 @@
             return /^ACS-\d{4}$/i.test(input.trim());
         }
 
-        // Get email from Employee ID
+        // Get email from Employee ID (uses RPC function to bypass RLS)
         async function getEmailFromEmployeeId(employeeId) {
             const { data, error } = await window.supabase
-                .from('admin_profiles')
-                .select('email')
-                .ilike('employee_id', employeeId.trim());
+                .rpc('get_email_by_employee_id', { emp_id: employeeId.trim() });
 
             if (error) {
                 console.error('Employee ID lookup error:', error);
                 return null;
             }
 
-            if (!data || data.length === 0) {
-                return null;
-            }
-
-            return data[0].email;
+            return data; // Returns email directly
         }
 
         async function handleLogin(e) {
