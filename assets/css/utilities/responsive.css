@@ -481,4 +481,63 @@
     .founder-image {
         max-width: 260px;
     }
+
+    /* About Page - Mobile Optimizations */
+    .about-detailed {
+        padding: var(--spacing-2xl) 0;
+    }
+
+    .mission-vision {
+        gap: var(--spacing-md);
+    }
+
+    .mv-item {
+        padding: var(--spacing-md);
+    }
+
+    .mv-item h4 {
+        font-size: 1rem;
+    }
+
+    .values-section {
+        margin-bottom: var(--spacing-2xl);
+    }
+
+    /* Course Cards - Mobile */
+    .course-card-full {
+        padding: var(--spacing-lg);
+    }
+
+    .course-meta {
+        gap: var(--spacing-sm);
+    }
+
+    .course-meta span {
+        font-size: 0.8rem;
+    }
+
+    /* Advantage Cards - Mobile */
+    .advantage-card {
+        padding: var(--spacing-lg);
+    }
+
+    .advantage-icon {
+        width: 55px;
+        height: 55px;
+    }
+
+    .advantage-icon i {
+        font-size: 1.5rem;
+    }
+
+    /* FAQ - Mobile */
+    .faq-question {
+        padding: var(--spacing-md);
+        font-size: 0.95rem;
+    }
+
+    .faq-answer p {
+        padding: 0 var(--spacing-md) var(--spacing-md);
+        font-size: 0.9rem;
+    }
 }

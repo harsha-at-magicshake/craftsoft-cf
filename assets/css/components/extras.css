@@ -702,4 +702,50 @@
     .quiz-cta-image {
         display: none;
     }
+
+    /* Quiz Result Mobile Optimization */
+    .inline-quiz-result .result-actions {
+        flex-direction: column !important;
+        gap: 12px;
+    }
+
+    .inline-quiz-result .result-actions .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
+
+    .inline-quiz-result h2 {
+        font-size: 1.3rem;
+    }
+
+    .inline-quiz-result p {
+        font-size: 0.95rem;
+    }
+
+    .result-icon {
+        font-size: 3rem;
+    }
+
+    .result-badge {
+        font-size: 0.7rem;
+        padding: 5px 12px;
+    }
+
+    .quiz-restart {
+        font-size: 0.85rem;
+        margin-top: 15px;
+    }
+
+    /* Inline Quiz Question Mobile */
+    .inline-quiz-question h3 {
+        font-size: 1.1rem;
+        line-height: 1.5;
+    }
+
+    .quiz-option {
+        padding: 14px 16px;
+        font-size: 0.95rem;
+    }
 }
