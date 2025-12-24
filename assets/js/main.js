@@ -450,7 +450,7 @@ function initContactForm() {
 
     form.addEventListener('submit', async function (e) {
         // We let the form continue to Formspree for email notification, 
-        // but we sync to Firebase first
+        // but we sync to Supabase first
         const submitBtn = form.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
 
