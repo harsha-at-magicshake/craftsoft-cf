@@ -110,7 +110,13 @@ body {
     color: var(--gray-900);
 }
 
-.auth-logo-text span {
+.auth-logo-text .logo-signature {
+    font-family: 'Dancing Script', cursive;
+    font-weight: 600;
+    font-size: 1.7rem;
+}
+
+.auth-logo-text span:last-child {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     background-clip: text;
