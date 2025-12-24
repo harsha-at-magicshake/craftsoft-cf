@@ -1,65 +1,41 @@
-// Settings Page Logic
-
-// Available navigation items (excluding fixed Home/Settings)
-const availableNavItems = [
-    { id: 'inquiries', icon: 'contact_phone', label: 'Inquiries', href: 'inquiries.html' },
-    { id: 'services', icon: 'design_services', label: 'Services', href: 'services.html' },
-    { id: 'students', icon: 'people', label: 'Students', href: 'students.html' },
-    { id: 'payments', icon: 'payments', label: 'Payments', href: 'payments.html' },
-    { id: 'tutors', icon: 'person', label: 'Tutors', href: 'tutors.html' },
-    { id: 'experts', icon: 'engineering', label: 'Experts', href: 'experts.html' }
-];
-
-// Default middle items (max 2)
-let middleNavItems = ['inquiries', 'students'];
+// Settings Page Logic - Migrated to Supabase
 
 // Load settings on page load
 document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
-    renderNavigationSettings();
     renderSubjectCodesBanner();
 });
 
-// Load all settings from Firestore
+// Load all settings from Supabase
 async function loadSettings() {
     try {
-        const doc = await db.collection('settings').doc('config').get();
+        if (typeof supabase === 'undefined') return;
 
-        if (doc.exists) {
-            const data = doc.data();
+        const { data, error } = await supabase.from('settings').select('*').eq('id', 'config').single();
 
-            // Payment settings - both input and display
-            document.getElementById('bankName').value = data.bankName || '';
-            document.getElementById('bankAccount').value = data.bankAccount || '';
-            document.getElementById('bankIFSC').value = data.bankIFSC || '';
-            document.getElementById('upiId').value = data.upiId || '';
-            document.getElementById('razorpayLink').value = data.razorpayLink || '';
+        if (error && error.code !== 'PGRST116') throw error; // PGRST116 = no rows found
 
-            // Update display values
+        if (data) {
+            // Payment settings
+            document.getElementById('bankName').value = data.bank_name || '';
+            document.getElementById('bankAccount').value = data.bank_account || '';
+            document.getElementById('bankIFSC').value = data.bank_ifsc || '';
+            document.getElementById('upiId').value = data.upi_id || '';
+            document.getElementById('razorpayLink').value = data.razorpay_link || '';
+
+            // Update display
             updatePaymentDisplayValues(data);
             updateBusinessDisplayValues(data);
 
             // Business settings
-            document.getElementById('businessName').value = data.businessName || '';
-            document.getElementById('businessPhone').value = data.businessPhone || '';
-            document.getElementById('businessAddress').value = data.businessAddress || '';
+            document.getElementById('businessName').value = data.business_name || '';
+            document.getElementById('businessPhone').value = data.business_phone || '';
+            document.getElementById('businessAddress').value = data.business_address || '';
 
-            // Navigation settings
-            if (data.mobileNavItems && Array.isArray(data.mobileNavItems)) {
-                // Filter out fixed items (dashboard/settings) to get middle items
-                const filtered = data.mobileNavItems.filter(id => id !== 'dashboard' && id !== 'settings');
-                // Take only up to 2 items
-                middleNavItems = filtered.slice(0, 2);
-            }
-
-            // Display last saved timestamp
-            if (data.updatedAt) {
-                const lastSaved = data.updatedAt.toDate ? data.updatedAt.toDate() : new Date(data.updatedAt);
-                updateLastSavedText('paymentLastSaved', lastSaved);
+            if (data.updated_at) {
+                updateLastSavedText('paymentLastSaved', new Date(data.updated_at));
             }
         }
-
-        renderNavigationSettings();
 
     } catch (error) {
         console.error('Error loading settings:', error);
@@ -70,532 +46,112 @@ async function loadSettings() {
 function updateLastSavedText(elementId, date) {
     const el = document.getElementById(elementId);
     if (!el) return;
-
-    const now = new Date();
-    const diffMs = now - date;
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    let timeAgo = '';
-    if (diffMins < 1) {
-        timeAgo = 'Just now';
-    } else if (diffMins < 60) {
-        timeAgo = `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
-    } else if (diffHours < 24) {
-        timeAgo = `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-    } else {
-        timeAgo = `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-    }
-
+    const diffMins = Math.floor((new Date() - date) / 60000);
+    let timeAgo = diffMins < 1 ? 'Just now' : `${diffMins} mins ago`;
     el.innerHTML = `<span class="material-icons">schedule</span> Last saved: ${timeAgo}`;
 }
 
-// Update display values for payment settings (with masking for sensitive data)
 function updatePaymentDisplayValues(data) {
-    const setDisplayValue = (id, value) => {
+    const set = (id, val) => {
         const el = document.getElementById(id);
         if (el) {
-            if (value) {
-                el.textContent = value;
-                el.classList.remove('empty');
-            } else {
-                el.textContent = 'Not set';
-                el.classList.add('empty');
-            }
+            el.textContent = val || 'Not set';
+            el.classList.toggle('empty', !val);
         }
     };
-
-    // Mask sensitive values
-    const maskValue = (value, showFirst = 4) => {
-        if (!value) return '';
-        if (value.length <= showFirst) return '•'.repeat(value.length);
-        return value.substring(0, showFirst) + '•'.repeat(Math.min(value.length - showFirst, 6));
-    };
-
-    const maskUPI = (upi) => {
-        if (!upi) return '';
-        const parts = upi.split('@');
-        if (parts.length < 2) return '••••@•••';
-        return '••••@' + parts[1];
-    };
-
-    setDisplayValue('bankNameDisplay', data.bankName);
-    setDisplayValue('bankAccountDisplay', data.bankAccount ? '••••••' + data.bankAccount.slice(-4) : '');
-    setDisplayValue('bankIFSCDisplay', data.bankIFSC ? maskValue(data.bankIFSC, 4) : '');
-    setDisplayValue('upiIdDisplay', data.upiId ? maskUPI(data.upiId) : '');
-    setDisplayValue('razorpayLinkDisplay', data.razorpayLink ? 'Configured ✓' : '');
+    set('bankNameDisplay', data.bank_name);
+    set('bankAccountDisplay', data.bank_account ? '••••' + data.bank_account.slice(-4) : '');
+    set('bankIFSCDisplay', data.bank_ifsc);
+    set('upiIdDisplay', data.upi_id);
+    set('razorpayLinkDisplay', data.razorpay_link ? 'Configured ✓' : '');
 }
 
-// Update display values for business settings
 function updateBusinessDisplayValues(data) {
-    const setDisplayValue = (id, value) => {
+    const set = (id, val) => {
         const el = document.getElementById(id);
         if (el) {
-            if (value) {
-                el.textContent = value;
-                el.classList.remove('empty');
-            } else {
-                el.textContent = 'Not set';
-                el.classList.add('empty');
-            }
+            el.textContent = val || 'Not set';
+            el.classList.toggle('empty', !val);
         }
     };
-
-    setDisplayValue('businessNameDisplay', data.businessName);
-    setDisplayValue('businessPhoneDisplay', data.businessPhone);
-    setDisplayValue('businessAddressDisplay', data.businessAddress);
+    set('businessNameDisplay', data.business_name);
+    set('businessPhoneDisplay', data.business_phone);
+    set('businessAddressDisplay', data.business_address);
 }
 
-// Toggle edit mode for payment settings
-let paymentEditMode = false;
-
-function toggleEditPayment() {
-    paymentEditMode = !paymentEditMode;
-
-    const displayValues = document.querySelectorAll('#bankNameDisplay, #bankAccountDisplay, #bankIFSCDisplay, #upiIdDisplay, #razorpayLinkDisplay');
-    const editInputs = document.querySelectorAll('#bankName, #bankAccount, #bankIFSC, #upiId, #razorpayLink');
-    const editBtn = document.getElementById('editPaymentBtn');
-    const actionsDiv = document.getElementById('paymentEditActions');
-
-    if (paymentEditMode) {
-        displayValues.forEach(el => el.style.display = 'none');
-        editInputs.forEach(el => el.style.display = 'block');
-        editBtn.style.display = 'none';
-        actionsDiv.style.display = 'block';
-    } else {
-        displayValues.forEach(el => el.style.display = 'inline');
-        editInputs.forEach(el => el.style.display = 'none');
-        editBtn.style.display = 'inline-flex';
-        actionsDiv.style.display = 'none';
-
-        // Refresh display values from inputs
-        updatePaymentDisplayValues({
-            bankName: document.getElementById('bankName').value,
-            bankAccount: document.getElementById('bankAccount').value,
-            bankIFSC: document.getElementById('bankIFSC').value,
-            upiId: document.getElementById('upiId').value,
-            razorpayLink: document.getElementById('razorpayLink').value
-        });
-    }
-}
-
-function cancelEditPayment() {
-    // We want to force a switch FROM Edit TO View.
-    // toggleEditPayment flips the boolean. So if we want to end up in View (false),
-    // we should ensure it starts as true before calling toggle.
-    paymentEditMode = true;
-    toggleEditPayment(); // This will flip it to false (View Mode)
-    loadSettings(); // Reload original values from DB
-
-    // Clear the extra branch display if visible
-    const displayEl = document.getElementById('ifscBranchDisplay');
-    if (displayEl) displayEl.style.display = 'none';
-}
-
-// Toggle edit mode for business settings
-let businessEditMode = false;
-
-function toggleEditBusiness() {
-    businessEditMode = !businessEditMode;
-
-    const displayValues = document.querySelectorAll('#businessNameDisplay, #businessPhoneDisplay, #businessAddressDisplay');
-    const editInputs = document.querySelectorAll('#businessName, #businessPhone, #businessAddress');
-    const editBtn = document.getElementById('editBusinessBtn');
-    const actionsDiv = document.getElementById('businessEditActions');
-
-    if (businessEditMode) {
-        displayValues.forEach(el => el.style.display = 'none');
-        editInputs.forEach(el => el.style.display = 'block');
-        editBtn.style.display = 'none';
-        actionsDiv.style.display = 'block';
-    } else {
-        displayValues.forEach(el => el.style.display = 'inline');
-        editInputs.forEach(el => el.style.display = 'none');
-        editBtn.style.display = 'inline-flex';
-        actionsDiv.style.display = 'none';
-
-        // Refresh display values from inputs
-        updateBusinessDisplayValues({
-            businessName: document.getElementById('businessName').value,
-            businessPhone: document.getElementById('businessPhone').value,
-            businessAddress: document.getElementById('businessAddress').value
-        });
-    }
-}
-
-function cancelEditBusiness() {
-    // Same logic as payment cancel: Force state to true before toggling to false
-    businessEditMode = true;
-    toggleEditBusiness(); // Switch to View Mode
-    loadSettings(); // Reload original data
-}
-
-
-// Validation patterns
-const validationPatterns = {
-    ifsc: /^[A-Z]{4}0[A-Z0-9]{6}$/,
-    upi: /^[\w.-]+@[\w]{2,}$/, // Minimum 2 chars after @
-    bankAccount: /^\d{9,18}$/,
-    razorpayLink: /^https:\/\/(rzp\.io|razorpay\.me|razorpay\.com)\/.+$/
-};
-
-// Validate IFSC via Razorpay API
-// Validate IFSC via Razorpay API
-async function validateIFSC(ifsc) {
-    try {
-        const response = await fetch(`https://ifsc.razorpay.com/${ifsc}`);
-        if (response.ok) {
-            const data = await response.json();
-            return { valid: true, bank: data.BANK, branch: data.BRANCH };
-        }
-        return { valid: false };
-    } catch {
-        return { valid: false };
-    }
-}
-
-// Check IFSC on blur and show branch
-async function checkIFSC() {
-    const ifsc = document.getElementById('bankIFSC').value.trim().toUpperCase();
-    const displayEl = document.getElementById('ifscBranchDisplay');
-
-    if (!ifsc || !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc)) {
-        displayEl.style.display = 'none';
-        return;
-    }
-
-    displayEl.innerHTML = '<span class="loading-spinner" style="width: 12px; height: 12px; border-width: 2px;"></span> Verifying...';
-    displayEl.style.color = '#64748b';
-    displayEl.style.display = 'block';
-
-    const result = await validateIFSC(ifsc);
-
-    if (result.valid) {
-        displayEl.innerHTML = `<span class="material-icons" style="font-size: 14px; vertical-align: text-bottom;">check_circle</span> ${result.bank}, ${result.branch}`;
-        displayEl.style.color = '#10B981';
-    } else {
-        displayEl.innerHTML = `<span class="material-icons" style="font-size: 14px; vertical-align: text-bottom;">error</span> Invalid IFSC Code`;
-        displayEl.style.color = '#EF4444';
-    }
-    displayEl.style.display = 'block';
-}
-
-// Verify UPI (Static check for now, can be extended with Razorpay API)
-async function verifyUPI() {
-    const upiId = document.getElementById('upiId').value.trim();
-    if (!upiId) {
-        showToast('Please enter a UPI ID', 'error');
-        return;
-    }
-
-    if (!validationPatterns.upi.test(upiId)) {
-        showToast('Invalid UPI format', 'error');
-        return;
-    }
-
-    showToast('Validating UPI format...', 'success');
-    // Note: True VPA validation requires API keys with basic auth.
-    // For now, we perform a strict pattern check.
-    setTimeout(() => {
-        showToast(`✓ UPI format looks correct: ${upiId}`, 'success');
-    }, 800);
-}
-
-// Save Payment Settings with validation
+// Save Payment Settings
 async function savePaymentSettings() {
-    const bankName = document.getElementById('bankName').value.trim();
-    const bankAccount = document.getElementById('bankAccount').value.trim();
-    const bankIFSC = document.getElementById('bankIFSC').value.trim().toUpperCase();
-    const upiId = document.getElementById('upiId').value.trim();
-    const razorpayLink = document.getElementById('razorpayLink').value.trim();
-
-    // Validate fields
-    if (bankAccount && !validationPatterns.bankAccount.test(bankAccount)) {
-        showToast('Bank account should be 9-18 digits', 'error');
-        return;
-    }
-
-    if (bankIFSC && !validationPatterns.ifsc.test(bankIFSC)) {
-        showToast('Invalid IFSC format (e.g., SBIN0001234)', 'error');
-        return;
-    }
-
-    // Validate IFSC via API if provided
-    if (bankIFSC) {
-        showToast('Verifying IFSC...', 'success');
-        const ifscResult = await validateIFSC(bankIFSC);
-        if (!ifscResult.valid) {
-            showToast('IFSC code not found. Please verify.', 'error');
-            return;
-        }
-        showToast(`✓ ${ifscResult.bank}, ${ifscResult.branch}`, 'success');
-    }
-
-    if (upiId && !validationPatterns.upi.test(upiId)) {
-        showToast('Invalid UPI format (e.g., name@upi)', 'error');
-        return;
-    }
-
-    if (razorpayLink && !validationPatterns.razorpayLink.test(razorpayLink)) {
-        showToast('Invalid Razorpay link (must start with https://rzp.io/)', 'error');
-        return;
-    }
+    const updates = {
+        bank_name: document.getElementById('bankName').value.trim(),
+        bank_account: document.getElementById('bankAccount').value.trim(),
+        bank_ifsc: document.getElementById('bankIFSC').value.trim().toUpperCase(),
+        upi_id: document.getElementById('upiId').value.trim(),
+        razorpay_link: document.getElementById('razorpayLink').value.trim(),
+        updated_at: new Date().toISOString()
+    };
 
     try {
-        await db.collection('settings').doc('config').set({
-            bankName,
-            bankAccount,
-            bankIFSC,
-            upiId,
-            razorpayLink,
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
+        const { error } = await supabase.from('settings').upsert({ id: 'config', ...updates });
+        if (error) throw error;
         showToast('Payment settings saved!', 'success');
-        paymentEditMode = true; // Set to true so toggle flips it to false (view mode)
-        toggleEditPayment();
-        updateLastSavedText('paymentLastSaved', new Date()); // Show "Just now"
+        loadSettings();
+        if (typeof toggleEditPayment === 'function') toggleEditPayment();
     } catch (error) {
-        console.error('Error saving payment settings:', error);
+        console.error('Error saving:', error);
         showToast('Error saving settings', 'error');
     }
 }
 
 // Save Business Settings
 async function saveBusinessSettings() {
-    const businessName = document.getElementById('businessName').value.trim();
-    const businessPhone = document.getElementById('businessPhone').value.trim();
-    const businessAddress = document.getElementById('businessAddress').value.trim();
+    const updates = {
+        business_name: document.getElementById('businessName').value.trim(),
+        business_phone: document.getElementById('businessPhone').value.trim(),
+        business_address: document.getElementById('businessAddress').value.trim(),
+        updated_at: new Date().toISOString()
+    };
 
     try {
-        await db.collection('settings').doc('config').set({
-            businessName,
-            businessPhone,
-            businessAddress,
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
+        const { error } = await supabase.from('settings').upsert({ id: 'config', ...updates });
+        if (error) throw error;
         showToast('Business settings saved!', 'success');
-        businessEditMode = true; // Set to true so toggle flips it to false (view mode)
-        toggleEditBusiness();
+        loadSettings();
+        if (typeof toggleEditBusiness === 'function') toggleEditBusiness();
     } catch (error) {
-        console.error('Error saving business settings:', error);
         showToast('Error saving settings', 'error');
     }
 }
 
-// Render Navigation Settings with Drag to Reorder
-function renderNavigationSettings() {
-    const selectedContainer = document.getElementById('selectedNavItems');
-    const listContainer = document.getElementById('navItemsList');
-
-    // 1. Render Fixed Home (Top)
-    let html = `
-        <div class="sortable-nav-item fixed" style="background: #f8fafc; cursor: default; border: 1px solid #e2e8f0; opacity: 1;">
-            <span class="material-icons drag-handle" style="opacity: 0.3;">lock</span>
-            <span class="material-icons nav-icon">dashboard</span>
-            <span class="nav-label">Home</span>
-            <span style="font-size: 0.75rem; color: #94a3b8; background: #e2e8f0; padding: 2px 8px; border-radius: 4px;">Fixed</span>
-        </div>
-    `;
-
-    // 2. Render Middle Items (Draggable)
-    if (middleNavItems.length === 0) {
-        html += `
-            <div style="text-align: center; padding: 16px; color: #94a3b8; border: 2px dashed #e2e8f0; border-radius: 8px; margin: 8px 0; background: #fff;">
-                <p style="margin: 0; font-size: 0.8rem;">Add 1-2 items here</p>
-            </div>
-        `;
-    } else {
-        html += middleNavItems.map((id, index) => {
-            const item = availableNavItems.find(n => n.id === id);
-            if (!item) return '';
-            return `
-                <div class="sortable-nav-item" draggable="true" data-id="${item.id}" data-index="${index}">
-                    <span class="material-icons drag-handle">drag_indicator</span>
-                    <span class="material-icons nav-icon">${item.icon}</span>
-                    <span class="nav-label">${item.label}</span>
-                    <button class="remove-btn" onclick="removeNavItem('${item.id}')" title="Remove">
-                        <span class="material-icons">close</span>
-                    </button>
-                </div>
-            `;
-        }).join('');
-    }
-
-    // 3. Render Fixed Settings (Bottom)
-    html += `
-        <div class="sortable-nav-item fixed" style="background: #f8fafc; cursor: default; border: 1px solid #e2e8f0; opacity: 1;">
-            <span class="material-icons drag-handle" style="opacity: 0.3;">lock</span>
-            <span class="material-icons nav-icon">settings</span>
-            <span class="nav-label">Settings</span>
-            <span style="font-size: 0.75rem; color: #94a3b8; background: #e2e8f0; padding: 2px 8px; border-radius: 4px;">Fixed</span>
-        </div>
-    `;
-
-    selectedContainer.innerHTML = html;
-
-    // Initialize drag and drop
-    initDragAndDrop();
-
-    // Show available items (not selected)
-    const unselectedItems = availableNavItems.filter(item => !middleNavItems.includes(item.id));
-
-    listContainer.innerHTML = unselectedItems.map(item => {
-        const canAdd = middleNavItems.length < 2;
-
-        return `
-            <div class="nav-item-toggle">
-                <div class="nav-item-info">
-                    <span class="material-icons">${item.icon}</span>
-                    <span>${item.label}</span>
-                </div>
-                <button class="toggle-btn add ${canAdd ? '' : 'disabled'}" 
-                        onclick="${canAdd ? `addNavItem('${item.id}')` : ''}" 
-                        title="${canAdd ? 'Add' : 'Max 2 middle items'}"
-                        ${canAdd ? '' : 'disabled style="opacity: 0.3; cursor: not-allowed;"'}>
-                    <span class="material-icons">add</span>
-                </button>
-            </div>
-        `;
-    }).join('');
+// Reuse existing UI logic (Toggles/Validation)
+let paymentEditMode = false;
+function toggleEditPayment() {
+    paymentEditMode = !paymentEditMode;
+    document.querySelectorAll('#bankNameDisplay, #bankAccountDisplay, #bankIFSCDisplay, #upiIdDisplay, #razorpayLinkDisplay').forEach(el => el.style.display = paymentEditMode ? 'none' : 'inline');
+    document.querySelectorAll('#bankName, #bankAccount, #bankIFSC, #upiId, #razorpayLink').forEach(el => el.style.display = paymentEditMode ? 'block' : 'none');
+    document.getElementById('editPaymentBtn').style.display = paymentEditMode ? 'none' : 'inline-flex';
+    document.getElementById('paymentEditActions').style.display = paymentEditMode ? 'block' : 'none';
 }
 
-// Initialize Drag and Drop
-function initDragAndDrop() {
-    const container = document.getElementById('selectedNavItems');
-    const items = container.querySelectorAll('.sortable-nav-item[draggable="true"]');
-
-    let draggedItem = null;
-
-    items.forEach(item => {
-        item.addEventListener('dragstart', (e) => {
-            draggedItem = item;
-            item.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-        });
-
-        item.addEventListener('dragend', () => {
-            draggedItem.classList.remove('dragging');
-            draggedItem = null;
-            updateNavOrder();
-        });
-
-        item.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            const target = e.target.closest('.sortable-nav-item');
-            // Only allow dropping on other draggable items, not fixed ones
-            if (target && target !== draggedItem && target.getAttribute('draggable') === 'true') {
-                const rect = target.getBoundingClientRect();
-                const midY = rect.top + rect.height / 2;
-                if (e.clientY < midY) {
-                    container.insertBefore(draggedItem, target);
-                } else {
-                    container.insertBefore(draggedItem, target.nextSibling);
-                }
-            }
-        });
-    });
+let businessEditMode = false;
+function toggleEditBusiness() {
+    businessEditMode = !businessEditMode;
+    document.querySelectorAll('#businessNameDisplay, #businessPhoneDisplay, #businessAddressDisplay').forEach(el => el.style.display = businessEditMode ? 'none' : 'inline');
+    document.querySelectorAll('#businessName, #businessPhone, #businessAddress').forEach(el => el.style.display = businessEditMode ? 'block' : 'none');
+    document.getElementById('editBusinessBtn').style.display = businessEditMode ? 'none' : 'inline-flex';
+    document.getElementById('businessEditActions').style.display = businessEditMode ? 'block' : 'none';
 }
 
-// Update nav order after drag
-function updateNavOrder() {
-    const container = document.getElementById('selectedNavItems');
-    const items = container.querySelectorAll('.sortable-nav-item[draggable="true"]');
-    middleNavItems = Array.from(items).map(item => item.dataset.id);
-}
-
-// Add nav item
-function addNavItem(itemId) {
-    if (middleNavItems.length >= 2) {
-        showToast('Maximum 2 middle items allowed', 'error');
-        return;
-    }
-    if (!middleNavItems.includes(itemId)) {
-        middleNavItems.push(itemId);
-        renderNavigationSettings();
-    }
-}
-
-// Remove nav item
-function removeNavItem(itemId) {
-    middleNavItems = middleNavItems.filter(id => id !== itemId);
-    renderNavigationSettings();
-}
-
-// Save Navigation Settings
-async function saveNavigationSettings() {
-    try {
-        // Construct full list: Dashboard -> Middle Items -> Settings
-        const fullNavList = ['dashboard', ...middleNavItems, 'settings'];
-
-        await db.collection('settings').doc('config').set({
-            mobileNavItems: fullNavList,
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
-        showToast('Navigation settings saved!', 'success');
-        // Notify user about update (could trigger refresh if we had sync)
-        if (typeof initializeBottomNav === 'function') initializeBottomNav();
-
-    } catch (error) {
-        console.error('Error saving navigation settings:', error);
-        showToast('Error saving settings', 'error');
-    }
-}
-
-// Toast Notification
-function showToast(message, type = 'success') {
-    const container = document.getElementById('toastContainer');
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.innerHTML = `
-        <span class="material-icons">${type === 'success' ? 'check_circle' : 'error'}</span>
-        <span>${message}</span>
-    `;
-    container.appendChild(toast);
-
-    setTimeout(() => toast.classList.add('show'), 10);
-
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-// Render Subject Codes Banner dynamically
 function renderSubjectCodesBanner() {
-    const bannerContainer = document.getElementById('subjectCodesBanner');
-    if (!bannerContainer) return;
-
-    const codes = window.subjectCodes || subjectCodes;
-    if (!codes) return;
-
-    bannerContainer.innerHTML = Object.entries(codes)
-        .sort((a, b) => {
-            if (a[1] === '99') return 1;
-            if (b[1] === '99') return -1;
-            return a[1].localeCompare(b[1]);
-        })
-        .map(([name, code]) => `
-            <div class="subject-code-item">
-                <span>${name}</span> 
-                <strong>${code}</strong>
-            </div>
-        `).join('');
+    const banner = document.getElementById('subjectCodesBanner');
+    if (!banner || !window.subjectCodes) return;
+    banner.innerHTML = Object.entries(window.subjectCodes).map(([n, c]) => `
+        <div class="subject-code-item"><span>${n}</span> <strong>${c}</strong></div>
+    `).join('');
 }
 
-// Make functions global
+// Globals
 window.savePaymentSettings = savePaymentSettings;
 window.saveBusinessSettings = saveBusinessSettings;
-window.saveNavigationSettings = saveNavigationSettings;
-window.renderSubjectCodesBanner = renderSubjectCodesBanner;
-window.addNavItem = addNavItem;
-window.removeNavItem = removeNavItem;
 window.toggleEditPayment = toggleEditPayment;
-window.cancelEditPayment = cancelEditPayment;
 window.toggleEditBusiness = toggleEditBusiness;
-window.cancelEditBusiness = cancelEditBusiness;
-window.verifyUPI = verifyUPI;
-window.checkIFSC = checkIFSC;
+window.renderSubjectCodesBanner = renderSubjectCodesBanner;

@@ -156,98 +156,6 @@
             background: rgba(239, 68, 68, 0.25);
         }
 
-        .sortable-nav-list {
-            min-height: 60px;
-            background: #f8fafc;
-            border: 2px dashed #e2e8f0;
-            border-radius: var(--radius-lg);
-            padding: 8px;
-            margin-bottom: 8px;
-        }
-
-        .sortable-nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: var(--white);
-            border-radius: var(--radius);
-            margin-bottom: 8px;
-            box-shadow: var(--elevation-1);
-            cursor: grab;
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-
-        .sortable-nav-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .sortable-nav-item:hover {
-            box-shadow: var(--elevation-2);
-        }
-
-        .sortable-nav-item.dragging {
-            opacity: 0.5;
-            cursor: grabbing;
-        }
-
-        .sortable-nav-item .drag-handle {
-            color: #94a3b8;
-            cursor: grab;
-        }
-
-        .sortable-nav-item .nav-icon {
-            color: var(--primary);
-        }
-
-        .sortable-nav-item .nav-label {
-            flex: 1;
-            font-weight: 500;
-        }
-
-        .sortable-nav-item .remove-btn {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(239, 68, 68, 0.1);
-            color: #EF4444;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-
-        .sortable-nav-item .remove-btn:hover {
-            background: rgba(239, 68, 68, 0.2);
-        }
-
-        .sortable-nav-item .remove-btn .material-icons {
-            font-size: 18px;
-        }
-
-        .selected-nav-items .chip {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 12px;
-            background: var(--primary);
-            color: white;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-
-        .selected-nav-items .chip .material-icons {
-            font-size: 16px;
-        }
-
-        .display-value {
-            font-weight: 500;
-            color: var(--gray-800);
-        }
-
         .display-value.empty {
             color: #94a3b8;
             font-style: italic;
@@ -340,10 +248,7 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- Mobile Header -->
-            <div class="mobile-header" style="display: none;">
-                <h1 style="font-size: 1.25rem; font-weight: 600;">Settings</h1>
-                <!-- Logout button moved to bottom of page in Account section -->
-            </div>
+            <div class="mobile-header" style="display: none;"><button class="mobile-menu-toggle" onclick="toggleSidebar()" style="background:none;border:none;color:var(--gray-800);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:8px;margin-right:12px;"><span class="material-icons" style="font-size:24px;">menu</span></button><h1 style="font-size: 1.15rem; font-weight: 600; flex: 1; margin: 0;">Settings</h1></div>
 
             <div class="page-header desktop-only">
                 <div>
@@ -493,34 +398,7 @@
                 </div>
             </div>
 
-            <!-- Mobile Navigation -->
-            <div class="settings-section">
-                <h3><span class="material-icons">phone_android</span> Mobile Navigation</h3>
-                <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 16px;">
-                    Select up to 4 items for mobile bottom bar. Drag to reorder. Click ✕ to remove.
-                </p>
 
-                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px;">
-                    <span class="material-icons" style="font-size: 14px; vertical-align: middle;">drag_indicator</span>
-                    Selected items (drag to reorder):
-                </p>
-                <div class="sortable-nav-list" id="selectedNavItems">
-                    <!-- Populated by JS - draggable items -->
-                </div>
-
-                <p style="font-size: 0.8rem; color: #94a3b8; margin: 16px 0 12px;">
-                    Available items (click + to add):
-                </p>
-                <div id="navItemsList">
-                    <!-- Navigation item toggles -->
-                </div>
-
-                <div style="margin-top: 16px; text-align: right;">
-                    <button class="btn btn-primary" onclick="saveNavigationSettings()">
-                        <span class="material-icons">save</span> Save Navigation
-                    </button>
-                </div>
-            </div>
 
             <!-- Data Maintenance -->
             <div class="settings-section">
@@ -732,17 +610,17 @@
     </div>
 
     <!-- Bottom Navigation - Mobile -->
-    <nav class="bottom-nav"></nav>
+
 
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="js/firebase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    
+    <script src="js/supabase-config.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/settings.js"></script>
     <script src="js/students.js"></script>
