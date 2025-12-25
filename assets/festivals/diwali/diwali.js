@@ -84,7 +84,7 @@
         }
 
         draw() {
-            ctx.globalAlpha = (this.life / 100) * 0.7; // Reduced opacity for website
+            ctx.globalAlpha = (this.life / 100) * 0.5; // More reduced opacity
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
             ctx.fillStyle = this.color;
