@@ -77,7 +77,9 @@
 }
 
 /* Reset & Base */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -426,7 +428,9 @@ body {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Auth Footer */
@@ -810,4 +814,28 @@ body {
     inset: 0;
     background: rgba(255, 255, 255, 0.7);
     border-radius: var(--radius-2xl);
+}
+
+/* Back to Website Link (inside card) */
+.auth-back-link {
+    text-align: center;
+    margin-top: var(--spacing-lg);
+}
+
+.auth-back-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--gray-500);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    transition: var(--transition-base);
+}
+
+.auth-back-link a:hover {
+    color: var(--primary-600);
+    background: var(--primary-50);
 }

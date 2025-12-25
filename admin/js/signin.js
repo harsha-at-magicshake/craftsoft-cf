@@ -1,5 +1,6 @@
 /* ============================================
    Admin Sign-In Logic
+   With session management & security
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,6 +15,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Password toggle
     const togglePassword = document.getElementById('togglePassword');
+
+    // ============================================
+    // SESSION & SECURITY MANAGEMENT
+    // ============================================
+
+    // Prevent back/forward navigation to this page after login
+    function preventBackNavigation() {
+        window.history.pushState(null, '', window.location.href);
+        window.addEventListener('popstate', () => {
+            window.history.pushState(null, '', window.location.href);
+        });
+    }
+
+    // Check if already logged in
+    async function checkExistingSession() {
+        try {
+            const { data: { session } } = await window.supabaseClient.auth.getSession();
+            if (session && session.user) {
+                // User is already logged in, redirect to dashboard
+                window.location.replace('dashboard.html');
+            }
+        } catch (e) {
+            console.log('No existing session');
+        }
+    }
+
+    checkExistingSession();
+
+    // ============================================
+    // PREVENT PASTE ON PASSWORD
+    // ============================================
+
+    passwordInput.addEventListener('paste', (e) => {
+        e.preventDefault();
+        window.toast.warning('Paste Disabled', 'Please type your password manually');
+    });
+
+    // Also prevent drag and drop
+    passwordInput.addEventListener('drop', (e) => {
+        e.preventDefault();
+    });
 
     // ============================================
     // PASSWORD VISIBILITY TOGGLE
@@ -68,17 +110,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
 
     async function getEmailFromAdminId(adminId) {
-        const { data, error } = await window.supabaseClient
-            .from('admins')
-            .select('email')
-            .eq('admin_id', adminId.toUpperCase())
-            .single();
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('admins')
+                .select('email')
+                .eq('admin_id', adminId.toUpperCase())
+                .single();
 
-        if (error || !data) {
+            if (error || !data) {
+                return null;
+            }
+
+            return data.email;
+        } catch (e) {
             return null;
         }
-
-        return data.email;
     }
 
     // ============================================
@@ -95,17 +141,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let isValid = true;
 
         if (!identifier) {
-            showFieldError(identifierInput, 'Email or Admin ID is required');
+            showFieldError(identifierInput, 'This field is required');
             isValid = false;
         }
 
         if (!password) {
-            showFieldError(passwordInput, 'Password is required');
+            showFieldError(passwordInput, 'This field is required');
             isValid = false;
         }
 
         if (!isValid) {
-            window.toast.error('Validation Error', 'Please fill in all required fields');
             return;
         }
 
@@ -121,10 +166,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isAdminId(identifier)) {
                 email = await getEmailFromAdminId(identifier);
                 if (!email) {
-                    throw new Error('Admin ID not found. Please check and try again.');
+                    // Don't reveal that the ID doesn't exist - show generic error
+                    throw new Error('INVALID_CREDENTIALS');
                 }
             } else if (!isEmail(identifier)) {
-                throw new Error('Please enter a valid email address or Admin ID (e.g., ACS-01)');
+                throw new Error('INVALID_CREDENTIALS');
             }
 
             // Sign in with Supabase
@@ -134,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (error) {
-                throw error;
+                throw new Error('INVALID_CREDENTIALS');
             }
 
             // Check if email is verified
@@ -171,29 +217,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 .update({ email_verified: true })
                 .eq('email', email);
 
-            // Success - redirect to dashboard
-            window.toast.success('Welcome!', 'Signed in successfully. Redirecting...');
+            // Success - prevent back navigation and redirect
+            preventBackNavigation();
 
+            window.toast.success('Welcome!', 'Signed in successfully');
+
+            // Use replace to prevent back button returning to login
             setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 1500);
+                window.location.replace('dashboard.html');
+            }, 1000);
 
         } catch (error) {
             console.error('Sign in error:', error);
 
-            let errorMessage = 'Something went wrong. Please try again.';
-
-            if (error.message) {
-                if (error.message.includes('Invalid login credentials')) {
-                    errorMessage = 'Invalid email/ID or password. Please try again.';
-                } else if (error.message.includes('Email not confirmed')) {
-                    errorMessage = 'Please verify your email before signing in.';
-                } else {
-                    errorMessage = error.message;
-                }
-            }
-
-            window.modal.error('Sign In Failed', errorMessage);
+            // Generic error message - don't reveal specific details
+            window.modal.error(
+                'Sign In Failed',
+                'Invalid credentials. Please check your email/ID and password.'
+            );
 
         } finally {
             submitBtn.disabled = false;
