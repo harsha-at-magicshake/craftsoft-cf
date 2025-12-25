@@ -4,177 +4,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Admin Login - Abhi's Craft Soft</title>
+    <title>Maintenance - Abhi's Craft Soft</title>
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Italianno&family=Inter:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/base.css?v=1.5">
-    <link rel="stylesheet" href="css/auth.css?v=1.5">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --dark: #0f172a;
+            --slate: #1e293b;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: var(--text);
+        }
+
+        .background-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(50px);
+            animation: pulse 8s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: translate(-30%, -30%) scale(1);
+            }
+
+            to {
+                transform: translate(30%, 30%) scale(1.2);
+            }
+        }
+
+        .maintenance-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 2rem;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: var(--primary);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        p {
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .gear-container {
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            opacity: 0.1;
+            font-size: 15rem;
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <!-- Header -->
-            <div class="auth-header">
-                <div class="auth-logo">
-                    <div class="auth-logo-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div class="auth-logo-text"><span class="logo-signature">Abhi's</span> <span>Craft Soft</span></div>
-                </div>
-                <h1 class="auth-title">Admin Portal</h1>
-            </div>
-
-            <!-- Alert -->
-            <div id="alertBox" class="alert"></div>
-
-            <!-- Login Form -->
-            <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)" autocomplete="off">
-                <div class="form-group">
-                    <label class="form-label">Email or Employee ID <span class="required">*</span></label>
-                    <input type="text" class="form-input" id="loginId" placeholder="Enter Email or Employee ID" required
-                        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Password <span class="required">*</span></label>
-                    <div class="password-wrapper">
-                        <input type="password" class="form-input" id="password" placeholder="Enter your password"
-                            required autocomplete="new-password" oncopy="return false" onpaste="return false"
-                            oncut="return false">
-                        <button type="button" class="password-toggle" onclick="togglePassword('password', this)">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
-                    <span class="btn-text"><i class="fas fa-sign-in-alt"></i> Sign In</span>
-                    <span class="btn-spinner"></span>
-                </button>
-            </form>
-        </div>
+    <div class="background-blob"></div>
+    <div class="gear-container">
+        <i class="fas fa-cog"></i>
     </div>
 
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase.js?v=1.5"></script>
-    <script src="js/common.js?v=1.5"></script>
-    <script src="js/auth.js?v=1.5"></script>
-    <script>
-        // Check if already logged in
-        document.addEventListener('DOMContentLoaded', function () {
-            checkExistingSession();
-
-            // Check for logout message
-            const logoutMsg = checkLogoutMessage();
-            if (logoutMsg) {
-                showAlert('alertBox', 'error', logoutMsg);
-            }
-        });
-
-        // Check if input is Employee ID format
-        function isEmployeeId(input) {
-            return /^ACS-\d{4}$/i.test(input.trim());
-        }
-
-        // Get email from Employee ID (uses RPC function to bypass RLS)
-        async function getEmailFromEmployeeId(employeeId) {
-            const { data, error } = await window.supabase
-                .rpc('get_email_by_employee_id', { emp_id: employeeId.trim() });
-
-            if (error) {
-                console.error('Employee ID lookup error:', error);
-                return null;
-            }
-
-            return data; // Returns email directly
-        }
-
-        async function handleLogin(e) {
-            e.preventDefault();
-
-            const loginId = document.getElementById('loginId').value.trim();
-            const password = document.getElementById('password').value;
-            const submitBtn = document.getElementById('submitBtn');
-
-            let email = loginId;
-
-            // Check if it's an Employee ID
-            if (isEmployeeId(loginId)) {
-                showAlert('alertBox', 'success', 'Looking up Employee ID...');
-                email = await getEmailFromEmployeeId(loginId);
-
-                if (!email) {
-                    showAlert('alertBox', 'error', 'Employee ID not found');
-                    return;
-                }
-            } else if (!isValidEmail(loginId)) {
-                showAlert('alertBox', 'error', 'Invalid credentials');
-                return;
-            }
-
-            if (password.length < 8) {
-                showAlert('alertBox', 'error', 'Password must be at least 8 characters');
-                return;
-            }
-
-            // Show loading
-            submitBtn.classList.add('btn-loading');
-            submitBtn.disabled = true;
-
-            // Attempt sign in
-            const result = await signIn(email, password);
-
-            if (result.success) {
-                showAlert('alertBox', 'success', 'Login successful! Redirecting...');
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1000);
-            } else {
-                showAlert('alertBox', 'error', result.error || 'Invalid credentials');
-                submitBtn.classList.remove('btn-loading');
-                submitBtn.disabled = false;
-            }
-        }
-
-        async function handleForgotPassword(e) {
-            e.preventDefault();
-            const loginId = document.getElementById('loginId').value.trim();
-
-            if (!loginId) {
-                showAlert('alertBox', 'error', 'Please enter your email or Employee ID first');
-                return;
-            }
-
-            let email = loginId;
-
-            // Check if it's an Employee ID
-            if (isEmployeeId(loginId)) {
-                email = await getEmailFromEmployeeId(loginId);
-                if (!email) {
-                    showAlert('alertBox', 'error', 'Employee ID not found');
-                    return;
-                }
-            } else if (!isValidEmail(loginId)) {
-                showAlert('alertBox', 'error', 'Please enter a valid email or Employee ID');
-                return;
-            }
-
-            const result = await resetPassword(email);
-
-            if (result.success) {
-                showAlert('alertBox', 'success', 'Password reset link sent to your email!');
-            } else {
-                showAlert('alertBox', 'error', result.error || 'Failed to send reset link');
-            }
-        }
-    </script>
+    <div class="maintenance-card">
+        <div class="icon-circle">
+            <i class="fas fa-tools"></i>
+        </div>
+        <h1>System Maintenance</h1>
+        <p>The Admin Dashboard is currently under scheduled maintenance or has been retired. Please check back later or
+            contact the system administrator.</p>
+        <a href="/" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Return Home
+        </a>
+    </div>
 </body>
 
 </html>
