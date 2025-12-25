@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Email Verification | Abhi's Craft Soft</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Italianno&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/admin-auth.css">
+
+    <style>
+        .verify-container {
+            text-align: center;
+            padding: var(--spacing-2xl);
+        }
+
+        .verify-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--spacing-lg);
+            font-size: 2.5rem;
+        }
+
+        .verify-icon.loading {
+            background: var(--info-light);
+            color: var(--info);
+        }
+
+        .verify-icon.success {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .verify-icon.error {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .verify-icon .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-top-color: var(--info);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .verify-title {
+            font-family: var(--font-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .verify-message {
+            color: var(--gray-600);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .verify-admin-id {
+            display: inline-block;
+            background: var(--primary-50);
+            color: var(--primary-700);
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-family: var(--font-primary);
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .verify-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: 0.875rem 1.5rem;
+            background: var(--accent-gradient);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-family: var(--font-primary);
+            transition: var(--transition-base);
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-page">
+        <!-- Header -->
+        <header class="auth-header">
+            <a href="../index.html" class="auth-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <span class="logo-text">
+                    <span class="logo-signature">Abhi's</span>
+                    <span class="highlight">Craft Soft</span>
+                </span>
+            </a>
+        </header>
+
+        <!-- Main Content -->
+        <main class="auth-main">
+            <div class="auth-card">
+                <div class="verify-container" id="verifyContainer">
+                    <div class="verify-icon loading" id="verifyIcon">
+                        <div class="spinner"></div>
+                    </div>
+                    <h1 class="verify-title" id="verifyTitle">Verifying Email...</h1>
+                    <p class="verify-message" id="verifyMessage">Please wait while we verify your email address.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="auth-footer">
+            <p>&copy; 2024 Abhi's Craft Soft. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('verifyContainer');
+            const icon = document.getElementById('verifyIcon');
+            const title = document.getElementById('verifyTitle');
+            const message = document.getElementById('verifyMessage');
+
+            try {
+                // Get the hash from URL (Supabase puts tokens in hash)
+                const hashParams = new URLSearchParams(window.location.hash.substring(1));
+                const accessToken = hashParams.get('access_token');
+                const type = hashParams.get('type');
+
+                if (type === 'signup' || type === 'email' || accessToken) {
+                    // Get the session
+                    const { data: { session }, error: sessionError } = await window.supabaseClient.auth.getSession();
+
+                    if (sessionError) throw sessionError;
+
+                    if (session && session.user) {
+                        // Update email_verified status in admins table
+                        const { error: updateError } = await window.supabaseClient
+                            .from('admins')
+                            .update({ email_verified: true })
+                            .eq('id', session.user.id);
+
+                        // Get admin details
+                        const { data: adminData } = await window.supabaseClient
+                            .from('admins')
+                            .select('admin_id, full_name')
+                            .eq('id', session.user.id)
+                            .single();
+
+                        // Sign out (they need to sign in fresh)
+                        await window.supabaseClient.auth.signOut();
+
+                        // Show success
+                        icon.className = 'verify-icon success';
+                        icon.innerHTML = '<i class="fas fa-check"></i>';
+                        title.textContent = 'Email Verified!';
+
+                        const adminId = adminData?.admin_id || 'Unknown';
+                        const fullName = adminData?.full_name || 'Admin';
+
+                        message.innerHTML = `
+                            <p>Welcome, <strong>${fullName}</strong>!</p>
+                            <p style="margin-top: 0.5rem;">Your email has been verified successfully.</p>
+                            <div class="verify-admin-id">${adminId}</div>
+                            <p>You can now sign in using your email or Admin ID.</p>
+                        `;
+
+                        container.innerHTML += `
+                            <a href="signin.html" class="verify-btn">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Go to Sign In
+                            </a>
+                        `;
+                    } else {
+                        throw new Error('No session found. The verification link may have expired.');
+                    }
+                } else {
+                    throw new Error('Invalid verification link.');
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+
+                icon.className = 'verify-icon error';
+                icon.innerHTML = '<i class="fas fa-times"></i>';
+                title.textContent = 'Verification Failed';
+                message.innerHTML = `
+                    <p>${error.message || 'Something went wrong during verification.'}</p>
+                    <p style="margin-top: 1rem;">Please try signing in or contact support.</p>
+                `;
+
+                container.innerHTML += `
+                    <a href="signin.html" class="verify-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Go to Sign In
+                    </a>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>

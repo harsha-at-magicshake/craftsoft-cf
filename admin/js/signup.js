@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         admin_id: adminId,
                         phone: phone || null
                     },
-                    emailRedirectTo: `${window.location.origin}/admin/signin.html`
+                    emailRedirectTo: `${window.location.origin}/admin/verify.html`
                 }
             });
 
