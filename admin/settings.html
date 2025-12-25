@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Settings - Abhi's Craft Soft Admin</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Italianno&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/base.css?v=1.5">
+    <link rel="stylesheet" href="css/layout.css?v=1.5">
+    <link rel="stylesheet" href="css/components.css?v=1.5">
+    <link rel="stylesheet" href="css/pages.css?v=1.5">
+</head>
+
+<body>
+    <div class="admin-layout" id="adminLayout" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Craftsoft</span>
+                </a>
+                <button class="sidebar-close" id="sidebarClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="sidebar-link">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="students/index.html" class="sidebar-link">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Students</span>
+                </a>
+                <a href="students/add.html" class="sidebar-sublink">
+                    <span class="sublink-line"></span>
+                    <span>Add Student</span>
+                </a>
+                <a href="students/payments.html" class="sidebar-sublink">
+                    <span class="sublink-line"></span>
+                    <span>Payments</span>
+                </a>
+                <a href="students/receipts.html" class="sidebar-sublink">
+                    <span class="sublink-line"></span>
+                    <span>Receipts</span>
+                </a>
+                <a href="#" class="sidebar-link disabled" title="Coming Soon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Tutors</span>
+                    <span class="badge-soon">Soon</span>
+                </a>
+                <a href="#" class="sidebar-link disabled" title="Coming Soon">
+                    <i class="fas fa-envelope"></i>
+                    <span>Inquiries</span>
+                    <span class="badge-soon">Soon</span>
+                </a>
+                <div class="sidebar-divider"></div>
+                <a href="settings.html" class="sidebar-link active">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="sidebar-link" onclick="showLogoutModal()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Top Bar -->
+            <header class="admin-topbar">
+                <button class="hamburger-btn" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title">Settings</h1>
+            </header>
+
+            <!-- Content Area -->
+            <main class="admin-content">
+                <div class="settings-container">
+                    <div class="settings-tabs">
+                        <button class="settings-tab active" data-tab="institute">Institute Information</button>
+                        <button class="settings-tab" data-tab="discounts">Discount Rules</button>
+                    </div>
+
+                    <div class="settings-content">
+                        <!-- Institute Panel -->
+                        <div class="tab-panel active" id="institutePanel">
+                            <form id="instituteForm">
+                                <div class="settings-grid">
+                                    <div class="form-group">
+                                        <label>Institute Name</label>
+                                        <input type="text" id="inst_name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tagline</label>
+                                        <input type="text" id="inst_tagline">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Contact Phone</label>
+                                        <input type="text" id="inst_phone" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email Address</label>
+                                        <input type="email" id="inst_email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Website URL</label>
+                                        <input type="text" id="inst_website">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label>Office Address</label>
+                                        <textarea id="inst_address" rows="3" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-actions" style="margin-top: 24px; padding: 0;">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Save Institute Details
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Discounts Panel -->
+                        <div class="tab-panel" id="discountsPanel">
+                            <div class="rule-header">
+                                <h3>Manage Discount Rules</h3>
+                                <button class="btn btn-primary btn-sm" id="addDiscountBtn">
+                                    + Add New Rule
+                                </button>
+                            </div>
+                            <div class="data-table-card">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Rule Name</th>
+                                            <th>Type</th>
+                                            <th>Value</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="discountsTableBody">
+                                        <!-- Loaded via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    </div>
+
+    <!-- Discount Rule Modal -->
+    <div class="modal-overlay" id="discountModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="discountModalTitle">Add Discount Rule</h2>
+                <button class="modal-close" onclick="hideDiscountModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="discountForm" onsubmit="handleDiscountSubmit(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Rule Key (e.g. early_bird) <span class="required">*</span></label>
+                        <input type="text" id="disc_name" placeholder="lowercase_with_underscores" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Display Name (e.g. Early Bird) <span class="required">*</span></label>
+                        <input type="text" id="disc_display_name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Discount Type</label>
+                            <select id="disc_type">
+                                <option value="percentage">Percentage (%)</option>
+                                <option value="fixed">Fixed Amount (₹)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Value</label>
+                            <input type="number" id="disc_value" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px; display: flex;">
+                        <input type="checkbox" id="disc_active" style="width: auto; height: auto;">
+                        <label for="disc_active" style="margin: 0;">Is Active</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" onclick="hideDiscountModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Rule</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal-overlay" id="logoutModal">
+        <div class="modal-content">
+            <div class="modal-icon"><i class="fas fa-sign-out-alt"></i></div>
+            <h2 class="modal-title">Sign Out?</h2>
+            <p class="modal-text">Are you sure you want to sign out?</p>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="hideLogoutModal()">Cancel</button>
+                <button class="btn btn-danger" onclick="confirmLogout()">Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js?v=1.5"></script>
+    <script src="js/common.js?v=1.5"></script>
+    <script src="js/auth.js?v=1.5"></script>
+    <script src="js/settings.js?v=1.5"></script>
+</body>
+
+</html>
