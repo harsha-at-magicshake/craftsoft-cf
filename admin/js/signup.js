@@ -142,32 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.value = e.target.value.replace(/[^0-9]/g, '');
         clearFieldState(phoneInput);
     });
-
-    // ============================================
-    // GENERATE ADMIN ID
-    // ============================================
-
-    async function generateAdminId() {
-        try {
-            // Get count of existing admins
-            const { data, error, count } = await window.supabaseClient
-                .from('admins')
-                .select('*', { count: 'exact', head: true });
-
-            if (error) {
-                console.error('Error getting admin count:', error);
-                // Default to ACS-01 if error
-                return 'ACS-01';
-            }
-
-            const nextNumber = (count || 0) + 1;
-            return `ACS-${String(nextNumber).padStart(2, '0')}`;
-        } catch (err) {
-            console.error('Error generating admin ID:', err);
-            return 'ACS-01';
-        }
-    }
-
     // ============================================
     // FORM SUBMISSION
     // ============================================
@@ -227,18 +201,19 @@ document.addEventListener('DOMContentLoaded', () => {
         submitSpinner.style.display = 'block';
 
         try {
-            // Generate Admin ID
-            const adminId = await generateAdminId();
             const fullName = `${firstName} ${lastName}`;
 
             // Sign up with Supabase Auth
+            // The database trigger will automatically:
+            // 1. Generate a unique Admin ID (ACS-01, ACS-02, etc.)
+            // 2. Create the admin record in the admins table
             const { data: authData, error: authError } = await window.supabaseClient.auth.signUp({
                 email: email,
                 password: password,
                 options: {
                     data: {
                         full_name: fullName,
-                        admin_id: adminId,
+                        admin_id: 'pending', // Will be replaced by trigger
                         phone: phone || null
                     },
                     emailRedirectTo: `${window.location.origin}/admin/verify.html`
@@ -249,22 +224,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw authError;
             }
 
-            // Insert into admins table
-            const { error: dbError } = await window.supabaseClient
-                .from('admins')
-                .insert({
-                    id: authData.user.id,
-                    admin_id: adminId,
-                    full_name: fullName,
-                    email: email,
-                    phone: phone || null,
-                    email_verified: false,
-                    created_at: new Date().toISOString()
-                });
+            // Wait a moment for trigger to complete, then fetch the assigned admin ID
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
-            if (dbError) {
-                console.error('Database error:', dbError);
-                // Don't throw - auth was successful, we can handle DB issues later
+            // Get the admin ID from the database
+            let adminId = 'Your ID';
+            try {
+                const { data: adminData } = await window.supabaseClient
+                    .from('admins')
+                    .select('admin_id')
+                    .eq('email', email)
+                    .single();
+
+                if (adminData) {
+                    adminId = adminData.admin_id;
+                }
+            } catch (e) {
+                console.log('Could not fetch admin ID immediately');
             }
 
             // Success!
