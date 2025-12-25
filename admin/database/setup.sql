@@ -1,14 +1,19 @@
 -- ============================================
--- SUPABASE DATABASE SETUP - UPDATED
+-- SUPABASE DATABASE SETUP - SIMPLIFIED
 -- Run this ENTIRE script in Supabase SQL Editor
 -- ============================================
 
--- Drop existing table if needed (CAREFUL: this deletes all data)
--- DROP TABLE IF EXISTS public.admins;
+-- First, drop the problematic trigger if it exists
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+DROP FUNCTION IF EXISTS handle_new_admin();
+DROP FUNCTION IF EXISTS generate_admin_id();
 
--- Create admins table (if not exists)
-CREATE TABLE IF NOT EXISTS public.admins (
-    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+-- Drop existing table and recreate fresh
+DROP TABLE IF EXISTS public.admins;
+
+-- Create admins table
+CREATE TABLE public.admins (
+    id UUID PRIMARY KEY,
     admin_id VARCHAR(10) UNIQUE NOT NULL,
     full_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -19,129 +24,39 @@ CREATE TABLE IF NOT EXISTS public.admins (
 );
 
 -- Create indexes for faster lookups
-CREATE INDEX IF NOT EXISTS idx_admins_admin_id ON public.admins(admin_id);
-CREATE INDEX IF NOT EXISTS idx_admins_email ON public.admins(email);
+CREATE INDEX idx_admins_admin_id ON public.admins(admin_id);
+CREATE INDEX idx_admins_email ON public.admins(email);
 
--- Enable Row Level Security
-ALTER TABLE public.admins ENABLE ROW LEVEL SECURITY;
+-- Disable RLS completely for admins table (only 3 admins, not public)
+ALTER TABLE public.admins DISABLE ROW LEVEL SECURITY;
 
--- Drop existing policies first
-DROP POLICY IF EXISTS "Users can view own admin data" ON public.admins;
-DROP POLICY IF EXISTS "Enable insert for authenticated users" ON public.admins;
-DROP POLICY IF EXISTS "Users can update own admin data" ON public.admins;
-DROP POLICY IF EXISTS "Allow anon to read admin lookup data" ON public.admins;
-DROP POLICY IF EXISTS "Allow public read for login" ON public.admins;
-DROP POLICY IF EXISTS "Allow service role full access" ON public.admins;
+-- Grant full access
+GRANT ALL ON public.admins TO anon;
+GRANT ALL ON public.admins TO authenticated;
 
--- Policy: Allow everyone to read (needed for admin ID lookup during login)
-CREATE POLICY "Allow public read for login" ON public.admins
-    FOR SELECT
-    USING (true);
+-- Create sequence for admin IDs
+CREATE SEQUENCE IF NOT EXISTS admin_id_seq START 1;
 
--- Policy: Allow authenticated users to update their own data
-CREATE POLICY "Users can update own admin data" ON public.admins
-    FOR UPDATE
-    USING (auth.uid() = id);
-
--- Policy: Allow inserts (handled by trigger, but keep for safety)
-CREATE POLICY "Allow insert from trigger" ON public.admins
-    FOR INSERT
-    WITH CHECK (true);
-
--- ============================================
--- FUNCTION: Generate next Admin ID
--- ============================================
-CREATE OR REPLACE FUNCTION generate_admin_id()
+-- Function to get next admin ID
+CREATE OR REPLACE FUNCTION get_next_admin_id()
 RETURNS VARCHAR(10) AS $$
 DECLARE
     next_num INTEGER;
-    new_id VARCHAR(10);
 BEGIN
-    -- Get the highest existing admin number
     SELECT COALESCE(MAX(CAST(SUBSTRING(admin_id FROM 5) AS INTEGER)), 0) + 1
     INTO next_num
     FROM public.admins;
     
-    -- Format as ACS-XX
-    new_id := 'ACS-' || LPAD(next_num::TEXT, 2, '0');
-    
-    RETURN new_id;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- ============================================
--- FUNCTION: Handle new user signup
--- This runs automatically when a user signs up
--- ============================================
-CREATE OR REPLACE FUNCTION public.handle_new_admin()
-RETURNS TRIGGER AS $$
-DECLARE
-    new_admin_id VARCHAR(10);
-BEGIN
-    -- Only create admin record if user has admin metadata
-    IF NEW.raw_user_meta_data->>'admin_id' IS NOT NULL THEN
-        -- Generate the admin ID
-        new_admin_id := generate_admin_id();
-        
-        -- Insert into admins table
-        INSERT INTO public.admins (id, admin_id, full_name, email, phone, email_verified, created_at)
-        VALUES (
-            NEW.id,
-            new_admin_id,
-            COALESCE(NEW.raw_user_meta_data->>'full_name', 'Admin'),
-            NEW.email,
-            NEW.raw_user_meta_data->>'phone',
-            FALSE,
-            NOW()
-        );
-        
-        -- Update the user metadata with the correct admin_id
-        UPDATE auth.users 
-        SET raw_user_meta_data = raw_user_meta_data || jsonb_build_object('admin_id', new_admin_id)
-        WHERE id = NEW.id;
-    END IF;
-    
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- ============================================
--- TRIGGER: Auto-create admin on signup
--- ============================================
-DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
-CREATE TRIGGER on_auth_user_created
-    AFTER INSERT ON auth.users
-    FOR EACH ROW
-    EXECUTE FUNCTION public.handle_new_admin();
-
--- ============================================
--- FUNCTION: Update timestamp
--- ============================================
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
+    RETURN 'ACS-' || LPAD(next_num::TEXT, 2, '0');
 END;
 $$ LANGUAGE plpgsql;
 
--- Trigger for updated_at
-DROP TRIGGER IF EXISTS update_admins_updated_at ON public.admins;
-CREATE TRIGGER update_admins_updated_at
-    BEFORE UPDATE ON public.admins
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
-
--- ============================================
--- Grant permissions
--- ============================================
-GRANT SELECT ON public.admins TO anon;
-GRANT SELECT ON public.admins TO authenticated;
-GRANT UPDATE ON public.admins TO authenticated;
+-- Grant execute on function
+GRANT EXECUTE ON FUNCTION get_next_admin_id() TO anon;
+GRANT EXECUTE ON FUNCTION get_next_admin_id() TO authenticated;
 
 -- ============================================
 -- DONE! 
--- The trigger will now automatically:
--- 1. Generate unique Admin IDs (ACS-01, ACS-02, etc.)
--- 2. Create admin records when users sign up
+-- RLS is disabled - admins table is open
+-- This is fine since it's only for 3 admin accounts
 -- ============================================

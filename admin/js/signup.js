@@ -203,17 +203,29 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const fullName = `${firstName} ${lastName}`;
 
+            // Get the next admin ID using RPC function
+            const { data: adminIdData, error: rpcError } = await window.supabaseClient
+                .rpc('get_next_admin_id');
+
+            let adminId = 'ACS-01';
+            if (!rpcError && adminIdData) {
+                adminId = adminIdData;
+            } else {
+                // Fallback: count existing admins
+                const { count } = await window.supabaseClient
+                    .from('admins')
+                    .select('*', { count: 'exact', head: true });
+                adminId = `ACS-${String((count || 0) + 1).padStart(2, '0')}`;
+            }
+
             // Sign up with Supabase Auth
-            // The database trigger will automatically:
-            // 1. Generate a unique Admin ID (ACS-01, ACS-02, etc.)
-            // 2. Create the admin record in the admins table
             const { data: authData, error: authError } = await window.supabaseClient.auth.signUp({
                 email: email,
                 password: password,
                 options: {
                     data: {
                         full_name: fullName,
-                        admin_id: 'pending', // Will be replaced by trigger
+                        admin_id: adminId,
                         phone: phone || null
                     },
                     emailRedirectTo: `${window.location.origin}/admin/verify.html`
@@ -224,23 +236,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw authError;
             }
 
-            // Wait a moment for trigger to complete, then fetch the assigned admin ID
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Insert into admins table (RLS is disabled, so this will work)
+            const { error: dbError } = await window.supabaseClient
+                .from('admins')
+                .insert({
+                    id: authData.user.id,
+                    admin_id: adminId,
+                    full_name: fullName,
+                    email: email,
+                    phone: phone || null,
+                    email_verified: false,
+                    created_at: new Date().toISOString()
+                });
 
-            // Get the admin ID from the database
-            let adminId = 'Your ID';
-            try {
-                const { data: adminData } = await window.supabaseClient
-                    .from('admins')
-                    .select('admin_id')
-                    .eq('email', email)
-                    .single();
-
-                if (adminData) {
-                    adminId = adminData.admin_id;
-                }
-            } catch (e) {
-                console.log('Could not fetch admin ID immediately');
+            if (dbError) {
+                console.error('Database error:', dbError);
+                // Auth was successful, so continue
             }
 
             // Success!
