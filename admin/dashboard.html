@@ -10,52 +10,150 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Italianno&family=Inter:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Italianno&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/admin.css">
 </head>
 
 <body>
-    <div class="dashboard-container" id="dashboardContainer" style="display: none;">
-        <!-- Header -->
-        <header class="dashboard-header">
-            <div class="dashboard-logo">
-                <i class="fas fa-graduation-cap"></i>
-                <span>Craftsoft Admin</span>
-            </div>
-            <div class="dashboard-user">
-                <div class="user-info">
-                    <div class="user-name" id="userName">Loading...</div>
-                    <div class="user-id" id="userEmployeeId">-</div>
-                </div>
-                <button class="btn btn-logout" onclick="showLogoutModal()">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+    <div class="admin-layout" id="adminLayout" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Craftsoft</span>
+                </a>
+                <button class="sidebar-close" id="sidebarClose">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
-        </header>
-
-        <!-- Content -->
-        <main class="dashboard-content">
-            <div class="welcome-card">
-                <div class="welcome-icon">👋</div>
-                <h1>Welcome, <span id="welcomeName">Admin</span>!</h1>
-
-                <div class="welcome-details">
-                    <p><i class="fas fa-id-badge"></i> <span id="displayEmployeeId">-</span></p>
-                    <p><i class="fas fa-envelope"></i> <span id="displayEmail">-</span></p>
-                </div>
-
-                <div class="welcome-status">
-                    <i class="fas fa-check-circle"></i>
-                    You are logged in successfully
-                </div>
-
-                <div class="coming-soon">
-                    <i class="fas fa-tools"></i> Full dashboard coming soon...
-                </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="sidebar-link active">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="students.html" class="sidebar-link">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Students</span>
+                </a>
+                <a href="#" class="sidebar-link disabled" title="Coming Soon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Tutors</span>
+                    <span class="badge-soon">Soon</span>
+                </a>
+                <a href="#" class="sidebar-link disabled" title="Coming Soon">
+                    <i class="fas fa-envelope"></i>
+                    <span>Inquiries</span>
+                    <span class="badge-soon">Soon</span>
+                </a>
+                <div class="sidebar-divider"></div>
+                <a href="#" class="sidebar-link disabled" title="Coming Soon">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                    <span class="badge-soon">Soon</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="sidebar-link" onclick="showLogoutModal()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
             </div>
-        </main>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Top Bar -->
+            <header class="admin-topbar">
+                <button class="hamburger-btn" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title">Dashboard</h1>
+                <div class="topbar-user">
+                    <span id="userName">Admin</span>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="admin-content">
+                <!-- Welcome Card -->
+                <div class="dashboard-welcome">
+                    <div class="welcome-icon">👋</div>
+                    <div class="welcome-text">
+                        <h2>Welcome back, <span id="welcomeName">Admin</span>!</h2>
+                        <p>Here's an overview of your institute</p>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--accent-gradient);">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalStudents">0</h3>
+                            <p>Total Students</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--accent-gradient-2);">
+                            <i class="fas fa-rupee-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalCollected">₹0</h3>
+                            <p>Fee Collected</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingFees">₹0</h3>
+                            <p>Pending Fees</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #6C5CE7 0%, #A855F7 100%);">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="activeCourses">0</h3>
+                            <p>Active Courses</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="actions-grid">
+                        <a href="add-student.html" class="action-card">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Add Student</span>
+                        </a>
+                        <a href="students.html" class="action-card">
+                            <i class="fas fa-users"></i>
+                            <span>View Students</span>
+                        </a>
+                        <a href="#" class="action-card disabled">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>Receipts</span>
+                        </a>
+                        <a href="#" class="action-card disabled">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reports</span>
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
     </div>
 
     <!-- Logout Modal -->
@@ -102,24 +200,87 @@
             const profile = await getAdminProfile(session.user.id);
 
             if (profile) {
-                // Update UI
                 const fullName = `${profile.first_name} ${profile.last_name}`;
                 document.getElementById('userName').textContent = fullName;
-                document.getElementById('userEmployeeId').textContent = profile.employee_id;
                 document.getElementById('welcomeName').textContent = profile.first_name;
-                document.getElementById('displayEmployeeId').textContent = profile.employee_id;
-                document.getElementById('displayEmail').textContent = profile.email;
             } else {
-                // No profile yet (might be newly signed up)
                 const email = session.user.email;
                 document.getElementById('userName').textContent = email;
                 document.getElementById('welcomeName').textContent = 'Admin';
-                document.getElementById('displayEmail').textContent = email;
             }
+
+            // Load stats
+            await loadDashboardStats();
 
             // Show dashboard, hide loading
             document.getElementById('loadingState').style.display = 'none';
-            document.getElementById('dashboardContainer').style.display = 'flex';
+            document.getElementById('adminLayout').style.display = 'flex';
+
+            // Setup sidebar
+            setupSidebar();
+        }
+
+        async function loadDashboardStats() {
+            try {
+                // Get student count
+                const { count: studentCount } = await supabase
+                    .from('students')
+                    .select('*', { count: 'exact', head: true });
+
+                document.getElementById('totalStudents').textContent = studentCount || 0;
+
+                // Get payment stats
+                const { data: payments } = await supabase
+                    .from('fee_payments')
+                    .select('amount');
+
+                const totalCollected = payments?.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0) || 0;
+                document.getElementById('totalCollected').textContent = '₹' + formatNumber(totalCollected);
+
+                // Get pending fees from enrollments
+                const { data: enrollments } = await supabase
+                    .from('student_enrollments')
+                    .select('final_fee');
+
+                const totalFees = enrollments?.reduce((sum, e) => sum + parseFloat(e.final_fee || 0), 0) || 0;
+                const pending = totalFees - totalCollected;
+                document.getElementById('pendingFees').textContent = '₹' + formatNumber(pending > 0 ? pending : 0);
+
+                // Get course count
+                const { count: courseCount } = await supabase
+                    .from('courses')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('is_active', true);
+
+                document.getElementById('activeCourses').textContent = courseCount || 0;
+
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-IN').format(num);
+        }
+
+        function setupSidebar() {
+            const sidebar = document.getElementById('adminSidebar');
+            const toggle = document.getElementById('sidebarToggle');
+            const close = document.getElementById('sidebarClose');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            toggle.addEventListener('click', () => {
+                sidebar.classList.add('open');
+                overlay.classList.add('show');
+            });
+
+            close.addEventListener('click', closeSidebar);
+            overlay.addEventListener('click', closeSidebar);
+
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('show');
+            }
         }
 
         // Logout Modal Functions
