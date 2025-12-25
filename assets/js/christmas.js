@@ -20,7 +20,6 @@
 
     // Don't run if not Christmas season
     if (!isChristmasSeason()) {
-        console.log('❄️ Not Christmas season. Snowfall inactive.');
         return;
     }
 
@@ -29,7 +28,6 @@
         return;
     }
 
-    console.log('🎄 Merry Christmas! Snowfall activated.');
 
     // Load CSS
     const link = document.createElement('link');

@@ -706,5 +706,3 @@ function initChatWidget() {
         }
     });
 }
-
-console.log('Abhi\'s Craft Soft website initialized successfully! 🚀');
