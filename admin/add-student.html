@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Add Student - Abhi's Craft Soft Admin</title>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Italianno&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout" id="adminLayout" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Craftsoft</span>
+                </a>
+                <button class="sidebar-close" id="sidebarClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="sidebar-link">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="students.html" class="sidebar-link active">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Students</span>
+                </a>
+                <a href="#" class="sidebar-link disabled">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Tutors</span>
+                    <span class="badge-soon">Soon</span>
+                </a>
+                <a href="#" class="sidebar-link disabled">
+                    <i class="fas fa-envelope"></i>
+                    <span>Inquiries</span>
+                    <span class="badge-soon">Soon</span>
+                </a>
+                <div class="sidebar-divider"></div>
+                <a href="#" class="sidebar-link disabled">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                    <span class="badge-soon">Soon</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="sidebar-link" onclick="showLogoutModal()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Top Bar -->
+            <header class="admin-topbar">
+                <button class="hamburger-btn" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="students.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Students</span>
+                </a>
+                <h1 class="page-title" id="pageTitle">Add Student</h1>
+                <div class="topbar-actions">
+                    <button class="btn btn-primary btn-sm" onclick="saveStudent()">
+                        <i class="fas fa-save"></i>
+                        <span class="btn-text">Save</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="admin-content">
+                <form id="studentForm" class="student-form">
+                    <!-- Section 1: Personal Details -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-user"></i>
+                            Personal Details
+                        </h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="name">Full Name <span class="required">*</span></label>
+                                <input type="text" id="name" name="name" placeholder="Enter student's full name"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number <span class="required">*</span></label>
+                                <div class="input-with-prefix">
+                                    <span class="prefix">+91</span>
+                                    <input type="tel" id="phone" name="phone" placeholder="10-digit number"
+                                        maxlength="10" pattern="[0-9]{10}" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="student@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" id="dob" name="dob">
+                            </div>
+                        </div>
+
+                        <!-- Address Fields -->
+                        <div class="form-grid form-grid-4">
+                            <div class="form-group">
+                                <label for="addressLine1">Address Line 1</label>
+                                <input type="text" id="addressLine1" name="addressLine1"
+                                    placeholder="House/Flat No, Street">
+                            </div>
+                            <div class="form-group">
+                                <label for="addressLine2">Address Line 2</label>
+                                <input type="text" id="addressLine2" name="addressLine2" placeholder="Area, Landmark">
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" name="city" placeholder="City">
+                            </div>
+                            <div class="form-group">
+                                <label for="pincode">Pincode</label>
+                                <input type="text" id="pincode" name="pincode" placeholder="500070" maxlength="6">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Course Enrollment -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-book"></i>
+                            Course Enrollment
+                        </h3>
+
+                        <div id="coursesContainer">
+                            <!-- Course cards will be added here -->
+                        </div>
+
+                        <button type="button" class="btn btn-outline btn-add-course" onclick="addCourseCard()">
+                            <i class="fas fa-plus"></i>
+                            Add Course
+                        </button>
+                    </div>
+
+                    <!-- Section 3: Fee Summary -->
+                    <div class="form-section fee-summary-section" id="feeSummarySection" style="display: none;">
+                        <h3 class="section-title">
+                            <i class="fas fa-receipt"></i>
+                            Fee Summary
+                        </h3>
+                        <div class="fee-summary">
+                            <div class="fee-row">
+                                <span>Total Base Fee:</span>
+                                <span id="totalBaseFee">₹0</span>
+                            </div>
+                            <div class="fee-row discount">
+                                <span>Total Discount:</span>
+                                <span id="totalDiscount">-₹0</span>
+                            </div>
+                            <div class="fee-row total">
+                                <span>Final Amount:</span>
+                                <span id="finalAmount">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <a href="students.html" class="btn btn-cancel">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Student
+                        </button>
+                    </div>
+                </form>
+            </main>
+        </div>
+
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    </div>
+
+    <!-- Course Card Template -->
+    <template id="courseCardTemplate">
+        <div class="course-card" data-index="">
+            <div class="course-card-header">
+                <span class="course-number">Course 1</span>
+                <button type="button" class="btn-remove" onclick="removeCourseCard(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="course-card-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Select Course <span class="required">*</span></label>
+                        <select class="course-select" onchange="onCourseChange(this)" required>
+                            <option value="">Choose a course...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Course Fee</label>
+                        <div class="input-with-prefix">
+                            <span class="prefix">₹</span>
+                            <input type="number" class="course-fee" placeholder="0" onchange="calculateFees()">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Discount Type</label>
+                        <select class="discount-type" onchange="onDiscountTypeChange(this)">
+                            <option value="none">No Discount</option>
+                            <option value="early_bird">Early Bird (10%)</option>
+                            <option value="referral">Referral (5%)</option>
+                            <option value="sibling">Sibling (15%)</option>
+                            <option value="manual">Manual Amount</option>
+                        </select>
+                    </div>
+                    <div class="form-group manual-discount-group" style="display: none;">
+                        <label>Manual Discount</label>
+                        <div class="input-with-prefix">
+                            <span class="prefix">₹</span>
+                            <input type="number" class="manual-discount" placeholder="0" onchange="calculateFees()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Final Fee</label>
+                        <div class="final-fee-display">₹0</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Assign Tutor (Optional)</label>
+                    <input type="text" class="tutor-name" placeholder="Tutor name">
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Logout Modal -->
+    <div class="modal-overlay" id="logoutModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <h2 class="modal-title">Sign Out?</h2>
+            <p class="modal-text">Are you sure you want to sign out?</p>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="hideLogoutModal()">Cancel</button>
+                <button class="btn btn-danger" onclick="confirmLogout()">Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="auth-container" id="loadingState">
+        <div class="auth-card" style="text-align: center;">
+            <div class="btn-spinner" style="display: inline-block; width: 40px; height: 40px; margin-bottom: 16px;">
+            </div>
+            <p style="color: var(--gray-500);">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/add-student.js"></script>
+</body>
+
+</html>
