@@ -1,0 +1,226 @@
+/* ============================================
+   CHRISTMAS SNOWFALL EFFECT 2024
+   Active until: January 1st, 2025 23:59 IST
+   ============================================ */
+
+/* Snowfall Container */
+.snowfall {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* Individual Snowflake */
+.snowflake {
+    position: absolute;
+    top: -20px;
+    color: rgba(200, 220, 255, 0.9);
+    font-size: 1rem;
+    text-shadow: 0 0 5px rgba(150, 180, 255, 0.5);
+    animation: snowfall linear infinite;
+    opacity: 0;
+}
+
+/* Snowfall Animation */
+@keyframes snowfall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Gentle Sway Animation */
+@keyframes sway {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(20px);
+    }
+}
+
+/* Snowflake Variations - Position & Timing */
+.snowflake:nth-child(1) {
+    left: 5%;
+    animation-duration: 8s;
+    animation-delay: 0s;
+    font-size: 0.8rem;
+}
+
+.snowflake:nth-child(2) {
+    left: 10%;
+    animation-duration: 12s;
+    animation-delay: 1s;
+    font-size: 1.2rem;
+}
+
+.snowflake:nth-child(3) {
+    left: 15%;
+    animation-duration: 9s;
+    animation-delay: 2s;
+    font-size: 0.9rem;
+}
+
+.snowflake:nth-child(4) {
+    left: 20%;
+    animation-duration: 11s;
+    animation-delay: 0.5s;
+    font-size: 1rem;
+}
+
+.snowflake:nth-child(5) {
+    left: 25%;
+    animation-duration: 10s;
+    animation-delay: 3s;
+    font-size: 0.7rem;
+}
+
+.snowflake:nth-child(6) {
+    left: 30%;
+    animation-duration: 8s;
+    animation-delay: 1.5s;
+    font-size: 1.1rem;
+}
+
+.snowflake:nth-child(7) {
+    left: 35%;
+    animation-duration: 13s;
+    animation-delay: 2.5s;
+    font-size: 0.8rem;
+}
+
+.snowflake:nth-child(8) {
+    left: 40%;
+    animation-duration: 9s;
+    animation-delay: 4s;
+    font-size: 1rem;
+}
+
+.snowflake:nth-child(9) {
+    left: 45%;
+    animation-duration: 11s;
+    animation-delay: 0s;
+    font-size: 0.9rem;
+}
+
+.snowflake:nth-child(10) {
+    left: 50%;
+    animation-duration: 10s;
+    animation-delay: 1s;
+    font-size: 1.3rem;
+}
+
+.snowflake:nth-child(11) {
+    left: 55%;
+    animation-duration: 8s;
+    animation-delay: 3.5s;
+    font-size: 0.8rem;
+}
+
+.snowflake:nth-child(12) {
+    left: 60%;
+    animation-duration: 12s;
+    animation-delay: 2s;
+    font-size: 1rem;
+}
+
+.snowflake:nth-child(13) {
+    left: 65%;
+    animation-duration: 9s;
+    animation-delay: 4.5s;
+    font-size: 0.7rem;
+}
+
+.snowflake:nth-child(14) {
+    left: 70%;
+    animation-duration: 11s;
+    animation-delay: 1s;
+    font-size: 1.1rem;
+}
+
+.snowflake:nth-child(15) {
+    left: 75%;
+    animation-duration: 10s;
+    animation-delay: 0.5s;
+    font-size: 0.9rem;
+}
+
+.snowflake:nth-child(16) {
+    left: 80%;
+    animation-duration: 8s;
+    animation-delay: 2.5s;
+    font-size: 1rem;
+}
+
+.snowflake:nth-child(17) {
+    left: 85%;
+    animation-duration: 13s;
+    animation-delay: 3s;
+    font-size: 0.8rem;
+}
+
+.snowflake:nth-child(18) {
+    left: 90%;
+    animation-duration: 9s;
+    animation-delay: 1.5s;
+    font-size: 1.2rem;
+}
+
+.snowflake:nth-child(19) {
+    left: 95%;
+    animation-duration: 11s;
+    animation-delay: 4s;
+    font-size: 0.7rem;
+}
+
+.snowflake:nth-child(20) {
+    left: 3%;
+    animation-duration: 10s;
+    animation-delay: 2s;
+    font-size: 1rem;
+}
+
+/* Dot snowflakes (lighter weight) */
+.snowflake.dot {
+    font-size: 0.5rem;
+    color: rgba(220, 235, 255, 0.7);
+}
+
+/* Mobile: Reduce snowflakes for performance */
+@media (max-width: 768px) {
+    .snowflake:nth-child(n+12) {
+        display: none;
+    }
+
+    .snowflake {
+        font-size: 0.8rem;
+    }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .snowfall {
+        display: none;
+    }
+}
