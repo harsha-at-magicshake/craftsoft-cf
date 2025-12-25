@@ -19,7 +19,6 @@ async function initAddStudentPage() {
 
     // Show layout
     document.getElementById('adminLayout').style.display = 'flex';
-    document.getElementById('loadingState').style.display = 'none';
 
     // Setup sidebar
     setupSidebar();

@@ -100,7 +100,7 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon" style="background: var(--accent-gradient-2);">
-                            <i class="fas fa-rupee-sign"></i>
+                            <i class="fas fa-indian-rupee-sign"></i>
                         </div>
                         <div class="stat-info">
                             <h3 id="totalCollected">₹0</h3>
@@ -109,7 +109,7 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);">
-                            <i class="fas fa-clock"></i>
+                            <i class="fas fa-hourglass-half"></i>
                         </div>
                         <div class="stat-info">
                             <h3 id="pendingFees">₹0</h3>
@@ -175,14 +175,7 @@
         </div>
     </div>
 
-    <!-- Loading State -->
-    <div class="auth-container" id="loadingState">
-        <div class="auth-card" style="text-align: center;">
-            <div class="btn-spinner" style="display: inline-block; width: 40px; height: 40px; margin-bottom: 16px;">
-            </div>
-            <p style="color: var(--gray-500);">Loading dashboard...</p>
-        </div>
-    </div>
+
 
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -212,8 +205,7 @@
             // Load stats
             await loadDashboardStats();
 
-            // Show dashboard, hide loading
-            document.getElementById('loadingState').style.display = 'none';
+            // Show dashboard
             document.getElementById('adminLayout').style.display = 'flex';
 
             // Setup sidebar

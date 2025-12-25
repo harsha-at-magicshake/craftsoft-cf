@@ -681,11 +681,11 @@ body {
     min-height: 100vh;
 }
 
-/* Sidebar */
+/* Sidebar - Light Mode */
 .admin-sidebar {
     width: 260px;
-    background: var(--gray-900);
-    color: var(--white);
+    background: var(--white);
+    color: var(--gray-700);
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -694,11 +694,13 @@ body {
     height: 100vh;
     z-index: 100;
     transition: transform 0.3s ease;
+    border-right: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
 }
 
 .sidebar-header {
     padding: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--gray-200);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -708,7 +710,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--white);
+    color: var(--gray-900);
     text-decoration: none;
     font-size: 1.25rem;
     font-weight: 700;
@@ -738,7 +740,7 @@ body {
     align-items: center;
     gap: 12px;
     padding: 12px 20px;
-    color: var(--gray-400);
+    color: var(--gray-600);
     text-decoration: none;
     transition: var(--transition);
     border: none;
@@ -750,12 +752,12 @@ body {
 }
 
 .sidebar-link:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--white);
+    background: var(--gray-50);
+    color: var(--gray-900);
 }
 
 .sidebar-link.active {
-    background: rgba(9, 132, 227, 0.2);
+    background: rgba(40, 150, 205, 0.1);
     color: var(--primary);
     border-left: 3px solid var(--primary);
 }
@@ -776,13 +778,13 @@ body {
 
 .sidebar-divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--gray-200);
     margin: 16px 20px;
 }
 
 .sidebar-footer {
     padding: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--gray-200);
 }
 
 /* Main Content */
@@ -1028,39 +1030,51 @@ body {
     color: var(--gray-700);
 }
 
-/* Empty & Loading States */
+/* Empty & Loading States - Minimal Style */
 .empty-state,
 .loading-state {
-    padding: 60px 20px;
+    padding: 80px 20px;
     text-align: center;
     color: var(--gray-500);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .empty-state i,
 .loading-state i {
-    font-size: 4rem;
-    color: var(--gray-300);
+    font-size: 2rem;
+    color: var(--gray-400);
     margin-bottom: 16px;
 }
 
 .empty-state h3 {
-    font-size: 1.25rem;
-    color: var(--gray-700);
-    margin-bottom: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    margin-bottom: 6px;
 }
 
 .empty-state p {
+    font-size: 0.875rem;
+    color: var(--gray-400);
     margin-bottom: 20px;
 }
 
+.empty-state .btn {
+    padding: 10px 20px;
+    font-size: 0.875rem;
+}
+
 .spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid var(--gray-200);
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--gray-200);
     border-top-color: var(--primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin: 0 auto 16px;
+    margin: 0 auto 12px;
 }
 
 @keyframes spin {
@@ -1287,27 +1301,31 @@ body {
 .dashboard-welcome {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
     background: var(--white);
-    padding: 24px;
+    padding: 20px 24px;
     border-radius: var(--radius-lg);
     margin-bottom: 24px;
     box-shadow: var(--shadow-sm);
 }
 
 .welcome-icon {
-    font-size: 3rem;
+    font-size: 2.5rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
 }
 
 .welcome-text h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.25rem;
+    font-weight: 600;
     color: var(--gray-900);
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .welcome-text p {
     color: var(--gray-500);
+    font-size: 0.875rem;
 }
 
 .stats-grid {
@@ -1640,19 +1658,18 @@ body {
     background: rgba(40, 150, 205, 0.05);
 }
 
-/* Fee Summary */
+/* Fee Summary - Light Mode */
 .fee-summary-section {
-    background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
-    color: var(--white);
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
 }
 
 .fee-summary-section .section-title {
-    color: var(--white);
-    border-bottom-color: rgba(255, 255, 255, 0.1);
+    color: var(--gray-900);
 }
 
 .fee-summary-section .section-title i {
-    color: var(--primary-light);
+    color: var(--success);
 }
 
 .fee-summary {
@@ -1664,6 +1681,7 @@ body {
     justify-content: space-between;
     padding: 8px 0;
     font-size: 0.95rem;
+    color: var(--gray-600);
 }
 
 .fee-row.discount span:last-child {
@@ -1671,11 +1689,12 @@ body {
 }
 
 .fee-row.total {
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid var(--gray-200);
     padding-top: 12px;
     margin-top: 8px;
     font-size: 1.25rem;
     font-weight: 700;
+    color: var(--gray-900);
 }
 
 /* Form Actions */
