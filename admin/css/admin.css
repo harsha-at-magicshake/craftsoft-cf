@@ -111,9 +111,9 @@ body {
 }
 
 .auth-logo-text .logo-signature {
-    font-family: 'Dancing Script', cursive;
-    font-weight: 600;
-    font-size: 1.7rem;
+    font-family: 'Italianno', cursive;
+    font-weight: 400;
+    font-size: 2rem;
 }
 
 .auth-logo-text span:last-child {
