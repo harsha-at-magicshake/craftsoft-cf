@@ -1,6 +1,7 @@
 /* ============================================
-   CRAFTSOFT - Festival Effects System v2
-   11 Indian festivals with animations
+   CRAFTSOFT - Festival Effects System v3
+   11 Indian festivals - Simple effects only
+   BURSTS ONLY ON DIWALI
    ============================================ */
 
 /* ============================================
@@ -20,21 +21,20 @@
 
 .festival-particle {
     position: absolute;
+    top: -30px;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     opacity: 0;
 }
 
 /* ============================================
-   1. NEW YEAR - Confetti BURSTS from bottom
+   1. NEW YEAR - Simple confetti falling
    ============================================ */
 .festival-newyear .festival-particle {
-    bottom: -20px;
-    top: auto;
     width: 10px;
     height: 10px;
     border-radius: 2px;
-    animation-name: confettiBurst;
+    animation-name: simpleFall;
 }
 
 .festival-newyear .festival-particle:nth-child(5n+1) {
@@ -57,40 +57,17 @@
     background: #9b59b6;
 }
 
-@keyframes confettiBurst {
-    0% {
-        transform: translateY(0) rotate(0deg) translateX(0);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    50% {
-        transform: translateY(-60vh) rotate(360deg) translateX(30px);
-        opacity: 0.8;
-    }
-
-    100% {
-        transform: translateY(-100vh) rotate(720deg) translateX(-20px);
-        opacity: 0;
-    }
-}
-
 /* ============================================
-   2. SANKRANTI - Kites RISING in sky
+   2. SANKRANTI - Kites floating in sky
    ============================================ */
 .festival-sankranti .festival-particle {
-    bottom: -50px;
-    top: auto;
     font-size: 2rem;
-    animation-name: kiteRise;
+    animation-name: kiteFloat;
 }
 
-@keyframes kiteRise {
+@keyframes kiteFloat {
     0% {
-        transform: translateY(0) translateX(0) rotate(-5deg);
+        transform: translateY(100vh) translateX(0) rotate(-5deg);
         opacity: 0;
     }
 
@@ -99,32 +76,32 @@
     }
 
     25% {
-        transform: translateY(-30vh) translateX(30px) rotate(5deg);
+        transform: translateY(60vh) translateX(30px) rotate(5deg);
     }
 
     50% {
-        transform: translateY(-50vh) translateX(-20px) rotate(-3deg);
+        transform: translateY(30vh) translateX(-20px) rotate(-3deg);
     }
 
     75% {
-        transform: translateY(-70vh) translateX(40px) rotate(8deg);
+        transform: translateY(10vh) translateX(40px) rotate(8deg);
     }
 
     100% {
-        transform: translateY(-100vh) translateX(-10px) rotate(-5deg);
+        transform: translateY(-20vh) translateX(-10px) rotate(-5deg);
         opacity: 0;
     }
 }
 
 /* ============================================
-   3 & 6. REPUBLIC/INDEPENDENCE - Tricolor
+   3 & 6. REPUBLIC/INDEPENDENCE - Tricolor falling
    ============================================ */
 .festival-republic .festival-particle,
 .festival-independence .festival-particle {
     width: 12px;
     height: 8px;
     border-radius: 1px;
-    animation-name: tricolorFall;
+    animation-name: simpleFall;
 }
 
 .festival-republic .festival-particle:nth-child(3n+1),
@@ -143,72 +120,39 @@
     background: #138808;
 }
 
-@keyframes tricolorFall {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0.3;
-    }
-}
-
 /* ============================================
-   4. HOLI - Subtle color splashes (~5% opacity)
+   4. HOLI - Color splashes (subtle)
    ============================================ */
 .festival-holi .festival-particle {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    filter: blur(8px);
-    animation-name: colorSplash;
+    filter: blur(10px);
+    animation-name: simpleFall;
 }
 
 .festival-holi .festival-particle:nth-child(6n+1) {
-    background: rgba(255, 20, 147, 0.05);
+    background: rgba(255, 20, 147, 0.08);
 }
 
 .festival-holi .festival-particle:nth-child(6n+2) {
-    background: rgba(255, 99, 71, 0.05);
+    background: rgba(255, 99, 71, 0.08);
 }
 
 .festival-holi .festival-particle:nth-child(6n+3) {
-    background: rgba(255, 215, 0, 0.05);
+    background: rgba(255, 215, 0, 0.08);
 }
 
 .festival-holi .festival-particle:nth-child(6n+4) {
-    background: rgba(50, 205, 50, 0.05);
+    background: rgba(50, 205, 50, 0.08);
 }
 
 .festival-holi .festival-particle:nth-child(6n+5) {
-    background: rgba(30, 144, 255, 0.05);
+    background: rgba(30, 144, 255, 0.08);
 }
 
 .festival-holi .festival-particle:nth-child(6n) {
-    background: rgba(148, 0, 211, 0.05);
-}
-
-@keyframes colorSplash {
-    0% {
-        transform: translateY(0) scale(0.3);
-        opacity: 0;
-    }
-
-    30% {
-        opacity: 1;
-        transform: translateY(30vh) scale(1.5);
-    }
-
-    100% {
-        transform: translateY(100vh) scale(0.5);
-        opacity: 0;
-    }
+    background: rgba(148, 0, 211, 0.08);
 }
 
 /* ============================================
@@ -260,7 +204,7 @@
 }
 
 /* ============================================
-   9. DASARA - Golden sparkles (MORE GLOWING)
+   9. DASARA - Golden sparkles (glowing, no burst)
    ============================================ */
 .festival-dasara .festival-particle {
     font-size: 1.2rem;
@@ -270,34 +214,32 @@
         0 0 20px #FFD700,
         0 0 30px #FFA500,
         0 0 40px #FFA500;
-    animation-name: sparkleGlow;
+    animation-name: simpleFallGlow;
 }
 
-@keyframes sparkleGlow {
+@keyframes simpleFallGlow {
     0% {
         opacity: 0;
-        transform: translateY(0) scale(0.3);
+        transform: translateY(0);
     }
 
-    20% {
+    10% {
         opacity: 1;
-        transform: translateY(20vh) scale(1.2);
-        text-shadow: 0 0 20px #FFD700, 0 0 40px #FFD700, 0 0 60px #FFA500;
     }
 
     50% {
-        transform: translateY(50vh) scale(1);
-        text-shadow: 0 0 15px #FFD700, 0 0 30px #FFD700;
+        text-shadow: 0 0 20px #FFD700, 0 0 40px #FFD700, 0 0 60px #FFA500;
     }
 
     100% {
         opacity: 0;
-        transform: translateY(100vh) scale(0.5);
+        transform: translateY(100vh);
     }
 }
 
 /* ============================================
-   10. DIWALI - Actual cracker bursts + Dark Mode
+   10. DIWALI - ACTUAL CRACKER BURSTS + Dark Mode
+   (This is the ONLY festival with bursts)
    ============================================ */
 .festival-diwali-burst {
     position: fixed;
@@ -370,30 +312,30 @@ body.diwali-mode p {
 }
 
 /* ============================================
-   11. EID - Crescent moon in corner + Dark Mode
+   11. EID - White crescent moon in corner + Dark Mode
    ============================================ */
 .festival-eid .crescent-moon {
     position: fixed;
     top: 20px;
     right: 20px;
     font-size: 4rem;
-    color: #FFD700;
+    color: #FFFFFF;
     text-shadow:
-        0 0 20px rgba(255, 215, 0, 0.8),
-        0 0 40px rgba(255, 215, 0, 0.6),
-        0 0 60px rgba(255, 215, 0, 0.4);
+        0 0 20px rgba(255, 255, 255, 0.8),
+        0 0 40px rgba(255, 255, 255, 0.6),
+        0 0 60px rgba(255, 255, 255, 0.4);
     animation: moonGlow 3s ease-in-out infinite alternate;
     z-index: 9999;
 }
 
 @keyframes moonGlow {
     0% {
-        text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.4);
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.4);
         transform: scale(1);
     }
 
     100% {
-        text-shadow: 0 0 30px rgba(255, 215, 0, 0.9), 0 0 60px rgba(255, 215, 0, 0.7);
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.9), 0 0 60px rgba(255, 255, 255, 0.7);
         transform: scale(1.05);
     }
 }
@@ -417,7 +359,7 @@ body.eid-mode p {
 }
 
 /* ============================================
-   12. CHRISTMAS - Snowflakes (Dec 25 only)
+   12. CHRISTMAS - Simple snowflakes falling
    ============================================ */
 .festival-christmas .festival-particle {
     color: #e8f4ff;
@@ -425,13 +367,16 @@ body.eid-mode p {
     text-shadow:
         0 0 8px rgba(135, 206, 250, 0.9),
         0 0 15px rgba(100, 180, 255, 0.6);
-    animation-name: snowfall;
+    animation-name: simpleFall;
     filter: drop-shadow(0 0 3px rgba(150, 200, 255, 0.8));
 }
 
-@keyframes snowfall {
+/* ============================================
+   SHARED ANIMATION - Simple Fall
+   ============================================ */
+@keyframes simpleFall {
     0% {
-        transform: translateY(0) rotate(0deg) translateX(0);
+        transform: translateY(0) rotate(0deg);
         opacity: 0;
     }
 
@@ -439,16 +384,8 @@ body.eid-mode p {
         opacity: 1;
     }
 
-    50% {
-        transform: translateY(50vh) rotate(180deg) translateX(15px);
-    }
-
-    90% {
-        opacity: 0.8;
-    }
-
     100% {
-        transform: translateY(100vh) rotate(360deg) translateX(-10px);
+        transform: translateY(100vh) rotate(360deg);
         opacity: 0;
     }
 }
@@ -638,7 +575,7 @@ body.eid-mode p {
     }
 }
 
-/* Hide on very small screens */
+/* Hide diyas on very small screens */
 @media (max-width: 400px) {
     .diya {
         display: none;

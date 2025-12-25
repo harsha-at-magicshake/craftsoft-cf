@@ -1,15 +1,12 @@
 /* ============================================
-   CRAFTSOFT - Festival Effects System v2
-   11 Indian festivals with animations
-   API: Calendarific for lunar calendar dates
+   CRAFTSOFT - Festival Effects System v3
+   11 Indian festivals - Simple effects
+   BURSTS ONLY ON DIWALI
    ============================================ */
 
 (function () {
     'use strict';
 
-    // ============================================
-    // CONFIGURATION
-    // ============================================
     const CONFIG = {
         API_KEY: 'ez3pfQ9AxWlU4qbAHmC8Z34qaEKBbV9N',
         CACHE_KEY: 'craftsoft_festival_dates',
@@ -17,7 +14,7 @@
         PARTICLE_COUNT: 25
     };
 
-    // Festival definitions - 11 festivals (removed Vinayaka)
+    // Festival definitions - 11 festivals
     const FESTIVALS = {
         newyear: {
             name: 'New Year',
@@ -61,14 +58,14 @@
         },
         diwali: {
             name: 'Diwali',
-            particles: [], // Custom cracker effect
+            particles: [],
             apiName: 'Diwali',
             darkMode: true,
             customEffect: 'crackers'
         },
         eid: {
             name: 'Eid ul-Fitr',
-            particles: [], // Custom crescent moon
+            particles: [],
             apiName: 'Eid ul-Fitr',
             darkMode: true,
             customEffect: 'crescent'
@@ -76,13 +73,9 @@
         christmas: {
             name: 'Christmas',
             particles: ['❄', '❅', '❆', '✧', '✦'],
-            fixedDate: { month: 12, day: 25 } // Only Dec 25, no endDate
+            fixedDate: { month: 12, day: 25 }
         }
     };
-
-    // ============================================
-    // UTILITY FUNCTIONS
-    // ============================================
 
     function isSameDay(date1, date2) {
         return date1.getFullYear() === date2.getFullYear() &&
@@ -90,15 +83,10 @@
             date1.getDate() === date2.getDate();
     }
 
-    // ============================================
-    // FESTIVAL DETECTION
-    // ============================================
-
     async function getCurrentFestival() {
         const now = new Date();
         const year = now.getFullYear();
 
-        // Check fixed date festivals
         for (const [key, festival] of Object.entries(FESTIVALS)) {
             if (festival.fixedDate) {
                 const festDate = new Date(year, festival.fixedDate.month - 1, festival.fixedDate.day);
@@ -108,7 +96,6 @@
             }
         }
 
-        // Check API-based festivals
         const apiDates = await getAPIFestivalDates(year);
         if (apiDates) {
             for (const [key, festival] of Object.entries(FESTIVALS)) {
@@ -123,10 +110,6 @@
 
         return null;
     }
-
-    // ============================================
-    // API INTEGRATION
-    // ============================================
 
     async function getAPIFestivalDates(year) {
         const cached = localStorage.getItem(CONFIG.CACHE_KEY);
@@ -172,10 +155,6 @@
         return null;
     }
 
-    // ============================================
-    // EFFECT RENDERING
-    // ============================================
-
     function createFestivalEffect(festivalKey) {
         const festival = FESTIVALS[festivalKey];
         if (!festival) return;
@@ -185,21 +164,22 @@
         // Load CSS
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = '/assets/css/festivals.css?v=2.0';
+        link.href = '/assets/css/festivals.css?v=3.0';
         document.head.appendChild(link);
 
-        // Handle custom effects
+        // Handle Diwali cracker bursts
         if (festival.customEffect === 'crackers') {
             createDiwaliEffect();
             return;
         }
 
+        // Handle Eid crescent moon
         if (festival.customEffect === 'crescent') {
             createEidEffect();
             return;
         }
 
-        // Standard particle effect
+        // Standard particle effect (simple falling/floating)
         const container = document.createElement('div');
         container.className = `festival-effects festival-${festivalKey}`;
         container.setAttribute('aria-hidden', 'true');
@@ -214,21 +194,15 @@
         }
 
         document.body.appendChild(container);
-
-        // Apply dark mode if needed
-        if (festival.darkMode) {
-            document.body.classList.add('diwali-mode');
-        }
     }
 
     // ============================================
-    // DIWALI - Cracker Bursts
+    // DIWALI - The ONLY festival with cracker bursts
     // ============================================
-
     function createDiwaliEffect() {
         document.body.classList.add('diwali-mode');
 
-        // Add diyas
+        // Add diyas at corners
         const diyaLeft = document.createElement('div');
         diyaLeft.className = 'diya diya-left';
         diyaLeft.textContent = '🪔';
@@ -241,7 +215,7 @@
 
         // Cracker burst effect
         function createCrackerBurst() {
-            const colors = ['#FF6347', '#FFD700', '#00CED1', '#FF69B4', '#7CFC00', '#FF4500', '#9400D3'];
+            const colors = ['#FF6347', '#FFD700', '#00CED1', '#FF69B4', '#7CFC00', '#FF4500', '#9400D3', '#00FF00', '#FF1493'];
             const x = Math.random() * window.innerWidth;
             const y = Math.random() * (window.innerHeight * 0.6);
 
@@ -251,43 +225,46 @@
             burst.style.top = y + 'px';
 
             // Create particles for burst
-            for (let i = 0; i < 20; i++) {
+            const particleCount = 25 + Math.floor(Math.random() * 15);
+            for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'cracker-particle';
 
-                const angle = (Math.PI * 2 * i) / 20;
-                const distance = 50 + Math.random() * 100;
+                const angle = (Math.PI * 2 * i) / particleCount + (Math.random() * 0.5);
+                const distance = 60 + Math.random() * 120;
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance;
 
                 particle.style.setProperty('--tx', tx + 'px');
                 particle.style.setProperty('--ty', ty + 'px');
                 particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.boxShadow = `0 0 6px ${particle.style.background}`;
+                particle.style.boxShadow = `0 0 8px ${particle.style.background}, 0 0 12px ${particle.style.background}`;
 
                 burst.appendChild(particle);
             }
 
             document.body.appendChild(burst);
 
-            // Remove after animation
-            setTimeout(() => burst.remove(), 1500);
+            setTimeout(() => burst.remove(), 1600);
         }
 
         // Burst crackers at random intervals
+        let burstInterval;
         function scheduleBursts() {
             createCrackerBurst();
-            const nextBurst = 500 + Math.random() * 2000;
-            setTimeout(scheduleBursts, nextBurst);
+            const nextBurst = 800 + Math.random() * 2500;
+            burstInterval = setTimeout(scheduleBursts, nextBurst);
         }
 
         scheduleBursts();
+
+        // Store interval for cleanup
+        window._diwaliInterval = burstInterval;
     }
 
     // ============================================
-    // EID - Crescent Moon
+    // EID - Crescent Moon (White)
     // ============================================
-
     function createEidEffect() {
         document.body.classList.add('eid-mode');
 
@@ -306,19 +283,21 @@
     // ============================================
     // CLEAR EFFECTS
     // ============================================
-
     function clearFestivalEffects() {
-        // Remove containers
+        // Clear Diwali interval
+        if (window._diwaliInterval) {
+            clearTimeout(window._diwaliInterval);
+            window._diwaliInterval = null;
+        }
+
+        // Remove all containers
         document.querySelectorAll('.festival-effects, .festival-diwali-burst, .diya').forEach(el => el.remove());
 
         // Remove dark modes
         document.body.classList.remove('diwali-mode', 'eid-mode');
     }
 
-    // ============================================
-    // TEST MODE
-    // ============================================
-
+    // Test mode
     window.testFestival = function (festivalKey) {
         clearFestivalEffects();
         if (festivalKey && FESTIVALS[festivalKey]) {
@@ -330,16 +309,12 @@
         return Object.keys(FESTIVALS);
     };
 
-    // ============================================
-    // INITIALIZATION
-    // ============================================
-
+    // Initialization
     async function init() {
         if (window.location.pathname.includes('/admin')) {
             return;
         }
 
-        // Check for test mode via URL param
         const urlParams = new URLSearchParams(window.location.search);
         const testFest = urlParams.get('festival');
         if (testFest && FESTIVALS[testFest]) {
@@ -347,7 +322,6 @@
             return;
         }
 
-        // Normal mode - detect current festival
         const currentFestival = await getCurrentFestival();
         if (currentFestival) {
             createFestivalEffect(currentFestival);
