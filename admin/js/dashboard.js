@@ -14,42 +14,53 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const SESSION_KEY = 'craftsoft_admin_session';
     const SESSION_CHANNEL = 'craftsoft_admin_channel';
+    let channel = null;
 
     // Generate unique tab ID
     const tabId = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
     // Check if another tab is already open
     function initSingleTabSession() {
+        // Only use BroadcastChannel if supported
+        if (!('BroadcastChannel' in window)) return;
+
+        // Clear any stale session data first
         const existingSession = sessionStorage.getItem(SESSION_KEY);
 
-        // Use BroadcastChannel API for cross-tab communication
-        if ('BroadcastChannel' in window) {
-            const channel = new BroadcastChannel(SESSION_CHANNEL);
+        channel = new BroadcastChannel(SESSION_CHANNEL);
 
-            // Ask if any other tab is open
+        // Listen for messages from other tabs
+        channel.onmessage = (event) => {
+            if (event.data.type === 'CHECK_SESSION' && event.data.tabId !== tabId) {
+                // Another tab is asking - respond that we exist
+                channel.postMessage({ type: 'SESSION_EXISTS', tabId: tabId });
+            }
+
+            if (event.data.type === 'SESSION_EXISTS' && event.data.tabId !== tabId) {
+                // Another dashboard tab exists - show error
+                showDuplicateTabError();
+            }
+
+            if (event.data.type === 'TAB_CLOSING') {
+                // Another tab is closing, we can ignore duplicate checks briefly
+            }
+        };
+
+        // Wait a moment before checking (let other tabs respond)
+        setTimeout(() => {
             channel.postMessage({ type: 'CHECK_SESSION', tabId: tabId });
+        }, 500);
 
-            // Listen for responses
-            channel.onmessage = (event) => {
-                if (event.data.type === 'CHECK_SESSION' && event.data.tabId !== tabId) {
-                    // Another tab is asking - respond that we exist
-                    channel.postMessage({ type: 'SESSION_EXISTS', tabId: tabId });
-                }
+        // Mark this tab as the active session
+        sessionStorage.setItem(SESSION_KEY, tabId);
 
-                if (event.data.type === 'SESSION_EXISTS' && event.data.tabId !== tabId) {
-                    // Another tab exists - show error and redirect
-                    showDuplicateTabError();
-                }
-            };
-
-            // Mark this tab as the active session
-            sessionStorage.setItem(SESSION_KEY, tabId);
-
-            // Clear on unload
-            window.addEventListener('beforeunload', () => {
-                sessionStorage.removeItem(SESSION_KEY);
-            });
-        }
+        // Clear on unload
+        window.addEventListener('beforeunload', () => {
+            if (channel) {
+                channel.postMessage({ type: 'TAB_CLOSING', tabId: tabId });
+            }
+            sessionStorage.removeItem(SESSION_KEY);
+        });
     }
 
     function showDuplicateTabError() {
@@ -61,13 +72,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                     <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: #1e293b; margin-bottom: 10px;">Session Already Active</h2>
                     <p style="color: #64748b; margin-bottom: 20px;">Admin panel is already open in another tab. Please use that tab or close it first.</p>
-                    <button onclick="window.close(); window.location.href='signin.html';" style="background: linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;">Close This Tab</button>
+                    <button onclick="window.location.href='signin.html';" style="background: linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;">Go to Sign In</button>
                 </div>
             </div>
         `;
     }
-
-    initSingleTabSession();
 
     // ============================================
     // SESSION PROTECTION (back/forward)
@@ -112,6 +121,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const session = await checkAuth();
     if (!session) return;
+
+    // Initialize single tab session AFTER auth check
+    initSingleTabSession();
 
     // ============================================
     // LOAD ADMIN DATA

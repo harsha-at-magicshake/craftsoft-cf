@@ -35,9 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (session && session.user) {
                 // User is already logged in, redirect to dashboard
                 window.location.replace('dashboard.html');
+            } else {
+                // Not logged in - clear any stale session data
+                sessionStorage.removeItem('craftsoft_admin_session');
             }
         } catch (e) {
             console.log('No existing session');
+            sessionStorage.removeItem('craftsoft_admin_session');
         }
     }
 
