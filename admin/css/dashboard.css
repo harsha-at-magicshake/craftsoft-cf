@@ -818,10 +818,21 @@ body {
     opacity: 1;
 }
 
-.stat-card[data-type="students"]::before { background: var(--accent-gradient); }
-.stat-card[data-type="tutors"]::before { background: linear-gradient(135deg, #10B981, #059669); }
-.stat-card[data-type="inquiries"]::before { background: linear-gradient(135deg, #F59E0B, #D97706); }
-.stat-card[data-type="revenue"]::before { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+.stat-card[data-type="students"]::before {
+    background: var(--accent-gradient);
+}
+
+.stat-card[data-type="tutors"]::before {
+    background: linear-gradient(135deg, #10B981, #059669);
+}
+
+.stat-card[data-type="inquiries"]::before {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.stat-card[data-type="revenue"]::before {
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+}
 
 .stat-icon {
     width: 48px;
@@ -835,10 +846,21 @@ body {
     flex-shrink: 0;
 }
 
-.stat-card[data-type="students"] .stat-icon { background: var(--accent-gradient); }
-.stat-card[data-type="tutors"] .stat-icon { background: linear-gradient(135deg, #10B981, #059669); }
-.stat-card[data-type="inquiries"] .stat-icon { background: linear-gradient(135deg, #F59E0B, #D97706); }
-.stat-card[data-type="revenue"] .stat-icon { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+.stat-card[data-type="students"] .stat-icon {
+    background: var(--accent-gradient);
+}
+
+.stat-card[data-type="tutors"] .stat-icon {
+    background: linear-gradient(135deg, #10B981, #059669);
+}
+
+.stat-card[data-type="inquiries"] .stat-icon {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.stat-card[data-type="revenue"] .stat-icon {
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+}
 
 .stat-content {
     flex: 1;
@@ -919,6 +941,24 @@ body {
     font-size: 1rem;
     font-weight: 600;
     color: var(--gray-800);
+    flex: 1;
+}
+
+.clear-activity-btn {
+    background: none;
+    border: none;
+    color: var(--primary-500);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.clear-activity-btn:hover {
+    background: var(--primary-50);
+    color: var(--primary-600);
 }
 
 .card-body {
@@ -972,6 +1012,28 @@ body {
     gap: var(--spacing-md);
     max-height: 320px;
     overflow-y: auto;
+}
+
+.activity-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-2xl);
+    color: var(--gray-400);
+    text-align: center;
+}
+
+.activity-empty i {
+    font-size: 2.5rem;
+    color: var(--success);
+    margin-bottom: var(--spacing-md);
+}
+
+.activity-empty p {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--gray-500);
 }
 
 .activity-item {

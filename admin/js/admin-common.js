@@ -84,6 +84,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ============================================
+    // CLEAR ACTIVITY BUTTON
+    // ============================================
+
+    const clearActivityBtn = document.getElementById('clearActivityBtn');
+    const activityTimeline = document.getElementById('activityTimeline');
+
+    if (clearActivityBtn && activityTimeline) {
+        clearActivityBtn.addEventListener('click', () => {
+            if (window.modal) {
+                window.modal.confirm('Clear Activity', 'Are you sure you want to clear all recent activity?', () => {
+                    activityTimeline.innerHTML = `
+                        <div class="activity-empty">
+                            <i class="fas fa-check-circle"></i>
+                            <p>All caught up!</p>
+                        </div>
+                    `;
+                    window.toast.success('Cleared', 'Activity log cleared');
+                });
+            } else {
+                activityTimeline.innerHTML = '';
+            }
+        });
+    }
+
+    // ============================================
     // LOGOUT (with confirmation modal)
     // ============================================
 
