@@ -161,6 +161,22 @@
     }
 
     // ============================================
+    // SHOW PAGE (remove hidden state)
+    // ============================================
+
+    function showPage() {
+        // Add class to make body visible
+        if (document.body) {
+            document.body.classList.add('session-validated');
+        } else {
+            // Body not ready yet, wait for it
+            document.addEventListener('DOMContentLoaded', () => {
+                document.body.classList.add('session-validated');
+            });
+        }
+    }
+
+    // ============================================
     // INITIALIZE
     // ============================================
 
@@ -176,6 +192,9 @@
 
         // Initialize broadcast channel for instant communication
         initBroadcastChannel();
+
+        // SESSION VALIDATED - Show the page
+        showPage();
 
         // Cleanup on page unload
         window.addEventListener('beforeunload', cleanup);

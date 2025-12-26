@@ -28,6 +28,20 @@
     <!-- Styles -->
     <link rel="stylesheet" href="css/admin-auth.css">
     <link rel="stylesheet" href="css/dashboard.css">
+
+    <!-- CRITICAL: Hide page until session validated (prevents flicker) -->
+    <style>
+        body {
+            visibility: hidden;
+        }
+
+        body.session-validated {
+            visibility: visible;
+        }
+    </style>
+
+    <!-- Session Guard - MUST be in head to block render -->
+    <script src="js/session-guard.js"></script>
 </head>
 
 <body>
@@ -159,9 +173,6 @@
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- Session Guard (Single Tab Enforcement) - MUST load first -->
-    <script src="js/session-guard.js"></script>
 
     <!-- Scripts -->
     <script src="js/supabase-config.js"></script>
