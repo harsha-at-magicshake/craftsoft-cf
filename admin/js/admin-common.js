@@ -1,12 +1,24 @@
 /* ============================================
    Admin Common JS
    Shared logic for all admin pages:
+   - Session protection (back/forward)
    - Mobile menu
    - Logout
    - Under Maintenance modal
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // ============================================
+    // SESSION PROTECTION (back/forward)
+    // ============================================
+
+    if (window.history && window.history.pushState) {
+        window.history.pushState(null, '', window.location.href);
+        window.addEventListener('popstate', () => {
+            window.history.pushState(null, '', window.location.href);
+        });
+    }
+
     // ============================================
     // MOBILE MENU
     // ============================================

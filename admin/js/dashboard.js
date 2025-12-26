@@ -1,22 +1,10 @@
 /* ============================================
    Dashboard Page Logic
    - Auth check
-   - Session protection
    - Load admin data
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // ============================================
-    // SESSION PROTECTION (back/forward)
-    // ============================================
-
-    if (window.history && window.history.pushState) {
-        window.history.pushState(null, '', window.location.href);
-        window.addEventListener('popstate', () => {
-            window.history.pushState(null, '', window.location.href);
-        });
-    }
-
     // ============================================
     // AUTH CHECK
     // ============================================
