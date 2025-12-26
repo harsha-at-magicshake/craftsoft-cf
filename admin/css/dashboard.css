@@ -751,13 +751,365 @@ body {
     .mobile-logo-text {
         display: none !important;
     }
+}
 
-    .welcome-section {
-        padding: var(--spacing-lg);
+/* ============================================
+   Phase 1: Dashboard Content Styles
+   Material Design Aesthetic
+   ============================================ */
+
+/* Welcome Banner */
+.welcome-banner {
+    margin-bottom: var(--spacing-xl);
+}
+
+.welcome-banner h2 {
+    font-family: var(--font-primary);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-xs);
+}
+
+.welcome-banner p {
+    font-size: 0.9375rem;
+    color: var(--gray-500);
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.stat-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all var(--transition-base);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(40, 150, 205, 0.15);
+}
+
+.stat-card:hover::before {
+    opacity: 1;
+}
+
+.stat-card[data-type="students"]::before { background: var(--accent-gradient); }
+.stat-card[data-type="tutors"]::before { background: linear-gradient(135deg, #10B981, #059669); }
+.stat-card[data-type="inquiries"]::before { background: linear-gradient(135deg, #F59E0B, #D97706); }
+.stat-card[data-type="revenue"]::before { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--white);
+    flex-shrink: 0;
+}
+
+.stat-card[data-type="students"] .stat-icon { background: var(--accent-gradient); }
+.stat-card[data-type="tutors"] .stat-icon { background: linear-gradient(135deg, #10B981, #059669); }
+.stat-card[data-type="inquiries"] .stat-icon { background: linear-gradient(135deg, #F59E0B, #D97706); }
+.stat-card[data-type="revenue"] .stat-icon { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-value {
+    font-family: var(--font-primary);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--gray-500);
+    margin-bottom: var(--spacing-xs);
+}
+
+.stat-trend {
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+.stat-trend.positive {
+    color: #059669;
+    background: #d1fae5;
+}
+
+.stat-trend.neutral {
+    color: var(--gray-600);
+    background: var(--gray-100);
+}
+
+.stat-trend.neutral i {
+    font-size: 6px;
+}
+
+.stat-trend.warning {
+    color: #D97706;
+    background: #fef3c7;
+}
+
+/* Dashboard Grid (2 columns) */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+}
+
+.dashboard-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.card-header i {
+    color: var(--primary-500);
+    font-size: 1rem;
+}
+
+.card-header h3 {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.card-body {
+    padding: var(--spacing-lg);
+}
+
+/* Quick Actions Grid */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+}
+
+.quick-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    background: var(--gray-50);
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-action-btn:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-200);
+    transform: scale(1.02);
+}
+
+.quick-action-btn i {
+    font-size: 1.5rem;
+    color: var(--primary-500);
+}
+
+.quick-action-btn span {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+/* Activity Timeline */
+.activity-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    transition: background var(--transition-fast);
+}
+
+.activity-item:hover {
+    background: var(--gray-50);
+}
+
+.activity-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+}
+
+.activity-item[data-type="inquiry"] .activity-icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.activity-item[data-type="payment"] .activity-icon {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.activity-item[data-type="enrollment"] .activity-icon {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.activity-item[data-type="tutor"] .activity-icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.activity-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: 2px;
+}
+
+.activity-desc {
+    font-size: 0.8125rem;
+    color: var(--gray-500);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.activity-time {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    margin-top: 4px;
+}
+
+/* ============================================
+   Responsive: Dashboard Content
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .welcome-info {
-        flex-direction: column;
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .welcome-banner h2 {
+        font-size: 1.25rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
         gap: var(--spacing-md);
+    }
+
+    .stat-card {
+        padding: var(--spacing-md);
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    .stat-trend {
+        font-size: 0.625rem;
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-sm);
+    }
+
+    .quick-action-btn {
+        padding: var(--spacing-md);
+    }
+
+    .quick-action-btn i {
+        font-size: 1.25rem;
+    }
+
+    .quick-action-btn span {
+        font-size: 0.75rem;
+    }
+
+    .activity-timeline {
+        max-height: 280px;
     }
 }

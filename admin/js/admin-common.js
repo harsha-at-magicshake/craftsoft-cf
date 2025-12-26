@@ -126,9 +126,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Handle 400 error (usually missing column) or other issues gracefully
             if (error) {
-                if (error.code === 'PGRST204' || error.status === 400) {
-                    console.warn('Session hardware check skipped: Database column missing or record not found.');
-                    return;
+                // 42703 = Undefined Column in Postgres
+                if (error.code === '42703' || error.status === 400) {
+                    return; // Silently skip
                 }
                 throw error;
             }
