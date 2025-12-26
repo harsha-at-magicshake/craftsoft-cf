@@ -1,9 +1,8 @@
 /* ============================================
-   Dashboard Core Logic
-   - Auth check (on page load only)
-   - Session protection (back/forward)
-   - Sidebar navigation
-   - Logout (redirect only, preserves session)
+   Dashboard Page Logic
+   - Auth check
+   - Session protection
+   - Load admin data
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -89,89 +88,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (welcomeIdEl) welcomeIdEl.textContent = admin.admin_id;
         if (welcomeEmailEl) welcomeEmailEl.textContent = admin.email;
     }
-
-    // ============================================
-    // MOBILE MENU
-    // ============================================
-
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileCloseBtn = document.getElementById('mobileCloseBtn');
-
-    function openSidebar() {
-        sidebar.classList.add('active');
-        sidebarOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeSidebar() {
-        sidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', openSidebar);
-    }
-
-    if (mobileCloseBtn) {
-        mobileCloseBtn.addEventListener('click', closeSidebar);
-    }
-
-    if (sidebarOverlay) {
-        sidebarOverlay.addEventListener('click', closeSidebar);
-    }
-
-    // ============================================
-    // UNDER MAINTENANCE MODAL
-    // ============================================
-
-    const maintenanceLinks = document.querySelectorAll('[data-maintenance]');
-
-    maintenanceLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            closeSidebar();
-
-            const pageName = link.getAttribute('data-maintenance');
-            showMaintenanceModal(pageName);
-        });
-    });
-
-    function showMaintenanceModal(pageName) {
-        window.modal.show({
-            type: 'warning',
-            title: 'Under Maintenance',
-            message: `<strong>${pageName}</strong> is currently under development.<br><br>This feature will be available soon!`,
-            buttons: [
-                {
-                    text: 'Got it',
-                    type: 'primary'
-                }
-            ]
-        });
-    }
-
-    // ============================================
-    // LOGOUT (with confirmation modal)
-    // ============================================
-
-    const logoutBtns = document.querySelectorAll('[data-logout]');
-
-    logoutBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.modal.confirm(
-                'Logout',
-                'Are you sure you want to leave?',
-                () => {
-                    // Redirect with param so signin doesn't auto-redirect back
-                    window.location.href = 'signin.html?from=logout';
-                }
-            );
-        });
-    });
 });
