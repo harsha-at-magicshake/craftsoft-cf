@@ -185,8 +185,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                         Switching to: <strong>${name}</strong> (${adminId})
                     </p>
                     <div class="form-group">
-                        <input type="password" id="switchPassword" class="form-input" placeholder="Enter your password" 
-                               style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-200); border-radius: var(--radius-md);">
+                        <div class="input-wrapper" style="position: relative;">
+                            <input type="password" id="switchPassword" class="form-input" placeholder="Enter your password" 
+                                   style="width: 100%; padding: 0.75rem; padding-right: 2.5rem; border: 1px solid var(--gray-200); border-radius: var(--radius-md);">
+                            <button type="button" id="toggleSwitchPassword" 
+                                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-400); cursor: pointer;">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             `,
@@ -203,9 +209,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             ],
             onRender: (modalEl) => {
                 const input = modalEl.querySelector('#switchPassword');
+                const toggleBtn = modalEl.querySelector('#toggleSwitchPassword');
                 const confirmBtn = modalEl.querySelector('.btn-switch-confirm');
 
                 input.focus();
+
+                // Toggle logic
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', () => {
+                        const isPassword = input.type === 'password';
+                        input.type = isPassword ? 'text' : 'password';
+                        toggleBtn.innerHTML = `<i class="fas fa-eye${isPassword ? '-slash' : ''}"></i>`;
+                    });
+                }
 
                 input.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') confirmBtn.click();
@@ -219,20 +235,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                     confirmBtn.disabled = true;
 
                     try {
-                        const { error } = await window.supabaseClient.auth.signInWithPassword({
+                        // 1. Sign in with password
+                        const { data: authData, error } = await window.supabaseClient.auth.signInWithPassword({
                             email: email,
                             password: password
                         });
 
                         if (error) throw error;
 
-                        const { data: { user } } = await window.supabaseClient.auth.getUser();
-                        if (user && window.updateSessionToken) {
-                            await window.updateSessionToken(user.id);
+                        // 2. Hard-update session token to prevent kick-out
+                        if (authData.user && window.updateSessionToken) {
+                            await window.updateSessionToken(authData.user.id);
                         }
 
+                        // 3. Force session sync to localStorage before reload
+                        await window.supabaseClient.auth.getSession();
+
                         window.toast.show('Switched successfully!', 'success');
-                        setTimeout(() => window.location.reload(), 500);
+                        setTimeout(() => window.location.reload(), 300);
                     } catch (e) {
                         window.toast.show(e.message || 'Incorrect password', 'error');
                         confirmBtn.innerText = 'Switch Now';
