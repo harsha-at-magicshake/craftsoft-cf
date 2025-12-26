@@ -105,6 +105,11 @@ class Modal {
         this.overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
 
+        // Execute onRender callback if provided
+        if (arguments[0].onRender) {
+            arguments[0].onRender(modal);
+        }
+
         // Focus first button
         const firstButton = actionsEl.querySelector('button');
         if (firstButton) firstButton.focus();
