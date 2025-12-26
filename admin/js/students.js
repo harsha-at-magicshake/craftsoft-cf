@@ -324,8 +324,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        // Store phone with +91 prefix
-        const fullPhone = '+91' + phone.replace(/\D/g, '').slice(-10);
+        // Get country code and phone
+        const countryCode = document.getElementById('countryCode').value.trim() || '+91';
+        const fullPhone = countryCode + phone.replace(/\D/g, '');
 
         const studentData = {
             id: editingStudentId || generateStudentId(selectedCourses[0]),
@@ -651,9 +652,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Populate form
         document.getElementById('firstName').value = student.first_name || '';
         document.getElementById('surname').value = student.surname || '';
-        // Extract phone without country code
-        const phoneNumber = student.phone ? student.phone.replace(/^\+91/, '') : '';
-        document.getElementById('phone').value = phoneNumber;
+
+        // Parse country code and phone number
+        if (student.phone) {
+            const phoneMatch = student.phone.match(/^(\+\d{1,4})(\d+)$/);
+            if (phoneMatch) {
+                document.getElementById('countryCode').value = phoneMatch[1];
+                document.getElementById('phone').value = phoneMatch[2];
+            } else {
+                document.getElementById('countryCode').value = '+91';
+                document.getElementById('phone').value = student.phone.replace(/[^0-9]/g, '');
+            }
+        } else {
+            document.getElementById('countryCode').value = '+91';
+            document.getElementById('phone').value = '';
+        }
+
         document.getElementById('email').value = student.email || '';
         document.getElementById('demoDate').value = student.demo_date || '';
         document.getElementById('joiningDate').value = student.joining_date || '';

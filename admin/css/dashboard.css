@@ -1224,15 +1224,18 @@ body {
 }
 
 .filter-select {
-    padding: 10px 14px;
+    padding: 10px 32px 10px 14px;
     border: 1px solid var(--gray-200);
     border-radius: var(--radius-lg);
     font-size: 0.875rem;
     font-family: var(--font-secondary);
     color: var(--gray-700);
-    background: var(--white);
+    background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E") no-repeat right 12px center;
+    background-size: 12px;
     cursor: pointer;
-    min-width: 140px;
+    min-width: 150px;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .filter-select:focus {
@@ -1286,23 +1289,30 @@ body {
     align-items: stretch;
 }
 
-.phone-prefix {
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-    background: var(--gray-100);
+.phone-country-code {
+    width: 70px;
+    padding: 10px 8px;
+    background: var(--gray-50);
     border: 1px solid var(--gray-200);
     border-right: none;
     border-radius: var(--radius-md) 0 0 var(--radius-md);
     font-size: 0.9375rem;
-    color: var(--gray-600);
+    color: var(--gray-700);
     font-weight: 500;
+    text-align: center;
 }
 
-.phone-input-group input {
+.phone-country-code:focus {
+    outline: none;
+    background: var(--white);
+    border-color: var(--primary-400);
+}
+
+.phone-input-group input#phone {
     flex: 1;
     border-radius: 0 var(--radius-md) var(--radius-md) 0 !important;
 }
+
 
 .btn-primary {
     display: inline-flex;
