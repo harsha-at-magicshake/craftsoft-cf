@@ -184,22 +184,28 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <p style="margin-bottom: 1rem; font-size: 0.875rem; color: var(--gray-600);">
                         Switching to: <strong>${name}</strong> (${adminId})
                     </p>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 1rem;">
                         <div class="input-wrapper" style="position: relative;">
                             <input type="password" id="switchPassword" class="form-input" placeholder="Enter your password" 
                                    style="width: 100%; padding: 0.75rem; padding-right: 2.5rem; border: 1px solid var(--gray-200); border-radius: var(--radius-md);">
                             <button type="button" id="toggleSwitchPassword" 
-                                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-400); cursor: pointer;">
+                                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-400); cursor: pointer; padding: 5px;">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
+                    <!-- Progress Bar (Hidden by default) -->
+                    <div id="switchProgressContainer" style="display: none; width: 100%; background: var(--gray-100); height: 6px; border-radius: 3px; overflow: hidden; margin-top: 1rem;">
+                        <div id="switchProgressBar" style="width: 0%; height: 100%; background: var(--accent-gradient); transition: width 0.3s ease;"></div>
+                    </div>
+                    <p id="switchStatusText" style="display: none; font-size: 0.75rem; color: var(--primary-600); margin-top: 0.5rem; text-align: center; font-weight: 600;"></p>
                 </div>
             `,
             buttons: [
                 {
                     text: 'Cancel',
-                    type: 'secondary'
+                    type: 'secondary',
+                    className: 'btn-switch-cancel'
                 },
                 {
                     text: 'Switch Now',
@@ -211,54 +217,89 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const input = modalEl.querySelector('#switchPassword');
                 const toggleBtn = modalEl.querySelector('#toggleSwitchPassword');
                 const confirmBtn = modalEl.querySelector('.btn-switch-confirm');
+                const cancelBtn = modalEl.querySelector('.btn-switch-cancel');
+                const progressContainer = modalEl.querySelector('#switchProgressContainer');
+                const progressBar = modalEl.querySelector('#switchProgressBar');
+                const statusText = modalEl.querySelector('#switchStatusText');
 
-                input.focus();
+                if (input) input.focus();
 
                 // Toggle logic
-                if (toggleBtn) {
-                    toggleBtn.addEventListener('click', () => {
+                if (toggleBtn && input) {
+                    toggleBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
                         const isPassword = input.type === 'password';
                         input.type = isPassword ? 'text' : 'password';
                         toggleBtn.innerHTML = `<i class="fas fa-eye${isPassword ? '-slash' : ''}"></i>`;
                     });
                 }
 
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') confirmBtn.click();
-                });
+                if (input && confirmBtn) {
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') confirmBtn.click();
+                    });
+                }
 
-                confirmBtn.addEventListener('click', async () => {
-                    const password = input.value;
-                    if (!password) return;
-
-                    confirmBtn.innerText = 'Switching...';
-                    confirmBtn.disabled = true;
-
-                    try {
-                        // 1. Sign in with password
-                        const { data: authData, error } = await window.supabaseClient.auth.signInWithPassword({
-                            email: email,
-                            password: password
-                        });
-
-                        if (error) throw error;
-
-                        // 2. Hard-update session token to prevent kick-out
-                        if (authData.user && window.updateSessionToken) {
-                            await window.updateSessionToken(authData.user.id);
+                if (confirmBtn) {
+                    confirmBtn.addEventListener('click', async () => {
+                        const password = input.value;
+                        if (!password) {
+                            window.toast.warning('Required', 'Please enter your password');
+                            return;
                         }
 
-                        // 3. Force session sync to localStorage before reload
-                        await window.supabaseClient.auth.getSession();
+                        // Start Progress
+                        confirmBtn.disabled = true;
+                        if (cancelBtn) cancelBtn.style.display = 'none';
+                        progressContainer.style.display = 'block';
+                        statusText.style.display = 'block';
 
-                        window.toast.show('Switched successfully!', 'success');
-                        setTimeout(() => window.location.reload(), 300);
-                    } catch (e) {
-                        window.toast.show(e.message || 'Incorrect password', 'error');
-                        confirmBtn.innerText = 'Switch Now';
-                        confirmBtn.disabled = false;
-                    }
-                });
+                        const updateProgress = (pct, text) => {
+                            progressBar.style.width = pct + '%';
+                            statusText.textContent = text;
+                        };
+
+                        try {
+                            // Step 1: Auth
+                            updateProgress(30, 'Verifying credentials...');
+                            const { data: authData, error } = await window.supabaseClient.auth.signInWithPassword({
+                                email: email,
+                                password: password
+                            });
+
+                            if (error) throw error;
+
+                            // Step 2: Session Token
+                            updateProgress(60, 'Securing session...');
+                            if (authData.user && window.updateSessionToken) {
+                                try {
+                                    await window.updateSessionToken(authData.user.id);
+                                } catch (tokenErr) {
+                                    console.warn('Token update skipped:', tokenErr);
+                                }
+                            }
+
+                            // Step 3: Finalizing
+                            updateProgress(90, 'Syncing account...');
+                            await window.supabaseClient.auth.getSession();
+
+                            updateProgress(100, 'Redirecting...');
+                            window.toast.success('Success', `Switched to ${name}`);
+
+                            setTimeout(() => {
+                                window.location.href = 'dashboard.html';
+                            }, 500);
+
+                        } catch (e) {
+                            console.error('Switch error:', e);
+                            window.toast.error('Switch Failed', e.message || 'Incorrect password');
+                            confirmBtn.disabled = false;
+                            if (cancelBtn) cancelBtn.style.display = 'block';
+                            progressContainer.style.display = 'none';
+                            statusText.style.display = 'none';
+                        }
+                    });
+                }
             }
         });
     }

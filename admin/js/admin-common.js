@@ -118,11 +118,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const { data: { session } } = await window.supabaseClient.auth.getSession();
             if (!session) return;
 
-            const { data: admin } = await window.supabaseClient
+            const { data: admin, error } = await window.supabaseClient
                 .from('admins')
                 .select('session_token')
                 .eq('id', session.user.id)
                 .single();
+
+            // Handle 400 error (usually missing column) or other issues gracefully
+            if (error) {
+                if (error.code === 'PGRST204' || error.status === 400) {
+                    console.warn('Session hardware check skipped: Database column missing or record not found.');
+                    return;
+                }
+                throw error;
+            }
 
             const localToken = sessionStorage.getItem('craftsoft_session_token');
 
@@ -139,20 +148,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Run on load and every 10 seconds
     setTimeout(() => {
         validateSessionToken();
-        setInterval(validateSessionToken, 10000);
-    }, 1000);
+        setInterval(validateSessionToken, 15000); // Increased interval to 15s to reduce XHR load
+    }, 2000);
 
     // ============================================
     // GLOBAL HELPERS
     // ============================================
 
     window.updateSessionToken = async (userId) => {
-        const newToken = (typeof crypto.randomUUID === 'function') ? crypto.randomUUID() : Math.random().toString(36).substring(2);
-        await window.supabaseClient
-            .from('admins')
-            .update({ session_token: newToken })
-            .eq('id', userId);
-        sessionStorage.setItem('craftsoft_session_token', newToken);
-        return newToken;
+        try {
+            const newToken = (typeof crypto.randomUUID === 'function') ? crypto.randomUUID() : Math.random().toString(36).substring(2);
+            const { error } = await window.supabaseClient
+                .from('admins')
+                .update({ session_token: newToken })
+                .eq('id', userId);
+
+            if (error) throw error;
+
+            sessionStorage.setItem('craftsoft_session_token', newToken);
+            return newToken;
+        } catch (e) {
+            console.warn('Could not update session token (DB column might be missing):', e.message);
+            return null;
+        }
     };
 });

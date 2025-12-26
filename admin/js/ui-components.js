@@ -92,7 +92,7 @@ class Modal {
 
         buttons.forEach(btn => {
             const button = document.createElement('button');
-            button.className = `modal-btn modal-btn-${btn.type || 'primary'}`;
+            button.className = `modal-btn modal-btn-${btn.type || 'primary'} ${btn.className || ''}`;
             button.textContent = btn.text;
             button.addEventListener('click', () => {
                 if (btn.onClick) btn.onClick();
