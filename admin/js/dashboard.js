@@ -163,15 +163,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     logoutBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-
-            window.modal.confirm(
-                'Leave Dashboard',
-                'Are you sure you want to leave? Other open tabs will remain active.',
-                () => {
-                    // Just redirect - don't sign out (keeps other tabs working)
-                    window.location.replace('signin.html');
-                }
-            );
+            // Just redirect to signin - session stays valid for other tabs
+            window.location.href = 'signin.html';
         });
     });
 });
