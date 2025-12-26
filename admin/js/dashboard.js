@@ -1,5 +1,6 @@
 /* ============================================
    Dashboard Core Logic
+   - Single Tab Session
    - Auth check
    - Session protection
    - Sidebar navigation
@@ -8,10 +9,71 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
     // ============================================
+    // SINGLE TAB SESSION (prevents multiple tabs)
+    // ============================================
+
+    const SESSION_KEY = 'craftsoft_admin_session';
+    const SESSION_CHANNEL = 'craftsoft_admin_channel';
+
+    // Generate unique tab ID
+    const tabId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+
+    // Check if another tab is already open
+    function initSingleTabSession() {
+        const existingSession = sessionStorage.getItem(SESSION_KEY);
+
+        // Use BroadcastChannel API for cross-tab communication
+        if ('BroadcastChannel' in window) {
+            const channel = new BroadcastChannel(SESSION_CHANNEL);
+
+            // Ask if any other tab is open
+            channel.postMessage({ type: 'CHECK_SESSION', tabId: tabId });
+
+            // Listen for responses
+            channel.onmessage = (event) => {
+                if (event.data.type === 'CHECK_SESSION' && event.data.tabId !== tabId) {
+                    // Another tab is asking - respond that we exist
+                    channel.postMessage({ type: 'SESSION_EXISTS', tabId: tabId });
+                }
+
+                if (event.data.type === 'SESSION_EXISTS' && event.data.tabId !== tabId) {
+                    // Another tab exists - show error and redirect
+                    showDuplicateTabError();
+                }
+            };
+
+            // Mark this tab as the active session
+            sessionStorage.setItem(SESSION_KEY, tabId);
+
+            // Clear on unload
+            window.addEventListener('beforeunload', () => {
+                sessionStorage.removeItem(SESSION_KEY);
+            });
+        }
+    }
+
+    function showDuplicateTabError() {
+        document.body.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f1f5f9; padding: 20px;">
+                <div style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px;">
+                    <div style="width: 80px; height: 80px; background: #fee2e2; color: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: #1e293b; margin-bottom: 10px;">Session Already Active</h2>
+                    <p style="color: #64748b; margin-bottom: 20px;">Admin panel is already open in another tab. Please use that tab or close it first.</p>
+                    <button onclick="window.close(); window.location.href='signin.html';" style="background: linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;">Close This Tab</button>
+                </div>
+            </div>
+        `;
+    }
+
+    initSingleTabSession();
+
+    // ============================================
     // SESSION PROTECTION (back/forward)
     // ============================================
 
-    // Prevent back/forward navigation
+    // Prevent caching
     if (window.history && window.history.pushState) {
         window.history.pushState(null, '', window.location.href);
         window.addEventListener('popstate', () => {
