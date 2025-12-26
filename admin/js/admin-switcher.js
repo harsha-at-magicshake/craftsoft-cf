@@ -222,7 +222,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const progressBar = modalEl.querySelector('#switchProgressBar');
                 const statusText = modalEl.querySelector('#switchStatusText');
 
-                if (input) input.focus();
+                if (input) {
+                    input.focus();
+                    input.addEventListener('input', () => {
+                        input.style.borderColor = '';
+                        input.style.boxShadow = '';
+                        if (statusText) statusText.style.display = 'none';
+                    });
+                }
 
                 // Toggle logic
                 if (toggleBtn && input) {
@@ -292,11 +299,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                         } catch (e) {
                             console.error('Switch error:', e);
-                            window.toast.error('Switch Failed', e.message || 'Incorrect password');
+
+                            // Visual Feedback for Wrong Password
+                            if (input) {
+                                input.style.borderColor = 'var(--error)';
+                                input.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)';
+                                input.focus();
+                            }
+
+                            statusText.textContent = 'Invalid password. Please try again.';
+                            statusText.style.color = 'var(--error)';
+                            statusText.style.display = 'block';
+
                             confirmBtn.disabled = false;
                             if (cancelBtn) cancelBtn.style.display = 'block';
                             progressContainer.style.display = 'none';
-                            statusText.style.display = 'none';
                         }
                     });
                 }
