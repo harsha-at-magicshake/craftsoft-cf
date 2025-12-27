@@ -38,26 +38,10 @@ export default function Sidebar({ mobileOpen, onClose }) {
 
     const content = (
         <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            {/* Logo Area */}
-            <Box sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Box sx={{
-                    width: 32, height: 32,
-                    background: 'linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%)',
-                    borderRadius: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'
-                }}>
-                    <span style={{ fontSize: '1rem' }}>🎓</span>
-                </Box>
-                <Typography variant="h6" sx={{ fontWeight: 700, fontFamily: 'Outfit' }}>
-                    Craft
-                    <Box component="span" sx={{
-                        background: 'linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%)',
-                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'
-                    }}>Soft</Box>
-                </Typography>
-            </Box>
+
 
             {/* User Info Block */}
-            <Box sx={{ px: 3, mb: 1 }}>
+            <Box sx={{ px: 3, mb: 1, mt: 3 }}>
                 <Box sx={{
                     p: 1.5,
                     bgcolor: 'background.paper',

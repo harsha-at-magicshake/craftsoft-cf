@@ -1,11 +1,12 @@
 
 import React, { useState } from 'react';
 import {
-    AppBar, Toolbar, IconButton, Typography, Box, Avatar, Menu, MenuItem, Divider, ListItemIcon
+    AppBar, Toolbar, IconButton, Typography, Box, Avatar, Menu, MenuItem, Divider, ListItemIcon, Button
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useAuth } from '../../context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -76,30 +77,36 @@ export default function Header({ onMobileToggle }) {
                 </Typography>
 
                 <Box>
-                    <IconButton
+                    <Button
                         onClick={handleMenu}
+                        endIcon={<KeyboardArrowDownIcon />}
                         sx={{
-                            p: 0.5,
-                            borderRadius: 2,
-                            '&:hover': { bgcolor: 'action.hover' }
+                            textTransform: 'none',
+                            color: 'text.primary',
+                            bgcolor: 'background.paper',
+                            border: '1px solid',
+                            borderColor: 'grey.200',
+                            borderRadius: 3,
+                            px: 2,
+                            py: 0.75,
+                            minWidth: 160,
+                            justifyContent: 'space-between',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+                            '&:hover': {
+                                bgcolor: 'grey.50',
+                                borderColor: 'grey.300'
+                            }
                         }}
                     >
-                        <Box sx={{ mr: 1.5, textAlign: 'right', display: { xs: 'none', sm: 'block' } }}>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 700, lineHeight: 1.2, color: 'text.primary' }}>
+                        <Box sx={{ textAlign: 'left', mr: 1 }}>
+                            <Typography variant="subtitle2" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
                                 {adminProfile?.full_name || 'Admin'}
                             </Typography>
                             <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
                                 {adminProfile?.admin_id || 'ID'}
                             </Typography>
                         </Box>
-                        <Avatar sx={{
-                            width: 40, height: 40,
-                            background: 'linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%)',
-                            fontWeight: 700
-                        }}>
-                            {initial}
-                        </Avatar>
-                    </IconButton>
+                    </Button>
                     <Menu
                         id="menu-appbar"
                         anchorEl={anchorEl}
