@@ -627,7 +627,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }).join('')}
                     </div>
                 </td>
-                <td>${student.joining_date ? formatDate(student.joining_date) : '-'}</td>
+                <td>${(student.join_date || student.joining_date) ? formatDate(student.join_date || student.joining_date) : '-'}</td>
                 <td>
                     <button class="action-btn whatsapp" title="WhatsApp" onclick="openWhatsApp('${student.phone}')">
                         <i class="fab fa-whatsapp"></i>
@@ -675,10 +675,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             return course ? course.name.split(' ')[0] : code;
         }).join(', ')}</span>
                 </div>
-                ${student.joining_date ? `
+                ${(student.join_date || student.joining_date) ? `
                     <div class="data-card-row">
                         <i class="fas fa-calendar"></i>
-                        <span>${formatDate(student.joining_date)}</span>
+                        <span>${formatDate(student.join_date || student.joining_date)}</span>
                     </div>
                 ` : ''}
             </div>
