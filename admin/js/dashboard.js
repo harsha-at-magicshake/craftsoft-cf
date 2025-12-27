@@ -78,30 +78,73 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ============================================
-    // LOAD DASHBOARD STATS
+    // LOAD DASHBOARD STATS FROM SUPABASE
     // ============================================
-    function loadDashboardStats() {
-        // Load student count from localStorage
-        const studentCount = localStorage.getItem('craftsoft_student_count') || 0;
-        const statStudents = document.getElementById('statStudents');
-        if (statStudents) statStudents.textContent = studentCount;
+    async function loadDashboardStats() {
+        try {
+            // Load students count
+            const { count: studentCount, error: studentError } = await window.supabaseClient
+                .from('students')
+                .select('*', { count: 'exact', head: true });
 
-        // Load tutor count from localStorage
-        const tutorCount = localStorage.getItem('craftsoft_tutor_count') || 0;
-        const statTutors = document.getElementById('statTutors');
-        if (statTutors) statTutors.textContent = tutorCount;
+            const statStudents = document.getElementById('statStudents');
+            if (statStudents) {
+                statStudents.textContent = studentError ? (localStorage.getItem('craftsoft_student_count') || 0) : studentCount;
+            }
 
-        // Load inquiry count from localStorage
-        const inquiryCount = localStorage.getItem('craftsoft_inquiry_count') || 0;
-        const statInquiries = document.getElementById('statInquiries');
-        if (statInquiries) statInquiries.textContent = inquiryCount;
+            // Load tutors count
+            const { count: tutorCount, error: tutorError } = await window.supabaseClient
+                .from('tutors')
+                .select('*', { count: 'exact', head: true });
 
-        // Revenue will be added in later phases
+            const statTutors = document.getElementById('statTutors');
+            if (statTutors) {
+                statTutors.textContent = tutorError ? (localStorage.getItem('craftsoft_tutor_count') || 0) : tutorCount;
+            }
+
+            // Load inquiries count
+            const { count: inquiryCount, error: inquiryError } = await window.supabaseClient
+                .from('inquiries')
+                .select('*', { count: 'exact', head: true });
+
+            const statInquiries = document.getElementById('statInquiries');
+            if (statInquiries) {
+                statInquiries.textContent = inquiryError ? (localStorage.getItem('craftsoft_inquiry_count') || 0) : inquiryCount;
+            }
+
+            // Load revenue (sum of payments)
+            const { data: payments, error: paymentError } = await window.supabaseClient
+                .from('payments')
+                .select('amount');
+
+            const statRevenue = document.getElementById('statRevenue');
+            if (statRevenue) {
+                if (paymentError) {
+                    statRevenue.textContent = '₹' + (localStorage.getItem('craftsoft_revenue') || 0).toLocaleString('en-IN');
+                } else {
+                    const totalRevenue = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
+                    statRevenue.textContent = '₹' + totalRevenue.toLocaleString('en-IN');
+                }
+            }
+
+        } catch (error) {
+            console.error('Error loading stats:', error);
+            // Fallback to localStorage
+            const statStudents = document.getElementById('statStudents');
+            const statTutors = document.getElementById('statTutors');
+            const statInquiries = document.getElementById('statInquiries');
+            const statRevenue = document.getElementById('statRevenue');
+
+            if (statStudents) statStudents.textContent = localStorage.getItem('craftsoft_student_count') || 0;
+            if (statTutors) statTutors.textContent = localStorage.getItem('craftsoft_tutor_count') || 0;
+            if (statInquiries) statInquiries.textContent = localStorage.getItem('craftsoft_inquiry_count') || 0;
+            if (statRevenue) statRevenue.textContent = '₹' + (localStorage.getItem('craftsoft_revenue') || 0).toLocaleString('en-IN');
+        }
     }
 
     loadDashboardStats();
 
-    // Refresh stats when page becomes visible (in case user added students in another tab)
+    // Refresh stats when page becomes visible
     document.addEventListener('visibilitychange', () => {
         if (!document.hidden) loadDashboardStats();
     });
