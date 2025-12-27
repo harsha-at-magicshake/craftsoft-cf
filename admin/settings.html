@@ -102,19 +102,6 @@
                     </a>
                 </div>
             </nav>
-
-            <div class="sidebar-footer">
-                <div class="admin-profile" id="adminProfile">
-                    <div class="admin-avatar" id="adminAvatar">A</div>
-                    <div class="admin-info">
-                        <div class="admin-name" id="adminName">Admin</div>
-                        <div class="admin-id" id="adminId">ACS-01</div>
-                    </div>
-                </div>
-                <button class="logout-btn" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </div>
         </aside>
 
         <main class="main-content">
@@ -124,6 +111,52 @@
                         <i class="fas fa-bars"></i>
                     </button>
                     <h1 class="page-title">Settings</h1>
+                </div>
+
+                <div class="header-right">
+                    <div class="admin-switcher" id="adminSwitcher">
+                        <button class="admin-switcher-toggle" id="adminSwitcherToggle">
+                            <div class="admin-switcher-info">
+                                <div class="admin-name" id="adminName">Admin</div>
+                                <div class="admin-id" id="adminId">ACS-01</div>
+                            </div>
+                            <i class="fas fa-chevron-down admin-switcher-arrow"></i>
+                        </button>
+
+                        <div class="admin-switcher-dropdown" id="adminSwitcherDropdown">
+                            <div class="dropdown-section">
+                                <div class="dropdown-label">Current Admin</div>
+                                <div class="saved-admin current" id="currentAdminItem">
+                                    <div class="saved-admin-avatar" id="currentAdminAvatar">A</div>
+                                    <div class="saved-admin-info">
+                                        <div class="saved-admin-name" id="currentAdminName">Admin</div>
+                                        <div class="saved-admin-id" id="currentAdminId">ACS-01</div>
+                                    </div>
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+
+                            <div class="dropdown-section" id="savedAdminsSection" style="display: none;">
+                                <div class="dropdown-label">Switch To</div>
+                                <div id="savedAdminsList"></div>
+                            </div>
+
+                            <div class="dropdown-section dropdown-actions">
+                                <button class="dropdown-action-btn" id="addAnotherAdmin">
+                                    <i class="fas fa-plus"></i>
+                                    <span>Add another admin</span>
+                                </button>
+                                <button class="dropdown-action-btn logout" id="logoutCurrent">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Logout</span>
+                                </button>
+                                <button class="dropdown-action-btn logout-all" id="logoutAll" style="display: none;">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Logout All (<span id="savedCount">0</span>)</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -156,7 +189,9 @@
         </main>
     </div>
 
+    <script src="js/ui-components.js"></script>
     <script src="js/admin-panel.js"></script>
+    <script src="js/admin-switcher.js"></script>
 </body>
 
 </html>
