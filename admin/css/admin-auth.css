@@ -1053,3 +1053,10 @@ body {
 #backToAccounts+.auth-back-link {
     margin-top: var(--spacing-sm);
 }
+
+.form-input[readonly] {
+    background-color: var(--gray-50);
+    color: var(--gray-500);
+    cursor: default;
+    border-color: var(--gray-200);
+}

@@ -157,8 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (identifierInput.value) {
+            identifierInput.readOnly = true;
             passwordInput.focus();
         } else {
+            identifierInput.readOnly = false;
             identifierInput.focus();
         }
     }
