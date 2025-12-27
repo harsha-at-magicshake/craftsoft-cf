@@ -415,13 +415,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.warn('Supabase load failed, using localStorage:', error.message);
                 const stored = localStorage.getItem('craftsoft_students');
                 students = stored ? JSON.parse(stored) : [];
-            } else if (supabaseStudents && supabaseStudents.length > 0) {
-                students = supabaseStudents;
-                saveStudentsToStorage(); // Sync to localStorage
             } else {
-                // No data in Supabase, check localStorage
-                const stored = localStorage.getItem('craftsoft_students');
-                students = stored ? JSON.parse(stored) : [];
+                // Supabase is source of truth - sync to localStorage
+                students = supabaseStudents || [];
+                saveStudentsToStorage();
             }
 
             // Seed mock data if empty
