@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Inquiries | Abhi's Craft Soft Admin</title>
+    <title>Payments | Abhi's Craft Soft Admin</title>
 
     <!-- Cache Control -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -104,12 +104,12 @@
                         <span>Tutors</span>
                     </a>
 
-                    <a href="inquiries.html" class="nav-item active">
+                    <a href="inquiries.html" class="nav-item">
                         <i class="fas fa-envelope-open-text nav-icon"></i>
                         <span>Inquiries</span>
                     </a>
 
-                    <a href="payments.html" class="nav-item">
+                    <a href="payments.html" class="nav-item active">
                         <i class="fas fa-indian-rupee-sign nav-icon"></i>
                         <span>Payments</span>
                     </a>
@@ -134,7 +134,7 @@
                     <button class="mobile-menu-btn" id="mobileMenuBtn">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <h1 class="page-title">Inquiries</h1>
+                    <h1 class="page-title">Payments</h1>
                 </div>
 
                 <div class="header-right">
@@ -188,38 +188,63 @@
                 </div>
             </header>
 
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item stat-success">
+                    <div class="stat-icon"><i class="fas fa-circle-check"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statCollected">₹0</div>
+                        <div class="stat-label">Collected</div>
+                    </div>
+                </div>
+                <div class="stat-item stat-warning">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statPending">₹0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                </div>
+                <div class="stat-item stat-info">
+                    <div class="stat-icon"><i class="fas fa-calendar"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statThisMonth">₹0</div>
+                        <div class="stat-label">This Month</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Page Content -->
             <div class="page-content">
                 <!-- Search & Actions Bar -->
                 <div class="page-actions-bar">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="inquirySearch" placeholder="Search by name, phone, email...">
+                        <input type="text" id="paymentSearch" placeholder="Search by student, ID...">
                     </div>
                     <div class="filter-group">
                         <select id="statusFilter" class="filter-select">
                             <option value="">All Status</option>
-                            <option value="new">🙂 New</option>
-                            <option value="contacted">📞 Contacted</option>
-                            <option value="converted">👤 Converted</option>
-                            <option value="lost">😢 Lost</option>
+                            <option value="paid">✅ Paid</option>
+                            <option value="pending">⏳ Pending</option>
+                            <option value="failed">❌ Failed</option>
+                            <option value="refunded">↩️ Refunded</option>
                         </select>
-                        <select id="sourceFilter" class="filter-select">
-                            <option value="">All Sources</option>
-                            <option value="website">🌐 Website</option>
-                            <option value="instagram">📷 Instagram</option>
-                            <option value="linkedin">💼 LinkedIn</option>
-                            <option value="classifieds">📰 Classifieds</option>
-                            <option value="walkin">🚶 Walk-in</option>
+                        <select id="methodFilter" class="filter-select">
+                            <option value="">All Methods</option>
+                            <option value="upi">📱 UPI</option>
+                            <option value="cash">💵 Cash</option>
+                            <option value="bank">🏦 Bank</option>
+                            <option value="cheque">📄 Cheque</option>
+                            <option value="card">💳 Card</option>
                         </select>
                     </div>
-                    <button class="btn-primary" id="addInquiryBtn">
+                    <button class="btn-primary" id="addPaymentBtn">
                         <i class="fas fa-plus"></i>
-                        <span>Add Inquiry</span>
+                        <span>Add Payment</span>
                     </button>
                 </div>
 
-                <!-- Inquiries Table (Desktop) -->
+                <!-- Payments Table (Desktop) -->
                 <div class="data-table-container" id="tableContainer">
                     <!-- Skeleton Loader (Table) -->
                     <div class="skeleton-table" id="skeletonTable">
@@ -229,7 +254,7 @@
                             <div class="skeleton-cell skeleton phone"></div>
                             <div class="skeleton-cell skeleton course"></div>
                             <div class="skeleton-cell skeleton date"></div>
-                            <div class="skeleton-cell skeleton btn"></div>
+                            <div class="skeleton-cell skeleton date"></div>
                             <div class="skeleton-cell actions">
                                 <div class="skeleton-cell skeleton btn"></div>
                                 <div class="skeleton-cell skeleton btn"></div>
@@ -241,7 +266,7 @@
                             <div class="skeleton-cell skeleton phone"></div>
                             <div class="skeleton-cell skeleton course"></div>
                             <div class="skeleton-cell skeleton date"></div>
-                            <div class="skeleton-cell skeleton btn"></div>
+                            <div class="skeleton-cell skeleton date"></div>
                             <div class="skeleton-cell actions">
                                 <div class="skeleton-cell skeleton btn"></div>
                                 <div class="skeleton-cell skeleton btn"></div>
@@ -253,7 +278,7 @@
                             <div class="skeleton-cell skeleton phone"></div>
                             <div class="skeleton-cell skeleton course"></div>
                             <div class="skeleton-cell skeleton date"></div>
-                            <div class="skeleton-cell skeleton btn"></div>
+                            <div class="skeleton-cell skeleton date"></div>
                             <div class="skeleton-cell actions">
                                 <div class="skeleton-cell skeleton btn"></div>
                                 <div class="skeleton-cell skeleton btn"></div>
@@ -261,29 +286,29 @@
                         </div>
                     </div>
 
-                    <table class="data-table" id="inquiriesTable" style="display: none;">
+                    <table class="data-table" id="paymentsTable" style="display: none;">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Phone</th>
-                                <th>Interest</th>
+                                <th>Student</th>
+                                <th>Amount</th>
+                                <th>Course</th>
+                                <th>Method</th>
                                 <th>Status</th>
-                                <th>Demo</th>
-                                <th>WhatsApp</th>
+                                <th>Date</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="inquiriesTableBody">
+                        <tbody id="paymentsTableBody">
                             <!-- Dynamic content -->
                         </tbody>
                     </table>
 
                     <!-- Empty State -->
                     <div class="empty-state" id="emptyState" style="display: none;">
-                        <i class="fas fa-envelope-open-text"></i>
-                        <h3>No Inquiries Yet</h3>
-                        <p>Add your first inquiry to get started!</p>
+                        <i class="fas fa-indian-rupee-sign"></i>
+                        <h3>No Payments Yet</h3>
+                        <p>Add your first payment record to get started!</p>
                     </div>
 
                     <!-- Pagination -->
@@ -298,7 +323,7 @@
                     </div>
                 </div>
 
-                <!-- Inquiries Cards (Mobile) -->
+                <!-- Payments Cards (Mobile) -->
                 <!-- Skeleton Cards (Mobile) -->
                 <div class="skeleton-cards" id="skeletonCards">
                     <div class="skeleton-card">
@@ -338,172 +363,110 @@
                         </div>
                     </div>
                 </div>
-                <div class="data-cards" id="inquiriesCards" style="display: none;">
+                <div class="data-cards" id="paymentsCards" style="display: none;">
                     <!-- Dynamic content -->
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Add Inquiry Modal -->
-    <div class="modal-overlay" id="inquiryModalOverlay">
-        <div class="modal student-modal" id="inquiryModal">
+    <!-- Add Payment Modal -->
+    <div class="modal-overlay" id="paymentModalOverlay">
+        <div class="modal student-modal" id="paymentModal">
             <div class="modal-header">
-                <h2 id="inquiryModalTitle">Add New Inquiry</h2>
-                <button class="modal-close" id="closeInquiryModal">
+                <h2 id="paymentModalTitle">Add New Payment</h2>
+                <button class="modal-close" id="closePaymentModal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="inquiryForm">
-                    <!-- Section: Contact Info -->
-                    <div class="form-section-title">Contact Information</div>
+                <form id="paymentForm">
+                    <!-- Section: Student -->
+                    <div class="form-section-title">Student</div>
+                    <div class="form-group">
+                        <label for="studentSelect">Select Student <span class="required">*</span></label>
+                        <select id="studentSelect" required>
+                            <option value="">Select student...</option>
+                            <!-- Dynamic students -->
+                        </select>
+                    </div>
+                    <div class="student-info-display" id="studentInfoDisplay" style="display: none;">
+                        <div class="info-item">
+                            <span class="info-label">ID:</span>
+                            <span class="info-value" id="displayStudentId">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Phone:</span>
+                            <span class="info-value" id="displayStudentPhone">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Section: Payment Details -->
+                    <div class="form-section-title">Payment Details</div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="inquiryName">Name <span class="required">*</span></label>
-                            <input type="text" id="inquiryName" placeholder="e.g. Amit Sharma" required>
+                            <label for="courseSelect">Course <span class="required">*</span></label>
+                            <select id="courseSelect" required>
+                                <option value="">Select course...</option>
+                                <!-- Dynamic courses from student -->
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="inquiryEmail">Email <span class="optional">(optional)</span></label>
-                            <input type="email" id="inquiryEmail" placeholder="amit@email.com">
+                            <label for="paymentAmount">Amount (₹) <span class="required">*</span></label>
+                            <input type="number" id="paymentAmount" placeholder="15000" min="1" required>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="inquiryPhone">Phone / WhatsApp <span class="required">*</span></label>
-                        <div class="phone-input-group">
-                            <input type="text" id="inquiryCountryCode" class="phone-country-code" placeholder="+91"
-                                value="+91" maxlength="5">
-                            <input type="tel" id="inquiryPhone" placeholder="9876543210" maxlength="10" required>
-                        </div>
-                    </div>
-
-                    <!-- Section: Interest -->
-                    <div class="form-section-title">Interest</div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="courseService">Course / Service <span class="required">*</span></label>
-                            <select id="courseService" required>
-                                <option value="">Select interest...</option>
-                                <optgroup label="Courses">
-                                    <!-- Dynamic courses -->
-                                </optgroup>
-                                <optgroup label="Services">
-                                    <!-- Dynamic services -->
-                                </optgroup>
+                            <label for="paymentMethod">Payment Method <span class="required">*</span></label>
+                            <select id="paymentMethod" required>
+                                <option value="">Select method...</option>
+                                <option value="upi">📱 UPI</option>
+                                <option value="cash">💵 Cash</option>
+                                <option value="bank">🏦 Bank Transfer</option>
+                                <option value="cheque">📄 Cheque</option>
+                                <option value="card">💳 Card</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="leadSource">Lead Source</label>
-                            <select id="leadSource">
-                                <option value="">Select source...</option>
-                                <option value="website">🌐 Website</option>
-                                <option value="instagram">📷 Instagram</option>
-                                <option value="linkedin">💼 LinkedIn</option>
-                                <option value="classifieds">📰 Classifieds</option>
-                                <option value="walkin">🚶 Walk-in</option>
-                            </select>
+                            <label for="paymentDate">Payment Date <span class="required">*</span></label>
+                            <input type="date" id="paymentDate" required>
                         </div>
                     </div>
 
-                    <!-- Section: Current Status -->
-                    <div class="form-section-title">Current Status</div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="occupation">Occupation</label>
-                            <select id="occupation">
-                                <option value="">Select occupation...</option>
-                                <option value="student">Student</option>
-                                <option value="working">Working Professional</option>
-                                <option value="career_break">Career Break</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="expectedStart">Expected Start</label>
-                            <select id="expectedStart">
-                                <option value="">Select timing...</option>
-                                <option value="immediate">⚡ Immediate</option>
-                                <option value="this_month">📅 This Month</option>
-                                <option value="next_month">📅 Next Month</option>
-                                <option value="custom">📆 Specific Month</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row" id="customMonthGroup" style="display: none;">
-                        <div class="form-group">
-                            <label for="customMonthSelect">Month</label>
-                            <select id="customMonthSelect">
-                                <option value="01">January</option>
-                                <option value="02">February</option>
-                                <option value="03">March</option>
-                                <option value="04">April</option>
-                                <option value="05">May</option>
-                                <option value="06">June</option>
-                                <option value="07">July</option>
-                                <option value="08">August</option>
-                                <option value="09">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="customYearSelect">Year</label>
-                            <select id="customYearSelect">
-                                <option value="2025">2025</option>
-                                <option value="2026">2026</option>
-                                <option value="2027">2027</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Section: Demo Scheduling -->
-                    <div class="form-section-title">Demo Scheduling</div>
+                    <!-- Section: Transaction Info -->
+                    <div class="form-section-title">Transaction Info</div>
                     <div class="form-group">
-                        <label class="toggle-label">
-                            <span class="toggle-text">Schedule a Demo</span>
-                            <span class="toggle-switch">
-                                <input type="checkbox" id="scheduleDemo">
-                                <span class="toggle-slider"></span>
-                            </span>
-                        </label>
-                    </div>
-                    <div class="form-row" id="demoFields" style="display: none;">
-                        <div class="form-group">
-                            <label for="demoDate">Demo Date</label>
-                            <input type="date" id="demoDate">
-                        </div>
-                        <div class="form-group">
-                            <label for="demoTime">Demo Time</label>
-                            <input type="time" id="demoTime">
-                        </div>
+                        <label for="transactionId">Transaction ID / Reference <span
+                                class="optional">(optional)</span></label>
+                        <input type="text" id="transactionId" placeholder="UPI ID, Cheque No., etc.">
                     </div>
 
-                    <!-- Section: Inquiry Status -->
-                    <div class="form-section-title">Inquiry Status</div>
+                    <!-- Section: Status -->
+                    <div class="form-section-title">Status</div>
                     <div class="form-group">
-                        <label for="inquiryStatus">Status <span class="required">*</span></label>
-                        <select id="inquiryStatus" required>
-                            <option value="new">🙂 New</option>
-                            <option value="contacted">📞 Contacted</option>
-                            <option value="converted">👤 Converted</option>
-                            <option value="lost">😢 Lost</option>
+                        <label for="paymentStatus">Payment Status <span class="required">*</span></label>
+                        <select id="paymentStatus" required>
+                            <option value="paid">✅ Paid</option>
+                            <option value="pending">⏳ Pending</option>
+                            <option value="failed">❌ Failed</option>
+                            <option value="refunded">↩️ Refunded</option>
                         </select>
                     </div>
 
                     <!-- Section: Notes -->
                     <div class="form-section-title">Notes</div>
                     <div class="form-group">
-                        <label for="inquiryNotes">Notes / Remarks</label>
-                        <textarea id="inquiryNotes" rows="3"
-                            placeholder="Any additional notes about this inquiry..."></textarea>
+                        <label for="paymentNotes">Notes / Remarks</label>
+                        <textarea id="paymentNotes" rows="2" placeholder="Any additional notes..."></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-secondary" id="cancelInquiryBtn">Cancel</button>
-                <button type="submit" class="btn-primary" id="saveInquiryBtn">
+                <button type="button" class="btn-secondary" id="cancelPaymentBtn">Cancel</button>
+                <button type="submit" class="btn-primary" id="savePaymentBtn">
                     <i class="fas fa-save"></i>
-                    <span>Save Inquiry</span>
+                    <span>Save Payment</span>
                 </button>
             </div>
         </div>
@@ -513,7 +476,7 @@
     <script src="js/ui-components.js"></script>
     <script src="js/admin-common.js"></script>
     <script src="js/admin-switcher.js"></script>
-    <script src="js/inquiries.js"></script>
+    <script src="js/payments.js"></script>
 </body>
 
 </html>
