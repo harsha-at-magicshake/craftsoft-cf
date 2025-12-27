@@ -619,14 +619,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Parse phone
         if (tutor.phone) {
-            const phoneMatch = tutor.phone.match(/^(\+\d{1,4})(\d+)$/);
-            if (phoneMatch) {
-                document.getElementById('tutorCountryCode').value = phoneMatch[1];
-                document.getElementById('tutorPhone').value = phoneMatch[2];
+            let cleanPhone = tutor.phone.replace(/[^\d+]/g, '');
+
+            if (cleanPhone.startsWith('+91')) {
+                document.getElementById('tutorCountryCode').value = '+91';
+                document.getElementById('tutorPhone').value = cleanPhone.slice(3);
+            } else if (cleanPhone.startsWith('+')) {
+                const match = cleanPhone.match(/^(\+\d{1,4})(\d+)$/);
+                if (match) {
+                    document.getElementById('tutorCountryCode').value = match[1];
+                    document.getElementById('tutorPhone').value = match[2];
+                } else {
+                    document.getElementById('tutorCountryCode').value = '+91';
+                    document.getElementById('tutorPhone').value = cleanPhone.replace(/\+/g, '');
+                }
             } else {
                 document.getElementById('tutorCountryCode').value = '+91';
-                document.getElementById('tutorPhone').value = tutor.phone.replace(/[^0-9]/g, '');
+                document.getElementById('tutorPhone').value = cleanPhone;
             }
+        } else {
+            document.getElementById('tutorCountryCode').value = '+91';
+            document.getElementById('tutorPhone').value = '';
         }
 
         document.getElementById('tutorEmail').value = tutor.email || '';

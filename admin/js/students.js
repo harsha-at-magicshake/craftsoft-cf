@@ -30,15 +30,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         { code: '20', name: 'Handwriting Improvement', category: 'Soft Skills', fee: 4000 }
     ];
 
-    // Mock Tutors (will be dynamic in Phase 3)
-    const TUTORS = [
-        { id: 1, name: 'Sneha Reddy', courses: ['01', '02'] },
-        { id: 2, name: 'Ravi Kumar', courses: ['03', '04', '05', '09', '10'] },
-        { id: 3, name: 'Priya Sharma', courses: ['06', '07'] },
-        { id: 4, name: 'Kiran Rao', courses: ['08'] },
-        { id: 5, name: 'Arun Mehta', courses: ['12', '13', '14', '15', '16'] },
-        { id: 6, name: 'Deepika Nair', courses: ['17', '18', '19', '20'] }
-    ];
+
+    // Tutors - loaded dynamically from localStorage (synced from Supabase)
+    let TUTORS = [];
+    function loadTutorsForDropdown() {
+        try {
+            const stored = localStorage.getItem('craftsoft_tutors');
+            TUTORS = stored ? JSON.parse(stored) : [];
+        } catch (e) {
+            TUTORS = [];
+        }
+    }
 
     // Pagination Settings
     const ITEMS_PER_PAGE = 10;
@@ -86,6 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ============================================
     // Initialize
     // ============================================
+    loadTutorsForDropdown();
     initCoursesDropdown();
     initCourseFilter();
     await loadStudents();
@@ -715,13 +718,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Parse country code and phone number
         if (student.phone) {
-            const phoneMatch = student.phone.match(/^(\+\d{1,4})(\d+)$/);
-            if (phoneMatch) {
-                document.getElementById('countryCode').value = phoneMatch[1];
-                document.getElementById('phone').value = phoneMatch[2];
+            let cleanPhone = student.phone.replace(/[^\d+]/g, '');
+
+            if (cleanPhone.startsWith('+91')) {
+                document.getElementById('countryCode').value = '+91';
+                document.getElementById('phone').value = cleanPhone.slice(3);
+            } else if (cleanPhone.startsWith('+')) {
+                const match = cleanPhone.match(/^(\+\d{1,4})(\d+)$/);
+                if (match) {
+                    document.getElementById('countryCode').value = match[1];
+                    document.getElementById('phone').value = match[2];
+                } else {
+                    document.getElementById('countryCode').value = '+91';
+                    document.getElementById('phone').value = cleanPhone.replace(/\+/g, '');
+                }
             } else {
                 document.getElementById('countryCode').value = '+91';
-                document.getElementById('phone').value = student.phone.replace(/[^0-9]/g, '');
+                document.getElementById('phone').value = cleanPhone;
             }
         } else {
             document.getElementById('countryCode').value = '+91';
