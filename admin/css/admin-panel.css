@@ -666,6 +666,13 @@ body {
 
     .sidebar-overlay {
         display: block;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .sidebar-overlay.active {
+        visibility: visible;
+        pointer-events: auto;
     }
 
     .mobile-close-btn {

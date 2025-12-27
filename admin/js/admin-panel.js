@@ -39,11 +39,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Event Listeners for Sidebar
     if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', function (e) {
+        const toggleMenu = function (e) {
             e.preventDefault();
             e.stopPropagation();
             openSidebar();
-        });
+        };
+
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        mobileMenuBtn.addEventListener('touchend', toggleMenu, { passive: false });
     }
 
     if (mobileCloseBtn) {
