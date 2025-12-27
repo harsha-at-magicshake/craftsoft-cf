@@ -61,6 +61,12 @@ export default function Signin() {
             setError('You were logged out due to inactivity.');
         }
 
+        const selectAccount = searchParams.get('select_account');
+        if (selectAccount) {
+            setIdentifier(selectAccount);
+            setView('form');
+        }
+
         // Aggressive Back Button Block
         window.history.pushState(null, null, window.location.href);
         const handlePopState = () => {

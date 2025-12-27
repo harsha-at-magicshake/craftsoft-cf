@@ -46,6 +46,19 @@ export default function Header({ onMobileToggle }) {
         navigate('/signin?action=add_account');
     };
 
+    const savedAdmins = JSON.parse(localStorage.getItem('craftsoft_saved_admins') || '[]');
+    // Filter out the current logged-in user
+    const otherAccounts = savedAdmins.filter(admin =>
+        admin.identifier !== adminProfile?.admin_id &&
+        admin.identifier !== adminProfile?.email
+    );
+
+    const handleSwitchAccount = (identifier) => {
+        handleClose();
+        signOut();
+        navigate(`/signin?select_account=${identifier}`, { replace: true });
+    };
+
     return (
         <AppBar
             position="fixed"
@@ -121,7 +134,7 @@ export default function Header({ onMobileToggle }) {
                                 overflow: 'visible',
                                 filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.1))',
                                 borderRadius: 3,
-                                minWidth: 200,
+                                minWidth: 220,
                                 '&:before': { // Arrow
                                     content: '""',
                                     display: 'block',
@@ -139,6 +152,25 @@ export default function Header({ onMobileToggle }) {
                             <Typography variant="caption" color="text.secondary">{adminProfile?.admin_id}</Typography>
                         </Box>
                         <Divider />
+
+                        {/* Other Accounts */}
+                        {otherAccounts.map((account, index) => (
+                            <MenuItem key={index} onClick={() => handleSwitchAccount(account.identifier)} sx={{ py: 1.5 }}>
+                                <ListItemIcon>
+                                    <Avatar sx={{ width: 24, height: 24, fontSize: '0.75rem', bgcolor: 'primary.light' }}>
+                                        {account.name?.charAt(0) || 'A'}
+                                    </Avatar>
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={account.name}
+                                    secondary={account.identifier}
+                                    primaryTypographyProps={{ variant: 'body2', fontWeight: 500 }}
+                                    secondaryTypographyProps={{ variant: 'caption' }}
+                                />
+                            </MenuItem>
+                        ))}
+                        {otherAccounts.length > 0 && <Divider />}
+
                         <MenuItem onClick={handleAddAccount} sx={{ py: 1.5 }}>
                             <ListItemIcon><PersonAddIcon fontSize="small" /></ListItemIcon>
                             Add another account
