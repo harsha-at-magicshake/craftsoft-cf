@@ -331,23 +331,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         const studentData = {
             id: editingStudentId || generateStudentId(selectedCourses[0]),
             name: `${firstName} ${surname}`,
-            first_name: firstName,
-            surname: surname,
             phone: fullPhone,
             email: document.getElementById('email').value.trim() || null,
             courses: [...selectedCourses],
+            join_date: document.getElementById('joiningDate').value || null,
+            status: 'active',
+            notes: document.getElementById('notes').value.trim() || null
+        };
+
+        // Extra fields for localStorage (not in Supabase)
+        const localExtraData = {
+            first_name: firstName,
+            surname: surname,
             tutors: { ...selectedTutors },
             fee: parseInt(feeInput.value) || 0,
             discount: parseInt(discountInput.value) || 0,
             final_fee: parseInt(finalFeeInput.value) || 0,
             demo_date: document.getElementById('demoDate').value || null,
-            joining_date: document.getElementById('joiningDate').value || null,
             batch_time: document.getElementById('batchTime').value || null,
             lead_source: document.getElementById('leadSource').value || null,
             occupation: document.getElementById('occupation').value || null,
-            address: document.getElementById('address').value.trim() || null,
-            notes: document.getElementById('notes').value.trim() || null,
-            created_at: editingStudentId ? undefined : new Date().toISOString()
+            address: document.getElementById('address').value.trim() || null
         };
 
         saveStudentBtn.disabled = true;
@@ -355,13 +359,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         try {
             if (editingStudentId) {
+                // Update in Supabase
+                const { error } = await window.supabaseClient
+                    .from('students')
+                    .update(studentData)
+                    .eq('id', editingStudentId);
+
+                if (error) throw error;
+
+                // Update local array
                 const index = students.findIndex(s => s.id === editingStudentId);
                 if (index !== -1) {
-                    students[index] = { ...students[index], ...studentData };
+                    students[index] = { ...students[index], ...studentData, ...localExtraData };
                 }
                 window.toast.success('Updated', 'Student updated successfully');
             } else {
-                students.push(studentData);
+                // Insert to Supabase
+                const { error } = await window.supabaseClient
+                    .from('students')
+                    .insert([studentData]);
+
+                if (error) throw error;
+
+                // Add to local array with extra data
+                students.push({ ...studentData, ...localExtraData, created_at: new Date().toISOString() });
                 window.toast.success('Added', 'Student added successfully');
             }
 
@@ -372,7 +393,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error('Error saving student:', error);
-            window.toast.error('Error', 'Failed to save student');
+            window.toast.error('Error', 'Failed to save student: ' + error.message);
         } finally {
             saveStudentBtn.disabled = false;
             saveStudentBtn.innerHTML = '<i class="fas fa-save"></i> <span>Save Student</span>';
@@ -384,11 +405,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ============================================
     async function loadStudents() {
         try {
-            const stored = localStorage.getItem('craftsoft_students');
-            students = stored ? JSON.parse(stored) : [];
+            // Try loading from Supabase first
+            const { data: supabaseStudents, error } = await window.supabaseClient
+                .from('students')
+                .select('*')
+                .order('created_at', { ascending: false });
 
+            if (error) {
+                console.warn('Supabase load failed, using localStorage:', error.message);
+                const stored = localStorage.getItem('craftsoft_students');
+                students = stored ? JSON.parse(stored) : [];
+            } else if (supabaseStudents && supabaseStudents.length > 0) {
+                students = supabaseStudents;
+                saveStudentsToStorage(); // Sync to localStorage
+            } else {
+                // No data in Supabase, check localStorage
+                const stored = localStorage.getItem('craftsoft_students');
+                students = stored ? JSON.parse(stored) : [];
+            }
+
+            // Seed mock data if empty
             if (students.length === 0) {
-                students = [
+                const mockStudents = [
                     {
                         id: 'ACS-01-001',
                         name: 'Rahul Sharma',
@@ -402,12 +440,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                         discount: 1000,
                         final_fee: 14000,
                         demo_date: '2024-12-20',
-                        joining_date: '2024-12-25',
+                        join_date: '2024-12-25',
                         batch_time: '10:00',
                         lead_source: 'website',
                         occupation: 'student',
                         address: 'Hyderabad, Telangana',
                         notes: 'Interested in branding projects',
+                        status: 'active',
                         created_at: new Date().toISOString()
                     },
                     {
@@ -423,15 +462,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                         discount: 5000,
                         final_fee: 50000,
                         demo_date: '2024-12-18',
-                        joining_date: '2024-12-22',
+                        join_date: '2024-12-22',
                         batch_time: '18:00',
                         lead_source: 'linkedin',
                         occupation: 'working',
                         address: 'Bengaluru, Karnataka',
                         notes: 'Working professional, needs weekend batches',
+                        status: 'active',
                         created_at: new Date().toISOString()
                     }
                 ];
+
+                // Insert mock data to Supabase
+                for (const student of mockStudents) {
+                    const { id, name, phone, email, courses, join_date, status, notes } = student;
+                    await window.supabaseClient
+                        .from('students')
+                        .insert([{ id, name, phone, email, courses, join_date, status, notes }])
+                        .catch(e => console.warn('Mock insert skipped:', e.message));
+                }
+
+                students = mockStudents;
                 saveStudentsToStorage();
             }
 
@@ -440,6 +491,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error('Error loading students:', error);
+            // Fallback to localStorage
+            const stored = localStorage.getItem('craftsoft_students');
+            students = stored ? JSON.parse(stored) : [];
+            applyFiltersAndSort();
         }
     }
 
@@ -678,7 +733,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         document.getElementById('email').value = student.email || '';
         document.getElementById('demoDate').value = student.demo_date || '';
-        document.getElementById('joiningDate').value = student.joining_date || '';
+        document.getElementById('joiningDate').value = student.join_date || student.joining_date || '';
         document.getElementById('batchTime').value = student.batch_time || '';
         document.getElementById('leadSource').value = student.lead_source || '';
         document.getElementById('occupation').value = student.occupation || '';
@@ -721,12 +776,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.modal.confirm(
                 'Delete Student',
                 `Are you sure you want to delete <strong>${student.name}</strong>?`,
-                () => {
-                    students = students.filter(s => s.id !== id);
-                    saveStudentsToStorage();
-                    applyFiltersAndSort();
-                    updateDashboardStats();
-                    window.toast.success('Deleted', 'Student removed successfully');
+                async () => {
+                    try {
+                        // Delete from Supabase
+                        const { error } = await window.supabaseClient
+                            .from('students')
+                            .delete()
+                            .eq('id', id);
+
+                        if (error) throw error;
+
+                        // Delete from local array
+                        students = students.filter(s => s.id !== id);
+                        saveStudentsToStorage();
+                        applyFiltersAndSort();
+                        updateDashboardStats();
+                        window.toast.success('Deleted', 'Student removed successfully');
+                    } catch (error) {
+                        console.error('Delete error:', error);
+                        window.toast.error('Error', 'Failed to delete: ' + error.message);
+                    }
                 }
             );
         }
