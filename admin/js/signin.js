@@ -213,9 +213,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. User clicked logout
         // 2. User clicked "Add another admin"
         // 3. User was kicked out due to session conflict
-        if (urlParams.get('from') === 'logout' || urlParams.get('action') === 'add_account' || urlParams.get('reason') === 'session_conflict') {
-            if (urlParams.get('reason') === 'session_conflict') {
+        if (urlParams.get('from') === 'logout' || urlParams.get('action') === 'add_account' || urlParams.get('reason')) {
+            const reason = urlParams.get('reason');
+            if (reason === 'session_conflict') {
                 window.toast.error('Session Conflict', 'You were logged out because this account was logged in from another device or tab.');
+            } else if (reason === 'timeout') {
+                window.toast.warning('Session Expired', 'You were logged out due to inactivity.');
             }
             return;
         }
@@ -425,10 +428,22 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Sign in error:', error);
 
             // Generic error message - don't reveal specific details
-            window.modal.error(
-                'Sign In Failed',
-                'Invalid credentials. Please check your email/ID and password.'
-            );
+            // Shake effect
+            const card = document.querySelector('.auth-card');
+            card.classList.add('shake');
+
+            // Also shake inputs
+            identifierInput.classList.add('shake');
+            passwordInput.classList.add('shake');
+
+            setTimeout(() => {
+                card.classList.remove('shake');
+                identifierInput.classList.remove('shake');
+                passwordInput.classList.remove('shake');
+                passwordInput.focus();
+            }, 500);
+
+            window.toast.error('Sign In Failed', 'Invalid credentials. Please check your email/ID and password.');
 
         } finally {
             submitBtn.disabled = false;
@@ -436,4 +451,47 @@ document.addEventListener('DOMContentLoaded', () => {
             submitSpinner.style.display = 'none';
         }
     });
+
+    // ============================================
+    // KEYBOARD NAVIGATION
+    // ============================================
+    let focusedIndex = -1;
+
+    document.addEventListener('keydown', (e) => {
+        // Only navigate if picker is visible and not in edit mode
+        if (!accountPicker.classList.contains('show') || accountPicker.classList.contains('editing')) return;
+
+        const items = document.querySelectorAll('.account-item');
+        if (items.length === 0) return;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            focusedIndex = (focusedIndex + 1) % items.length;
+            updateFocus(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            // If starting, go to last
+            if (focusedIndex === -1) focusedIndex = items.length;
+            focusedIndex = (focusedIndex - 1 + items.length) % items.length;
+            updateFocus(items);
+        } else if (e.key === 'Enter') {
+            if (focusedIndex >= 0 && items[focusedIndex]) {
+                e.preventDefault();
+                // Flash effect
+                items[focusedIndex].style.transform = 'scale(0.98)';
+                setTimeout(() => items[focusedIndex].click(), 100);
+            }
+        }
+    });
+
+    function updateFocus(items) {
+        items.forEach((item, index) => {
+            if (index === focusedIndex) {
+                item.classList.add('focused');
+                item.scrollIntoView({ block: 'nearest' });
+            } else {
+                item.classList.remove('focused');
+            }
+        });
+    }
 });

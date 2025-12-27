@@ -136,6 +136,32 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     // =========================================
+    // Auto-Lock (Session Timeout)
+    // =========================================
+    const TIMEOUT_DURATION = 10 * 60 * 1000; // 10 minutes
+    let idleTimer;
+
+    function resetIdleTimer() {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(lockSession, TIMEOUT_DURATION);
+    }
+
+    async function lockSession() {
+        try {
+            await window.supabaseClient.auth.signOut();
+            window.location.replace('signin.html?reason=timeout');
+        } catch (error) {
+            window.location.replace('signin.html');
+        }
+    }
+
+    ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+        document.addEventListener(event, resetIdleTimer, { passive: true });
+    });
+
+    resetIdleTimer();
+
+    // =========================================
     // Initialize
     // =========================================
     setActiveNav();
