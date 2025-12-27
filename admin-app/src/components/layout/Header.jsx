@@ -46,7 +46,10 @@ export default function Header({ onMobileToggle }) {
         navigate('/signin?action=add_account');
     };
 
-    const savedAdmins = JSON.parse(localStorage.getItem('craftsoft_saved_admins') || '[]');
+    const [savedAdmins, setSavedAdmins] = useState(() =>
+        JSON.parse(localStorage.getItem('craftsoft_saved_admins') || '[]')
+    );
+
     // Filter out the current logged-in user
     const otherAccounts = savedAdmins.filter(admin =>
         admin.admin_id !== adminProfile?.admin_id
@@ -56,6 +59,20 @@ export default function Header({ onMobileToggle }) {
         handleClose();
         signOut();
         navigate(`/signin?select_account=${identifier}`, { replace: true });
+    };
+
+    const handleRemoveAccount = (e, adminId) => {
+        e.stopPropagation();
+        const updated = savedAdmins.filter(a => a.admin_id !== adminId);
+        localStorage.setItem('craftsoft_saved_admins', JSON.stringify(updated));
+        setSavedAdmins(updated);
+    };
+
+    const handleSignOutAll = () => {
+        handleClose();
+        localStorage.removeItem('craftsoft_saved_admins');
+        signOut();
+        navigate('/signin', { replace: true });
     };
 
     return (
@@ -133,7 +150,7 @@ export default function Header({ onMobileToggle }) {
                                 overflow: 'visible',
                                 filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.1))',
                                 borderRadius: 3,
-                                minWidth: 220,
+                                minWidth: 260,
                                 '&:before': { // Arrow
                                     content: '""',
                                     display: 'block',
@@ -166,6 +183,13 @@ export default function Header({ onMobileToggle }) {
                                     primaryTypographyProps={{ variant: 'body2', fontWeight: 600 }}
                                     secondaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
                                 />
+                                <IconButton
+                                    size="small"
+                                    onClick={(e) => handleRemoveAccount(e, account.admin_id)}
+                                    sx={{ ml: 1, '&:hover': { color: 'error.main' } }}
+                                >
+                                    <LogoutIcon fontSize="small" />
+                                </IconButton>
                             </MenuItem>
                         ))}
                         {otherAccounts.length > 0 && <Divider />}
@@ -174,9 +198,21 @@ export default function Header({ onMobileToggle }) {
                             <ListItemIcon><PersonAddIcon fontSize="small" /></ListItemIcon>
                             Add another account
                         </MenuItem>
-                        <MenuItem onClick={handleLogout} sx={{ py: 1.5, color: 'error.main' }}>
-                            <ListItemIcon><LogoutIcon fontSize="small" color="error" /></ListItemIcon>
-                            Logout
+                        <MenuItem onClick={handleSignOutAll} sx={{ py: 1.5 }}>
+                            <ListItemIcon><LogoutIcon fontSize="small" /></ListItemIcon>
+                            Sign out of all accounts
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem onClick={handleLogout} sx={{ py: 1.5, bgcolor: 'grey.50' }}>
+                            <Button
+                                fullWidth
+                                variant="outlined"
+                                color="inherit"
+                                size="small"
+                                onClick={handleLogout}
+                            >
+                                Sign out
+                            </Button>
                         </MenuItem>
                     </Menu>
                 </Box>
