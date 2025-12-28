@@ -201,13 +201,6 @@ export default function Header({ onMobileToggle }) {
                                     primaryTypographyProps={{ variant: 'body2', fontWeight: 600 }}
                                     secondaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
                                 />
-                                <IconButton
-                                    size="small"
-                                    onClick={(e) => handleRemoveAccount(e, account.admin_id)}
-                                    sx={{ ml: 1, '&:hover': { color: 'error.main' } }}
-                                >
-                                    <LogoutIcon fontSize="small" />
-                                </IconButton>
                             </MenuItem>
                         ))}
                         {otherAccounts.length > 0 && <Divider />}
@@ -216,10 +209,13 @@ export default function Header({ onMobileToggle }) {
                             <ListItemIcon><PersonAddIcon fontSize="small" /></ListItemIcon>
                             Add another account
                         </MenuItem>
-                        <MenuItem onClick={handleSignOutAll} sx={{ py: 1.5 }}>
-                            <ListItemIcon><LogoutIcon fontSize="small" /></ListItemIcon>
-                            Sign out of all accounts
-                        </MenuItem>
+
+                        {savedAdmins.length > 1 && (
+                            <MenuItem onClick={handleSignOutAll} sx={{ py: 1.5 }}>
+                                <ListItemIcon><LogoutIcon fontSize="small" /></ListItemIcon>
+                                Sign out of all accounts
+                            </MenuItem>
+                        )}
                         <Divider />
                         <MenuItem onClick={handleLogout} sx={{ py: 1.5, bgcolor: 'grey.50' }}>
                             <Button
