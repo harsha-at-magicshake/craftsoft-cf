@@ -3,52 +3,67 @@
    Admin Module - Craft Soft
    ============================================ */
 
-// Supabase Project Credentials
-const SUPABASE_URL = 'https://afocbygdakyqtmmrjvmy.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmb2NieWdkYWt5cXRtbXJqdm15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mzc5MjksImV4cCI6MjA4MjUxMzkyOX0.L7YerK7umlQ0H9WOCfGzY6AcKVjHs7aDKvXLYcCj-f0';
+(function () {
+    'use strict';
 
-// Initialize Supabase Client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // Supabase Project Credentials
+    const SUPABASE_URL = 'https://afocbygdakyqtmmrjvmy.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmb2NieWdkYWt5cXRtbXJqdm15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mzc5MjksImV4cCI6MjA4MjUxMzkyOX0.L7YerK7umlQ0H9WOCfGzY6AcKVjHs7aDKvXLYcCj-f0';
 
-// Export for use in other modules
-window.supabaseClient = supabase;
+    // Initialize Supabase Client (using the global supabase from CDN)
+    const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Check if Supabase is properly configured
-function isSupabaseConfigured() {
-    return SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY';
-}
+    // Export for use in other modules
+    window.supabaseClient = sbClient;
 
-// Get current session
-async function getCurrentSession() {
-    const { data: { session }, error } = await supabase.auth.getSession();
-    if (error) {
-        console.error('Error getting session:', error);
-        return null;
+    // Check if Supabase is properly configured
+    function isSupabaseConfigured() {
+        return SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY';
     }
-    return session;
-}
 
-// Get current user
-async function getCurrentUser() {
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error) {
-        console.error('Error getting user:', error);
-        return null;
+    // Get current session
+    async function getCurrentSession() {
+        try {
+            const { data: { session }, error } = await sbClient.auth.getSession();
+            if (error) {
+                console.error('Error getting session:', error);
+                return null;
+            }
+            return session;
+        } catch (e) {
+            console.error('Session error:', e);
+            return null;
+        }
     }
-    return user;
-}
 
-// Listen to auth state changes
-function onAuthStateChange(callback) {
-    return supabase.auth.onAuthStateChange((event, session) => {
-        callback(event, session);
-    });
-}
+    // Get current user
+    async function getCurrentUser() {
+        try {
+            const { data: { user }, error } = await sbClient.auth.getUser();
+            if (error) {
+                console.error('Error getting user:', error);
+                return null;
+            }
+            return user;
+        } catch (e) {
+            console.error('User error:', e);
+            return null;
+        }
+    }
 
-// Export functions
-window.supabaseConfig = {
-    isConfigured: isSupabaseConfigured,
-    getSession: getCurrentSession,
-    getUser: getCurrentUser,
-    onAuthStateChange: onAuthStateChange
-};
+    // Listen to auth state changes
+    function onAuthStateChange(callback) {
+        return sbClient.auth.onAuthStateChange((event, session) => {
+            callback(event, session);
+        });
+    }
+
+    // Export functions
+    window.supabaseConfig = {
+        isConfigured: isSupabaseConfigured,
+        getSession: getCurrentSession,
+        getUser: getCurrentUser,
+        onAuthStateChange: onAuthStateChange
+    };
+
+})();
