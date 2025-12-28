@@ -75,7 +75,7 @@
             // Initialize navigation security (back/forward protection)
             NavigationSecurity.initProtectedPage();
 
-            // Check authentication
+            // Check authentication (now per-tab with sessionStorage)
             const session = await window.supabaseConfig.getSession();
 
             if (!session) {
@@ -92,39 +92,25 @@
                 return;
             }
 
-            // IMPORTANT: Sync with actual Supabase session
-            // This handles the case where user logged in from another tab
-            const syncedAccount = AccountManager.syncWithSupabaseSession(session.user.id);
+            // Add/update current account in session storage (per-tab)
+            AccountManager.addAccount({
+                id: session.user.id,
+                admin_id: admin.admin_id,
+                email: admin.email,
+                full_name: admin.full_name,
+                initials: AccountManager.getInitials(admin.full_name)
+            }, true);
 
-            if (!syncedAccount) {
-                // User logged in from another tab - add them to this tab's storage
-                AccountManager.addAccount({
-                    id: session.user.id,
-                    admin_id: admin.admin_id,
-                    email: admin.email,
-                    full_name: admin.full_name,
-                    initials: AccountManager.getInitials(admin.full_name)
-                }, true);
-            }
-
-            // Store/update session tokens for account switching
+            // Store session tokens for account switching within this tab
             AccountManager.storeSession(session.user.id, session);
 
             // Render the account panel
             AccountManager.renderAccountPanel('account-panel-container');
 
-            // Listen for auth state changes (from other tabs)
+            // Listen for auth state changes (within this tab)
             window.supabaseConfig.onAuthStateChange((event, newSession) => {
                 if (event === 'SIGNED_OUT') {
                     NavigationSecurity.secureRedirect('/admin/login.html');
-                } else if (event === 'SIGNED_IN' && newSession) {
-                    // Another tab signed in - sync and reload
-                    const currentAccount = AccountManager.getCurrentAccount();
-                    if (currentAccount && currentAccount.id !== newSession.user.id) {
-                        // Different user signed in from another tab
-                        AccountManager.syncWithSupabaseSession(newSession.user.id);
-                        location.reload();
-                    }
                 }
             });
         });

@@ -10,8 +10,17 @@
     const SUPABASE_URL = 'https://afocbygdakyqtmmrjvmy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmb2NieWdkYWt5cXRtbXJqdm15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mzc5MjksImV4cCI6MjA4MjUxMzkyOX0.L7YerK7umlQ0H9WOCfGzY6AcKVjHs7aDKvXLYcCj-f0';
 
-    // Initialize Supabase Client (using the global supabase from CDN)
-    const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // Initialize Supabase Client with sessionStorage for per-tab sessions
+    // This allows different tabs to have different logged-in users
+    const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: {
+            storage: window.sessionStorage,
+            storageKey: 'sb-auth-token',
+            autoRefreshToken: true,
+            persistSession: true,
+            detectSessionInUrl: true
+        }
+    });
 
     // Export for use in other modules
     window.supabaseClient = sbClient;
