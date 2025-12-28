@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import {
     Box, Typography, List, ListItem, ListItemAvatar, ListItemText,
-    Avatar, IconButton, Button, Fade
+    Avatar, IconButton, Button, Fade, Dialog, DialogTitle, DialogContent,
+    DialogContentText, DialogActions, Slide
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -23,23 +24,31 @@ export default function AccountPicker({ onSelect, onAddAccount }) {
     // Keyboard Nav Logic (Simplified for React)
     // We can add it back later if needed, but standard Tab nav works well in React/MUI usually.
 
-    const handleDelete = (id) => {
-        if (window.confirm('Remove this account?')) {
-            const updated = savedAdmins.filter(a => a.id !== id);
-            setSavedAdmins(updated);
-            localStorage.setItem(SAVED_ADMINS_KEY, JSON.stringify(updated));
-            if (updated.length === 0) onAddAccount();
-        }
+    const [removeId, setRemoveId] = useState(null);
+
+    const handleDeleteClick = (id) => {
+        setRemoveId(id);
     };
 
+    const confirmRemove = () => {
+        if (removeId) {
+            const updated = savedAdmins.filter(a => a.id !== removeId);
+            setSavedAdmins(updated);
+            localStorage.setItem(SAVED_ADMINS_KEY, JSON.stringify(updated));
+            if (updated.length === 0) onAddAccount(); // If last one, go to form
+        }
+        setRemoveId(null);
+    };
+
+    const Transition = React.forwardRef(function Transition(props, ref) {
+        return <Slide direction="up" ref={ref} {...props} />;
+    });
+
     const getAvatarColor = (name) => {
-        // Generate deterministic color or use stored
         return 'linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%)';
     };
 
-    // If no saved, render nothing (parent should handle)
     if (savedAdmins.length === 0) {
-        // Small side effect warning: better to handle inside render logic or effect
         return null;
     }
 
@@ -65,7 +74,7 @@ export default function AccountPicker({ onSelect, onAddAccount }) {
                             borderColor: 'grey.200',
                             borderRadius: 3,
                             cursor: isEditing ? 'default' : 'pointer',
-                            pr: isEditing ? 8 : 2, // Space for delete btn
+                            pr: isEditing ? 8 : 2,
                             transition: 'all 0.2s',
                             '&:hover': {
                                 bgcolor: isEditing ? 'background.paper' : 'background.paper',
@@ -105,12 +114,12 @@ export default function AccountPicker({ onSelect, onAddAccount }) {
                         {isEditing ? (
                             <Fade in={isEditing}>
                                 <IconButton
-                                    onClick={(e) => { e.stopPropagation(); handleDelete(admin.id); }}
+                                    onClick={(e) => { e.stopPropagation(); handleDeleteClick(admin.id); }}
                                     sx={{
                                         position: 'absolute', right: 16,
                                         color: 'error.main',
-                                        bgcolor: 'error.light',
-                                        '&:hover': { bgcolor: 'error.light' }
+                                        bgcolor: 'error.lighter',
+                                        '&:hover': { bgcolor: 'error.light', color: 'white' }
                                     }}
                                 >
                                     <DeleteIcon />
@@ -139,6 +148,56 @@ export default function AccountPicker({ onSelect, onAddAccount }) {
             >
                 Use another account
             </Button>
+
+            <Dialog
+                open={Boolean(removeId)}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={() => setRemoveId(null)}
+                PaperProps={{
+                    sx: {
+                        borderRadius: 4,
+                        padding: 1,
+                        minWidth: 300,
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        backdropFilter: 'blur(10px)',
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
+                    }
+                }}
+            >
+                <Box sx={{ textAlign: 'center', pt: 3 }}>
+                    <Box sx={{
+                        width: 50, height: 50, borderRadius: '50%',
+                        bgcolor: 'error.lighter', color: 'error.main',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        margin: '0 auto 16px',
+                        background: 'linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%)'
+                    }}>
+                        <DeleteIcon />
+                    </Box>
+                    <DialogTitle sx={{ p: 0, mb: 1, fontWeight: 700, fontFamily: 'Outfit' }}>
+                        Remove account?
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>
+                            You will need to sign in again to use this account.
+                        </DialogContentText>
+                    </DialogContent>
+                </Box>
+                <DialogActions sx={{ p: 2, justifyContent: 'center', gap: 1 }}>
+                    <Button onClick={() => setRemoveId(null)} sx={{ color: 'text.secondary', fontWeight: 600 }}>
+                        Cancel
+                    </Button>
+                    <Button
+                        onClick={confirmRemove}
+                        variant="contained"
+                        color="error"
+                        sx={{ borderRadius: 2, textTransform: 'none', fontWeight: 600, boxShadow: 'none' }}
+                    >
+                        Yes, Remove
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }
