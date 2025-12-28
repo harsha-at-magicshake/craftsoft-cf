@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Craft Soft</title>
+    <meta name="description" content="Craft Soft Admin Dashboard">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Admin Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="dashboard-header-left">
+                <span class="dashboard-logo">Craft Soft</span>
+                <span class="dashboard-title">Admin Panel</span>
+            </div>
+            <div class="dashboard-header-right">
+                <div class="admin-badge" id="admin-badge">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span id="admin-id">Loading...</span>
+                </div>
+                <button class="btn-logout" id="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-placeholder">
+                <div class="dashboard-placeholder-icon">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <h2>Dashboard Under Development</h2>
+                <p>We're building something amazing. This section will be expanded with admin features progressively.
+                </p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            © 2024 Craft Soft. All rights reserved.
+        </footer>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/admin-utils.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { Toast, Modal } = window.AdminUtils;
+
+            // Check authentication
+            const session = await window.supabaseConfig.getSession();
+
+            if (!session) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Get admin details
+            const admin = await window.Auth.getCurrentAdmin();
+
+            if (!admin || admin.status !== 'ACTIVE') {
+                Toast.error('Access Denied', 'Your account is not active');
+                await window.Auth.logout();
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Display admin info
+            document.getElementById('admin-id').textContent = admin.admin_id || 'Admin';
+
+            // Logout handler
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                Modal.confirm(
+                    'Confirm Logout',
+                    'Are you sure you want to logout?',
+                    async () => {
+                        const result = await window.Auth.logout();
+
+                        if (result.success) {
+                            Toast.success('Logged Out', 'You have been logged out successfully');
+                            setTimeout(() => {
+                                window.location.href = 'login.html';
+                            }, 1000);
+                        } else {
+                            Toast.error('Error', 'Failed to logout. Please try again.');
+                        }
+                    }
+                );
+            });
+
+            // Listen for auth state changes
+            window.supabaseConfig.onAuthStateChange((event, session) => {
+                if (event === 'SIGNED_OUT') {
+                    window.location.href = 'login.html';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

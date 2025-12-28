@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email - Craft Soft</title>
+    <meta name="description" content="Verify your email to complete admin registration">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Admin Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+    <div class="auth-container">
+        <!-- Logo -->
+        <div class="auth-logo">
+            <span class="auth-logo-text">Craft Soft</span>
+        </div>
+
+        <!-- Verify Email Card -->
+        <div class="auth-card">
+            <div class="verify-icon">
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+
+            <div class="auth-header">
+                <h1>Check Your Email</h1>
+                <p>We've sent a verification link to:</p>
+                <p class="verify-email-text" id="email-display">your-email@example.com</p>
+            </div>
+
+            <ul class="verify-steps">
+                <li>
+                    <i class="fa-solid fa-inbox"></i>
+                    <span>Check your inbox (and spam folder)</span>
+                </li>
+                <li>
+                    <i class="fa-solid fa-mouse-pointer"></i>
+                    <span>Click the verification link in the email</span>
+                </li>
+                <li>
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    <span>You'll be redirected to the login page</span>
+                </li>
+            </ul>
+
+            <button id="resend-btn" class="btn btn-outline btn-full" disabled>
+                <i class="fa-solid fa-paper-plane"></i>
+                Resend Verification Email
+            </button>
+            <p id="resend-timer" class="resend-timer">Resend available in <span id="countdown">60</span> seconds</p>
+
+            <div class="auth-divider">or</div>
+
+            <a href="signup.html" class="btn btn-outline btn-full" style="text-decoration: none;">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Sign Up
+            </a>
+        </div>
+
+        <!-- Back to Website -->
+        <a href="/" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Website
+        </a>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/admin-utils.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const { Toast, getTempEmail, clearTempEmail } = window.AdminUtils;
+
+            const email = getTempEmail();
+            const emailDisplay = document.getElementById('email-display');
+            const resendBtn = document.getElementById('resend-btn');
+            const resendTimer = document.getElementById('resend-timer');
+            const countdownEl = document.getElementById('countdown');
+
+            // Display email
+            if (email) {
+                emailDisplay.textContent = email;
+            } else {
+                // No email stored, redirect to signup
+                window.location.href = 'signup.html';
+                return;
+            }
+
+            // Countdown timer for resend
+            let countdown = 60;
+            const timer = setInterval(() => {
+                countdown--;
+                countdownEl.textContent = countdown;
+
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    resendBtn.disabled = false;
+                    resendTimer.style.display = 'none';
+                }
+            }, 1000);
+
+            // Resend verification email
+            resendBtn.addEventListener('click', async () => {
+                if (resendBtn.disabled) return;
+
+                resendBtn.disabled = true;
+                resendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+                const result = await window.Auth.resendVerification(email);
+
+                if (result.success) {
+                    Toast.success('Email Sent', 'Verification email has been resent');
+
+                    // Reset countdown
+                    countdown = 60;
+                    resendTimer.style.display = 'block';
+                    countdownEl.textContent = countdown;
+
+                    resendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Resend Verification Email';
+
+                    const newTimer = setInterval(() => {
+                        countdown--;
+                        countdownEl.textContent = countdown;
+
+                        if (countdown <= 0) {
+                            clearInterval(newTimer);
+                            resendBtn.disabled = false;
+                            resendTimer.style.display = 'none';
+                        }
+                    }, 1000);
+                } else {
+                    Toast.error('Failed', result.error || 'Could not resend verification email');
+                    resendBtn.disabled = false;
+                    resendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Resend Verification Email';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

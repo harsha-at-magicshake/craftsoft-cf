@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Craft Soft</title>
+    <meta name="description" content="Admin login portal for Craft Soft management">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Admin Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+    <div class="auth-container">
+        <!-- Logo -->
+        <div class="auth-logo">
+            <span class="auth-logo-text">Craft Soft</span>
+        </div>
+
+        <!-- Login Card -->
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Admin Login</h1>
+                <p>Access your admin dashboard</p>
+            </div>
+
+            <form id="login-form" class="auth-form" novalidate>
+                <!-- Admin ID or Email -->
+                <div class="form-group">
+                    <label class="form-label" for="identifier">Admin ID or Email</label>
+                    <div class="form-input-wrapper">
+                        <input type="text" id="identifier" name="identifier" class="form-input secure-input"
+                            placeholder="ACS-01 or admin@example.com" autocomplete="off" autocorrect="off"
+                            autocapitalize="off" spellcheck="false" required>
+                    </div>
+                    <div id="identifier-error" class="form-error"></div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="form-input-wrapper">
+                        <input type="password" id="password" name="password" class="form-input has-icon secure-input"
+                            placeholder="Enter your password" autocomplete="off" autocorrect="off" autocapitalize="off"
+                            spellcheck="false" required>
+                        <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="password-error" class="form-error"></div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="login-btn" class="btn btn-primary btn-full">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    Login
+                </button>
+
+                <!-- Warning Info -->
+                <div class="auth-info warning">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>No "Forgot Password" — Contact the Owner</span>
+                </div>
+            </form>
+
+            <div class="auth-divider">or</div>
+
+            <p class="auth-link">
+                Don't have an account? <a href="signup.html">Sign Up</a>
+            </p>
+        </div>
+
+        <!-- Back to Website -->
+        <a href="/" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Website
+        </a>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/admin-utils.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { Toast, Modal, Validators, FormHelpers, Security, clearTempEmail } = window.AdminUtils;
+
+            // Clear any temp email from signup
+            clearTempEmail();
+
+            // Apply security measures to inputs
+            const identifierInput = document.getElementById('identifier');
+            const passwordInput = document.getElementById('password');
+
+            Security.secureInput(identifierInput);
+            Security.secureInput(passwordInput);
+
+            // Check URL for email confirmation callback
+            const urlParams = new URLSearchParams(window.location.search);
+            const hashParams = new URLSearchParams(window.location.hash.substring(1));
+
+            // Handle email verification callback from Supabase
+            if (hashParams.has('access_token') || urlParams.has('type')) {
+                Toast.info('Processing...', 'Verifying your email');
+
+                // Get the session (Supabase auto-handles the token exchange)
+                setTimeout(async () => {
+                    const session = await window.supabaseConfig.getSession();
+
+                    if (session) {
+                        // Activate the admin account
+                        const result = await window.Auth.activateAdmin(session.user.id);
+
+                        if (result.success) {
+                            Toast.success('Email Verified!', `Your Admin ID is: ${result.adminId}`);
+                            // Sign out so they can login fresh
+                            await window.Auth.logout();
+                        } else {
+                            Toast.warning('Verification Issue', 'Please try logging in');
+                        }
+                    }
+
+                    // Clean URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }, 1000);
+            }
+
+            // Check if already logged in
+            const session = await window.supabaseConfig.getSession();
+            if (session) {
+                // Check if admin is active
+                const admin = await window.Auth.getCurrentAdmin();
+                if (admin && admin.status === 'ACTIVE') {
+                    window.location.href = 'dashboard.html';
+                    return;
+                }
+            }
+
+            // Login form handler
+            const form = document.getElementById('login-form');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                FormHelpers.clearAllErrors('login-form');
+
+                const identifier = identifierInput.value.trim();
+                const password = passwordInput.value;
+
+                // Validate
+                let hasError = false;
+
+                if (!identifier) {
+                    FormHelpers.showError('identifier', 'Please enter your Admin ID or Email');
+                    hasError = true;
+                } else if (!Validators.isValidAdminId(identifier) && !Validators.isValidEmail(identifier)) {
+                    FormHelpers.showError('identifier', 'Please enter a valid Admin ID (ACS-XX) or Email');
+                    hasError = true;
+                }
+
+                if (!password) {
+                    FormHelpers.showError('password', 'Please enter your password');
+                    hasError = true;
+                }
+
+                if (hasError) return;
+
+                // Set loading state
+                FormHelpers.setLoading('login-btn', true);
+
+                // Check if Supabase is configured
+                if (!window.supabaseConfig.isConfigured()) {
+                    FormHelpers.setLoading('login-btn', false);
+                    Modal.alert('warning', 'Configuration Required', 'Supabase is not configured. Please set up your Supabase credentials.');
+                    return;
+                }
+
+                // Attempt login
+                const result = await window.Auth.login(identifier, password);
+
+                FormHelpers.setLoading('login-btn', false);
+
+                if (result.success) {
+                    Toast.success('Login Successful', `Welcome back, ${result.admin.full_name}!`);
+
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                } else {
+                    Toast.error('Login Failed', result.error);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
