@@ -12,13 +12,9 @@ import { useTheme } from '@mui/material/styles';
 
 const SAVED_ADMINS_KEY = 'craftsoft_saved_admins';
 
-export default function AccountPicker({ onSelect, onAddAccount }) {
+export default function AccountPicker({ onSelect, onAddAccount, savedAdmins, removeAdmin }) {
     const theme = useTheme();
-    const [savedAdmins, setSavedAdmins] = useState(() => {
-        try {
-            return JSON.parse(localStorage.getItem(SAVED_ADMINS_KEY) || '[]');
-        } catch { return []; }
-    });
+    // Removed local savedAdmins state
     const [isEditing, setIsEditing] = useState(false);
 
     // Keyboard Nav Logic (Simplified for React)
@@ -32,10 +28,15 @@ export default function AccountPicker({ onSelect, onAddAccount }) {
 
     const confirmRemove = () => {
         if (removeId) {
-            const updated = savedAdmins.filter(a => a.id !== removeId);
-            setSavedAdmins(updated);
-            localStorage.setItem(SAVED_ADMINS_KEY, JSON.stringify(updated));
-            if (updated.length === 0) onAddAccount(); // If last one, go to form
+            // Find the admin to get the admin_id, as removeAdmin expects admin_id (or we can change to id)
+            // In Header we pass admin_id. In Context removeAdmin(adminId).
+            // Let's check the objects in savedAdmins. They have 'id' (uuid) and 'admin_id' (string code).
+            const target = savedAdmins.find(a => a.id === removeId);
+            if (target) {
+                removeAdmin(target.admin_id);
+            }
+            // Check length after removal logic is done via updated prop
+            if (savedAdmins.length <= 1) onAddAccount();
         }
         setRemoveId(null);
     };

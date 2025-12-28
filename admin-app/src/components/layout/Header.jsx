@@ -25,7 +25,7 @@ const PAGE_TITLES = {
 };
 
 export default function Header({ onMobileToggle }) {
-    const { adminProfile, signOut } = useAuth();
+    const { adminProfile, signOut, savedAdmins, removeAdmin, clearAllAdmins } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -45,16 +45,12 @@ export default function Header({ onMobileToggle }) {
         return <Slide direction="up" ref={ref} {...props} />;
     });
 
-    const [savedAdmins, setSavedAdmins] = useState(() =>
-        JSON.parse(localStorage.getItem('craftsoft_saved_admins') || '[]')
-    );
-
     const [logoutType, setLogoutType] = useState(null);
     const [switchTarget, setSwitchTarget] = useState(null);
 
     const confirmLogout = async () => {
         if (logoutType === 'all') {
-            localStorage.removeItem('craftsoft_saved_admins');
+            clearAllAdmins();
         }
         setLogoutType(null);
         await signOut();
@@ -78,9 +74,7 @@ export default function Header({ onMobileToggle }) {
 
     const handleRemoveAccount = (e, adminId) => {
         e.stopPropagation();
-        const updated = savedAdmins.filter(a => a.admin_id !== adminId);
-        localStorage.setItem('craftsoft_saved_admins', JSON.stringify(updated));
-        setSavedAdmins(updated);
+        removeAdmin(adminId);
     };
 
     const handleLogout = () => {

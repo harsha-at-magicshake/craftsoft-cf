@@ -28,14 +28,9 @@ const Logo = () => (
 );
 
 export default function Signin() {
-    const { session } = useAuth();
+    const { session, saveAdmin, savedAdmins, removeAdmin } = useAuth();
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
-
-    const [savedAdmins, setSavedAdmins] = useState(() => {
-        try { return JSON.parse(localStorage.getItem('craftsoft_saved_admins') || '[]'); }
-        catch { return []; }
-    });
 
     const [view, setView] = useState(savedAdmins.length > 0 ? 'picker' : 'form');
     const [identifier, setIdentifier] = useState('');
@@ -115,19 +110,7 @@ export default function Signin() {
             // We fetch profile to save details
             const { data: profile } = await supabase.from('admins').select('*').eq('id', authData.user.id).single();
             if (profile) {
-                const newAccount = {
-                    id: profile.id,
-                    admin_id: profile.admin_id,
-                    full_name: profile.full_name,
-                    email: profile.email,
-                    avatar: '', // add actual if exists
-                    color: 'linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%)'
-                };
-
-                const existing = savedAdmins.filter(a => a.id !== newAccount.id);
-                const updated = [newAccount, ...existing];
-                localStorage.setItem('craftsoft_saved_admins', JSON.stringify(updated));
-                setSavedAdmins(updated);
+                saveAdmin(profile);
             }
 
             navigate('/', { replace: true });
@@ -171,6 +154,8 @@ export default function Signin() {
 
                 {view === 'picker' ? (
                     <AccountPicker
+                        savedAdmins={savedAdmins}
+                        removeAdmin={removeAdmin}
                         onSelect={handleSelectAccount}
                         onAddAccount={() => { setIdentifier(''); setView('form'); }}
                     />

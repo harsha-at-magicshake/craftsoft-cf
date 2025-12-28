@@ -71,11 +71,51 @@ export const AuthProvider = ({ children }) => {
         setAdminProfile(data);
     };
 
+    const [savedAdmins, setSavedAdmins] = useState(() => {
+        try { return JSON.parse(localStorage.getItem('craftsoft_saved_admins') || '[]'); }
+        catch { return []; }
+    });
+
+    const saveAdmin = (profile) => {
+        if (!profile) return;
+        setSavedAdmins(prev => {
+            const newAccount = {
+                id: profile.id,
+                admin_id: profile.admin_id,
+                full_name: profile.full_name,
+                email: profile.email,
+                avatar: profile.avatar || '',
+                color: 'linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%)'
+            };
+            const others = prev.filter(a => a.id !== newAccount.id);
+            const updated = [newAccount, ...others];
+            localStorage.setItem('craftsoft_saved_admins', JSON.stringify(updated));
+            return updated;
+        });
+    };
+
+    const removeAdmin = (adminId) => {
+        setSavedAdmins(prev => {
+            const updated = prev.filter(a => a.admin_id !== adminId);
+            localStorage.setItem('craftsoft_saved_admins', JSON.stringify(updated));
+            return updated;
+        });
+    };
+
+    const clearAllAdmins = () => {
+        setSavedAdmins([]);
+        localStorage.removeItem('craftsoft_saved_admins');
+    };
+
     const value = {
         session,
         adminProfile,
         signOut: () => supabase.auth.signOut(),
-        loading
+        loading,
+        savedAdmins,
+        saveAdmin,
+        removeAdmin,
+        clearAllAdmins
     };
 
     return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
