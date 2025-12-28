@@ -49,7 +49,7 @@ export default function Signin() {
         const action = searchParams.get('action');
 
         if (session && action !== 'add_account') {
-            navigate('/');
+            navigate('/', { replace: true });
             return;
         }
 
@@ -125,15 +125,13 @@ export default function Signin() {
                 setSavedAdmins(updated);
             }
 
-            navigate('/');
-
+            // navigate('/') removed to allow useEffect to handle redirect on session change
         } catch (err) {
             console.error(err);
             setShake(true);
             setTimeout(() => setShake(false), 500);
             setError('Invalid credentials.');
-        } finally {
-            setLoading(false);
+            setLoading(false); // Only stop loading on error. On success, keep loading until redirect.
         }
     };
 
