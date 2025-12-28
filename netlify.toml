@@ -30,10 +30,7 @@
     Expires = "0"
 
 # Redirect favicon.ico to favicon.svg
-[[redirects]]
-  from = "/admin/*"
-  to = "/admin/index.html"
-  status = 200
+# Redirects removed for HTML MPAs to allow direct file access
 
 [[redirects]]
   from = "/favicon.ico"
