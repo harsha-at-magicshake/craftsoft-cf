@@ -659,6 +659,31 @@ const AccountManager = {
         return this.getAccounts().length;
     },
 
+    // Sync stored accounts with actual Supabase session
+    // This ensures the "current" account matches what Supabase actually has
+    syncWithSupabaseSession(supabaseUserId) {
+        let accounts = this.getAccounts();
+
+        // Check if this user is in our accounts list
+        const existingAccount = accounts.find(acc => acc.id === supabaseUserId);
+
+        if (existingAccount) {
+            // User exists - make sure they're marked as current
+            if (!existingAccount.is_current) {
+                accounts = accounts.map(acc => ({
+                    ...acc,
+                    is_current: acc.id === supabaseUserId
+                }));
+                this.saveAccounts(accounts);
+            }
+            return existingAccount;
+        }
+
+        // User not in our list - they logged in from another tab
+        // Return null to indicate we need to add them
+        return null;
+    },
+
     // Store session tokens for an account
     storeSession(accountId, session) {
         let accounts = this.getAccounts();
