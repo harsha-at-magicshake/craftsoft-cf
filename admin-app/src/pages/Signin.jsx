@@ -30,7 +30,7 @@ const Logo = () => (
 export default function Signin() {
     const { session } = useAuth();
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const [savedAdmins, setSavedAdmins] = useState(() => {
         try { return JSON.parse(localStorage.getItem('craftsoft_saved_admins') || '[]'); }
@@ -55,6 +55,11 @@ export default function Signin() {
 
         if (session && action === 'add_account') {
             supabase.auth.signOut();
+            setSearchParams(prev => {
+                const newParams = new URLSearchParams(prev);
+                newParams.delete('action');
+                return newParams;
+            }, { replace: true });
         }
 
         if (searchParams.get('reason') === 'timeout') {
