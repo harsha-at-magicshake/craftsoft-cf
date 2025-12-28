@@ -48,34 +48,38 @@ export default function LoginModal({ open, account, onClose, onSuccess }) {
             PaperProps={{
                 sx: {
                     borderRadius: 4,
-                    minWidth: 340,
-                    p: 1,
+                    minWidth: 420, // Increased width
+                    p: 2, // General padding
                     background: 'rgba(255, 255, 255, 0.95)',
                     backdropFilter: 'blur(10px)'
                 }
             }}
         >
-            <Box component="form" onSubmit={handleLogin} sx={{ textAlign: 'center', p: 2 }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+            <Box component="form" onSubmit={handleLogin} sx={{ textAlign: 'center', p: 3 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
                     <Avatar sx={{
-                        width: 64, height: 64, mb: 1.5,
+                        width: 72, height: 72, mb: 2, // Larger avatar and margin
                         background: account.color || 'linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%)',
-                        fontSize: '1.5rem', fontWeight: 700,
+                        fontSize: '1.75rem', fontWeight: 700,
                         boxShadow: '0 4px 12px rgba(108, 92, 231, 0.3)'
                     }}>
                         {account.full_name?.charAt(0)}
                     </Avatar>
-                    <Typography variant="h6" sx={{ fontWeight: 700, fontFamily: 'Outfit' }}>{account.full_name}</Typography>
-                    <Typography variant="body2" color="text.secondary">{account.admin_id}</Typography>
+                    <Typography variant="h5" sx={{ fontWeight: 700, fontFamily: 'Outfit', mb: 0.5 }}>
+                        {account.full_name}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        {account.admin_id}
+                    </Typography>
                 </Box>
 
-                <DialogTitle sx={{ p: 0, mb: 2, fontSize: '0.9rem', color: 'text.secondary', fontWeight: 500 }}>
-                    Enter password to switch account
+                <DialogTitle sx={{ p: 0, mb: 2, fontSize: '1rem', color: 'text.secondary', fontWeight: 500 }}>
+                    Enter password to continue
                 </DialogTitle>
 
-                {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
+                {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>{error}</Alert>}
 
-                <DialogContent sx={{ p: 0, mb: 3 }}>
+                <DialogContent sx={{ p: 0, mb: 4 }}>
                     <TextField
                         autoFocus
                         fullWidth
@@ -86,7 +90,7 @@ export default function LoginModal({ open, account, onClose, onSuccess }) {
                         autoComplete="current-password"
                         placeholder="Verify your identity"
                         InputProps={{
-                            sx: { borderRadius: 2 },
+                            sx: { borderRadius: 2, height: 56 }, // Taller input
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
@@ -98,13 +102,24 @@ export default function LoginModal({ open, account, onClose, onSuccess }) {
                     />
                 </DialogContent>
 
-                <DialogActions sx={{ p: 0, justifyContent: 'center', gap: 1 }}>
-                    <Button onClick={onClose} sx={{ color: 'text.secondary', fontWeight: 600 }}>Cancel</Button>
+                <DialogActions sx={{ p: 0, justifyContent: 'space-between', gap: 2 }}>
+                    <Button
+                        onClick={onClose}
+                        sx={{
+                            color: 'text.secondary', fontWeight: 600, flex: 1, py: 1.5
+                        }}
+                    >
+                        Cancel
+                    </Button>
                     <Button
                         type="submit"
                         variant="contained"
                         disabled={loading}
-                        sx={{ px: 4, py: 1, borderRadius: 2, fontWeight: 600, textTransform: 'none' }}
+                        sx={{
+                            flex: 1, py: 1.5,
+                            borderRadius: 2, fontWeight: 700, textTransform: 'none',
+                            fontSize: '1rem'
+                        }}
                     >
                         {loading ? 'Switching...' : 'Switch Account'}
                     </Button>
