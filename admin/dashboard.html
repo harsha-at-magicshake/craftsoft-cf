@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Craft Soft</title>
-    <meta name="description" content="Craft Soft Admin Dashboard">
+    <title>Admin Dashboard - Abhi's Craftsoft</title>
+    <meta name="description" content="Admin Dashboard - Abhi's Craftsoft">
     <meta name="robots" content="noindex, nofollow">
 
     <!-- Security: No Cache -->
@@ -31,35 +31,75 @@
 </head>
 
 <body>
-    <div class="dashboard-container">
+    <div class="admin-layout">
         <!-- Header -->
-        <header class="dashboard-header">
-            <div class="dashboard-header-left">
-                <span class="dashboard-logo">Craft Soft</span>
-                <span class="dashboard-title">Admin Panel</span>
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="admin-brand">
+                    <span class="admin-brand-name">Abhi's Craftsoft</span>
+                </div>
             </div>
-            <div class="dashboard-header-right">
+            <div class="admin-header-right">
                 <!-- Account Panel will be rendered here -->
                 <div id="account-panel-container"></div>
             </div>
         </header>
 
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="sidebar-header">
+                <button class="sidebar-close" id="sidebar-close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="sidebar-item active" data-section="dashboard">
+                    <i class="fa-solid fa-gauge"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#inquiries" class="sidebar-item" data-section="inquiries">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>Inquiries</span>
+                </a>
+                <a href="#students" class="sidebar-item" data-section="students">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <span>Students</span>
+                </a>
+                <a href="#tutors" class="sidebar-item" data-section="tutors">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <span>Tutors</span>
+                </a>
+                <a href="#courses" class="sidebar-item" data-section="courses">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Courses</span>
+                </a>
+                <a href="#payments" class="sidebar-item" data-section="payments">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <span>Payments</span>
+                </a>
+                <a href="#receipts" class="sidebar-item" data-section="receipts">
+                    <i class="fa-solid fa-receipt"></i>
+                    <span>Receipts</span>
+                </a>
+                <a href="#settings" class="sidebar-item" data-section="settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
         <!-- Main Content -->
-        <main class="dashboard-main">
-            <div class="dashboard-placeholder">
-                <div class="dashboard-placeholder-icon">
-                    <i class="fa-solid fa-code"></i>
-                </div>
-                <h2>Dashboard Under Development</h2>
-                <p>We're building something amazing. This section will be expanded with admin features progressively.
-                </p>
+        <main class="admin-main">
+            <div class="content-card" id="content-area">
+                <!-- Content loaded by JavaScript -->
             </div>
         </main>
-
-        <!-- Footer -->
-        <footer class="dashboard-footer">
-            © 2024 Craft Soft. All rights reserved.
-        </footer>
     </div>
 
     <!-- Supabase -->
@@ -69,13 +109,94 @@
     <script src="js/auth.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const { Toast, Modal, NavigationSecurity, AccountManager } = window.AdminUtils;
+        // Section data with purposes
+        const sections = {
+            dashboard: {
+                icon: 'fa-gauge',
+                title: 'Dashboard',
+                purpose: 'High-level overview of institute activity'
+            },
+            inquiries: {
+                icon: 'fa-envelope',
+                title: 'Inquiries',
+                purpose: 'View and manage contact form submissions'
+            },
+            students: {
+                icon: 'fa-user-graduate',
+                title: 'Students',
+                purpose: 'Manage student records and enrollments'
+            },
+            tutors: {
+                icon: 'fa-chalkboard-user',
+                title: 'Tutors',
+                purpose: 'Manage tutor profiles and assignments'
+            },
+            courses: {
+                icon: 'fa-book',
+                title: 'Courses',
+                purpose: 'Course catalog and curriculum management'
+            },
+            payments: {
+                icon: 'fa-credit-card',
+                title: 'Payments',
+                purpose: 'Track payments, dues, and transactions'
+            },
+            receipts: {
+                icon: 'fa-receipt',
+                title: 'Receipts',
+                purpose: 'Generate and manage payment receipts'
+            },
+            settings: {
+                icon: 'fa-gear',
+                title: 'Settings',
+                purpose: 'Admin settings and preferences'
+            }
+        };
 
-            // Initialize navigation security (back/forward protection)
+        // Render section content
+        function renderSection(sectionId) {
+            const section = sections[sectionId];
+            if (!section) return;
+
+            const contentArea = document.getElementById('content-area');
+            contentArea.innerHTML = `
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fa-solid ${section.icon}"></i>
+                    </div>
+                    <h1 class="section-title">${section.title}</h1>
+                </div>
+                <div class="section-divider"></div>
+                <div class="section-maintenance">
+                    <div class="maintenance-icon">
+                        <i class="fa-solid fa-wrench"></i>
+                    </div>
+                    <h2 class="maintenance-title">Under Maintenance</h2>
+                    <p class="maintenance-purpose">
+                        <strong>Purpose:</strong> ${section.purpose}
+                    </p>
+                </div>
+            `;
+
+            // Update active state in sidebar
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === sectionId) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update URL hash
+            window.location.hash = sectionId;
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { Toast, Modal, NavigationSecurity, AccountManager, SessionTimeout } = window.AdminUtils;
+
+            // Initialize navigation security
             NavigationSecurity.initProtectedPage();
 
-            // Check authentication (now per-tab with sessionStorage)
+            // Check authentication
             const session = await window.supabaseConfig.getSession();
 
             if (!session) {
@@ -83,7 +204,7 @@
                 return;
             }
 
-            // Get admin details from database
+            // Get admin details
             const admin = await window.Auth.getCurrentAdmin();
 
             if (!admin || admin.status !== 'ACTIVE') {
@@ -92,7 +213,7 @@
                 return;
             }
 
-            // Add/update current account in session storage (per-tab)
+            // Add account to manager
             AccountManager.addAccount({
                 id: session.user.id,
                 admin_id: admin.admin_id,
@@ -101,17 +222,57 @@
                 initials: AccountManager.getInitials(admin.full_name)
             }, true);
 
-            // Store session tokens for account switching within this tab
             AccountManager.storeSession(session.user.id, session);
-
-            // Render the account panel
             AccountManager.renderAccountPanel('account-panel-container');
 
-            // Initialize session timeout (5 min inactivity = warning)
-            const { SessionTimeout } = window.AdminUtils;
+            // Initialize session timeout
             SessionTimeout.init();
 
-            // Listen for auth state changes (within this tab)
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('admin-sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            const sidebarClose = document.getElementById('sidebar-close');
+
+            function openSidebar() {
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            mobileMenuBtn.addEventListener('click', openSidebar);
+            sidebarClose.addEventListener('click', closeSidebar);
+            sidebarOverlay.addEventListener('click', closeSidebar);
+
+            // Sidebar navigation
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = item.dataset.section;
+                    renderSection(sectionId);
+                    closeSidebar();
+                });
+            });
+
+            // Load initial section from hash or default to dashboard
+            const initialSection = window.location.hash.slice(1) || 'dashboard';
+            renderSection(sections[initialSection] ? initialSection : 'dashboard');
+
+            // Handle hash changes
+            window.addEventListener('hashchange', () => {
+                const sectionId = window.location.hash.slice(1);
+                if (sections[sectionId]) {
+                    renderSection(sectionId);
+                }
+            });
+
+            // Auth state changes
             window.supabaseConfig.onAuthStateChange((event, newSession) => {
                 if (event === 'SIGNED_OUT') {
                     NavigationSecurity.secureRedirect('/admin/login.html');
