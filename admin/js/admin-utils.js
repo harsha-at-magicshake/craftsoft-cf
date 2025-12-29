@@ -1353,26 +1353,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initPasswordToggles();
 });
 
-// Export utilities
-window.AdminUtils = {
-    Toast,
-    Modal,
-    Validators,
-    FormHelpers,
-    Security,
-    NavigationSecurity,
-    AccountManager,
-    SessionTimeout,
-    Skeleton,
-    requireAuth,
-    requireNoAuth,
-    formatAdminId,
-    parseAdminId,
-    setTempEmail,
-    getTempEmail,
-    clearTempEmail
-};
-
 // ============================================
 // Skeleton Loading Helper
 // ============================================
@@ -1421,4 +1401,24 @@ const Skeleton = {
             container.innerHTML = this.cards(count);
         }
     }
+};
+
+// Export utilities
+window.AdminUtils = {
+    Toast,
+    Modal,
+    Validators,
+    FormHelpers,
+    Security,
+    NavigationSecurity,
+    AccountManager,
+    SessionTimeout,
+    Skeleton,
+    requireAuth,
+    requireNoAuth,
+    formatAdminId,
+    parseAdminId,
+    setTempEmail,
+    getTempEmail,
+    clearTempEmail
 };
