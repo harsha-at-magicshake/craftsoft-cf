@@ -263,7 +263,7 @@ async function saveTutor() {
 
             // Log activity
             if (window.DashboardActivities) {
-                window.DashboardActivities.add('tutor_added', name, '../tutors/');
+                await window.DashboardActivities.add('tutor_added', name, '../tutors/');
             }
         }
         closeForm();

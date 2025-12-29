@@ -1,5 +1,4 @@
-// Dashboard Module
-const ACTIVITIES_KEY = 'craftsoft_admin_activities';
+// Dashboard Module - Real-time with Supabase
 
 document.addEventListener('DOMContentLoaded', async () => {
     const session = await window.supabaseConfig.getSession();
@@ -18,13 +17,57 @@ document.addEventListener('DOMContentLoaded', async () => {
     const admin = await window.Auth.getCurrentAdmin();
     await AdminSidebar.renderAccountPanel(session, admin);
 
+    // Show skeleton loading
+    showSkeletonLoading();
+
     // Load Dashboard Data
     await loadStats();
-    loadActivities();
+    await loadActivities();
+
+    // Subscribe to real-time updates
+    subscribeToActivities();
 
     // Bind Clear All
     document.getElementById('clear-all-activities')?.addEventListener('click', clearAllActivities);
 });
+
+// =====================
+// Skeleton Loading
+// =====================
+function showSkeletonLoading() {
+    // Stats skeleton
+    document.getElementById('total-students').innerHTML = '<span class="skeleton skeleton-text" style="width:40px;height:28px;display:inline-block;"></span>';
+    document.getElementById('total-courses').innerHTML = '<span class="skeleton skeleton-text" style="width:40px;height:28px;display:inline-block;"></span>';
+    document.getElementById('total-tutors').innerHTML = '<span class="skeleton skeleton-text" style="width:40px;height:28px;display:inline-block;"></span>';
+    document.getElementById('demos-today').innerHTML = '<span class="skeleton skeleton-text" style="width:40px;height:28px;display:inline-block;"></span>';
+    document.getElementById('joined-week').innerHTML = '<span class="skeleton skeleton-text" style="width:40px;height:28px;display:inline-block;"></span>';
+
+    // Activities skeleton
+    const list = document.getElementById('activities-list');
+    list.innerHTML = `
+        <div class="activity-item skeleton-activity">
+            <div class="skeleton skeleton-circle" style="width:40px;height:40px;border-radius:10px;"></div>
+            <div class="activity-content">
+                <div class="skeleton skeleton-text" style="width:180px;height:16px;margin-bottom:6px;"></div>
+                <div class="skeleton skeleton-text" style="width:80px;height:12px;"></div>
+            </div>
+        </div>
+        <div class="activity-item skeleton-activity">
+            <div class="skeleton skeleton-circle" style="width:40px;height:40px;border-radius:10px;"></div>
+            <div class="activity-content">
+                <div class="skeleton skeleton-text" style="width:200px;height:16px;margin-bottom:6px;"></div>
+                <div class="skeleton skeleton-text" style="width:60px;height:12px;"></div>
+            </div>
+        </div>
+        <div class="activity-item skeleton-activity">
+            <div class="skeleton skeleton-circle" style="width:40px;height:40px;border-radius:10px;"></div>
+            <div class="activity-content">
+                <div class="skeleton skeleton-text" style="width:160px;height:16px;margin-bottom:6px;"></div>
+                <div class="skeleton skeleton-text" style="width:90px;height:12px;"></div>
+            </div>
+        </div>
+    `;
+}
 
 // =====================
 // Stats Loading
@@ -76,43 +119,72 @@ async function loadStats() {
 }
 
 // =====================
-// Activities Management
+// Activities - Supabase Real-time
 // =====================
-function getActivities() {
+async function loadActivities() {
+    const list = document.getElementById('activities-list');
+
     try {
-        const data = localStorage.getItem(ACTIVITIES_KEY);
-        return data ? JSON.parse(data) : [];
-    } catch {
-        return [];
+        const { data: activities, error } = await window.supabaseClient
+            .from('activities')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(20);
+
+        if (error) throw error;
+        renderActivities(activities || []);
+    } catch (error) {
+        console.error('Error loading activities:', error);
+        list.innerHTML = '<div class="activities-empty"><p>Could not load activities</p></div>';
     }
 }
 
-function saveActivities(activities) {
-    localStorage.setItem(ACTIVITIES_KEY, JSON.stringify(activities));
+function subscribeToActivities() {
+    window.supabaseClient
+        .channel('activities-channel')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'activities' }, (payload) => {
+            // Reload activities on new insert
+            loadActivities();
+        })
+        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'activities' }, () => {
+            loadActivities();
+        })
+        .subscribe();
 }
 
-function addActivity(type, name, link = null) {
-    const activities = getActivities();
-    activities.unshift({
-        id: Date.now(),
-        type,
-        name,
-        link,
-        timestamp: new Date().toISOString()
-    });
-    // Keep only last 50
-    saveActivities(activities.slice(0, 50));
+async function addActivity(type, name, link = null) {
+    try {
+        const session = await window.supabaseConfig.getSession();
+        await window.supabaseClient.from('activities').insert({
+            activity_type: type,
+            activity_name: name,
+            activity_link: link,
+            admin_id: session?.user?.id || null
+        });
+    } catch (error) {
+        console.error('Error adding activity:', error);
+    }
 }
 
-function removeActivity(id) {
-    const activities = getActivities().filter(a => a.id !== id);
-    saveActivities(activities);
-    loadActivities();
+async function removeActivity(id) {
+    try {
+        await window.supabaseClient.from('activities').delete().eq('id', id);
+        await loadActivities();
+    } catch (error) {
+        console.error('Error removing activity:', error);
+    }
 }
 
-function clearAllActivities() {
-    saveActivities([]);
-    loadActivities();
+async function clearAllActivities() {
+    const { Toast } = window.AdminUtils;
+    try {
+        await window.supabaseClient.from('activities').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+        await loadActivities();
+        Toast.success('Cleared', 'All activities cleared');
+    } catch (error) {
+        console.error('Error clearing activities:', error);
+        Toast.error('Error', 'Could not clear activities');
+    }
 }
 
 function getRelativeTime(timestamp) {
@@ -159,11 +231,10 @@ function getActivityText(type) {
     return texts[type] || 'Activity';
 }
 
-function loadActivities() {
+function renderActivities(activities) {
     const list = document.getElementById('activities-list');
-    const activities = getActivities();
 
-    if (activities.length === 0) {
+    if (!activities || activities.length === 0) {
         list.innerHTML = `
             <div class="activities-empty">
                 <i class="fa-solid fa-clock-rotate-left"></i>
@@ -174,17 +245,17 @@ function loadActivities() {
     }
 
     list.innerHTML = activities.map(a => {
-        const iconInfo = getActivityIcon(a.type);
-        const text = getActivityText(a.type);
-        const time = getRelativeTime(a.timestamp);
+        const iconInfo = getActivityIcon(a.activity_type);
+        const text = getActivityText(a.activity_type);
+        const time = getRelativeTime(a.created_at);
 
         return `
-            <div class="activity-item" data-link="${a.link || ''}" data-id="${a.id}">
+            <div class="activity-item" data-link="${a.activity_link || ''}" data-id="${a.id}">
                 <div class="activity-icon ${iconInfo.class}">
                     <i class="fa-solid ${iconInfo.icon}"></i>
                 </div>
                 <div class="activity-content">
-                    <div class="activity-text">${text}: <strong>${a.name}</strong></div>
+                    <div class="activity-text">${text}: <strong>${a.activity_name}</strong></div>
                     <div class="activity-time">${time}</div>
                 </div>
                 <button class="activity-remove" title="Remove">
@@ -197,13 +268,9 @@ function loadActivities() {
     // Bind click events
     list.querySelectorAll('.activity-item').forEach(item => {
         item.addEventListener('click', (e) => {
-            // Don't navigate if clicking remove button
             if (e.target.closest('.activity-remove')) return;
-
             const link = item.dataset.link;
-            if (link) {
-                window.location.href = link;
-            }
+            if (link) window.location.href = link;
         });
     });
 
@@ -211,7 +278,7 @@ function loadActivities() {
     list.querySelectorAll('.activity-remove').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const id = parseInt(btn.closest('.activity-item').dataset.id);
+            const id = btn.closest('.activity-item').dataset.id;
             removeActivity(id);
         });
     });

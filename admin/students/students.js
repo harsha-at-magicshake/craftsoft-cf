@@ -469,9 +469,9 @@ async function saveStudent() {
 
             // Log activity
             if (window.DashboardActivities) {
-                window.DashboardActivities.add('student_added', `${fname} ${lname}`, '../students/');
+                await window.DashboardActivities.add('student_added', `${fname} ${lname}`, '../students/');
                 if (demoScheduled) {
-                    window.DashboardActivities.add('demo_scheduled', `${fname} ${lname}`, '../students/');
+                    await window.DashboardActivities.add('demo_scheduled', `${fname} ${lname}`, '../students/');
                 }
             }
         }

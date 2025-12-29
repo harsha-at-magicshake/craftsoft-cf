@@ -211,7 +211,7 @@ async function saveFee() {
         // Log activity
         const courseName = document.getElementById('fee-course-name').value;
         if (window.DashboardActivities) {
-            window.DashboardActivities.add('fee_updated', courseName, '../courses/');
+            await window.DashboardActivities.add('fee_updated', courseName, '../courses/');
         }
 
         closeFeeForm();

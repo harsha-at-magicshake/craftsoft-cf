@@ -10,6 +10,37 @@
 }
 
 /* ============================================
+   Skeleton Loading
+   ============================================ */
+.skeleton {
+    background: linear-gradient(90deg,
+            var(--gray-100, #f1f5f9) 25%,
+            var(--gray-200, #e2e8f0) 50%,
+            var(--gray-100, #f1f5f9) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite ease-in-out;
+    border-radius: 6px;
+}
+
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.skeleton-activity {
+    cursor: default;
+}
+
+.skeleton-activity:hover {
+    background: transparent;
+}
+
+/* ============================================
    Stats Cards
    ============================================ */
 .stats-row {
