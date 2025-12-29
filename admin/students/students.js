@@ -484,7 +484,6 @@ async function saveStudent() {
             fee: totalFee,
             discount: totalDiscount,
             final_fee: finalFee,
-            course_discounts: courseDiscounts,
             notes
         };
 

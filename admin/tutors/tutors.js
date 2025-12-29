@@ -198,8 +198,7 @@ async function openForm(tutorId = null) {
         document.getElementById('tutor-name').value = tutor.full_name || '';
         document.getElementById('tutor-phone').value = tutor.phone || '';
         document.getElementById('tutor-email').value = tutor.email || '';
-        document.getElementById('tutor-specialization').value = tutor.specialization || '';
-        document.getElementById('tutor-notes').value = tutor.notes || '';
+        document.getElementById('tutor-linkedin').value = tutor.linkedin_url || '';
     }
 
     renderCoursesCheckboxes(tutor?.courses || []);
@@ -224,9 +223,8 @@ async function saveTutor() {
     const name = document.getElementById('tutor-name').value.trim();
     const phone = document.getElementById('tutor-phone').value.trim();
     const email = document.getElementById('tutor-email').value.trim();
-    const specialization = document.getElementById('tutor-specialization').value.trim();
+    const linkedin = document.getElementById('tutor-linkedin').value.trim();
     const courses = Array.from(document.querySelectorAll('input[name="tutor-courses"]:checked')).map(c => c.value);
-    const notes = document.getElementById('tutor-notes').value.trim();
 
     // Validation
     if (!name) { Toast.error('Required', 'Name required'); return; }
@@ -240,7 +238,7 @@ async function saveTutor() {
         if (isEdit) {
             const { error } = await window.supabaseClient.from('tutors').update({
                 full_name: name, phone, email: email || null,
-                specialization: specialization || null, courses, notes
+                linkedin_url: linkedin || null, courses
             }).eq('id', editId);
             if (error) throw error;
             Toast.success('Updated', 'Tutor updated successfully');
@@ -256,7 +254,7 @@ async function saveTutor() {
 
             const { error } = await window.supabaseClient.from('tutors').insert({
                 tutor_id: newId, full_name: name, phone, email: email || null,
-                specialization: specialization || null, courses, notes, status: 'ACTIVE'
+                linkedin_url: linkedin || null, courses, status: 'ACTIVE'
             });
             if (error) throw error;
             Toast.success('Added', 'Tutor added successfully');

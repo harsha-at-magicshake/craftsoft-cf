@@ -65,9 +65,8 @@ CREATE TABLE IF NOT EXISTS tutors (
     full_name TEXT NOT NULL,
     phone TEXT NOT NULL,
     email TEXT,
-    specialization TEXT,
+    linkedin_url TEXT,
     courses TEXT[],
-    notes TEXT,
     status TEXT DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'INACTIVE')),
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -136,7 +135,6 @@ CREATE TABLE IF NOT EXISTS students (
     fee DECIMAL(10,2) DEFAULT 0,
     discount DECIMAL(10,2) DEFAULT 0,
     final_fee DECIMAL(10,2) DEFAULT 0,
-    course_discounts JSONB DEFAULT '{}',
     notes TEXT,
     status TEXT DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'INACTIVE')),
     created_at TIMESTAMPTZ DEFAULT NOW(),
