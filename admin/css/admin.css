@@ -2856,3 +2856,203 @@ body {
         width: 100%;
     }
 }
+
+/* ============================================
+   INLINE FORMS (In-Window Forms)
+   ============================================ */
+
+.inline-form-container {
+    background: var(--admin-card-bg);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.inline-form-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--admin-card-border);
+    background: linear-gradient(135deg, rgba(40, 150, 205, 0.05) 0%, rgba(40, 150, 205, 0.02) 100%);
+}
+
+.inline-form-header h3 {
+    flex: 1;
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--admin-text-primary);
+}
+
+.inline-form-header .btn-back {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.inline-form-body {
+    padding: 1.5rem;
+}
+
+.inline-form-body .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.inline-form-body .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.inline-form-body .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.inline-form-body label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--admin-text-primary);
+    font-size: 0.875rem;
+}
+
+.inline-form-body label .required {
+    color: #ef4444;
+}
+
+.inline-form-body input,
+.inline-form-body select,
+.inline-form-body textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--admin-input-border);
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    background: var(--admin-input-bg);
+    transition: all 0.2s ease;
+}
+
+.inline-form-body input:focus,
+.inline-form-body select:focus,
+.inline-form-body textarea:focus {
+    outline: none;
+    border-color: var(--admin-input-focus);
+    box-shadow: 0 0 0 3px rgba(40, 150, 205, 0.15);
+}
+
+.inline-form-body .checkbox-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border: 1.5px solid var(--admin-input-border);
+    border-radius: 8px;
+    background: var(--admin-input-bg);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.inline-form-body .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    border: 1px solid transparent;
+}
+
+.inline-form-body .checkbox-item:hover {
+    background: rgba(40, 150, 205, 0.05);
+}
+
+.inline-form-body .checkbox-item:has(input:checked) {
+    background: rgba(40, 150, 205, 0.1);
+    border-color: var(--admin-input-focus);
+}
+
+.inline-form-body .checkbox-item input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.inline-form-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid var(--admin-card-border);
+    background: linear-gradient(135deg, rgba(40, 150, 205, 0.02) 0%, rgba(40, 150, 205, 0.05) 100%);
+}
+
+/* Delete confirmation styles */
+.inline-form-container.inline-delete {
+    max-width: 450px;
+}
+
+.inline-form-container.inline-delete .inline-form-body {
+    text-align: center;
+    padding: 2rem 1.5rem;
+}
+
+.inline-form-container .warning-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.25rem;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inline-form-container .warning-icon i {
+    font-size: 1.75rem;
+    color: #ef4444;
+}
+
+.inline-form-container .text-strong {
+    font-weight: 600;
+    color: var(--admin-text-primary);
+    margin: 0.5rem 0;
+}
+
+.inline-form-container .text-muted {
+    color: var(--admin-text-muted);
+    font-size: 0.875rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .inline-form-container {
+        border-radius: 0;
+        margin: -1rem;
+        box-shadow: none;
+    }
+
+    .inline-form-header {
+        padding: 1rem;
+    }
+
+    .inline-form-body {
+        padding: 1rem;
+    }
+
+    .inline-form-body .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .inline-form-footer {
+        padding: 1rem;
+        flex-direction: column-reverse;
+    }
+
+    .inline-form-footer .btn {
+        width: 100%;
+    }
+}

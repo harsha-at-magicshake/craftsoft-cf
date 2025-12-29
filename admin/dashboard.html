@@ -1880,6 +1880,43 @@
                     NavigationSecurity.secureRedirect('/admin/login.html');
                 }
             });
+
+            // ============================================
+            // GLOBAL EVENT DELEGATION FOR MODALS
+            // This ensures all modal buttons work reliably
+            // ============================================
+            document.addEventListener('click', (e) => {
+                const target = e.target;
+
+                // Close modal buttons (X button)
+                if (target.closest('.modal-close')) {
+                    e.preventDefault();
+                    const modal = target.closest('.modal-overlay');
+                    if (modal) {
+                        modal.remove();
+                        document.body.style.overflow = '';
+                    }
+                }
+
+                // Cancel buttons in modals
+                if (target.closest('#cancel-tutor-btn') ||
+                    target.closest('#cancel-student-btn') ||
+                    target.closest('#cancel-delete-btn') ||
+                    target.closest('#cancel-delete-student-btn')) {
+                    e.preventDefault();
+                    const modal = target.closest('.modal-overlay');
+                    if (modal) {
+                        modal.remove();
+                        document.body.style.overflow = '';
+                    }
+                }
+
+                // Click on modal overlay background
+                if (target.classList.contains('modal-overlay')) {
+                    target.remove();
+                    document.body.style.overflow = '';
+                }
+            });
         });
     </script>
 </body>
