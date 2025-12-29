@@ -182,8 +182,7 @@ async function openForm(tutorId = null) {
     document.getElementById('tutor-name').value = '';
     document.getElementById('tutor-phone').value = '';
     document.getElementById('tutor-email').value = '';
-    document.getElementById('tutor-specialization').value = '';
-    document.getElementById('tutor-notes').value = '';
+    document.getElementById('tutor-linkedin').value = '';
 
     let tutor = null;
     if (isEdit) {
