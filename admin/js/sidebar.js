@@ -14,6 +14,7 @@ const AdminSidebar = {
     },
 
     render() {
+        // Desktop sidebar
         const sidebarHTML = `
             <aside class="admin-sidebar" id="admin-sidebar">
                 <nav class="sidebar-nav">
@@ -42,13 +43,34 @@ const AdminSidebar = {
                     ${this.navItem('settings', 'Settings', 'fa-gear')}
                 </nav>
             </aside>
+        `;
 
-            <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        // Mobile nav bottom sheet
+        const mobileNavHTML = `
+            <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+            <div class="mobile-nav-sheet" id="mobile-nav-sheet">
+                <div class="mobile-nav-header">
+                    <span class="mobile-nav-title">Navigation</span>
+                    <button class="mobile-nav-close" id="mobile-nav-close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <nav class="mobile-nav-list">
+                    ${this.mobileNavItem('dashboard', 'Dashboard', 'fa-chart-pie')}
+                    ${this.mobileNavItem('students', 'Students', 'fa-user-graduate')}
+                    ${this.mobileNavItem('tutors', 'Tutors', 'fa-chalkboard-user')}
+                    ${this.mobileNavItem('inquiries', 'Inquiries', 'fa-phone-volume')}
+                    ${this.mobileNavItem('courses', 'Courses', 'fa-book-bookmark')}
+                    ${this.mobileNavItem('receipts', 'Receipts', 'fa-file-invoice', 'payments/receipts')}
+                    ${this.mobileNavItem('settings', 'Settings', 'fa-gear')}
+                </nav>
+            </div>
         `;
 
         const layout = document.querySelector('.admin-layout');
         if (layout && !document.getElementById('admin-sidebar')) {
             layout.insertAdjacentHTML('afterbegin', sidebarHTML);
+            document.body.insertAdjacentHTML('beforeend', mobileNavHTML);
         }
     },
 
@@ -63,18 +85,24 @@ const AdminSidebar = {
         `;
     },
 
-    toggleSidebar() {
-        const sidebar = document.getElementById('admin-sidebar');
-        const overlay = document.getElementById('sidebar-overlay');
-        sidebar?.classList.toggle('expanded');
-        overlay?.classList.toggle('active');
+    mobileNavItem(page, label, icon, path = null) {
+        const href = path ? `${this.rootPath}${path}/` : `${this.rootPath}${page}/`;
+        return `
+            <a href="${href}" class="mobile-nav-item ${this.currentPage === page ? 'active' : ''}">
+                <i class="fa-solid ${icon}"></i>
+                <span>${label}</span>
+            </a>
+        `;
     },
 
-    closeSidebar() {
-        const sidebar = document.getElementById('admin-sidebar');
-        const overlay = document.getElementById('sidebar-overlay');
-        sidebar?.classList.remove('expanded');
-        overlay?.classList.remove('active');
+    openMobileNav() {
+        document.getElementById('mobile-nav-sheet')?.classList.add('open');
+        document.getElementById('mobile-nav-overlay')?.classList.add('open');
+    },
+
+    closeMobileNav() {
+        document.getElementById('mobile-nav-sheet')?.classList.remove('open');
+        document.getElementById('mobile-nav-overlay')?.classList.remove('open');
     },
 
     closeAccountDropdowns() {
@@ -84,22 +112,26 @@ const AdminSidebar = {
     },
 
     bindEvents() {
-        const overlay = document.getElementById('sidebar-overlay');
-
         // Mobile hamburger menu button (in header)
         document.addEventListener('click', (e) => {
             if (e.target.closest('.mobile-menu-btn')) {
                 e.stopPropagation();
                 this.closeAccountDropdowns();
-                this.toggleSidebar();
+                this.openMobileNav();
             }
         });
 
-        overlay?.addEventListener('click', () => {
-            this.closeSidebar();
+        // Close mobile nav on overlay click
+        document.getElementById('mobile-nav-overlay')?.addEventListener('click', () => {
+            this.closeMobileNav();
         });
 
-        // Payments submenu toggle
+        // Close mobile nav on X click
+        document.getElementById('mobile-nav-close')?.addEventListener('click', () => {
+            this.closeMobileNav();
+        });
+
+        // Payments submenu toggle (desktop)
         const paymentsItem = document.querySelector('.sidebar-item.has-submenu');
         paymentsItem?.addEventListener('click', (e) => {
             e.preventDefault();

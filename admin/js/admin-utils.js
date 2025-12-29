@@ -787,9 +787,9 @@ const AccountManager = {
         trigger.addEventListener('click', (e) => {
             e.stopPropagation();
 
-            // Mutual exclusion: close sidebar if open (mobile)
-            if (typeof window.closeSidebar === 'function') {
-                window.closeSidebar();
+            // Mutual exclusion: close mobile nav if open
+            if (window.AdminSidebar && typeof window.AdminSidebar.closeMobileNav === 'function') {
+                window.AdminSidebar.closeMobileNav();
             }
 
             dropdown.classList.toggle('open');
