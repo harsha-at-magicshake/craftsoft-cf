@@ -43,11 +43,11 @@ const AdminSidebar = {
 
                     <!-- Payments with Submenu -->
                     <div class="sidebar-group ${this.currentPage === 'payments' || this.currentPage === 'receipts' ? 'expanded' : ''}">
-                        <a href="${this.rootPath}payments/" class="sidebar-item has-submenu ${this.currentPage === 'payments' ? 'active' : ''}" data-section="payments">
+                        <div class="sidebar-item has-submenu ${this.currentPage === 'payments' ? 'active' : ''}" data-section="payments" style="cursor: pointer;">
                             <i class="fa-solid fa-money-bill-transfer"></i>
                             <span>Payments</span>
                             <i class="fa-solid fa-chevron-down submenu-arrow"></i>
-                        </a>
+                        </div>
                         <div class="sidebar-submenu">
                             <a href="${this.rootPath}payments/receipts/" class="sidebar-subitem ${this.currentPage === 'receipts' ? 'active' : ''}" data-section="receipts">
                                 <i class="fa-solid fa-file-invoice"></i>
@@ -96,28 +96,10 @@ const AdminSidebar = {
         const paymentsItem = document.querySelector('.sidebar-item.has-submenu');
         if (paymentsItem) {
             paymentsItem.addEventListener('click', (e) => {
-                // If clicking the link, allow nav if not on page?
-                // For simplified behavior, if clicking parent and it has submenu, we just expand.
-                // But the parent is a link: href=".../payments/".
-                // If we want it to be navigable, we shouldn't preventDefault unless strictly toggle-only.
-                // Let's assume user wants to go to Payments Overview when clicking "Payments".
-                // So we do NOT preventDefault on the link click itself.
-                // The submenu toggle is handled by arrow or if we are already on the page?
-
-                // If we are merely toggling, we prevention default.
-                // But here I'll let it navigate. The submenu state is persisted by `expanded` class based on currentPage.
-
-                // However, the Arrow should toggle.
+                e.preventDefault();
+                e.stopPropagation();
+                paymentsItem.closest('.sidebar-group')?.classList.toggle('expanded');
             });
-
-            const arrow = paymentsItem.querySelector('.submenu-arrow');
-            if (arrow) {
-                arrow.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    paymentsItem.closest('.sidebar-group')?.classList.toggle('expanded');
-                });
-            }
         }
     },
 
