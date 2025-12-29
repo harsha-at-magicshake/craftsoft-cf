@@ -2,12 +2,13 @@
 
 /* Inline Form Container */
 .inline-form-container {
-    background: var(--surface-elevated, #1a1a2e);
-    border: 1px solid var(--border-color, #2a2a4a);
-    border-radius: 12px;
+    background: #fff;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 16px;
     margin: 1.5rem 0;
     overflow: hidden;
     animation: slideDown 0.3s ease;
+    box-shadow: 0 4px 20px rgba(40, 150, 205, 0.08);
 }
 
 @keyframes slideDown {
@@ -26,36 +27,49 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.5rem;
-    background: var(--surface-hover, #252542);
-    border-bottom: 1px solid var(--border-color, #2a2a4a);
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, var(--primary-50, #edf6fb) 0%, rgba(108, 92, 231, 0.05) 100%);
+    border-bottom: 1px solid var(--admin-input-border, #e2e8f0);
 }
 
 .inline-form-header h3 {
     margin: 0;
-    font-size: 1.1rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
     font-weight: 600;
-    color: var(--text-primary, #fff);
+    color: var(--admin-text-primary, #0f172a);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.inline-form-header h3::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: var(--accent-gradient, linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%));
+    border-radius: 2px;
 }
 
 .inline-form-body {
     padding: 1.5rem;
+    background: #fff;
 }
 
 .inline-form-footer {
     display: flex;
     justify-content: flex-end;
     gap: 0.75rem;
-    padding: 1rem 1.5rem;
-    background: var(--surface-hover, #252542);
-    border-top: 1px solid var(--border-color, #2a2a4a);
+    padding: 1.25rem 1.5rem;
+    background: var(--gray-50, #f8fafc);
+    border-top: 1px solid var(--admin-input-border, #e2e8f0);
 }
 
 /* Delete Confirmation Overlay */
 .delete-confirm-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(15, 23, 42, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -64,13 +78,14 @@
 }
 
 .delete-confirm-box {
-    background: var(--surface-elevated, #1a1a2e);
-    border: 1px solid var(--border-color, #2a2a4a);
-    border-radius: 12px;
+    background: #fff;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 16px;
     padding: 2rem;
     text-align: center;
-    max-width: 320px;
+    max-width: 340px;
     width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     animation: scaleIn 0.2s ease;
 }
 
@@ -87,28 +102,29 @@
 }
 
 .delete-confirm-box .warning-icon {
-    width: 60px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    background: rgba(239, 68, 68, 0.15);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.15) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1rem;
+    margin: 0 auto 1.25rem;
 }
 
 .delete-confirm-box .warning-icon i {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     color: #ef4444;
 }
 
 .delete-confirm-box p {
     margin: 0 0 1.5rem;
-    color: var(--text-secondary, #a0a0c0);
+    color: var(--admin-text-secondary, #64748b);
+    font-size: 0.95rem;
 }
 
 .delete-confirm-box p strong {
-    color: var(--text-primary, #fff);
+    color: var(--admin-text-primary, #0f172a);
 }
 
 .delete-actions {
@@ -125,7 +141,7 @@
 
     .inline-form-header,
     .inline-form-footer {
-        padding: 0.75rem 1rem;
+        padding: 1rem;
     }
 
     .inline-form-footer {
