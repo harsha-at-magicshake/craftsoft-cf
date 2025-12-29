@@ -1,6 +1,178 @@
 /* Students Module - Inline Form Styles */
 
-/* Inline Form Container */
+/* ============================================
+   Form Input Styling (Premium)
+   ============================================ */
+
+/* Form Group Layout */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--admin-text-primary, #0f172a);
+    margin-bottom: 0.5rem;
+}
+
+.form-group label .required {
+    color: #ef4444;
+    margin-left: 2px;
+}
+
+/* Form Rows */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+.form-row-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* Text Inputs, Email, Tel, Number, Date, Time */
+.inline-form-body input[type="text"],
+.inline-form-body input[type="email"],
+.inline-form-body input[type="tel"],
+.inline-form-body input[type="number"],
+.inline-form-body input[type="date"],
+.inline-form-body input[type="time"],
+.inline-form-body textarea,
+.inline-form-body select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--admin-input-bg, #f8fafc);
+    border: 1.5px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 12px;
+    color: var(--admin-text-primary, #0f172a);
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.inline-form-body input:focus,
+.inline-form-body textarea:focus,
+.inline-form-body select:focus {
+    border-color: var(--primary-500, #2896cd);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
+}
+
+.inline-form-body input::placeholder,
+.inline-form-body textarea::placeholder {
+    color: var(--admin-text-muted, #94a3b8);
+}
+
+/* Disabled/Locked Inputs */
+.inline-form-body input:disabled,
+.inline-form-body input.input-locked {
+    background: var(--gray-100, #f1f5f9);
+    color: var(--admin-text-secondary, #64748b);
+    cursor: not-allowed;
+    border-color: var(--gray-200, #e2e8f0);
+}
+
+/* Textarea */
+.inline-form-body textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Checkbox List */
+.checkbox-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--gray-50, #f8fafc);
+    border: 1.5px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 12px;
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #fff;
+    border: 1px solid var(--gray-200, #e2e8f0);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 0.875rem;
+    color: var(--admin-text-secondary, #64748b);
+}
+
+.checkbox-item:hover {
+    border-color: var(--primary-300, #7ec0e1);
+    background: var(--primary-50, #edf6fb);
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-500, #2896cd);
+    cursor: pointer;
+}
+
+.checkbox-item:has(input:checked) {
+    background: var(--primary-50, #edf6fb);
+    border-color: var(--primary-400, #53abd7);
+    color: var(--primary-700, #156691);
+}
+
+/* Radio Group */
+.radio-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    background: var(--gray-50, #f8fafc);
+    border: 1.5px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 0.9rem;
+    color: var(--admin-text-secondary, #64748b);
+}
+
+.radio-item:hover {
+    border-color: var(--primary-300, #7ec0e1);
+}
+
+.radio-item input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-500, #2896cd);
+    cursor: pointer;
+}
+
+.radio-item:has(input:checked) {
+    background: var(--primary-50, #edf6fb);
+    border-color: var(--primary-500, #2896cd);
+    color: var(--primary-700, #156691);
+}
+
+/* Text Muted */
+.text-muted {
+    color: var(--admin-text-muted, #94a3b8);
+    font-size: 0.875rem;
+}
+
+/* ============================================
+   Inline Form Container
+   ============================================ */
 .inline-form-container {
     background: #fff;
     border: 1px solid var(--admin-input-border, #e2e8f0);
@@ -65,7 +237,9 @@
     border-top: 1px solid var(--admin-input-border, #e2e8f0);
 }
 
-/* Delete Confirmation Overlay */
+/* ============================================
+   Delete Confirmation Overlay
+   ============================================ */
 .delete-confirm-overlay {
     position: fixed;
     inset: 0;
@@ -133,8 +307,22 @@
     justify-content: center;
 }
 
-/* Mobile Responsive */
+/* ============================================
+   Mobile Responsive
+   ============================================ */
 @media (max-width: 768px) {
+
+    .form-row,
+    .form-row-3 {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .radio-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
     .inline-form-body {
         padding: 1rem;
     }
@@ -150,5 +338,9 @@
 
     .inline-form-footer .btn {
         width: 100%;
+    }
+
+    .checkbox-list {
+        max-height: 200px;
     }
 }

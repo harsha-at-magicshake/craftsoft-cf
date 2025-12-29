@@ -5,7 +5,67 @@
     color: var(--primary-600, #1a7eb0);
 }
 
-/* Inline Form Container */
+/* ============================================
+   Form Input Styling (Premium)
+   ============================================ */
+
+/* Form Group Layout */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--admin-text-primary, #0f172a);
+    margin-bottom: 0.5rem;
+}
+
+/* Form Rows */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+/* Text Inputs, Number */
+.inline-form-body input[type="text"],
+.inline-form-body input[type="number"] {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--admin-input-bg, #f8fafc);
+    border: 1.5px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 12px;
+    color: var(--admin-text-primary, #0f172a);
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.inline-form-body input:focus {
+    border-color: var(--primary-500, #2896cd);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
+}
+
+.inline-form-body input::placeholder {
+    color: var(--admin-text-muted, #94a3b8);
+}
+
+/* Disabled/Locked Inputs */
+.inline-form-body input:disabled,
+.inline-form-body input.input-locked {
+    background: var(--gray-100, #f1f5f9);
+    color: var(--admin-text-secondary, #64748b);
+    cursor: not-allowed;
+    border-color: var(--gray-200, #e2e8f0);
+}
+
+/* ============================================
+   Inline Form Container
+   ============================================ */
 .inline-form-container {
     background: #fff;
     border: 1px solid var(--admin-input-border, #e2e8f0);
@@ -70,8 +130,15 @@
     border-top: 1px solid var(--admin-input-border, #e2e8f0);
 }
 
-/* Mobile Responsive */
+/* ============================================
+   Mobile Responsive
+   ============================================ */
 @media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
     .inline-form-body {
         padding: 1rem;
     }
