@@ -1565,6 +1565,103 @@ body {
     color: var(--admin-text-muted);
 }
 
+/* Form Rows */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-row-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+@media (max-width: 640px) {
+
+    .form-row,
+    .form-row-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Form Section Title */
+.form-section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--admin-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 1.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--admin-input-border);
+}
+
+/* Radio Group */
+.radio-group {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.radio-item input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-500);
+    cursor: pointer;
+}
+
+.radio-item span {
+    font-size: 0.9rem;
+    color: var(--admin-text-primary);
+}
+
+/* Textarea */
+.modal-body textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1.5px solid var(--admin-input-border);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: var(--admin-text-primary);
+    background: #fff;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.modal-body textarea:focus {
+    outline: none;
+    border-color: var(--primary-400);
+    box-shadow: 0 0 0 3px rgba(40, 150, 205, 0.1);
+}
+
+/* Large Modal */
+.modal-lg {
+    max-width: 600px;
+}
+
+/* WhatsApp styles for students */
+.btn-icon.btn-whatsapp-student {
+    color: #25D366;
+}
+
+.btn-icon.btn-delete-student {
+    color: #EF4444;
+}
+
+.btn-icon.btn-delete-student:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #EF4444;
+}
+
 /* Responsive Data Tables */
 @media (max-width: 768px) {
     .data-table-wrapper {

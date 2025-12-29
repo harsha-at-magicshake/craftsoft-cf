@@ -160,3 +160,101 @@ CREATE TRIGGER tutors_updated_at
 -- VERIFY: Run this to check tutors table
 -- ============================================
 -- SELECT * FROM tutors;
+
+
+-- ============================================
+-- STUDENTS TABLE
+-- ============================================
+
+-- Create students table
+CREATE TABLE IF NOT EXISTS students (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_id TEXT UNIQUE NOT NULL,          -- St-ACS-001, St-ACS-002, etc.
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    email TEXT,
+    courses TEXT[],                           -- Array of course_codes
+    tutors TEXT[],                            -- Array of tutor_ids
+    demo_scheduled BOOLEAN DEFAULT false,
+    demo_date DATE,
+    demo_time TEXT,
+    joining_date DATE,
+    batch_time TEXT,
+    fee DECIMAL(10,2) DEFAULT 0,
+    discount DECIMAL(10,2) DEFAULT 0,
+    final_fee DECIMAL(10,2) DEFAULT 0,
+    notes TEXT,
+    status TEXT DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'INACTIVE')),
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Enable RLS
+ALTER TABLE students ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Active admins can read students
+CREATE POLICY "Active admins can read students" ON students
+    FOR SELECT
+    USING (
+        EXISTS (
+            SELECT 1 FROM admins 
+            WHERE id = auth.uid() AND status = 'ACTIVE'
+        )
+    );
+
+-- Policy: Active admins can insert students
+CREATE POLICY "Active admins can insert students" ON students
+    FOR INSERT
+    WITH CHECK (
+        EXISTS (
+            SELECT 1 FROM admins 
+            WHERE id = auth.uid() AND status = 'ACTIVE'
+        )
+    );
+
+-- Policy: Active admins can update students
+CREATE POLICY "Active admins can update students" ON students
+    FOR UPDATE
+    USING (
+        EXISTS (
+            SELECT 1 FROM admins 
+            WHERE id = auth.uid() AND status = 'ACTIVE'
+        )
+    );
+
+-- Policy: Active admins can delete students
+CREATE POLICY "Active admins can delete students" ON students
+    FOR DELETE
+    USING (
+        EXISTS (
+            SELECT 1 FROM admins 
+            WHERE id = auth.uid() AND status = 'ACTIVE'
+        )
+    );
+
+-- Create indexes
+CREATE INDEX IF NOT EXISTS idx_students_status ON students(status);
+CREATE INDEX IF NOT EXISTS idx_students_phone ON students(phone);
+CREATE INDEX IF NOT EXISTS idx_students_courses ON students USING GIN(courses);
+
+-- Function to auto-update updated_at
+CREATE OR REPLACE FUNCTION update_students_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger for updated_at
+DROP TRIGGER IF EXISTS students_updated_at ON students;
+CREATE TRIGGER students_updated_at
+    BEFORE UPDATE ON students
+    FOR EACH ROW
+    EXECUTE FUNCTION update_students_updated_at();
+
+-- ============================================
+-- VERIFY: Run this to check students table
+-- ============================================
+-- SELECT * FROM students;
