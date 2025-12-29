@@ -142,11 +142,6 @@
                 title: 'Courses',
                 purpose: 'Course catalog and curriculum management'
             },
-            payments: {
-                icon: 'fa-money-bill-transfer',
-                title: 'Payments',
-                purpose: 'Track payments, dues, and transactions'
-            },
             receipts: {
                 icon: 'fa-file-invoice',
                 title: 'Receipts',
@@ -274,17 +269,15 @@
             const paymentsItem = document.querySelector('.sidebar-item.has-submenu');
             const sidebarGroup = document.querySelector('.sidebar-group');
 
+            // Payments is just a toggle for submenu (not a page)
             if (paymentsItem && sidebarGroup) {
                 paymentsItem.addEventListener('click', (e) => {
-                    // Toggle submenu on arrow click or if on mobile
-                    if (e.target.closest('.submenu-arrow') || window.innerWidth <= 768) {
-                        e.preventDefault();
-                        sidebarGroup.classList.toggle('expanded');
-                    }
+                    e.preventDefault();
+                    sidebarGroup.classList.toggle('expanded');
                 });
             }
 
-            // Sidebar navigation
+            // Sidebar navigation (excluding Payments which is just a toggle)
             document.querySelectorAll('.sidebar-item:not(.has-submenu), .sidebar-subitem').forEach(item => {
                 item.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -293,20 +286,6 @@
                     closeSidebar();
                 });
             });
-
-            // Payments item click (navigate to payments)
-            if (paymentsItem) {
-                paymentsItem.addEventListener('click', (e) => {
-                    if (!e.target.closest('.submenu-arrow')) {
-                        renderSection('payments');
-                        if (window.innerWidth <= 768) {
-                            // On mobile, don't close - let user see submenu
-                        } else {
-                            closeSidebar();
-                        }
-                    }
-                });
-            }
 
             // Load initial section from hash or default to dashboard
             const initialSection = window.location.hash.slice(1) || 'dashboard';
