@@ -29,11 +29,12 @@
     gap: 1.25rem;
 }
 
-/* Text Inputs, Email, Tel, Number */
+/* Text Inputs, Email, Tel, Number, URL */
 .inline-form-body input[type="text"],
 .inline-form-body input[type="email"],
 .inline-form-body input[type="tel"],
 .inline-form-body input[type="number"],
+.inline-form-body input[type="url"],
 .inline-form-body textarea,
 .inline-form-body select {
     width: 100%;
@@ -119,6 +120,26 @@
     background: var(--primary-50, #edf6fb);
     border-color: var(--primary-400, #53abd7);
     color: var(--primary-700, #156691);
+}
+
+/* Input with Icon */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon .input-icon {
+    position: absolute;
+    left: 1rem;
+    color: #0077b5;
+    font-size: 1.1rem;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.input-with-icon input {
+    padding-left: 2.75rem !important;
 }
 
 /* Text Muted */
