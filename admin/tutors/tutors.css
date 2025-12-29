@@ -1,0 +1,23 @@
+/* Tutors module specific styles */
+
+/* Most styles inherit from admin.css */
+/* Add any tutors-specific styles here */
+
+.btn-whatsapp {
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    color: white;
+    border: none;
+}
+
+.btn-whatsapp:hover {
+    background: linear-gradient(135deg, #128c7e 0%, #075e54 100%);
+}
+
+.btn-whatsapp-tutor {
+    color: #25d366;
+}
+
+.btn-whatsapp-tutor:hover {
+    color: #128c7e;
+    background: rgba(37, 211, 102, 0.1);
+}

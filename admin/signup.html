@@ -136,7 +136,7 @@
             // Check if already logged in
             const session = await window.supabaseConfig.getSession();
             if (session) {
-                window.location.href = 'dashboard.html';
+                window.location.href = 'dashboard/';
                 return;
             }
 

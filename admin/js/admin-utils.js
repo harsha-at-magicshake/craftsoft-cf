@@ -498,7 +498,7 @@ async function requireAuth(redirectTo = '/admin/login.html') {
     return true;
 }
 
-async function requireNoAuth(redirectTo = '/admin/dashboard.html') {
+async function requireNoAuth(redirectTo = '/admin/dashboard/') {
     const session = await window.supabaseConfig.getSession();
     if (session) {
         window.location.href = redirectTo;

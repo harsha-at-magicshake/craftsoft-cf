@@ -1,0 +1,50 @@
+/* Students module specific styles */
+
+.student-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.student-status.demo {
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+}
+
+.student-status.active {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+}
+
+.btn-whatsapp-student {
+    color: #25d366;
+}
+
+.btn-whatsapp-student:hover {
+    color: #128c7e;
+    background: rgba(37, 211, 102, 0.1);
+}
+
+.demo-badge {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.fee-display {
+    font-weight: 600;
+    color: var(--admin-text-primary);
+}
+
+.fee-discount {
+    color: #10b981;
+    font-size: 0.75rem;
+}

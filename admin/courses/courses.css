@@ -1,0 +1,56 @@
+/* Courses module styles */
+.course-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    background: var(--admin-card-bg);
+    border: 1px solid var(--admin-card-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.course-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.course-info h4 {
+    margin: 0 0 0.25rem 0;
+    font-weight: 600;
+}
+
+.course-info .course-code {
+    color: var(--admin-text-muted);
+    font-size: 0.875rem;
+}
+
+.course-fee {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.course-fee input {
+    width: 120px;
+    padding: 0.5rem;
+    border: 1px solid var(--admin-input-border);
+    border-radius: 6px;
+    text-align: right;
+}
+
+.sync-info {
+    padding: 1rem;
+    background: rgba(40, 150, 205, 0.05);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--admin-text-secondary);
+}
+
+@media (max-width: 768px) {
+    .course-card {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,100 @@
+/* Inquiries module styles */
+.filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filter-tab {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--admin-input-border);
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.filter-tab:hover {
+    border-color: var(--admin-input-focus);
+}
+
+.filter-tab.active {
+    background: var(--admin-input-focus);
+    color: white;
+    border-color: var(--admin-input-focus);
+}
+
+.inquiry-card {
+    background: var(--admin-card-bg);
+    border: 1px solid var(--admin-card-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s ease;
+}
+
+.inquiry-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.inquiry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.inquiry-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--admin-text-primary);
+}
+
+.inquiry-date {
+    font-size: 0.75rem;
+    color: var(--admin-text-muted);
+}
+
+.inquiry-contact {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--admin-text-secondary);
+}
+
+.inquiry-message {
+    padding: 0.75rem;
+    background: var(--admin-input-bg);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: var(--admin-text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.inquiry-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-badge.new {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.status-badge.contacted {
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+}
+
+.status-badge.closed {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+}

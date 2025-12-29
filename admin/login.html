@@ -156,7 +156,7 @@
                 // Check if admin is active
                 const admin = await window.Auth.getCurrentAdmin();
                 if (admin && admin.status === 'ACTIVE') {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'dashboard/';
                     return;
                 }
             }
@@ -209,7 +209,7 @@
                     Toast.success('Login Successful', `Welcome back, ${result.admin.full_name}!`);
 
                     setTimeout(() => {
-                        window.location.href = 'dashboard.html';
+                        window.location.href = 'dashboard/';
                     }, 1000);
                 } else {
                     Toast.error('Login Failed', result.error);

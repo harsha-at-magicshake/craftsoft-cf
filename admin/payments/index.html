@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments - CraftSoft Admin</title>
+    <link rel="icon" href="../../assets/images/logo-main.webp" type="image/webp">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="payments.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <main class="admin-main">
+            <div id="header-container"></div>
+            <div class="content-card" id="content-area">
+                <div class="section-header">
+                    <div class="section-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                    <h1 class="section-title">Payments</h1>
+                </div>
+                <div class="section-divider"></div>
+                <div id="payments-content">
+                    <div class="section-maintenance">
+                        <div class="maintenance-icon"><i class="fa-solid fa-wrench"></i></div>
+                        <h2 class="maintenance-title">Under Development</h2>
+                        <p class="maintenance-purpose">Payment tracking and management features coming soon.</p>
+                        <a href="receipts/" class="btn btn-primary" style="margin-top: 1rem;">
+                            <i class="fa-solid fa-file-invoice"></i> View Receipts
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/admin-utils.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="payments.js"></script>
+</body>
+
+</html>
