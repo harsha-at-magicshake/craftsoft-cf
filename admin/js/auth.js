@@ -182,6 +182,16 @@ const Auth = {
             // Set flag to prevent this tab from reacting to its own delete event
             isSelfLogout = true;
 
+            // FIX #2: Stop watchers IMMEDIATELY to prevent ghost redirects
+            if (this.sessionChannel) {
+                window.supabaseClient.removeChannel(this.sessionChannel);
+                this.sessionChannel = null;
+            }
+            if (this.validityInterval) {
+                clearInterval(this.validityInterval);
+                this.validityInterval = null;
+            }
+
             // Delete current session record (by admin_id + tab_id)
             await this.deleteCurrentSession();
 
@@ -281,7 +291,9 @@ const Auth = {
 
     async deleteCurrentSession() {
         const supabase = window.supabaseClient;
-        const tabId = sessionStorage.getItem('tab_id');
+
+        // FIX #1: Use THIS_TAB_ID from MEMORY - never from sessionStorage
+        const tabId = THIS_TAB_ID;
 
         if (!tabId) return;
 
@@ -578,18 +590,19 @@ const Auth = {
         }
 
         try {
+            // FIX #3: Use maybeSingle() instead of single() to avoid 406 errors
             const { data, error } = await supabase
                 .from('user_sessions')
                 .select('id')
                 .eq('admin_id', admin.id)
                 .eq('session_token', tabId)
-                .single();
+                .maybeSingle();
 
             // 🧪 DEBUG: Log result
             console.log('🧪 SESSION ROW FOUND:', !!data, { error: error?.message });
 
             // If session not found in database, it was deleted
-            if (error || !data) {
+            if (!data) {
                 return false;
             }
 
