@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     currentAdmin = await window.Auth.getCurrentAdmin();
-    currentSessionToken = localStorage.getItem('session_token');
+    currentSessionToken = sessionStorage.getItem('session_token');
     await AdminSidebar.renderAccountPanel(session, currentAdmin);
 
     await loadSettings();
@@ -845,7 +845,7 @@ async function registerCurrentSession() {
         const session = await window.supabaseConfig.getSession();
         if (session) {
             await window.Auth.createSession(currentAdmin.id, session.access_token);
-            currentSessionToken = localStorage.getItem('session_token');
+            currentSessionToken = sessionStorage.getItem('session_token');
         }
 
         Toast.success('Registered', 'Session is now being tracked');

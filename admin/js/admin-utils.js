@@ -862,7 +862,7 @@ const AccountManager = {
             window.Auth.isLoggingOut = true; // Prevent triggers during switch
 
             // Clear old session token before switching
-            localStorage.removeItem('session_token');
+            sessionStorage.removeItem('session_token');
 
             // Set the session in Supabase
             const { error } = await window.supabaseClient.auth.setSession({

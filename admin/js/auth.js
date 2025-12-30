@@ -164,7 +164,7 @@ const Auth = {
         const supabase = window.supabaseClient;
 
         try {
-            const existingToken = localStorage.getItem('session_token');
+            const existingToken = sessionStorage.getItem('session_token');
             const deviceInfo = this.getDeviceInfo();
             const ipAddress = await this.getIPAddress();
 
@@ -193,7 +193,7 @@ const Auth = {
 
             // No existing session, create a new one
             const sessionToken = accessToken || crypto.randomUUID();
-            localStorage.setItem('session_token', sessionToken);
+            sessionStorage.setItem('session_token', sessionToken);
 
             const { error } = await supabase
                 .from('user_sessions')
@@ -216,7 +216,7 @@ const Auth = {
 
     async deleteCurrentSession() {
         const supabase = window.supabaseClient;
-        const sessionToken = localStorage.getItem('session_token');
+        const sessionToken = sessionStorage.getItem('session_token');
 
         if (!sessionToken) return;
 
@@ -226,7 +226,7 @@ const Auth = {
                 .delete()
                 .eq('session_token', sessionToken);
 
-            localStorage.removeItem('session_token');
+            sessionStorage.removeItem('session_token');
         } catch (err) {
             console.error('Delete session error:', err);
         }
@@ -259,7 +259,7 @@ const Auth = {
                 .eq('admin_id', adminId);
 
             if (error) throw error;
-            localStorage.removeItem('session_token');
+            sessionStorage.removeItem('session_token');
             return { success: true };
         } catch (err) {
             console.error('Delete all sessions error:', err);
@@ -269,7 +269,7 @@ const Auth = {
 
     async updateSessionActivity() {
         const supabase = window.supabaseClient;
-        const sessionToken = localStorage.getItem('session_token');
+        const sessionToken = sessionStorage.getItem('session_token');
 
         if (!sessionToken) return;
 
@@ -474,7 +474,7 @@ const Auth = {
     // ============================================
     async isCurrentSessionValid() {
         const supabase = window.supabaseClient;
-        const sessionToken = localStorage.getItem('session_token');
+        const sessionToken = sessionStorage.getItem('session_token');
 
         // If no session token stored, consider valid (unregistered session)
         if (!sessionToken) return true;
@@ -500,7 +500,7 @@ const Auth = {
 
     // Start realtime session monitoring (instant logout detection)
     startSessionValidityCheck() {
-        const sessionToken = localStorage.getItem('session_token');
+        const sessionToken = sessionStorage.getItem('session_token');
         if (!sessionToken) return;
 
         const supabase = window.supabaseClient;
@@ -546,9 +546,8 @@ const Auth = {
         this.isLoggingOut = true;
 
         // Clear local data
-        localStorage.removeItem('session_token');
-        localStorage.removeItem('craftsoft_accounts');
-        localStorage.removeItem('craftsoft_sessions');
+        sessionStorage.removeItem('session_token');
+        sessionStorage.removeItem('admin_accounts');
 
         // Unsubscribe from realtime
         if (this.sessionChannel) {
