@@ -1,0 +1,160 @@
+/* ============================================
+   Tablet Responsive Styles (768px - 1200px)
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .admin-sidebar {
+        width: 200px;
+    }
+
+    .admin-main {
+        margin-left: 200px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .admin-sidebar {
+        width: 200px;
+    }
+
+    .admin-main {
+        margin-left: 200px;
+    }
+}
+
+/* Tablet: Collapsed icon sidebar */
+@media (max-width: 992px) {
+    .admin-sidebar {
+        width: 72px;
+        top: 64px;
+        padding-bottom: 70px;
+    }
+
+    .admin-sidebar.expanded {
+        width: 240px;
+    }
+
+    .sidebar-logo-text {
+        display: none;
+    }
+
+    .sidebar-logo-short {
+        display: block;
+    }
+
+    .admin-sidebar.expanded .sidebar-logo-text {
+        display: block;
+    }
+
+    .admin-sidebar.expanded .sidebar-logo-short {
+        display: none;
+    }
+
+    .sidebar-item span,
+    .sidebar-subitem span,
+    .sidebar-item .submenu-arrow {
+        display: none;
+    }
+
+    .admin-sidebar.expanded .sidebar-item span,
+    .admin-sidebar.expanded .sidebar-subitem span,
+    .admin-sidebar.expanded .sidebar-item .submenu-arrow {
+        display: inline;
+    }
+
+    .sidebar-item {
+        justify-content: center;
+        padding: 0.875rem;
+    }
+
+    .admin-sidebar.expanded .sidebar-item {
+        justify-content: flex-start;
+        padding: 0.875rem 1rem;
+    }
+
+    .sidebar-item i {
+        font-size: 1.25rem;
+    }
+
+    .sidebar-submenu {
+        display: none !important;
+    }
+
+    .admin-sidebar.expanded .sidebar-group.expanded .sidebar-submenu {
+        display: block !important;
+    }
+
+    .sidebar-overlay {
+        display: block;
+    }
+
+    .admin-main {
+        margin-left: 72px;
+    }
+
+    .admin-sidebar.expanded+.sidebar-overlay {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+/* Form Rows Tablet */
+@media (max-width: 640px) {
+
+    .form-row,
+    .form-row-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Modal Tablet */
+@media (max-width: 640px) {
+    .modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .modal-container {
+        max-width: 100%;
+        max-height: 85vh;
+        border-radius: 20px 20px 0 0;
+        transform: translateY(100%);
+    }
+
+    .modal-overlay.active .modal-container {
+        transform: translateY(0);
+    }
+
+    .modal-header {
+        padding: 1rem 1.25rem;
+    }
+
+    .modal-header::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 4px;
+        background: var(--gray-300);
+        border-radius: 2px;
+    }
+
+    .modal-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .modal-body {
+        padding: 1.25rem;
+    }
+
+    .modal-footer {
+        padding: 1rem 1.25rem 1.5rem;
+        flex-direction: column-reverse;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+    }
+}

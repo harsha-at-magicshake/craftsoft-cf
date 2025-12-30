@@ -1,0 +1,37 @@
+/* ============================================
+   Typography Styles
+   ============================================ */
+.admin-brand-name,
+.header-logo,
+.sidebar-logo-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Text Helpers */
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: var(--admin-text-muted);
+    font-size: 0.9rem;
+}
+
+.text-strong {
+    font-weight: 600;
+    color: var(--admin-text-primary);
+}
+
+/* Security - Disable selection on sensitive inputs */
+.secure-input {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

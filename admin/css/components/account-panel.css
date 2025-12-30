@@ -1,0 +1,311 @@
+/* ============================================
+   Account Panel (Gmail-style)
+   ============================================ */
+.account-panel {
+    position: relative;
+}
+
+.account-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: var(--primary-50);
+    border: 1.5px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.account-trigger:hover {
+    background: var(--primary-100);
+}
+
+.account-trigger.open {
+    border-color: var(--primary-300);
+    background: var(--primary-100);
+}
+
+.account-avatar {
+    width: 36px;
+    height: 36px;
+    background: var(--accent-gradient);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.account-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.account-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--admin-text-primary);
+    line-height: 1.2;
+}
+
+.account-id {
+    font-size: 0.75rem;
+    color: var(--primary-600);
+    font-weight: 500;
+}
+
+.account-arrow {
+    font-size: 0.7rem;
+    color: var(--admin-text-muted);
+    transition: transform 0.2s;
+    margin-left: 0.25rem;
+}
+
+.account-trigger.open .account-arrow {
+    transform: rotate(180deg);
+}
+
+/* Account Dropdown */
+.account-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--admin-input-border);
+    min-width: 320px;
+    max-width: 380px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.98);
+    transition: all 0.25s ease;
+    z-index: 300;
+    overflow: hidden;
+}
+
+.account-dropdown.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.account-dropdown-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--admin-input-border);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--admin-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Account List */
+.account-list {
+    padding: 0.5rem;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.account-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+}
+
+.account-item:hover {
+    background: var(--gray-100);
+}
+
+.account-item.current {
+    background: var(--primary-50);
+}
+
+.account-item.current:hover {
+    background: var(--primary-100);
+}
+
+.account-item-avatar {
+    width: 42px;
+    height: 42px;
+    background: var(--accent-gradient);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.account-item-details {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.account-item-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--admin-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.account-item-email {
+    font-size: 0.75rem;
+    color: var(--admin-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.account-item-id {
+    font-size: 0.7rem;
+    color: var(--primary-600);
+    font-weight: 500;
+}
+
+.account-current-badge {
+    width: 24px;
+    height: 24px;
+    background: var(--primary-500);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+}
+
+.account-remove-btn {
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: var(--admin-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    opacity: 0;
+    flex-shrink: 0;
+}
+
+.account-item:hover .account-remove-btn {
+    opacity: 1;
+}
+
+.account-remove-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+
+/* Add Account Button */
+.account-add-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: calc(100% - 1rem);
+    margin: 0.5rem;
+    padding: 0.875rem 1rem;
+    background: transparent;
+    border: 2px dashed var(--admin-input-border);
+    border-radius: 12px;
+    color: var(--admin-text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.account-add-btn:hover {
+    border-color: var(--primary-300);
+    background: var(--primary-50);
+    color: var(--primary-600);
+}
+
+.account-add-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--gray-100);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.15s;
+}
+
+.account-add-btn:hover .account-add-icon {
+    background: var(--primary-100);
+    color: var(--primary-600);
+}
+
+/* Account Actions */
+.account-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-top: 1px solid var(--admin-input-border);
+    background: var(--gray-50);
+}
+
+.account-action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    background: #fff;
+    border: 1.5px solid var(--admin-input-border);
+    border-radius: 8px;
+    color: var(--admin-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.account-action-btn:hover {
+    border-color: var(--admin-text-muted);
+    color: var(--admin-text-primary);
+}
+
+.account-action-btn i {
+    font-size: 0.85rem;
+}
+
+.account-action-btn.logout-all {
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #EF4444;
+}
+
+.account-action-btn.logout-all:hover {
+    background: rgba(239, 68, 68, 0.05);
+    border-color: #EF4444;
+}
+
+/* Add Account Modal */
+.add-account-modal {
+    max-width: 420px;
+}

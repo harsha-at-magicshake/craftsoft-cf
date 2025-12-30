@@ -1,0 +1,220 @@
+/* ============================================
+   Admin Sidebar
+   ============================================ */
+.admin-sidebar {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    bottom: 0;
+    width: 240px;
+    background: #fff;
+    border-right: 1px solid var(--admin-input-border);
+    z-index: 90;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    transition: width 0.3s ease;
+    -webkit-overflow-scrolling: touch;
+}
+
+.sidebar-header {
+    display: flex;
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid var(--admin-input-border);
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-logo-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    white-space: nowrap;
+}
+
+.sidebar-logo-short {
+    display: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle-btn {
+    display: none;
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 44px;
+    background: var(--accent-gradient);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(40, 150, 205, 0.3);
+}
+
+.sidebar-toggle-btn:hover {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 6px 20px rgba(40, 150, 205, 0.4);
+}
+
+.sidebar-nav {
+    padding: 1rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border-radius: 10px;
+    color: var(--admin-text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+.sidebar-item:hover {
+    background: var(--gray-100);
+    color: var(--admin-text-primary);
+}
+
+.sidebar-item.active {
+    background: var(--primary-50);
+    color: var(--primary-600);
+}
+
+.sidebar-item.active i:not(.submenu-arrow) {
+    color: var(--primary-500);
+}
+
+.sidebar-item i:not(.submenu-arrow) {
+    width: 20px;
+    text-align: center;
+    font-size: 1rem;
+    color: var(--admin-text-muted);
+    transition: color 0.15s;
+    flex-shrink: 0;
+}
+
+.sidebar-item:hover i:not(.submenu-arrow) {
+    color: var(--admin-text-secondary);
+}
+
+/* Sidebar Submenu */
+.sidebar-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-item.has-submenu {
+    position: relative;
+}
+
+.sidebar-item span {
+    flex: 1;
+}
+
+.sidebar-item .submenu-arrow {
+    width: auto;
+    margin-left: auto;
+    font-size: 0.65rem;
+    color: var(--admin-text-muted);
+    transition: transform 0.2s;
+}
+
+.sidebar-group.expanded .submenu-arrow {
+    transform: rotate(180deg);
+}
+
+.sidebar-submenu {
+    display: none;
+    padding-left: 1rem;
+}
+
+.sidebar-group.expanded .sidebar-submenu {
+    display: block;
+}
+
+.sidebar-subitem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    padding-left: 2.5rem;
+    border-radius: 8px;
+    color: var(--admin-text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+.sidebar-subitem:hover {
+    background: var(--gray-100);
+    color: var(--admin-text-primary);
+}
+
+.sidebar-subitem.active {
+    background: var(--primary-50);
+    color: var(--primary-600);
+}
+
+.sidebar-subitem i {
+    width: 18px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--admin-text-muted);
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.5);
+    z-index: 85;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Mobile Bottom Nav (hidden on desktop) */
+.mobile-bottom-nav {
+    display: none;
+}
+
+/* Sidebar Handle for mobile */
+.sidebar-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--gray-300);
+    border-radius: 2px;
+}
