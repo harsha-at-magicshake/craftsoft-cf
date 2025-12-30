@@ -764,10 +764,6 @@ const AccountManager = {
                             <i class="fa-solid fa-right-from-bracket"></i>
                             Logout
                         </button>
-                        <button class="account-action-btn logout-all" id="logout-all-btn">
-                            <i class="fa-solid fa-users-slash"></i>
-                            Logout All
-                        </button>
                     </div>
                 </div>
             </div>
@@ -824,11 +820,6 @@ const AccountManager = {
         // Logout current
         document.getElementById('logout-current-btn')?.addEventListener('click', () => {
             this.handleLogoutCurrent();
-        });
-
-        // Logout all
-        document.getElementById('logout-all-btn')?.addEventListener('click', () => {
-            this.handleLogoutAll();
         });
     },
 

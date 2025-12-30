@@ -440,8 +440,62 @@ const Auth = {
         } catch (error) {
             return false;
         }
+    },
+
+    // ============================================
+    // SESSION VALIDITY CHECK (for remote logout)
+    // ============================================
+    async isCurrentSessionValid() {
+        const supabase = window.supabaseClient;
+        const sessionToken = localStorage.getItem('session_token');
+
+        // If no session token stored, consider valid (unregistered session)
+        if (!sessionToken) return true;
+
+        try {
+            const { data, error } = await supabase
+                .from('user_sessions')
+                .select('id')
+                .eq('session_token', sessionToken)
+                .single();
+
+            // If session not found in database, it was deleted remotely
+            if (error || !data) {
+                return false;
+            }
+
+            return true;
+        } catch (err) {
+            console.error('Session validity check error:', err);
+            return true; // Assume valid on error to avoid false logouts
+        }
+    },
+
+    // Start periodic session validity check
+    startSessionValidityCheck() {
+        // Check every 30 seconds
+        setInterval(async () => {
+            const isValid = await this.isCurrentSessionValid();
+
+            if (!isValid) {
+                console.log('Session invalidated remotely, logging out...');
+
+                // Clear local data
+                localStorage.removeItem('session_token');
+                localStorage.removeItem('craftsoft_accounts');
+                localStorage.removeItem('craftsoft_sessions');
+
+                // Sign out and redirect
+                await window.supabaseClient.auth.signOut();
+
+                // Show message and redirect
+                alert('Your session was logged out from another device.');
+                window.location.href = '/admin/login.html';
+            }
+        }, 30000); // 30 seconds
     }
 };
 
 // Export
 window.Auth = Auth;
+

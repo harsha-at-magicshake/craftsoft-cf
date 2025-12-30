@@ -11,6 +11,11 @@ const AdminSidebar = {
         this.render();
         this.bindEvents();
         this.initSessionTimeout();
+
+        // Start remote logout detection
+        if (window.Auth && typeof window.Auth.startSessionValidityCheck === 'function') {
+            window.Auth.startSessionValidityCheck();
+        }
     },
 
     render() {
