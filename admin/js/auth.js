@@ -471,35 +471,75 @@ const Auth = {
         }
     },
 
-    // Start periodic session validity check
+    // Start realtime session monitoring (instant logout detection)
     startSessionValidityCheck() {
-        // Check every 30 seconds
+        const sessionToken = localStorage.getItem('session_token');
+        if (!sessionToken) return;
+
+        const supabase = window.supabaseClient;
+
+        // Subscribe to DELETE events on user_sessions
+        const channel = supabase
+            .channel('session-monitor')
+            .on(
+                'postgres_changes',
+                {
+                    event: 'DELETE',
+                    schema: 'public',
+                    table: 'user_sessions',
+                    filter: `session_token=eq.${sessionToken}`
+                },
+                (payload) => {
+                    console.log('Session deleted remotely, logging out instantly...');
+                    this.handleRemoteLogout();
+                }
+            )
+            .subscribe((status) => {
+                if (status === 'SUBSCRIBED') {
+                    console.log('Realtime session monitoring active');
+                }
+            });
+
+        // Store channel reference for cleanup
+        this.sessionChannel = channel;
+
+        // Fallback: Also check every 5 seconds in case realtime misses something
         setInterval(async () => {
             const isValid = await this.isCurrentSessionValid();
-
             if (!isValid) {
-                console.log('Session invalidated remotely, logging out...');
-
-                // Clear local data
-                localStorage.removeItem('session_token');
-                localStorage.removeItem('craftsoft_accounts');
-                localStorage.removeItem('craftsoft_sessions');
-
-                // Sign out and redirect
-                await window.supabaseClient.auth.signOut();
-
-                // Show message and redirect using custom modal
-                const { Modal } = window.AdminUtils || {};
-                if (Modal && typeof Modal.alert === 'function') {
-                    Modal.alert('warning', 'Session Ended', 'Your session was logged out from another device.', () => {
-                        window.location.href = '/admin/login.html';
-                    });
-                } else {
-                    // Fallback if Modal not available
-                    window.location.href = '/admin/login.html';
-                }
+                this.handleRemoteLogout();
             }
-        }, 30000); // 30 seconds
+        }, 5000); // 5 seconds fallback
+    },
+
+    // Handle remote logout
+    async handleRemoteLogout() {
+        // Prevent multiple triggers
+        if (this.isLoggingOut) return;
+        this.isLoggingOut = true;
+
+        // Clear local data
+        localStorage.removeItem('session_token');
+        localStorage.removeItem('craftsoft_accounts');
+        localStorage.removeItem('craftsoft_sessions');
+
+        // Unsubscribe from realtime
+        if (this.sessionChannel) {
+            window.supabaseClient.removeChannel(this.sessionChannel);
+        }
+
+        // Sign out
+        await window.supabaseClient.auth.signOut();
+
+        // Show message and redirect using custom modal
+        const { Modal } = window.AdminUtils || {};
+        if (Modal && typeof Modal.alert === 'function') {
+            Modal.alert('warning', 'Session Ended', 'Your session was logged out from another device.', () => {
+                window.location.href = '/admin/login.html';
+            });
+        } else {
+            window.location.href = '/admin/login.html';
+        }
     }
 };
 

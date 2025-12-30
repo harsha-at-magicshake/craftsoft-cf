@@ -3,6 +3,7 @@ let settingsData = {};
 let currentAdmin = null;
 let sessionsData = [];
 let currentSessionToken = null;
+let sessionsChannel = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const session = await window.supabaseConfig.getSession();
@@ -26,6 +27,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadSessions();
     renderSettings();
     bindEvents();
+
+    // Subscribe to realtime session updates
+    subscribeToSessionUpdates();
 });
 
 
@@ -63,6 +67,61 @@ async function loadSessions() {
         console.error('Error loading sessions:', err);
         sessionsData = [];
     }
+}
+
+// =====================
+// Realtime Session Updates
+// =====================
+function subscribeToSessionUpdates() {
+    if (!currentAdmin) return;
+
+    const supabase = window.supabaseClient;
+
+    // Subscribe to INSERT and DELETE events on user_sessions for this admin
+    sessionsChannel = supabase
+        .channel('settings-sessions')
+        .on(
+            'postgres_changes',
+            {
+                event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
+                schema: 'public',
+                table: 'user_sessions',
+                filter: `admin_id=eq.${currentAdmin.id}`
+            },
+            async (payload) => {
+                console.log('Session change detected:', payload.eventType);
+
+                // Reload sessions and re-render
+                await loadSessions();
+
+                // Only update the sessions list, not the whole page
+                const sessionsList = document.getElementById('sessions-list');
+                if (sessionsList) {
+                    sessionsList.innerHTML = renderSessionsList();
+
+                    // Re-bind session logout buttons
+                    document.querySelectorAll('.session-logout-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            logoutSession(btn.dataset.sessionId);
+                        });
+                    });
+
+                    // Re-bind register button if present
+                    document.getElementById('register-session-btn')?.addEventListener('click', registerCurrentSession);
+                }
+
+                // Show toast for new sessions
+                if (payload.eventType === 'INSERT' && payload.new.session_token !== currentSessionToken) {
+                    const { Toast } = window.AdminUtils;
+                    Toast.info('New Login', `New session detected: ${payload.new.device_info || 'Unknown device'}`);
+                }
+            }
+        )
+        .subscribe((status) => {
+            if (status === 'SUBSCRIBED') {
+                console.log('Realtime session updates active');
+            }
+        });
 }
 
 // =====================
