@@ -747,7 +747,12 @@ const AccountManager = {
                                     <span class="account-item-email">${acc.email}</span>
                                     <span class="account-item-id">${acc.admin_id || 'Pending'}</span>
                                 </div>
-                                ${acc.is_current ? '<span class="account-current-badge"><i class="fa-solid fa-check"></i></span>' : ''}
+                                ${acc.is_current
+                ? '<span class="account-current-badge"><i class="fa-solid fa-check"></i></span>'
+                : `<button class="account-remove-btn" data-account-id="${acc.id}" title="Remove account">
+                                        <i class="fa-solid fa-xmark"></i>
+                                       </button>`
+            }
                             </div>
                         `).join('')}
                     </div>
@@ -800,13 +805,25 @@ const AccountManager = {
             }
         });
 
-        // Account item click (switch)
+        // Account item click (switch) - but not when clicking remove button
         document.querySelectorAll('.account-item').forEach(item => {
             item.addEventListener('click', async (e) => {
+                // Don't switch if clicking the remove button
+                if (e.target.closest('.account-remove-btn')) return;
+
                 const accountId = item.dataset.accountId;
                 if (!item.classList.contains('current')) {
                     await this.handleSwitchAccount(accountId);
                 }
+            });
+        });
+
+        // Remove account buttons
+        document.querySelectorAll('.account-remove-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const accountId = btn.dataset.accountId;
+                this.handleRemoveAccount(accountId);
             });
         });
 
@@ -836,6 +853,17 @@ const AccountManager = {
         }
 
         try {
+            // Stop realtime session monitoring BEFORE switching
+            // This prevents the old session from triggering "logged out" modal
+            if (window.Auth && window.Auth.sessionChannel) {
+                window.supabaseClient.removeChannel(window.Auth.sessionChannel);
+                window.Auth.sessionChannel = null;
+            }
+            window.Auth.isLoggingOut = true; // Prevent triggers during switch
+
+            // Clear old session token before switching
+            localStorage.removeItem('session_token');
+
             // Set the session in Supabase
             const { error } = await window.supabaseClient.auth.setSession({
                 access_token: storedSession.access_token,
