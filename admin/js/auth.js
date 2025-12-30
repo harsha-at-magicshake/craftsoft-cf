@@ -3,6 +3,13 @@
    Signup, Login, Logout, Verify
    ============================================ */
 
+// Store TAB_ID in MEMORY once on load - do NOT read dynamically from sessionStorage
+// This prevents race conditions when realtime events arrive after logout clears sessionStorage
+let THIS_TAB_ID = sessionStorage.getItem('tab_id');
+
+// Flag to prevent reacting to our own logout
+let isSelfLogout = false;
+
 const Auth = {
     // ============================================
     // SIGNUP
@@ -138,6 +145,9 @@ const Auth = {
     // ============================================
     async logout() {
         try {
+            // Set flag to prevent this tab from reacting to its own delete event
+            isSelfLogout = true;
+
             // Delete current session record (by admin_id + tab_id)
             await this.deleteCurrentSession();
 
@@ -148,6 +158,7 @@ const Auth = {
 
         } catch (error) {
             console.error('Logout error:', error);
+            isSelfLogout = false; // Reset on error
             return { success: false, error: error.message };
         }
     },
@@ -212,6 +223,7 @@ const Auth = {
             // Generate new TAB_ID for this tab
             const tabId = crypto.randomUUID();
             sessionStorage.setItem('tab_id', tabId);
+            THIS_TAB_ID = tabId; // Update memory variable
 
             // Insert new session row
             const { error } = await supabase
@@ -498,9 +510,11 @@ const Auth = {
     // ============================================
     async isCurrentSessionValid() {
         const supabase = window.supabaseClient;
-        const tabId = sessionStorage.getItem('tab_id');
 
-        // If no tab_id stored, consider invalid (not properly logged in)
+        // Use THIS_TAB_ID from MEMORY - not from sessionStorage
+        const tabId = THIS_TAB_ID || sessionStorage.getItem('tab_id');
+
+        // If no tab_id, consider invalid (not properly logged in)
         if (!tabId) return false;
 
         // Get current admin
@@ -529,30 +543,41 @@ const Auth = {
 
     // Start realtime session monitoring (instant logout detection)
     startSessionValidityCheck() {
-        const tabId = sessionStorage.getItem('tab_id');
-        if (!tabId) return;
+        // Use THIS_TAB_ID from MEMORY - not from sessionStorage
+        // This prevents race conditions when logout clears sessionStorage before event fires
+        if (!THIS_TAB_ID) {
+            THIS_TAB_ID = sessionStorage.getItem('tab_id');
+        }
+        if (!THIS_TAB_ID) return;
 
         const supabase = window.supabaseClient;
 
         // Subscribe to DELETE events on user_sessions for THIS TAB's session only
+        // The filter ensures we ONLY receive events for this specific tab_id
         const channel = supabase
-            .channel('session-monitor-' + tabId)
+            .channel('session-monitor-' + THIS_TAB_ID)
             .on(
                 'postgres_changes',
                 {
                     event: 'DELETE',
                     schema: 'public',
                     table: 'user_sessions',
-                    filter: `session_token=eq.${tabId}`
+                    filter: `session_token=eq.${THIS_TAB_ID}`
                 },
                 (payload) => {
-                    console.log('This tab session deleted, logging out...');
+                    // CRITICAL: Check if this is our own logout
+                    if (isSelfLogout) {
+                        console.log('Ignoring delete event - this is our own logout');
+                        return;
+                    }
+
+                    console.log('This tab session deleted remotely, logging out...');
                     this.handleRemoteLogout();
                 }
             )
             .subscribe((status) => {
                 if (status === 'SUBSCRIBED') {
-                    console.log('Realtime session monitoring active for tab:', tabId);
+                    console.log('Realtime session monitoring active for tab:', THIS_TAB_ID);
                 }
             });
 
@@ -560,7 +585,10 @@ const Auth = {
         this.sessionChannel = channel;
 
         // Fallback: Also check every 5 seconds in case realtime misses something
-        setInterval(async () => {
+        this.validityInterval = setInterval(async () => {
+            // Skip if we're logging out ourselves
+            if (isSelfLogout) return;
+
             const isValid = await this.isCurrentSessionValid();
             if (!isValid) {
                 this.handleRemoteLogout();
