@@ -241,12 +241,13 @@ const Auth = {
 
             // Check if this tab already has a valid session in the database
             if (existingTabId) {
+                // FIX: Use maybeSingle() to avoid 406 error when no row exists
                 const { data: existingSession } = await supabase
                     .from('user_sessions')
                     .select('id')
                     .eq('admin_id', adminId)
                     .eq('session_token', existingTabId)
-                    .single();
+                    .maybeSingle();
 
                 if (existingSession) {
                     // Session exists for this tab, just update last_active
@@ -688,6 +689,7 @@ const Auth = {
 
         // Clear only tab_id (not everything)
         sessionStorage.removeItem('tab_id');
+        THIS_TAB_ID = null; // FIX #2: Reset memory variable too
 
         // Unsubscribe from realtime
         if (this.sessionChannel) {
