@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Payment | Craftsoft Admin</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Admin Styles -->
+    <link rel="stylesheet" href="../../css/variables.css">
+    <link rel="stylesheet" href="../../css/layout/header.css">
+    <link rel="stylesheet" href="../../css/layout/sidebar.css">
+    <link rel="stylesheet" href="../../css/layout/admin-layout.css">
+    <link rel="stylesheet" href="../../css/components/toast.css">
+    <link rel="stylesheet" href="../../css/components/modal.css">
+    <link rel="stylesheet" href="../../css/responsive/mobile.css">
+    <link rel="stylesheet" href="add-payment.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar injected by JS -->
+
+        <main class="admin-main">
+            <!-- Header injected by JS -->
+            <div id="header-container"></div>
+
+            <div class="content-card">
+                <!-- Form Section -->
+                <div class="payment-form-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+                        <div class="section-info">
+                            <h2 class="section-title">Record Payment</h2>
+                            <p class="section-subtitle">Record a new payment for a student</p>
+                        </div>
+                    </div>
+
+                    <form id="payment-form" class="payment-form">
+                        <!-- Student Selection -->
+                        <div class="form-group">
+                            <label class="form-label">Student <span class="required">*</span></label>
+                            <select id="student-select" class="form-select" required>
+                                <option value="">Select a student</option>
+                            </select>
+                        </div>
+
+                        <!-- Course Selection -->
+                        <div class="form-group">
+                            <label class="form-label">Course <span class="required">*</span></label>
+                            <select id="course-select" class="form-select" required disabled>
+                                <option value="">Select student first</option>
+                            </select>
+                        </div>
+
+                        <!-- Fee Summary -->
+                        <div class="fee-summary" id="fee-summary" style="display: none;">
+                            <div class="fee-row">
+                                <span class="fee-label">Total Fee</span>
+                                <span class="fee-value" id="total-fee">₹0</span>
+                            </div>
+                            <div class="fee-row">
+                                <span class="fee-label">Paid So Far</span>
+                                <span class="fee-value fee-paid" id="paid-so-far">₹0</span>
+                            </div>
+                            <div class="fee-row fee-row-highlight">
+                                <span class="fee-label">Balance Due</span>
+                                <span class="fee-value fee-due" id="balance-due">₹0</span>
+                            </div>
+                        </div>
+
+                        <!-- Amount Input -->
+                        <div class="form-group">
+                            <label class="form-label">Amount to Pay <span class="required">*</span></label>
+                            <div class="amount-input-wrapper">
+                                <span class="currency-symbol">₹</span>
+                                <input type="number" id="amount-input" class="form-input amount-input"
+                                    placeholder="Enter amount" min="1" required disabled>
+                            </div>
+                        </div>
+
+                        <!-- Payment Mode -->
+                        <div class="form-group">
+                            <label class="form-label">Payment Mode <span class="required">*</span></label>
+                            <div class="payment-mode-options">
+                                <label class="payment-mode-option">
+                                    <input type="radio" name="payment-mode" value="CASH" checked>
+                                    <div class="mode-card">
+                                        <i class="fa-solid fa-money-bill-wave"></i>
+                                        <span>Cash</span>
+                                    </div>
+                                </label>
+                                <label class="payment-mode-option">
+                                    <input type="radio" name="payment-mode" value="ONLINE">
+                                    <div class="mode-card">
+                                        <i class="fa-solid fa-credit-card"></i>
+                                        <span>Online</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-lg" id="proceed-btn" disabled>
+                            <i class="fa-solid fa-arrow-right"></i>
+                            Proceed
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../js/supabase-config.js"></script>
+
+    <!-- Admin Components -->
+    <script src="../../js/admin-utils.js"></script>
+    <script src="../../js/header.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/auth.js"></script>
+
+    <!-- Page Script -->
+    <script src="add-payment.js"></script>
+</body>
+
+</html>

@@ -224,3 +224,53 @@
 .mobile-nav-sheet {
     display: none !important;
 }
+
+/* ============================================
+   Sidebar Parent Menu (Payments)
+   ============================================ */
+
+/* Desktop: Always expanded */
+.sidebar-parent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sidebar-parent-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    color: var(--admin-text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-parent-label i {
+    width: 20px;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.sidebar-parent.active .sidebar-parent-label {
+    color: var(--primary-500);
+}
+
+.sidebar-children {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+/* Child items - indented */
+.sidebar-item.sidebar-child {
+    padding-left: 2.5rem;
+    font-size: 0.85rem;
+}
+
+.sidebar-item.sidebar-child i {
+    font-size: 0.85rem;
+    width: 16px;
+}

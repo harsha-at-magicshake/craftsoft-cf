@@ -1,0 +1,283 @@
+/* ============================================
+   Add Payment Page Styles
+   ============================================ */
+
+.payment-form-section {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.section-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-gradient);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1.25rem;
+}
+
+.section-info {
+    flex: 1;
+}
+
+.section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--admin-text-primary);
+    margin: 0;
+}
+
+.section-subtitle {
+    font-size: 0.9rem;
+    color: var(--admin-text-muted);
+    margin: 0.25rem 0 0;
+}
+
+/* Form Styles */
+.payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--admin-text-primary);
+}
+
+.form-label .required {
+    color: var(--danger-500, #ef4444);
+}
+
+.form-select,
+.form-input {
+    padding: 0.875rem 1rem;
+    border: 1.5px solid var(--admin-input-border);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: var(--admin-text-primary);
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-select:focus,
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-400);
+    box-shadow: 0 0 0 3px rgba(40, 150, 205, 0.1);
+}
+
+.form-select:disabled,
+.form-input:disabled {
+    background: var(--gray-100);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Amount Input */
+.amount-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--admin-text-muted);
+}
+
+.amount-input {
+    padding-left: 2.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Fee Summary */
+.fee-summary {
+    background: var(--gray-50);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--gray-200);
+}
+
+.fee-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.fee-row:not(:last-child) {
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.fee-label {
+    font-size: 0.9rem;
+    color: var(--admin-text-secondary);
+}
+
+.fee-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--admin-text-primary);
+}
+
+.fee-paid {
+    color: var(--success-600, #16a34a);
+}
+
+.fee-due {
+    color: var(--danger-600, #dc2626);
+}
+
+.fee-row-highlight {
+    background: var(--gray-100);
+    margin: 0.5rem -1.25rem -1rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0 0 12px 12px;
+}
+
+/* Payment Mode */
+.payment-mode-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.payment-mode-option input[type="radio"] {
+    display: none;
+}
+
+.mode-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.25rem 1rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fff;
+}
+
+.mode-card i {
+    font-size: 1.5rem;
+    color: var(--admin-text-muted);
+    transition: color 0.2s;
+}
+
+.mode-card span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--admin-text-secondary);
+}
+
+.payment-mode-option input:checked+.mode-card {
+    border-color: var(--primary-500);
+    background: var(--primary-50);
+}
+
+.payment-mode-option input:checked+.mode-card i {
+    color: var(--primary-500);
+}
+
+.payment-mode-option input:checked+.mode-card span {
+    color: var(--primary-600);
+}
+
+.mode-card:hover {
+    border-color: var(--primary-300);
+}
+
+/* Submit Button */
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    margin-top: 0.5rem;
+}
+
+.btn-primary {
+    background: var(--accent-gradient);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 150, 205, 0.3);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .payment-form-section {
+        max-width: 100%;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .section-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+    }
+
+    .payment-mode-options {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+
+    .mode-card {
+        padding: 1rem 0.75rem;
+    }
+
+    .mode-card i {
+        font-size: 1.25rem;
+    }
+
+    .mode-card span {
+        font-size: 0.85rem;
+    }
+}

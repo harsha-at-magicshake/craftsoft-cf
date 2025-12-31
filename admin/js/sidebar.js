@@ -19,7 +19,10 @@ const AdminSidebar = {
     },
 
     render() {
-        // Desktop sidebar
+        // Check if current page is a Payments child
+        const isPaymentsChild = ['add-payment', 'payments', 'receipts'].includes(this.currentPage);
+
+        // Desktop sidebar (always expanded)
         const sidebarHTML = `
             <aside class="admin-sidebar" id="admin-sidebar">
                 <nav class="sidebar-nav">
@@ -28,13 +31,26 @@ const AdminSidebar = {
                     ${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user')}
                     ${this.navItem('inquiries', 'Inquiries', 'fa-phone-volume')}
                     ${this.navItem('courses', 'Courses', 'fa-book-bookmark')}
-                    ${this.navItem('receipts', 'Receipts', 'fa-file-invoice', 'payments/receipts')}
+                    
+                    <!-- Payments Parent (always expanded on desktop) -->
+                    <div class="sidebar-parent ${isPaymentsChild ? 'active' : ''}">
+                        <div class="sidebar-parent-label">
+                            <i class="fa-solid fa-credit-card"></i>
+                            <span>Payments</span>
+                        </div>
+                        <div class="sidebar-children">
+                            ${this.navItemChild('add-payment', 'Add Payment', 'fa-plus', 'payments/add-payment')}
+                            ${this.navItemChild('payments', 'Payments', 'fa-list', 'payments/payments')}
+                            ${this.navItemChild('receipts', 'Receipts', 'fa-file-invoice', 'payments/receipts')}
+                        </div>
+                    </div>
+                    
                     ${this.navItem('settings', 'Settings', 'fa-gear')}
                 </nav>
             </aside>
         `;
 
-        // Mobile nav bottom sheet
+        // Mobile nav bottom sheet (collapsible)
         const mobileNavHTML = `
             <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
             <div class="mobile-nav-sheet" id="mobile-nav-sheet">
@@ -50,7 +66,21 @@ const AdminSidebar = {
                     ${this.mobileNavItem('tutors', 'Tutors', 'fa-chalkboard-user')}
                     ${this.mobileNavItem('inquiries', 'Inquiries', 'fa-phone-volume')}
                     ${this.mobileNavItem('courses', 'Courses', 'fa-book-bookmark')}
-                    ${this.mobileNavItem('receipts', 'Receipts', 'fa-file-invoice', 'payments/receipts')}
+                    
+                    <!-- Payments Parent (collapsible on mobile) -->
+                    <div class="mobile-nav-parent ${isPaymentsChild ? 'expanded' : ''}" id="mobile-payments-parent">
+                        <button class="mobile-nav-parent-btn" id="mobile-payments-toggle">
+                            <i class="fa-solid fa-credit-card"></i>
+                            <span>Payments</span>
+                            <i class="fa-solid fa-chevron-right mobile-nav-arrow"></i>
+                        </button>
+                        <div class="mobile-nav-children">
+                            ${this.mobileNavItemChild('add-payment', 'Add Payment', 'fa-plus', 'payments/add-payment')}
+                            ${this.mobileNavItemChild('payments', 'Payments', 'fa-list', 'payments/payments')}
+                            ${this.mobileNavItemChild('receipts', 'Receipts', 'fa-file-invoice', 'payments/receipts')}
+                        </div>
+                    </div>
+                    
                     ${this.mobileNavItem('settings', 'Settings', 'fa-gear')}
                 </nav>
             </div>
@@ -61,6 +91,30 @@ const AdminSidebar = {
             layout.insertAdjacentHTML('afterbegin', sidebarHTML);
             document.body.insertAdjacentHTML('beforeend', mobileNavHTML);
         }
+    },
+
+    // Child nav item for desktop (indented)
+    navItemChild(page, label, icon, path) {
+        const href = `${this.rootPath}${path}/`;
+        return `
+            <a href="${href}"
+               class="sidebar-item sidebar-child ${this.currentPage === page ? 'active' : ''}"
+               title="${label}">
+                <i class="fa-solid ${icon}"></i>
+                <span>${label}</span>
+            </a>
+        `;
+    },
+
+    // Child nav item for mobile (indented)
+    mobileNavItemChild(page, label, icon, path) {
+        const href = `${this.rootPath}${path}/`;
+        return `
+            <a href="${href}" class="mobile-nav-item mobile-nav-child ${this.currentPage === page ? 'active' : ''}">
+                <i class="fa-solid ${icon}"></i>
+                <span>${label}</span>
+            </a>
+        `;
     },
 
     navItem(page, label, icon, path = null) {
@@ -121,11 +175,11 @@ const AdminSidebar = {
             this.closeMobileNav();
         });
 
-        // Payments submenu toggle (desktop)
-        const paymentsItem = document.querySelector('.sidebar-item.has-submenu');
-        paymentsItem?.addEventListener('click', (e) => {
+        // Mobile Payments expand/collapse toggle
+        document.getElementById('mobile-payments-toggle')?.addEventListener('click', (e) => {
             e.preventDefault();
-            paymentsItem.closest('.sidebar-group')?.classList.toggle('expanded');
+            const parent = document.getElementById('mobile-payments-parent');
+            parent?.classList.toggle('expanded');
         });
     },
 

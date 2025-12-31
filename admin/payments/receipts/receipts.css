@@ -1,0 +1,450 @@
+/* ============================================
+   Receipts List Page Styles
+   ============================================ */
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.section-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.section-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-gradient);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1.25rem;
+}
+
+.section-info {
+    flex: 1;
+}
+
+.section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--admin-text-primary);
+    margin: 0;
+}
+
+.section-subtitle {
+    font-size: 0.9rem;
+    color: var(--admin-text-muted);
+    margin: 0.25rem 0 0;
+}
+
+/* Search */
+.table-search-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    max-width: 400px;
+}
+
+.search-box i {
+    color: var(--admin-text-muted);
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 0.9rem;
+    color: var(--admin-text-primary);
+    outline: none;
+}
+
+/* Receipt ID */
+.receipt-id-cell {
+    font-family: 'SF Mono', 'Monaco', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-600);
+}
+
+/* Mode Badge */
+.mode-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.mode-badge.cash {
+    background: var(--success-50, #f0fdf4);
+    color: var(--success-600, #16a34a);
+}
+
+.mode-badge.online {
+    background: var(--primary-50);
+    color: var(--primary-600);
+}
+
+/* Amount */
+.amount-cell {
+    font-weight: 600;
+    color: var(--admin-text-primary);
+}
+
+/* Balance */
+.balance-cell {
+    font-weight: 500;
+}
+
+.balance-cell.paid {
+    color: var(--success-600, #16a34a);
+}
+
+.balance-cell.due {
+    color: var(--danger-600, #dc2626);
+}
+
+/* Action Buttons */
+.action-btns {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.9rem;
+}
+
+.action-btn.view {
+    background: var(--gray-100);
+    color: var(--admin-text-secondary);
+}
+
+.action-btn.view:hover {
+    background: var(--gray-200);
+    color: var(--admin-text-primary);
+}
+
+.action-btn.download {
+    background: var(--primary-50);
+    color: var(--primary-600);
+}
+
+.action-btn.download:hover {
+    background: var(--primary-100);
+}
+
+.action-btn.whatsapp {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.action-btn.whatsapp:hover {
+    background: #bbf7d0;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: var(--gray-300);
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    color: var(--admin-text-primary);
+    margin: 0 0 0.5rem;
+}
+
+.empty-state p {
+    color: var(--admin-text-muted);
+    margin-bottom: 1.5rem;
+}
+
+/* Loading State */
+.loading-state {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.loading-state i {
+    font-size: 2rem;
+    color: var(--primary-500);
+    margin-bottom: 1rem;
+}
+
+.loading-state p {
+    color: var(--admin-text-muted);
+}
+
+/* Mobile Cards */
+.data-cards {
+    display: none;
+}
+
+.receipt-card {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.receipt-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.receipt-card-id {
+    font-family: 'SF Mono', 'Monaco', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-600);
+}
+
+.receipt-card-amount {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--admin-text-primary);
+}
+
+.receipt-card-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    font-size: 0.85rem;
+    color: var(--admin-text-secondary);
+}
+
+.receipt-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--gray-100);
+}
+
+.receipt-card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Receipt Modal */
+.receipt-modal {
+    max-width: 500px;
+}
+
+.receipt-modal .modal-body {
+    padding: 0;
+}
+
+.receipt-view {
+    padding: 2rem;
+    background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+}
+
+.receipt-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.receipt-logo {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.25rem;
+}
+
+.receipt-subtitle {
+    font-size: 0.8rem;
+    color: var(--admin-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.receipt-details {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--gray-200);
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.receipt-row:last-child {
+    border-bottom: none;
+}
+
+.receipt-label {
+    font-size: 0.85rem;
+    color: var(--admin-text-muted);
+}
+
+.receipt-value {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--admin-text-primary);
+    text-align: right;
+}
+
+.receipt-amount-row {
+    background: var(--primary-50);
+    margin: 1rem -1.5rem;
+    padding: 1rem 1.5rem;
+}
+
+.receipt-amount-row .receipt-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-600);
+}
+
+.receipt-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--gray-300);
+}
+
+.receipt-footer p {
+    font-size: 0.75rem;
+    color: var(--admin-text-muted);
+    margin: 0;
+}
+
+/* Modal Buttons */
+.btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--gray-300);
+    color: var(--admin-text-secondary);
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+
+.btn-outline:hover {
+    border-color: var(--primary-400);
+    color: var(--primary-600);
+}
+
+.btn-success {
+    background: #16a34a;
+    border: none;
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+
+.btn-success:hover {
+    background: #15803d;
+}
+
+.btn-primary {
+    background: var(--accent-gradient);
+    border: none;
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search-box {
+        max-width: 100%;
+    }
+
+    .data-table-wrapper {
+        display: none;
+    }
+
+    .data-cards {
+        display: block;
+    }
+
+    .receipt-modal {
+        max-width: 100%;
+        margin: 1rem;
+    }
+
+    .receipt-view {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

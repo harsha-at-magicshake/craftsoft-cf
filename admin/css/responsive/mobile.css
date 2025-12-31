@@ -279,4 +279,77 @@
         background: linear-gradient(135deg, var(--primary-50, #edf6fb) 0%, rgba(108, 92, 231, 0.08) 100%);
         color: var(--primary-600, #1a7eb0);
     }
+
+    /* Mobile Nav Parent (Payments - collapsible) */
+    .mobile-nav-parent {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-nav-parent-btn {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border-radius: 12px;
+        background: transparent;
+        border: none;
+        color: var(--admin-text-secondary, #64748b);
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        width: 100%;
+        text-align: left;
+    }
+
+    .mobile-nav-parent-btn i:first-child {
+        width: 24px;
+        text-align: center;
+        font-size: 1.1rem;
+    }
+
+    .mobile-nav-parent-btn span {
+        flex: 1;
+    }
+
+    .mobile-nav-arrow {
+        font-size: 0.7rem;
+        transition: transform 0.2s ease;
+    }
+
+    .mobile-nav-parent.expanded .mobile-nav-arrow {
+        transform: rotate(90deg);
+    }
+
+    .mobile-nav-parent.expanded .mobile-nav-parent-btn {
+        color: var(--primary-600, #1a7eb0);
+    }
+
+    /* Collapsible children */
+    .mobile-nav-children {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.2s ease;
+        overflow: hidden;
+    }
+
+    .mobile-nav-parent.expanded .mobile-nav-children {
+        grid-template-rows: 1fr;
+    }
+
+    .mobile-nav-children>a {
+        min-height: 0;
+    }
+
+    /* Child items */
+    .mobile-nav-item.mobile-nav-child {
+        padding-left: 3.5rem;
+        font-size: 0.9rem;
+    }
+
+    .mobile-nav-item.mobile-nav-child i {
+        font-size: 0.95rem;
+        width: 20px;
+    }
 }

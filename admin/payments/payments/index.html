@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receipts | Craftsoft Admin</title>
+    <title>Payments | Craftsoft Admin</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="../../css/components/modal.css">
     <link rel="stylesheet" href="../../css/components/data-table.css">
     <link rel="stylesheet" href="../../css/responsive/mobile.css">
-    <link rel="stylesheet" href="receipts.css">
+    <link rel="stylesheet" href="payments.css">
 </head>
 
 <body>
@@ -41,12 +41,18 @@
                 <div class="section-header">
                     <div class="section-header-left">
                         <div class="section-icon">
-                            <i class="fa-solid fa-file-invoice"></i>
+                            <i class="fa-solid fa-list"></i>
                         </div>
                         <div class="section-info">
-                            <h2 class="section-title">Receipts</h2>
-                            <p class="section-subtitle">All payment receipts</p>
+                            <h2 class="section-title">Payments</h2>
+                            <p class="section-subtitle">All payment records</p>
                         </div>
+                    </div>
+                    <div class="section-actions">
+                        <a href="../add-payment/" class="btn btn-primary">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Add Payment</span>
+                        </a>
                     </div>
                 </div>
 
@@ -54,41 +60,39 @@
                 <div class="table-search-wrapper">
                     <div class="search-box">
                         <i class="fa-solid fa-search"></i>
-                        <input type="text" id="search-input" placeholder="Search receipts...">
+                        <input type="text" id="search-input" placeholder="Search payments...">
                     </div>
                 </div>
 
                 <!-- Desktop Table -->
                 <div class="data-table-wrapper">
-                    <table class="data-table" id="receipts-table">
+                    <table class="data-table" id="payments-table">
                         <thead>
                             <tr>
-                                <th>Receipt ID</th>
                                 <th>Date</th>
                                 <th>Student</th>
                                 <th>Course</th>
                                 <th>Amount</th>
                                 <th>Mode</th>
-                                <th>Balance</th>
-                                <th>Actions</th>
+                                <th>Reference</th>
                             </tr>
                         </thead>
-                        <tbody id="receipts-tbody">
+                        <tbody id="payments-tbody">
                             <!-- Populated by JS -->
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Mobile Cards -->
-                <div class="data-cards" id="receipts-cards">
+                <div class="data-cards" id="payments-cards">
                     <!-- Populated by JS -->
                 </div>
 
                 <!-- Empty State -->
                 <div class="empty-state" id="empty-state" style="display: none;">
-                    <i class="fa-solid fa-file-invoice"></i>
-                    <h3>No Receipts Yet</h3>
-                    <p>Receipts are automatically created when payments are recorded</p>
+                    <i class="fa-solid fa-credit-card"></i>
+                    <h3>No Payments Yet</h3>
+                    <p>Record your first payment to get started</p>
                     <a href="../add-payment/" class="btn btn-primary">
                         <i class="fa-solid fa-plus"></i> Add Payment
                     </a>
@@ -97,42 +101,15 @@
                 <!-- Loading State -->
                 <div class="loading-state" id="loading-state">
                     <i class="fa-solid fa-spinner fa-spin"></i>
-                    <p>Loading receipts...</p>
+                    <p>Loading payments...</p>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Receipt View Modal -->
-    <div class="modal-overlay" id="receipt-modal">
-        <div class="modal receipt-modal">
-            <div class="modal-header">
-                <h3 class="modal-title">Payment Receipt</h3>
-                <button class="modal-close" id="close-receipt-modal">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="modal-body" id="receipt-content">
-                <!-- Populated by JS -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" id="receipt-download-btn">
-                    <i class="fa-solid fa-download"></i> Download PDF
-                </button>
-                <button class="btn btn-success" id="receipt-whatsapp-btn">
-                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../../js/supabase-config.js"></script>
-
-    <!-- PDF Generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <!-- Admin Components -->
     <script src="../../js/admin-utils.js"></script>
@@ -141,7 +118,7 @@
     <script src="../../js/auth.js"></script>
 
     <!-- Page Script -->
-    <script src="receipts.js"></script>
+    <script src="payments.js"></script>
 </body>
 
 </html>
