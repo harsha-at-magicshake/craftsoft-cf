@@ -231,17 +231,7 @@ function subscribeToActivities() {
 }
 
 async function addActivity(type, name, link = null) {
-    try {
-        const session = await window.supabaseConfig.getSession();
-        await window.supabaseClient.from('activities').insert({
-            activity_type: type,
-            activity_name: name,
-            activity_link: link,
-            admin_id: session?.user?.id || null
-        });
-    } catch (error) {
-        console.error('Error adding activity:', error);
-    }
+    await window.AdminUtils.Activity.add(type, name, link);
 }
 
 async function removeActivity(id) {
@@ -364,5 +354,5 @@ function renderNotifications(activities) {
 
 // Export addActivity for other modules
 window.DashboardActivities = {
-    add: addActivity
+    add: (type, name, link) => window.AdminUtils.Activity.add(type, name, link)
 };

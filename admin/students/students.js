@@ -587,10 +587,11 @@ async function saveStudent() {
             Toast.success('Added', 'Student enrolled successfully');
 
             // Log activity
-            if (window.DashboardActivities) {
-                await window.DashboardActivities.add('student_added', `${fname} ${lname}`, '../students/');
+            const { Activity } = window.AdminUtils;
+            if (Activity) {
+                await Activity.add('student_added', `${fname} ${lname}`, '../students/');
                 if (demoScheduled) {
-                    await window.DashboardActivities.add('demo_scheduled', `${fname} ${lname}`, '../students/');
+                    await Activity.add('demo_scheduled', `${fname} ${lname}`, '../students/');
                 }
             }
 

@@ -311,6 +311,11 @@ async function processCashPayment(amount) {
     // Auto-create receipt
     await createReceipt(payment);
 
+    // Log activity
+    const student = students.find(s => s.id === selectedStudent);
+    const studentName = student ? `${student.first_name} ${student.last_name}` : 'Unknown Student';
+    await window.AdminUtils.Activity.add('fee_recorded', studentName, '../payments/receipts/');
+
     Toast.success('Success', 'Payment recorded successfully');
 
     // Redirect to receipts

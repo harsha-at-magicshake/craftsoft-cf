@@ -1474,11 +1474,31 @@ const Skeleton = {
     }
 };
 
+// ============================================
+// Activity Logging
+// ============================================
+const Activity = {
+    async add(type, name, link = null) {
+        try {
+            const session = await window.supabaseConfig.getSession();
+            await window.supabaseClient.from('activities').insert({
+                activity_type: type,
+                activity_name: name,
+                activity_link: link,
+                admin_id: session?.user?.id || null
+            });
+        } catch (error) {
+            console.error('Error adding activity:', error);
+        }
+    }
+};
+
 // Export utilities
 window.AdminUtils = {
     Toast,
     Modal,
     Validators,
+    Activity,
     FormHelpers,
     Security,
     NavigationSecurity,

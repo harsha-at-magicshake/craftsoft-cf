@@ -565,11 +565,6 @@
 }
 
 @media (max-width: 768px) {
-    .section-actions {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
     .table-container {
         display: none;
     }
