@@ -337,25 +337,7 @@ function renderSettings() {
         </div>
 
         <!-- Security Section -->
-        <div class="settings-section" id="section-security">
-            <div class="settings-section-header">
-                <h3 class="settings-section-title">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    Security
-                </h3>
-            </div>
-            <div class="settings-section-body">
-                <h4 style="font-size: 0.9rem; color: var(--admin-text-secondary); margin-bottom: 1rem;">Active Sessions</h4>
-                <div class="sessions-list" id="sessions-list">
-                    ${renderSessionsList()}
-                </div>
-                ${sessionsData.length > 1 ? `
-                    <button class="logout-all-btn" id="logout-all-sessions-btn">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout All Sessions
-                    </button>
-                ` : ''}
-            </div>
-        </div>
+
 
         <!-- Session Timeout Section -->
         <div class="settings-section" id="section-timeout">
