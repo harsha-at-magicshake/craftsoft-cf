@@ -981,7 +981,12 @@ const AccountManager = {
                     }
 
                     // No other accounts or switch failed - go to login
-                    await window.supabaseClient.auth.signOut();
+                    // DO NOT call signOut() - it broadcasts to all tabs!
+                    // Just delete session and redirect
+                    if (window.Auth) {
+                        await window.Auth.deleteCurrentSession();
+                    }
+                    sessionStorage.removeItem('tab_id');
                     NavigationSecurity.secureRedirect('/admin/login.html');
                 } else {
                     NavigationSecurity.secureLogout();

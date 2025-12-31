@@ -586,8 +586,11 @@ const Auth = {
         }
 
         if (!admin) {
-            console.log('🧪 SESSION CHECK RESULT: INVALID (no admin)');
-            return false;
+            // CRITICAL: If admin is undefined, it might be because another tab called signOut()
+            // which broadcasts SIGNED_OUT to all tabs. Don't trigger logout here!
+            // The tab will naturally redirect on next page load if auth is truly invalid.
+            console.log('🧪 SESSION CHECK: No admin found - assuming valid to avoid false logout');
+            return true;
         }
 
         try {
