@@ -1186,14 +1186,10 @@ const SessionTimeout = {
         // Fetch timeout setting from database
         await this.loadTimeoutSetting();
 
-        console.log('Session Timeout initialized. Timeout:', this.INACTIVITY_TIMEOUT === 0 ? 'Never' : (this.INACTIVITY_TIMEOUT / 60000) + ' minutes');
-
         // Only run if timeout is not 'never' (0)
         if (this.INACTIVITY_TIMEOUT > 0) {
             this.resetTimer();
             this.bindActivityListeners();
-        } else {
-            console.log('Inactivity timeout disabled (set to Never)');
         }
     },
 
@@ -1206,24 +1202,20 @@ const SessionTimeout = {
                 .eq('setting_key', 'inactivity_timeout')
                 .single();
 
-            console.log('Timeout setting from DB:', data);
-
             if (!error && data && data.setting_value !== undefined) {
                 const value = data.setting_value;
                 // Handle both string '0' and 'never'
                 if (value === '0' || value === 0 || value === 'never') {
                     this.INACTIVITY_TIMEOUT = 0; // Never timeout
-                    console.log('Timeout set to: Never');
                 } else {
                     const minutes = parseInt(value, 10);
                     if (!isNaN(minutes) && minutes > 0) {
                         this.INACTIVITY_TIMEOUT = minutes * 60 * 1000;
-                        console.log('Timeout set to:', minutes, 'minutes');
                     }
                 }
             }
         } catch (err) {
-            console.log('Using default timeout setting:', err);
+            // Use default timeout setting on error
         }
     },
 
