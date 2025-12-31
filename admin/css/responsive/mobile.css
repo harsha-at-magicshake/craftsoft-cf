@@ -68,12 +68,30 @@
 
     .section-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 1.25rem;
+    }
+
+    .section-header-left {
+        width: 100%;
         gap: 0.75rem;
     }
 
     .section-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 0.75rem;
+    }
+
+    .section-actions .btn {
+        width: 100%;
         justify-content: center;
+    }
+
+    .search-box {
+        max-width: none !important;
+        width: 100%;
     }
 
     .section-maintenance {

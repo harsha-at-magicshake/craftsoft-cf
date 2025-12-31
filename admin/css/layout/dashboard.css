@@ -147,8 +147,16 @@
 .section-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.section-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .section-icon {
@@ -163,11 +171,22 @@
     font-size: 1.25rem;
 }
 
+.section-info {
+    flex: 1;
+}
+
 .section-title {
     font-family: 'Outfit', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--admin-text-primary);
+    margin: 0;
+}
+
+.section-subtitle {
+    font-size: 0.9rem;
+    color: var(--admin-text-muted);
+    margin: 0.25rem 0 0;
 }
 
 .section-divider {

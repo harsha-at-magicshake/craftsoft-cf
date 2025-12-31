@@ -2,53 +2,9 @@
    Receipts List Page Styles
    ============================================ */
 
-.section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.section-header-left {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.section-icon {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--accent-gradient);
-    border-radius: 12px;
-    color: #fff;
-    font-size: 1.25rem;
-}
-
-.section-info {
-    flex: 1;
-}
-
-.section-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--admin-text-primary);
-    margin: 0;
-}
-
-.section-subtitle {
-    font-size: 0.9rem;
-    color: var(--admin-text-muted);
-    margin: 0.25rem 0 0;
-}
-
+/* Page specific styles below */
 /* Search */
-.table-search-wrapper {
+.search-wrapper {
     margin-bottom: 1.5rem;
 }
 
@@ -388,17 +344,8 @@
     text-decoration: none;
 }
 
-/* Mobile */
+/* Mobile overrides for list-specific items */
 @media (max-width: 768px) {
-    .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .search-box {
-        max-width: 100%;
-    }
-
     .data-table-wrapper {
         display: none;
     }

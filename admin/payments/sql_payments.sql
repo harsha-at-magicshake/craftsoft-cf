@@ -21,6 +21,14 @@ CREATE TABLE IF NOT EXISTS payments (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Fix for existing tables: Add column if missing
+DO $$ 
+BEGIN 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='payments' AND column_name='payment_date') THEN
+        ALTER TABLE payments ADD COLUMN payment_date DATE DEFAULT CURRENT_DATE;
+    END IF;
+END $$;
+
 -- Index for faster queries
 CREATE INDEX IF NOT EXISTS idx_payments_student ON payments(student_id);
 CREATE INDEX IF NOT EXISTS idx_payments_course ON payments(course_id);
@@ -31,11 +39,22 @@ CREATE INDEX IF NOT EXISTS idx_payments_created ON payments(created_at DESC);
 ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies (allow all for authenticated users)
+-- DROP first to avoid "already exists" error if running multiple times
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON payments;
 CREATE POLICY "Allow all for authenticated users" ON payments
     FOR ALL USING (auth.role() = 'authenticated');
 
 -- Enable Realtime
-ALTER PUBLICATION supabase_realtime ADD TABLE payments;
+-- This might error if already added, but it's usually safe in SQL editor or wrapped in a block
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_publication_tables 
+        WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'payments'
+    ) THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE payments;
+    END IF;
+END $$;
 
 
 -- ============================================
@@ -54,6 +73,14 @@ CREATE TABLE IF NOT EXISTS receipts (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Fix for existing tables: Add column if missing
+DO $$ 
+BEGIN 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='receipts' AND column_name='payment_date') THEN
+        ALTER TABLE receipts ADD COLUMN payment_date DATE DEFAULT CURRENT_DATE;
+    END IF;
+END $$;
+
 -- Index for faster queries
 CREATE INDEX IF NOT EXISTS idx_receipts_student ON receipts(student_id);
 CREATE INDEX IF NOT EXISTS idx_receipts_course ON receipts(course_id);
@@ -64,11 +91,20 @@ CREATE INDEX IF NOT EXISTS idx_receipts_created ON receipts(created_at DESC);
 ALTER TABLE receipts ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies (allow all for authenticated users)
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON receipts;
 CREATE POLICY "Allow all for authenticated users" ON receipts
     FOR ALL USING (auth.role() = 'authenticated');
 
 -- Enable Realtime
-ALTER PUBLICATION supabase_realtime ADD TABLE receipts;
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_publication_tables 
+        WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'receipts'
+    ) THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE receipts;
+    END IF;
+END $$;
 
 
 -- ============================================
