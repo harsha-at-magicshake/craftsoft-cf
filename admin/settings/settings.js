@@ -5,6 +5,27 @@ let sessionsData = [];
 let currentTabId = null;
 let sessionsChannel = null;
 
+// Format password last updated text
+function formatPasswordLastUpdated(dateString) {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffHours < 1) return 'Last updated just now';
+    if (diffHours < 24) return `Last updated ${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return `Last updated ${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+
+    // Format as DD/MM/YYYY
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `Last updated on ${day}/${month}/${year}`;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const session = await window.supabaseConfig.getSession();
     if (!session) {
@@ -177,9 +198,12 @@ function renderSettings() {
                         <span class="settings-field-label">Admin ID</span>
                         <span class="settings-field-value">${currentAdmin?.admin_id || '—'}</span>
                     </div>
-                    <button class="profile-change-password-btn" id="change-password-btn">
-                        <i class="fa-solid fa-key"></i> Change Password
-                    </button>
+                    <div class="password-row">
+                        <button class="profile-change-password-btn" id="change-password-btn">
+                            <i class="fa-solid fa-key"></i> Change Password
+                        </button>
+                        <span class="password-last-updated">${formatPasswordLastUpdated(currentAdmin?.password_updated_at)}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -765,8 +789,19 @@ async function savePassword() {
 
         if (updateError) throw updateError;
 
+        // Update password_updated_at in admins table
+        await window.supabaseClient
+            .from('admins')
+            .update({ password_updated_at: new Date().toISOString() })
+            .eq('id', currentAdmin.id);
+
+        // Update local data
+        currentAdmin.password_updated_at = new Date().toISOString();
+
         Toast.success('Updated', 'Password changed successfully');
         closePasswordModal();
+        renderSettings();
+        bindEvents();
     } catch (err) {
         console.error(err);
         Toast.error('Error', err.message);

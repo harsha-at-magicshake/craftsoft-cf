@@ -255,6 +255,34 @@
     border-color: var(--primary-500, #2896cd);
 }
 
+/* Password row - button + last updated text */
+.password-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.password-last-updated {
+    font-size: 0.8rem;
+    color: var(--admin-text-muted, #9ca3af);
+    font-weight: 400;
+}
+
+/* Mobile: stack vertically */
+@media (max-width: 480px) {
+    .password-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .profile-change-password-btn {
+        margin-top: 0;
+    }
+}
+
 /* ============================================
    Security Section
    ============================================ */
