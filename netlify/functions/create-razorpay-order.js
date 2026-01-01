@@ -5,10 +5,26 @@
 const https = require('https');
 
 exports.handler = async (event) => {
+    // CORS Headers
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+    };
+
+    // Handle Preflight OPTIONS
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 204,
+            headers
+        };
+    }
+
     // Only allow POST
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
+            headers,
             body: JSON.stringify({ error: 'Method not allowed' })
         };
     }
@@ -20,6 +36,7 @@ exports.handler = async (event) => {
         if (!amount || !student_id || !course_id) {
             return {
                 statusCode: 400,
+                headers,
                 body: JSON.stringify({ error: 'Missing required fields' })
             };
         }
@@ -32,6 +49,7 @@ exports.handler = async (event) => {
             console.error('Razorpay credentials not configured');
             return {
                 statusCode: 500,
+                headers,
                 body: JSON.stringify({ error: 'Payment gateway not configured' })
             };
         }
@@ -52,8 +70,8 @@ exports.handler = async (event) => {
         return {
             statusCode: 200,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                ...headers,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 success: true,
@@ -68,6 +86,7 @@ exports.handler = async (event) => {
         console.error('Create order error:', error);
         return {
             statusCode: 500,
+            headers,
             body: JSON.stringify({ error: error.message || 'Failed to create order' })
         };
     }
