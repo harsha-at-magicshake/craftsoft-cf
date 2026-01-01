@@ -95,6 +95,12 @@
     margin-left: 2px;
 }
 
+.optional {
+    color: var(--admin-text-muted);
+    font-weight: 400;
+    font-size: 0.85em;
+}
+
 .auth-card-footer {
     border-top: 1px solid var(--admin-input-border);
     margin-top: 2rem;

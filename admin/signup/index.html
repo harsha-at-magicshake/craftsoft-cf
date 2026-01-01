@@ -86,10 +86,9 @@
 
                 <!-- Phone -->
                 <div class="form-group">
-                    <label class="form-label" for="phone">Phone Number</label>
+                    <label class="form-label" for="phone">Phone Number <span class="optional">(optional)</span></label>
                     <div class="form-input-wrapper">
-                        <input type="tel" id="phone" name="phone" class="form-input" placeholder="+91 98765 43210"
-                            required>
+                        <input type="tel" id="phone" name="phone" class="form-input" placeholder="+91 98765 43210">
                     </div>
                     <div id="phone-error" class="form-error"></div>
                 </div>
@@ -192,7 +191,7 @@
                     hasError = true;
                 }
 
-                if (!Validators.isValidPhone(phone)) {
+                if (phone && !Validators.isValidPhone(phone)) {
                     FormHelpers.showError('phone', 'Please enter a valid phone number');
                     hasError = true;
                 }
