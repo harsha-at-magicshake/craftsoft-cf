@@ -23,18 +23,18 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    font-weight: 600;
 }
 
 .custom-select-trigger::after {
     content: '';
     position: absolute;
-    right: 12px;
+    right: 16px;
     top: 50%;
     transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    width: 12px;
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231a1a2e'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
     transition: transform 0.2s ease;
@@ -46,37 +46,32 @@
 
 .custom-select-trigger:hover,
 .custom-select.open .custom-select-trigger {
-    border-color: var(--primary-400);
+    border-color: var(--gray-300);
     background: var(--white);
-}
-
-.custom-select.open .custom-select-trigger {
-    box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
 }
 
 .custom-select-trigger .placeholder {
     color: var(--gray-500);
+    font-weight: 400;
 }
 
+/* Options dropdown */
 .custom-options {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 4px);
     left: 0;
     right: 0;
     background: var(--white);
-    border: 1px solid var(--primary-400);
-    border-top: none;
-    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-    max-height: 250px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    max-height: 300px;
     overflow-y: auto;
-    z-index: 100;
+    z-index: 1000;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.2s ease;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
 }
 
 .custom-select.open .custom-options {
@@ -86,32 +81,35 @@
 }
 
 .custom-option {
-    padding: 12px 16px;
+    padding: 14px 16px;
     cursor: pointer;
     transition: all 0.15s ease;
     font-size: 0.95rem;
     color: var(--gray-700);
+    font-weight: 500;
+    border-left: 3px solid transparent;
 }
 
 .custom-option:hover {
     background: var(--gray-50);
-    color: var(--primary-600);
+    color: var(--gray-900);
+    border-left-color: var(--gray-300);
 }
 
 .custom-option.selected {
-    background: linear-gradient(135deg, var(--primary-50), var(--accent-50));
-    color: var(--primary-700);
-    font-weight: 500;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    border-left-color: var(--primary-500);
+    font-weight: 600;
 }
 
-/* Scrollbar styling for options */
+/* Scrollbar styling */
 .custom-options::-webkit-scrollbar {
     width: 6px;
 }
 
 .custom-options::-webkit-scrollbar-track {
-    background: var(--gray-100);
-    border-radius: 3px;
+    background: transparent;
 }
 
 .custom-options::-webkit-scrollbar-thumb {
@@ -121,41 +119,4 @@
 
 .custom-options::-webkit-scrollbar-thumb:hover {
     background: var(--gray-400);
-}
-
-/* Mobile: Use fixed bottom sheet style */
-@media (max-width: 768px) {
-    .custom-select.open .custom-options {
-        position: fixed;
-        top: auto;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        max-height: 60vh;
-        border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-        border: 1px solid var(--gray-200);
-        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
-        z-index: 9999;
-    }
-
-    .custom-select.open::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 9998;
-    }
-
-    .custom-option {
-        padding: 16px 20px;
-        font-size: 1rem;
-        border-bottom: 1px solid var(--gray-100);
-    }
-
-    .custom-option:last-child {
-        border-bottom: none;
-    }
 }

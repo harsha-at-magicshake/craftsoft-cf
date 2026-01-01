@@ -286,7 +286,7 @@
 .form-buttons {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
     margin-bottom: var(--spacing-md);
 }
 
@@ -296,54 +296,62 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 14px 24px;
+    padding: 12px 20px;
     font-weight: 600;
-    border-radius: var(--radius-lg);
+    font-size: 0.9rem;
+    border-radius: 50px;
     text-decoration: none;
     transition: all 0.3s ease;
-}
-
-/* OR Divider */
-.form-buttons .or-divider {
-    color: var(--gray-400);
-    font-size: 0.85rem;
-    font-weight: 500;
-    text-transform: uppercase;
     white-space: nowrap;
 }
 
-/* WhatsApp Button */
+/* OR Divider - always show with lines */
+.form-buttons .or-divider {
+    display: flex;
+    align-items: center;
+    color: var(--gray-400);
+    font-size: 0.8rem;
+    font-weight: 400;
+    text-transform: lowercase;
+    white-space: nowrap;
+    padding: 0 4px;
+    flex-shrink: 0;
+}
+
+/* WhatsApp Button - Outline style matching primary */
 .btn-whatsapp {
-    background: #25D366;
-    color: white !important;
-    border: none;
+    background: transparent;
+    color: #25D366 !important;
+    border: 2px solid #25D366;
 }
 
 .btn-whatsapp:hover {
-    background: #1ebe5d;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.35);
+    background: #25D366;
+    color: white !important;
+    transform: translateY(-1px);
 }
 
 .btn-whatsapp i {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 /* Mobile: Stack buttons with OR line */
 @media (max-width: 576px) {
     .form-buttons {
         flex-direction: column;
+        gap: 0;
     }
 
     .form-buttons .btn {
         width: 100%;
+        border-radius: var(--radius-lg);
     }
 
     .form-buttons .or-divider {
-        display: flex;
-        align-items: center;
         width: 100%;
+        justify-content: center;
         gap: var(--spacing-md);
+        padding: var(--spacing-sm) 0;
     }
 
     .form-buttons .or-divider::before,
