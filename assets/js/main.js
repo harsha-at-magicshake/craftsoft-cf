@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initContactForm();
     initChatWidget();
     initDynamicCopyright();
+    initPrivacyProtection();
 });
 
 /* ============================================
@@ -762,5 +763,26 @@ function initDynamicCopyright() {
         if (el.textContent.includes('©')) {
             el.textContent = el.textContent.replace(/© \d{4}/, `© ${currentYear}`);
         }
+    });
+}
+
+/* ============================================
+   PRIVACY PROTECTION FOR IMAGES
+   ============================================ */
+function initPrivacyProtection() {
+    const protectedImages = document.querySelectorAll('.protected-img');
+    protectedImages.forEach(img => {
+        // Block right-click (Redundant with HTML attribute but good for safety)
+        img.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Block dragging
+        img.addEventListener('dragstart', e => e.preventDefault());
+
+        // Block keyboard copy shortcut
+        img.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                e.preventDefault();
+            }
+        });
     });
 }

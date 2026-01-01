@@ -39,3 +39,12 @@ section {
 .professional-skills {
     background: rgba(40, 150, 205, 0.05);
 }
+
+/* Protected Images */
+.protected-img {
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+    pointer-events: auto;
+    /* Allow interactions but block right-click via HTML attribute */
+}
