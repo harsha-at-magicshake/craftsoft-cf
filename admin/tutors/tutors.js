@@ -284,10 +284,10 @@ function bindFormEvents() {
 function renderCoursesCheckboxes(selectedCourses = []) {
     const list = document.getElementById('tutor-courses-list');
     list.innerHTML = allCoursesForTutors.map(c => `
-    < label class= "checkbox-item" >
-    <input type="checkbox" name="tutor-courses" value="${c.course_code}" ${selectedCourses.includes(c.course_code) ? 'checked' : ''}>
-        <span>${c.course_code} - ${c.course_name}</span>
-    </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="tutor-courses" value="${c.course_code}" ${selectedCourses.includes(c.course_code) ? 'checked' : ''}>
+            <span>${c.course_code} - ${c.course_name}</span>
+        </label>
     `).join('');
 }
 
@@ -380,7 +380,7 @@ async function saveTutor() {
                 const m = maxData[0].tutor_id.match(/Tr-ACS-(\d+)/);
                 if (m) nextNum = parseInt(m[1]) + 1;
             }
-            const newId = `Tr - ACS - ${String(nextNum).padStart(3, '0')}`;
+            const newId = `Tr-ACS-${String(nextNum).padStart(3, '0')}`;
 
             const { error } = await window.supabaseClient.from('tutors').insert({
                 tutor_id: newId, full_name: name, phone, email: email || null,
@@ -401,7 +401,7 @@ async function saveTutor() {
         Toast.error('Error', err.message);
     } finally {
         saveBtn.disabled = false;
-        saveBtn.innerHTML = `< i class= "fa-solid fa-check" ></i > ${isEdit ? 'Update' : 'Save'} Tutor`;
+        saveBtn.innerHTML = `<i class="fa-solid fa-check"></i> ${isEdit ? 'Update' : 'Save'} Tutor`;
     }
 }
 
