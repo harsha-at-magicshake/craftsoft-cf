@@ -73,7 +73,7 @@
 
 /* Detailed About Page Styles */
 .about-detailed {
-    padding: var(--spacing-4xl) 0;
+    padding: var(--spacing-xl) 0;
     background: rgba(40, 150, 205, 0.05);
 }
 

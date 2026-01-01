@@ -8,13 +8,13 @@
         --container-padding: 2rem;
     }
 
-    /* Tablet Section Spacing - 64px */
+    /* Tablet Section Spacing - 24px */
     section {
-        padding: var(--spacing-3xl) 0;
+        padding: var(--spacing-lg) 0;
     }
 
     .section-header {
-        margin-bottom: var(--spacing-xl);
+        margin-bottom: var(--spacing-lg);
     }
 
     /* Page Header - Tablet */
@@ -26,15 +26,15 @@
     .courses-page,
     .services-page,
     .course-detail-page {
-        padding: var(--spacing-3xl) 0;
+        padding: var(--spacing-lg) 0;
     }
 
     .about-detailed {
-        padding: var(--spacing-3xl) 0;
+        padding: var(--spacing-lg) 0;
     }
 
     .contact-section {
-        padding: var(--spacing-3xl) 0;
+        padding: var(--spacing-lg) 0;
     }
 
     .hero-container {
@@ -129,13 +129,13 @@
         --container-padding: 1.25rem;
     }
 
-    /* Mobile Section Spacing - 48px */
+    /* Mobile Section Spacing - 20px */
     section {
-        padding: var(--spacing-2xl) 0;
+        padding: var(--spacing-md) 0;
     }
 
     .section-header {
-        margin-bottom: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
     }
 
     /* Page Header - Mobile */
@@ -147,15 +147,15 @@
     .courses-page,
     .services-page,
     .course-detail-page {
-        padding: var(--spacing-2xl) 0;
+        padding: var(--spacing-md) 0;
     }
 
     .about-detailed {
-        padding: var(--spacing-2xl) 0;
+        padding: var(--spacing-md) 0;
     }
 
     .contact-section {
-        padding: var(--spacing-2xl) 0;
+        padding: var(--spacing-md) 0;
     }
 
     /* Mobile Navigation - Enhanced Dropdown Panel */
