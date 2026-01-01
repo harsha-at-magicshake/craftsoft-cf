@@ -123,12 +123,6 @@
                 history.pushState(null, '', location.href);
             });
 
-            // Warn on refresh
-            window.addEventListener('beforeunload', (e) => {
-                e.preventDefault();
-                e.returnValue = '';
-            });
-
             const email = getTempEmail();
             const emailDisplay = document.getElementById('email-display');
             const resendBtn = document.getElementById('resend-btn');
