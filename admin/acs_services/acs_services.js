@@ -9,20 +9,34 @@ const websiteServices = [
 ];
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Auth & Sidebar check
-    if (window.Auth) {
-        const { session, admin } = await window.Auth.checkSession();
-        if (session && admin) {
-            window.AdminSidebar.init('acs_services', '../');
-            // Header
-            const headerContainer = document.getElementById('header-container');
-            if (headerContainer) {
-                headerContainer.innerHTML = window.AdminHeader.render('ACS Services');
-                window.AdminSidebar.renderAccountPanel(session, admin);
-            }
-            await initServices();
+    const session = await window.supabaseConfig.getSession();
+    if (!session) {
+        window.location.href = '../login.html';
+        return;
+    }
+
+    // Initialize sidebar and header
+    if (window.AdminSidebar) {
+        window.AdminSidebar.init('acs_services', '../');
+    }
+
+    const headerContainer = document.getElementById('header-container');
+    if (headerContainer) {
+        headerContainer.innerHTML = window.AdminHeader.render('ACS Services');
+
+        // Load admin profile to render account panel
+        const { data: admin } = await window.supabaseClient
+            .from('admins')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+
+        if (admin) {
+            window.AdminSidebar.renderAccountPanel(session, admin);
         }
     }
+
+    await initServices();
 });
 
 let allServices = [];
