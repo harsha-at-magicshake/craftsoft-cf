@@ -346,14 +346,23 @@
 
 .course-tutor-select select {
     width: 100%;
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem 2.25rem 0.5rem 0.75rem;
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 8px;
     font-size: 0.875rem;
+    font-family: inherit;
     background: #fff;
     color: var(--admin-text-primary, #0f172a);
     outline: none;
     transition: all 0.2s;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.25rem;
 }
 
 .course-tutor-select select:focus {
