@@ -1,0 +1,63 @@
+/* ============================================
+   Data Cards (Mobile View)
+   ============================================ */
+.data-cards {
+    display: none;
+}
+
+.data-card {
+    background: #fff;
+    border: 1px solid var(--admin-input-border);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.data-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.data-card-code {
+    font-weight: 600;
+    color: var(--admin-text-primary);
+}
+
+.data-card-body h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--admin-text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.data-card-fee {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-600);
+    margin: 0;
+}
+
+.data-card-actions {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--admin-input-border);
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Data Card Meta */
+.data-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--admin-text-secondary);
+    margin: 0.25rem 0;
+}
+
+.data-card-meta i {
+    width: 16px;
+    color: var(--admin-text-muted);
+}

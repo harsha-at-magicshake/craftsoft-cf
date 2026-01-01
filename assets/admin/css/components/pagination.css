@@ -1,0 +1,90 @@
+/* ============================================
+   Pagination
+   ============================================ */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 0;
+    margin-top: 1rem;
+    border-top: 1px solid var(--admin-input-border, #e2e8f0);
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pagination-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--admin-text-secondary, #64748b);
+    transition: all 0.2s;
+}
+
+.pagination-btn:hover:not([disabled]) {
+    border-color: var(--primary-400, #2896cd);
+    background: var(--primary-50, #f0f9ff);
+    color: var(--primary-600, #156691);
+}
+
+.pagination-btn.active {
+    background: var(--primary-600, #156691);
+    border-color: var(--primary-600, #156691);
+    color: #fff;
+}
+
+.pagination-btn[disabled] {
+    opacity: 0.5;
+    cursor: default;
+    background: var(--gray-50, #f8fafc);
+}
+
+.pagination-dots {
+    color: var(--admin-text-muted, #94a3b8);
+    font-size: 0.9rem;
+    padding: 0 0.25rem;
+}
+
+/* ============================================
+   Bulk Actions
+   ============================================ */
+.bulk-actions-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--primary-50, #f0f9ff);
+    border: 1px solid var(--primary-200, #bae6fd);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    animation: slideDown 0.3s ease;
+}
+
+.bulk-actions-info {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary-700, #156691);
+    flex: 1;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

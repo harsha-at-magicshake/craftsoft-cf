@@ -1,0 +1,58 @@
+/* ============================================
+   Data Tables
+   ============================================ */
+.data-table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--admin-input-border);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.data-table thead {
+    background: var(--gray-50);
+}
+
+.data-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--admin-text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--admin-input-border);
+}
+
+.data-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--admin-input-border);
+    color: var(--admin-text-primary);
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+    background: var(--gray-50);
+}
+
+.fee-cell {
+    font-weight: 600;
+    color: var(--primary-600);
+}
+
+/* Table Footer */
+.table-footer {
+    padding: 1rem;
+    background: var(--gray-50);
+    border-radius: 0 0 12px 12px;
+    font-size: 0.85rem;
+    color: var(--admin-text-secondary);
+    text-align: center;
+}
