@@ -213,6 +213,7 @@ function getStatusBadge(status) {
     if (s.includes('demo')) cls = 'status-demo';
     if (s.includes('convert')) cls = 'status-converted';
     if (s.includes('close')) cls = 'status-closed';
+    if (s.includes('gud')) cls = 'status-gud';
 
     return `<span class="status-badge ${cls}">${status || 'New'}</span>`;
 }
@@ -293,10 +294,20 @@ async function openForm(isEdit = false, id = null) {
     document.getElementById('inquiry-email').value = '';
     document.getElementById('inquiry-notes').value = '';
 
+    // Reset course specific basics
+    if (document.getElementById('inquiry-source')) document.getElementById('inquiry-source').value = 'Walk-in';
+    if (document.getElementById('inquiry-status')) document.getElementById('inquiry-status').value = 'New';
+    if (document.getElementById('inquiry-demo-date')) document.getElementById('inquiry-demo-date').value = '';
+    if (document.getElementById('inquiry-demo-time')) document.getElementById('inquiry-demo-time').value = '';
+
     document.querySelector('input[name="inquiry-type"][value="course"]').checked = true;
     document.querySelector('input[name="demo-required"][value="no"]').checked = true;
+
     const demoFields = document.querySelector('.demo-fields');
     if (demoFields) demoFields.style.display = 'none';
+
+    const courseOnly = document.getElementById('course-only-fields');
+    if (courseOnly) courseOnly.style.display = 'block';
 
     let selected = [];
 
@@ -314,16 +325,29 @@ async function openForm(isEdit = false, id = null) {
             document.getElementById('inquiry-notes').value = data.notes || '';
             selected = data.courses || [];
 
+            // Pre-fill course specific fields
+            if (document.getElementById('inquiry-source')) document.getElementById('inquiry-source').value = data.source || 'Walk-in';
+            if (document.getElementById('inquiry-status')) document.getElementById('inquiry-status').value = data.status || 'New';
+
+            if (data.demo_required) {
+                document.querySelector('input[name="demo-required"][value="yes"]').checked = true;
+                if (demoFields) demoFields.style.display = 'block';
+                if (document.getElementById('inquiry-demo-date')) document.getElementById('inquiry-demo-date').value = data.demo_date || '';
+                if (document.getElementById('inquiry-demo-time')) document.getElementById('inquiry-demo-time').value = data.demo_time || '';
+            }
+
             // Check if service
             const isSrv = selected.some(c => allServicesForInquiries.some(s => s.service_code === c));
             if (isSrv) {
                 document.querySelector('input[name="inquiry-type"][value="service"]').checked = true;
                 const label = document.getElementById('interest-label');
-                const courseFields = document.getElementById('course-only-fields');
                 if (label) label.innerHTML = 'Interested Services <span class="required">*</span>';
-                if (courseFields) courseFields.style.display = 'none';
+                if (courseOnly) courseOnly.style.display = 'none';
                 renderCheckboxes(allServicesForInquiries, true, selected);
             } else {
+                const label = document.getElementById('interest-label');
+                if (label) label.innerHTML = 'Interested Courses <span class="required">*</span>';
+                if (courseOnly) courseOnly.style.display = 'block';
                 renderCheckboxes(allCoursesForInquiries, false, selected);
             }
         }

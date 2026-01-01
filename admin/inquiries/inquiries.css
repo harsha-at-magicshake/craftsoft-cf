@@ -345,6 +345,11 @@
     color: #dc2626;
 }
 
+.status-gud {
+    background: rgba(20, 184, 166, 0.1);
+    color: #0d9488;
+}
+
 /* Actions */
 .action-btns {
     display: flex;
