@@ -500,9 +500,18 @@ function setupFormSync(form) {
                     inquiryId = `INQ-ACS-${String(nextNum).padStart(3, '0')}`;
                     console.log('Generating New ID:', inquiryId);
 
-                    // Handle 'Other' selection - should map to no courses selected
+                    // Handle selection logic for mapping
                     const rawInterest = formData.get('interest') || formData.get('course');
-                    const courses = (rawInterest && rawInterest !== 'Other') ? [rawInterest] : [];
+                    let courses = [];
+
+                    if (rawInterest && rawInterest !== 'Other') {
+                        // Special case: "Not Sure - Need Guidance" maps to CARRER code
+                        if (rawInterest === 'Not Sure - Need Guidance') {
+                            courses = ['CARRER'];
+                        } else {
+                            courses = [rawInterest];
+                        }
+                    }
 
                     // Insert into Supabase
                     const { error: inqError } = await window.supabaseClient
@@ -515,6 +524,7 @@ function setupFormSync(form) {
                             courses: courses,
                             source: 'Website',
                             status: 'New',
+                            demo_required: false, // Default to no as requested
                             notes: formData.get('message') || formData.get('query') || '-'
                         });
 
