@@ -169,36 +169,39 @@
     color: var(--primary-500, #2896cd);
 }
 
-/* Toggle Group (Yes/No) */
+/* Toggle Group (Yes/No) - matches forms.css */
 .toggle-group {
-    display: flex;
-    gap: 0.5rem;
-    background: #fff;
+    display: inline-flex;
+    background: var(--admin-input-bg, #f1f5f9);
     padding: 4px;
     border-radius: 10px;
-    border: 1px solid var(--gray-200, #e2e8f0);
+    gap: 4px;
+    border: 1.5px solid var(--admin-input-border, #e2e8f0);
 }
 
 .toggle-item {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
     cursor: pointer;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--admin-text-secondary, #64748b);
-    transition: all 0.15s ease;
 }
 
 .toggle-item input[type="radio"] {
     display: none;
 }
 
-.toggle-item:has(input:checked) {
-    background: var(--primary-500, #2896cd);
-    color: #fff;
+.toggle-item span {
+    display: block;
+    padding: 8px 16px;
+    border-radius: 7px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--admin-text-secondary, #64748b);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+.toggle-item input:checked+span {
+    background: #fff;
+    color: var(--primary-600, #2896cd);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* Demo Fields */
