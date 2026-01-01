@@ -371,10 +371,10 @@ async function saveInquiry() {
             const { data: maxItems } = await window.supabaseClient.from('inquiries').select('inquiry_id').order('inquiry_id', { ascending: false }).limit(1);
             let nextNum = 1;
             if (maxItems?.[0]?.inquiry_id) {
-                const m = maxItems[0].inquiry_id.match(/Sr-ACS-(\d+)/);
+                const m = maxItems[0].inquiry_id.match(/INQ-ACS-(\d+)/);
                 if (m) nextNum = parseInt(m[1]) + 1;
             }
-            payload.inquiry_id = `Sr-ACS-${String(nextNum).padStart(3, '0')}`;
+            payload.inquiry_id = `INQ-ACS-${String(nextNum).padStart(3, '0')}`;
             await window.supabaseClient.from('inquiries').insert(payload);
         }
 

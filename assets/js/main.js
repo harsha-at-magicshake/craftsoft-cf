@@ -464,7 +464,7 @@ function setupFormSync(form) {
 
         try {
             submitBtn.disabled = true;
-            submitBtn.classList.add('btn-loading');
+            // submitBtn.classList.add('btn-loading'); // Removed to avoid double spinner and visible text
             submitBtn.setAttribute('data-original-text', originalText);
             submitBtn.innerHTML = '<span class="loading-spinner"></span> Sending...';
 
@@ -485,11 +485,11 @@ function setupFormSync(form) {
 
                     let nextNum = 1;
                     if (maxData && maxData.length > 0) {
-                        const m = maxData[0].inquiry_id.match(/Sr-ACS-(\d+)/);
+                        const m = maxData[0].inquiry_id.match(/INQ-ACS-(\d+)/);
                         if (m) nextNum = parseInt(m[1]) + 1;
                     }
 
-                    inquiryId = `Sr-ACS-${String(nextNum).padStart(3, '0')}`;
+                    inquiryId = `INQ-ACS-${String(nextNum).padStart(3, '0')}`;
 
                     // Insert into Supabase
                     const { error: inqError } = await window.supabaseClient
@@ -499,10 +499,12 @@ function setupFormSync(form) {
                             name: formData.get('name'),
                             email: formData.get('email'),
                             phone: formData.get('phone') || '-',
-                            courses: formData.get('interest') ? [formData.get('interest')] : [],
+                            // Support both 'interest' (home) and 'course' (courses page) fields
+                            courses: [formData.get('interest') || formData.get('course')].filter(Boolean),
                             source: 'Website',
                             status: 'New',
-                            notes: `Message: ${formData.get('message')}`
+                            // Support both 'message' (home) and 'query' (courses page) fields
+                            notes: formData.get('message') || formData.get('query') || '-'
                         });
 
                     if (inqError) throw inqError;
