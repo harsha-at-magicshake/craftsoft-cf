@@ -60,7 +60,8 @@ async function loadServices() {
 
         if (error) throw error;
 
-        allServices = data || [];
+        // Filter out legacy non-prefixed codes if they exist
+        allServices = (data || []).filter(s => s.service_code && s.service_code.startsWith('S-'));
         renderServicesLayout(allServices);
 
     } catch (err) {

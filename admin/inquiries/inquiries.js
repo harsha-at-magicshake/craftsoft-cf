@@ -87,7 +87,8 @@ async function loadServices() {
             .select('service_code, name')
             .order('service_code');
         if (error) throw error;
-        allServicesForInquiries = data || [];
+        // Filter out legacy non-prefixed codes to avoid confusion with course codes
+        allServicesForInquiries = (data || []).filter(s => s.service_code && s.service_code.startsWith('S-'));
     } catch (e) {
         console.error('Inquiries: Error loading services:', e);
     }
@@ -451,8 +452,8 @@ async function openForm(isEdit = false, id = null) {
                 if (document.getElementById('inquiry-demo-time')) document.getElementById('inquiry-demo-time').value = data.demo_time || '';
             }
 
-            // Check if service
-            const isSrv = selected.some(c => allServicesForInquiries.some(s => s.service_code === c));
+            // Check if service - use the strict 'S-' prefix rule
+            const isSrv = selected.some(c => c && c.startsWith('S-'));
             if (isSrv) {
                 document.querySelector('input[name="inquiry-type"][value="service"]').checked = true;
                 const label = document.getElementById('interest-label');
