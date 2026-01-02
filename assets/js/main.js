@@ -755,24 +755,24 @@ function initPrivacyProtection() {
    ============================================ */
 function initDynamicContent() {
     const allCourses = [
-        { name: 'Graphic Design', url: 'courses/graphic-design/', icon: 'fas fa-palette', desc: 'Master Adobe Creative Suite and visual communication.', features: ['Photoshop & Illustrator', 'Brand Identity', 'Portfolio'] },
-        { name: 'UI/UX Design', url: 'courses/ui-ux/', icon: 'fas fa-window-maximize', desc: 'Create stunning user interfaces and experiences.', features: ['Figma & XD', 'User Research', 'Prototyping'] },
-        { name: 'Full Stack Development', url: 'courses/full-stack/', icon: 'fas fa-layer-group', desc: 'Master both front-end and back-end dev.', features: ['React & Node.js', 'Rest APIs', 'Deployment'] },
-        { name: 'DevOps Engineering', url: 'courses/devops/', icon: 'fas fa-server', desc: 'Learn CI/CD, Docker, and automation tools.', features: ['CI/CD Pipelines', 'Docker & K8s', 'Automation'] },
-        { name: 'AWS Cloud', url: 'courses/aws/', icon: 'fab fa-aws', desc: 'Master cloud infrastructure on Amazon Web Services.', features: ['EC2 & S3', 'Lambda & IAM', 'CloudFormation'] },
-        { name: 'Python Programming', url: 'courses/python/', icon: 'fab fa-python', desc: 'Learn one of the most versatile coding languages.', features: ['Data Science', 'Web Dev', 'Automation'] },
-        { name: 'Resume & Interview', url: 'courses/resume-interview/', icon: 'fas fa-file-invoice', desc: 'Prepare for your dream career with mock sessions.', features: ['Mock Interviews', 'Resume Building', 'Soft Skills'] },
-        { name: 'Spoken English', url: 'courses/spoken-english/', icon: 'fas fa-microphone', desc: 'Enhance your communication and professional confidence.', features: ['Communication', 'Presentation', 'Confidence'] },
-        { name: 'Soft Skills', url: 'courses/soft-skills/', icon: 'fas fa-users', desc: 'Develop professional soft skills for career success.', features: ['Leadership', 'Teamwork', 'Problem Solving'] }
+        { name: 'Graphic Design', url: '/courses/graphic-design/', icon: 'fas fa-palette', desc: 'Master Adobe Creative Suite and visual communication.', features: ['Photoshop & Illustrator', 'Brand Identity', 'Portfolio'] },
+        { name: 'UI/UX Design', url: '/courses/ui-ux/', icon: 'fas fa-window-maximize', desc: 'Create stunning user interfaces and experiences.', features: ['Figma & XD', 'User Research', 'Prototyping'] },
+        { name: 'Full Stack Development', url: '/courses/full-stack/', icon: 'fas fa-layer-group', desc: 'Master both front-end and back-end dev.', features: ['React & Node.js', 'Rest APIs', 'Deployment'] },
+        { name: 'DevOps Engineering', url: '/courses/devops/', icon: 'fas fa-server', desc: 'Learn CI/CD, Docker, and automation tools.', features: ['CI/CD Pipelines', 'Docker & K8s', 'Automation'] },
+        { name: 'AWS Cloud', url: '/courses/aws/', icon: 'fab fa-aws', desc: 'Master cloud infrastructure on Amazon Web Services.', features: ['EC2 & S3', 'Lambda & IAM', 'CloudFormation'] },
+        { name: 'Python Programming', url: '/courses/python-programming/', icon: 'fab fa-python', desc: 'Learn one of the most versatile coding languages.', features: ['Data Science', 'Web Dev', 'Automation'] },
+        { name: 'Resume & Interview', url: '/courses/resume-interview/', icon: 'fas fa-file-invoice', desc: 'Prepare for your dream career with mock sessions.', features: ['Mock Interviews', 'Resume Building', 'Soft Skills'] },
+        { name: 'Spoken English', url: '/courses/spoken-english/', icon: 'fas fa-microphone', desc: 'Enhance your communication and professional confidence.', features: ['Communication', 'Presentation', 'Confidence'] },
+        { name: 'Soft Skills', url: '/courses/soft-skills/', icon: 'fas fa-users', desc: 'Develop professional soft skills for career success.', features: ['Leadership', 'Teamwork', 'Problem Solving'] }
     ];
 
     const allServices = [
-        { name: 'Graphic Design', url: 'services/graphic-design/', icon: 'fas fa-palette', desc: 'Stunning visuals for your brand identity.' },
-        { name: 'UI/UX Design', url: 'services/ui-ux-design/', icon: 'fas fa-window-maximize', desc: 'User-centered design solution for digital products.' },
-        { name: 'Web Development', url: 'services/web-development/', icon: 'fas fa-globe', desc: 'Custom, responsive websites that drive results.' },
-        { name: 'Brand Identity', url: 'services/branding/', icon: 'fas fa-bullseye', desc: 'Strategic branding to set you apart.' },
-        { name: 'Cloud & DevOps', url: 'services/cloud-devops/', icon: 'fas fa-server', desc: 'Scalable infrastructure and automation.' },
-        { name: 'Career Services', url: 'services/career-services/', icon: 'fas fa-users', desc: 'Expert guidance for your professional journey.' }
+        { name: 'Graphic Design', url: '/services/graphic-design/', icon: 'fas fa-palette', desc: 'Stunning visuals for your brand identity.' },
+        { name: 'UI/UX Design', url: '/services/ui-ux-design/', icon: 'fas fa-window-maximize', desc: 'User-centered design solution for digital products.' },
+        { name: 'Web Development', url: '/services/web-development/', icon: 'fas fa-globe', desc: 'Custom, responsive websites that drive results.' },
+        { name: 'Brand Identity', url: '/services/branding/', icon: 'fas fa-bullseye', desc: 'Strategic branding to set you apart.' },
+        { name: 'Cloud & DevOps', url: '/services/cloud-devops/', icon: 'fas fa-server', desc: 'Scalable infrastructure and automation.' },
+        { name: 'Career Services', url: '/services/career-services/', icon: 'fas fa-users', desc: 'Expert guidance for your professional journey.' }
     ];
 
     const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
