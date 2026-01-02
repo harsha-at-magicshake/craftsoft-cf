@@ -4,7 +4,8 @@
 /* Global Container for Contact Sections */
 .contact-section {
     padding: var(--spacing-4xl) 0;
-    background: #f8fafc;
+    background: var(--primary-50);
+    /* Changed from #f8fafc to theme color */
     position: relative;
     overflow: hidden;
 }
