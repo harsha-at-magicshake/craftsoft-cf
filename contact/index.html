@@ -175,35 +175,45 @@
                             </div>
                             <div class="form-group">
                                 <label for="interest">I'm Interested In *</label>
-                                <select id="interest" name="interest" required>
+                                <select id="interest" name="courses" required onchange="updateContactWhatsApp(this)">
                                     <option value="" disabled selected>Select an option</option>
                                     <optgroup label="— Courses —">
-                                        <option value="Graphic Design">Graphic Design</option>
-                                        <option value="UI/UX Design">UI/UX Design</option>
-                                        <option value="Full Stack Development">Full Stack Development (MERN)</option>
-                                        <option value="AWS Cloud">AWS Cloud</option>
-                                        <option value="DevOps Engineering">DevOps Engineering</option>
-                                        <option value="Python Programming">Python Programming</option>
-                                        <option value="Data Analytics">Data Analytics</option>
-                                        <option value="Salesforce">Salesforce Administration</option>
-                                        <option value="React JS">React JS</option>
-                                        <option value="Java Full Stack">Java Full Stack</option>
-                                        <option value="DSA Mastery">DSA Mastery</option>
-                                        <option value="Microsoft Azure">Microsoft Azure</option>
-                                        <option value="DevSecOps">DevSecOps</option>
-                                        <option value="Git & GitHub">Git & GitHub</option>
-                                        <option value="Resume & Interview">Resume & Interview Prep</option>
-                                        <option value="Spoken English">Spoken English</option>
-                                        <option value="Soft Skills">Soft Skills</option>
-                                        <option value="Handwriting">Handwriting Improvement</option>
+                                        <option value="Graphic Design" data-type="course">Graphic Design</option>
+                                        <option value="UI/UX Design" data-type="course">UI/UX Design</option>
+                                        <option value="Full Stack Development" data-type="course">Full Stack Development
+                                            (MERN)</option>
+                                        <option value="AWS Cloud" data-type="course">AWS Cloud</option>
+                                        <option value="DevOps Engineering" data-type="course">DevOps Engineering
+                                        </option>
+                                        <option value="Python Programming" data-type="course">Python Programming
+                                        </option>
+                                        <option value="Data Analytics" data-type="course">Data Analytics</option>
+                                        <option value="Salesforce" data-type="course">Salesforce Administration</option>
+                                        <option value="React JS" data-type="course">React JS</option>
+                                        <option value="Java Full Stack" data-type="course">Java Full Stack</option>
+                                        <option value="DSA Mastery" data-type="course">DSA Mastery</option>
+                                        <option value="Microsoft Azure" data-type="course">Microsoft Azure</option>
+                                        <option value="DevSecOps" data-type="course">DevSecOps</option>
+                                        <option value="Git & GitHub" data-type="course">Git & GitHub</option>
+                                        <option value="Resume & Interview" data-type="course">Resume & Interview Prep
+                                        </option>
+                                        <option value="Spoken English" data-type="course">Spoken English</option>
+                                        <option value="Soft Skills" data-type="course">Soft Skills</option>
+                                        <option value="Handwriting" data-type="course">Handwriting Improvement</option>
                                     </optgroup>
                                     <optgroup label="— Services —">
-                                        <option value="Web Development Service">Web Development</option>
-                                        <option value="UI/UX Design Service">UI/UX Design Services</option>
-                                        <option value="Graphic Design Service">Graphic Design Services</option>
-                                        <option value="Branding & Marketing">Branding & Marketing</option>
-                                        <option value="Cloud & DevOps Service">Cloud & DevOps Solutions</option>
-                                        <option value="Career Services">Career & Placement Services</option>
+                                        <option value="Web Development Service" data-type="service">Web Development
+                                        </option>
+                                        <option value="UI/UX Design Service" data-type="service">UI/UX Design Services
+                                        </option>
+                                        <option value="Graphic Design Service" data-type="service">Graphic Design
+                                            Services</option>
+                                        <option value="Branding & Marketing" data-type="service">Branding & Marketing
+                                        </option>
+                                        <option value="Cloud & DevOps Service" data-type="service">Cloud & DevOps
+                                            Solutions</option>
+                                        <option value="Career Services" data-type="service">Career & Placement Services
+                                        </option>
                                     </optgroup>
                                     <option value="Other">Other Inquiry</option>
                                 </select>
@@ -216,8 +226,8 @@
                             <div class="form-buttons">
                                 <button type="submit" class="btn-form btn-blue">Send Message</button>
                                 <span class="divider-or">or</span>
-                                <a href="https://wa.me/917842239090?text=Hi! I'd like to book a free counseling session."
-                                    target="_blank" class="btn-form btn-green">
+                                <a href="https://wa.me/917842239090?text=Hi! I'd like to chat about your courses and services."
+                                    target="_blank" class="btn-form btn-green" id="contact-whatsapp-btn">
                                     <i class="fab fa-whatsapp"></i> Chat on WhatsApp
                                 </a>
                             </div>
@@ -348,6 +358,28 @@
     <script src="../assets/js/custom-select.js?v=1.0"></script>
 
     <script src="../assets/js/main.js?v=1.1"></script>
+
+    <!-- Dynamic WhatsApp Link Update -->
+    <script>
+        function updateContactWhatsApp(selectEl) {
+            const btn = document.getElementById('contact-whatsapp-btn');
+            if (!btn) return;
+
+            const selected = selectEl.options[selectEl.selectedIndex];
+            const type = selected.dataset.type;
+            const value = selected.value;
+
+            let text = "Hi! I'd like to chat about your courses and services.";
+
+            if (type === 'course') {
+                text = `Hi! I'm interested in the ${value} course. Please share the details.`;
+            } else if (type === 'service') {
+                text = `Hi! I'm interested in inquiring about ${value}. Please share the details.`;
+            }
+
+            btn.href = `https://wa.me/917842239090?text=${encodeURIComponent(text)}`;
+        }
+    </script>
 </body>
 
 </html>
