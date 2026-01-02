@@ -8,9 +8,14 @@
     "deploy": "npm run build && netlify deploy --prod --dir=."
   },
   "devDependencies": {
+    "glob": "^13.0.0",
     "terser": "^5.37.0"
   },
-  "keywords": ["craftsoft", "training", "hyderabad"],
+  "keywords": [
+    "craftsoft",
+    "training",
+    "hyderabad"
+  ],
   "author": "Abhi's Craft Soft",
   "license": "UNLICENSED",
   "private": true
