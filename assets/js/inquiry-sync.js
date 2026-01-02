@@ -169,8 +169,7 @@ const InquirySync = {
                 notes: formData.message || formData.query || null,
                 source: 'Website',
                 status: 'New',
-                demo_required: false,
-                inquiry_type: 'Course'
+                demo_required: false
             };
 
             const result = await this.insertInquiry(payload);
@@ -202,8 +201,7 @@ const InquirySync = {
                 notes: formData.message || null,
                 source: 'Website',
                 status: 'New',
-                demo_required: false,
-                inquiry_type: 'Service'
+                demo_required: false
             };
 
             const result = await this.insertInquiry(payload);
@@ -241,8 +239,7 @@ const InquirySync = {
                 notes: formData.message || null,
                 source: 'Website',
                 status: 'New',
-                demo_required: false,
-                inquiry_type: type === 'service' ? 'Service' : 'Course' // Adding a type hint
+                demo_required: false
             };
 
             const result = await this.insertInquiry(payload);
