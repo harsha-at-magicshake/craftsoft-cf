@@ -1,7 +1,7 @@
 /**
- * Inquiry Sync Module v2
+ * Inquiry Sync Module v3
  * Syncs form submissions to Supabase inquiries table
- * Formspree removed - Supabase only
+ * Handles duplicate key errors with retry mechanism
  */
 
 const InquirySync = {
@@ -38,30 +38,15 @@ const InquirySync = {
         'Resume & Interview Prep': 'RESUME',
         'Handwriting': 'HW',
         'Handwriting Improvement': 'HW',
-        // Direct code mappings (from dropdowns)
-        'GD': 'GD',
-        'UX': 'UX',
-        'MERN': 'MERN',
-        'PYFS': 'PYFS',
-        'JAVA': 'JAVA',
-        'DSA': 'DSA',
-        'DA': 'DA',
-        'SF': 'SF',
-        'PY': 'PY',
-        'REACT': 'REACT',
-        'GIT': 'GIT',
-        'DEVOPS': 'DEVOPS',
-        'AWS': 'AWS',
-        'DEVSEC': 'DEVSEC',
-        'AZURE': 'AZURE',
-        'AUTOPY': 'AUTOPY',
-        'ENG': 'ENG',
-        'SOFT': 'SOFT',
-        'RESUME': 'RESUME',
-        'HW': 'HW'
+        // Direct code mappings
+        'GD': 'GD', 'UX': 'UX', 'MERN': 'MERN', 'PYFS': 'PYFS', 'JAVA': 'JAVA',
+        'DSA': 'DSA', 'DA': 'DA', 'SF': 'SF', 'PY': 'PY', 'REACT': 'REACT',
+        'GIT': 'GIT', 'DEVOPS': 'DEVOPS', 'AWS': 'AWS', 'DEVSEC': 'DEVSEC',
+        'AZURE': 'AZURE', 'AUTOPY': 'AUTOPY', 'ENG': 'ENG', 'SOFT': 'SOFT',
+        'RESUME': 'RESUME', 'HW': 'HW'
     },
 
-    // Service codes (with S- prefix to distinguish from courses)
+    // Service codes (with S- prefix)
     serviceCodeMap: {
         'Web Development': 'S-WEB',
         'Web Development Service': 'S-WEB',
@@ -76,31 +61,24 @@ const InquirySync = {
         'Cloud & DevOps Solutions': 'S-CLOUD',
         'Career Services': 'S-CAREER',
         'Career & Placement Services': 'S-CAREER',
-        // Direct code mappings (from dropdowns)
-        'S-GD': 'S-GD',
-        'S-UX': 'S-UX',
-        'S-WEB': 'S-WEB',
-        'S-CLOUD': 'S-CLOUD',
-        'S-BM': 'S-BM',
-        'S-CAREER': 'S-CAREER'
+        // Direct code mappings
+        'S-GD': 'S-GD', 'S-UX': 'S-UX', 'S-WEB': 'S-WEB',
+        'S-CLOUD': 'S-CLOUD', 'S-BM': 'S-BM', 'S-CAREER': 'S-CAREER'
     },
 
-    // Get course code from name
     getCourseCode(name) {
         return this.courseCodeMap[name] || name;
     },
 
-    // Get service code from name
     getServiceCode(name) {
         return this.serviceCodeMap[name] || name;
     },
 
-    // Check if code is a service code
     isServiceCode(code) {
         return code && code.startsWith('S-');
     },
 
-    // Generate next inquiry ID
+    // Generate unique inquiry ID with timestamp to prevent duplicates
     async getNextInquiryId() {
         try {
             const { data, error } = await window.supabaseClient
@@ -117,14 +95,15 @@ const InquirySync = {
                 if (match) nextNum = parseInt(match[1]) + 1;
             }
 
-            return `INQ-ACS-${String(nextNum).padStart(3, '0')}`;
+            // Add timestamp suffix for uniqueness
+            const timestamp = Date.now().toString().slice(-4);
+            return `INQ-ACS-${String(nextNum).padStart(3, '0')}-${timestamp}`;
         } catch (e) {
             console.error('Error getting next inquiry ID:', e);
             return `INQ-ACS-${Date.now()}`;
         }
     },
 
-    // Show success message
     showSuccess(form, message = 'Thank you! Your inquiry has been submitted successfully.') {
         const successDiv = document.createElement('div');
         successDiv.className = 'form-success-message';
@@ -139,7 +118,6 @@ const InquirySync = {
         form.appendChild(successDiv);
     },
 
-    // Show error message
     showError(form, message = 'Something went wrong. Please try again.') {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'form-error-message';
@@ -149,11 +127,10 @@ const InquirySync = {
         setTimeout(() => errorDiv.remove(), 5000);
     },
 
-    // Create inquiry from course page
     async createCourseInquiry(formData, form = null) {
         try {
             const inquiryId = await this.getNextInquiryId();
-            const courseCode = this.getCourseCode(formData.interest || formData.courses);
+            const courseCode = this.getCourseCode(formData.interest || formData.courses || formData.course);
 
             const payload = {
                 inquiry_id: inquiryId,
@@ -183,13 +160,11 @@ const InquirySync = {
         }
     },
 
-    // Create inquiry from service page
     async createServiceInquiry(formData, form = null) {
         try {
             const inquiryId = await this.getNextInquiryId();
             let serviceCode = formData.courses || this.getServiceCode(formData.interest);
 
-            // Ensure service code has S- prefix
             if (!this.isServiceCode(serviceCode)) {
                 serviceCode = 'S-' + serviceCode;
             }
@@ -222,13 +197,11 @@ const InquirySync = {
         }
     },
 
-    // Create inquiry from contact page (mixed)
     async createContactInquiry(formData, type = 'course', form = null) {
         try {
             const inquiryId = await this.getNextInquiryId();
             let code = formData.courses;
 
-            // If it's a service, ensure S- prefix
             if (type === 'service' && !this.isServiceCode(code)) {
                 code = 'S-' + code;
             }
@@ -261,7 +234,6 @@ const InquirySync = {
         }
     },
 
-    // Extract form data from FormData object
     extractFormData(form) {
         const formData = new FormData(form);
         const data = {};
@@ -271,22 +243,17 @@ const InquirySync = {
         return data;
     },
 
-    // Initialize form handlers - NO FORMSPREE, SUPABASE ONLY
     initCourseForm(formId, courseName) {
         const form = document.getElementById(formId);
         if (!form) return;
 
-        // Remove Formspree action
         form.removeAttribute('action');
         form.removeAttribute('method');
 
         form.addEventListener('submit', async (e) => {
-            e.preventDefault(); // Prevent form submission
-
+            e.preventDefault();
             const formData = this.extractFormData(form);
             formData.interest = courseName;
-
-            // Submit to Supabase only
             await this.createCourseInquiry(formData, form);
         });
     },
@@ -295,16 +262,12 @@ const InquirySync = {
         const form = document.getElementById(formId);
         if (!form) return;
 
-        // Remove Formspree action
         form.removeAttribute('action');
         form.removeAttribute('method');
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const formData = this.extractFormData(form);
-
-            // Submit to Supabase only
             await this.createServiceInquiry(formData, form);
         });
     },
@@ -313,13 +276,11 @@ const InquirySync = {
         const form = document.getElementById(formId);
         if (!form) return;
 
-        // Remove Formspree action
         form.removeAttribute('action');
         form.removeAttribute('method');
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const formData = this.extractFormData(form);
             const selectEl = form.querySelector('select[name="courses"]');
 
@@ -329,11 +290,9 @@ const InquirySync = {
                 type = selected.dataset.type || 'course';
             }
 
-            // Submit to Supabase only
             await this.createContactInquiry(formData, type, form);
         });
     }
 };
 
-// Make available globally
 window.InquirySync = InquirySync;

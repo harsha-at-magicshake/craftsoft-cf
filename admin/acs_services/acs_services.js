@@ -1,11 +1,11 @@
 // ACS Services Module - Website Sync Approach
 const websiteServices = [
-    { code: 'GD', name: 'Graphic Design', category: 'Design' },
-    { code: 'UX', name: 'UI/UX Design', category: 'Design' },
-    { code: 'WEB', name: 'Website Development', category: 'Tech' },
-    { code: 'CLOUD', name: 'Cloud & DevOps', category: 'Cloud' },
-    { code: 'BM', name: 'Branding & Marketing', category: 'Branding' },
-    { code: 'CS', name: 'Career Services', category: 'Branding' }
+    { code: 'S-GD', name: 'Graphic Design', category: 'Design' },
+    { code: 'S-UX', name: 'UI/UX Design', category: 'Design' },
+    { code: 'S-WEB', name: 'Website Development', category: 'Tech' },
+    { code: 'S-CLOUD', name: 'Cloud & DevOps', category: 'Cloud' },
+    { code: 'S-BM', name: 'Branding & Marketing', category: 'Branding' },
+    { code: 'S-CAREER', name: 'Career Services', category: 'Branding' }
 ];
 
 document.addEventListener('DOMContentLoaded', async () => {
