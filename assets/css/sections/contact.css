@@ -91,6 +91,9 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid rgba(0, 0, 0, 0.02);
+    display: block;
+    text-decoration: none !important;
+    cursor: pointer;
 }
 
 .method-card:hover {
@@ -126,7 +129,8 @@
     display: block;
 }
 
-.method-card a:hover {
+.method-card:hover a,
+.method-card:hover span {
     color: #3b82f6;
 }
 
