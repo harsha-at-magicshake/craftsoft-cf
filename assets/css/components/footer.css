@@ -150,6 +150,17 @@
 
     .footer-brand .logo {
         justify-content: center;
+        display: flex;
+        text-align: center;
+    }
+
+    .footer-brand .logo-text {
+        text-align: center;
+    }
+
+    .footer-brand p {
+        text-align: center;
+        max-width: 100%;
     }
 
     .footer-bottom {
