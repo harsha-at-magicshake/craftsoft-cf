@@ -43,8 +43,7 @@
 
 /* Courses Page */
 .courses-page {
-    padding: var(--spacing-xl) 0;
-    /* Reduced from 3xl */
+    padding: 1rem 0;
     background: rgba(40, 150, 205, 0.05);
 }
 
@@ -244,8 +243,7 @@
 
 /* Services Page */
 .services-page {
-    padding: var(--spacing-xl) 0;
-    /* Reduced from 3xl */
+    padding: 1rem 0;
     background: rgba(40, 150, 205, 0.05);
 }
 
@@ -522,7 +520,7 @@
 
 /* Individual Course Page */
 .course-detail-page {
-    padding: var(--spacing-xl) 0;
+    padding: 1rem 0;
     background: var(--primary-50);
 }
 

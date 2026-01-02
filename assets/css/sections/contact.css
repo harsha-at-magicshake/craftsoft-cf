@@ -3,7 +3,7 @@
    ============================================ */
 /* Global Container for Contact Sections */
 .contact-section {
-    padding: var(--spacing-4xl) 0;
+    padding: 2rem 0;
     background: var(--primary-50);
     /* Changed from #f8fafc to theme color */
     position: relative;
@@ -12,9 +12,9 @@
 
 .counseling-wrapper {
     background: rgba(9, 132, 227, 0.05);
-    border-radius: 2rem;
-    padding: 3rem;
-    margin-top: var(--spacing-3xl);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    margin-top: 1.5rem;
 }
 
 @media (max-width: 768px) {

@@ -438,9 +438,8 @@
    ============================================ */
 
 .related-courses {
-    padding: var(--spacing-4xl) 0;
+    padding: 2rem 0;
     background: var(--primary-50);
-    /* Changed from gray-50 to theme color */
 }
 
 .related-courses .section-header {
