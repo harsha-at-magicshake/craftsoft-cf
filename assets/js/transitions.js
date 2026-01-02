@@ -76,8 +76,8 @@
             setTimeout(hideOverlay, 100);
         });
 
-        // Failsafe: hide overlay after 3 seconds anyway
-        setTimeout(hideOverlay, 3000);
+        // Failsafe: hide overlay after 1 second anyway
+        setTimeout(hideOverlay, 1000);
 
         // Handle internal navigation
         document.addEventListener('click', (e) => {
