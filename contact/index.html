@@ -14,18 +14,24 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-    <link rel="stylesheet" href="../assets/css/main.css?v=1.0">    <link rel="stylesheet" href="../assets/css/utilities/skeleton.css?v=1.0">
+    <link rel="stylesheet" href="../assets/css/main.css?v=1.0">
+    <link rel="stylesheet" href="../assets/css/utilities/skeleton.css?v=1.0">
     <!-- FOUC Protection -->
     <style>
-        .no-fouc { opacity: 0; }
-        body { transition: opacity 0.3s ease; }
+        .no-fouc {
+            opacity: 0;
+        }
+
+        body {
+            transition: opacity 0.3s ease;
+        }
     </style>
     <script>
         document.documentElement.className += ' no-fouc';
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             document.documentElement.classList.remove('no-fouc');
         });
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             document.documentElement.classList.remove('no-fouc');
         });
     </script>
@@ -41,18 +47,19 @@
                         Soft</span></span>
             </a>
             <ul class="nav-menu" id="nav-menu">
-          <div class="mobile-menu-header">
-            <div class="logo">
-              <div class="logo-placeholder"><i class="fas fa-graduation-cap"></i></div>
-              <span class="logo-text"><span class="logo-signature">Abhi's</span> <span class="highlight">Craft Soft</span></span>
-            </div>
-            <button class="nav-close" id="navClose" aria-label="Close menu">&times;</button>
-          </div>
-          <li><a href="../" class="nav-link">Home</a></li>
+                <div class="mobile-menu-header">
+                    <div class="logo">
+                        <div class="logo-placeholder"><i class="fas fa-graduation-cap"></i></div>
+                        <span class="logo-text"><span class="logo-signature">Abhi's</span> <span class="highlight">Craft
+                                Soft</span></span>
+                    </div>
+                    <button class="nav-close" id="navClose" aria-label="Close menu">&times;</button>
+                </div>
+                <li><a href="../" class="nav-link">Home</a></li>
                 <li><a href="../about/" class="nav-link">About</a></li>
                 <li><a href="../courses/" class="nav-link">Courses</a></li>
                 <li><a href="../services/" class="nav-link">Services</a></li>
-                        <li><a href="portfolio/" class="nav-link">Portfolio</a></li>
+                <li><a href="../portfolio/" class="nav-link">Portfolio</a></li>
                 <li><a href="../contact/" class="nav-link active">Contact</a></li>
             </ul>
             <button class="hamburger" id="hamburger" aria-label="Toggle menu">
@@ -85,16 +92,12 @@
 
     <!-- Contact Section -->
     <section class="contact-section">
-        <div class="container" style="padding: 0 var(--spacing-xl);">
+        <div class="container">
             <div class="contact-wrapper">
                 <div class="contact-text-side">
                     <span class="section-tag">Get in Touch</span>
-                    <h2 class="section-title" style="text-align: left; margin-bottom: var(--spacing-md);">
-                        Let's
-                        <span class="gradient-text">Connect</span>
-                    </h2>
-                    <p class="section-description"
-                        style="max-width: 100%; text-align: left; margin-bottom: var(--spacing-2xl);">
+                    <h2>Let's <span style="color: #3b82f6;">Connect</span></h2>
+                    <p>
                         Whether you're interested in our courses, services, or just want to learn more about Abhi's
                         Craftsoft, we're here to help.
                     </p>
@@ -119,7 +122,6 @@
                             <div class="method-info">
                                 <h3>Visit Us</h3>
                                 <span>Plot no. 163, Vijayasree Colony, Vanasthalipuram, Hyderabad 500070</span>
-                                
                             </div>
                         </div>
                         <div class="method-item">
@@ -154,12 +156,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone Number</label>
-                                <div class="phone-input-wrapper">
-                                    <span class="country-code">+91</span>
-                                    <input type="tel" id="phone" name="phone" placeholder="10-digit number"
-                                        maxlength="10" pattern="[0-9]{10}" inputmode="numeric"
-                                        title="Please enter a 10-digit phone number">
-                                </div>
+                                <input type="tel" id="contact-phone" name="phone" placeholder="10-digit number"
+                                    maxlength="10">
                             </div>
                             <div class="form-group">
                                 <label for="interest">I'm Interested In *</label>
@@ -168,24 +166,7 @@
                                     <option value="GD">Graphic Design</option>
                                     <option value="UX">UI/UX Design</option>
                                     <option value="MERN">Full Stack Development (MERN)</option>
-                                    <option value="PYFS">Python Full Stack Development</option>
-                                    <option value="JAVA">Java Full Stack Development</option>
-                                    <option value="DSA">DSA Mastery</option>
-                                    <option value="DA">Data Analytics</option>
-                                    <option value="SF">Salesforce Administration</option>
-                                    <option value="PY">Python Programming</option>
-                                    <option value="REACT">React JS</option>
-                                    <option value="GIT">Git & GitHub</option>
-                                    <option value="DEVOPS">DevOps Engineering</option>
-                                    <option value="AWS">AWS Cloud Excellence</option>
-                                    <option value="DEVSEC">DevSecOps</option>
-                                    <option value="AZURE">Microsoft Azure</option>
-                                    <option value="AUTOPY">Automation with Python</option>
-                                    <option value="ENG">Spoken English Mastery</option>
-                                    <option value="SOFT">Soft Skills Training</option>
-                                    <option value="RESUME">Resume Writing & Interview Prep</option>
-                                    <option value="HW">Handwriting Improvement</option>
-                                    <option value="Other">Other / Design Services</option>
+                                    <option value="Other">Other Inquiry</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -193,16 +174,15 @@
                                 <textarea id="message" name="message" rows="4" placeholder="How can we help you?"
                                     required></textarea>
                             </div>
-                            <input type="hidden" name="_subject" value="New Website Inquiry from Craft Soft">
                             <div class="form-buttons">
-                                <button type="submit" class="btn btn-primary">Send Message</button>
-                                <span class="or-divider">or</span>
-                                <a href="https://wa.me/917842239090?text=Hi! I'd like to know more about your services."
-                                    target="_blank" class="btn btn-whatsapp">
+                                <button type="submit" class="btn-form btn-blue">Send Message</button>
+                                <span class="divider-or">or</span>
+                                <a href="https://wa.me/917842239090?text=Hi! I'd like to book a free counseling session."
+                                    target="_blank" class="btn-form btn-green">
                                     <i class="fab fa-whatsapp"></i> Chat on WhatsApp
                                 </a>
                             </div>
-                            <p class="form-legal">By submitting this form, you agree to our <a
+                            <p class="form-footer-legal">By submitting this form, you agree to our <a
                                     href="../terms-of-service/">Terms of Service</a> and <a
                                     href="../privacy-policy/">Privacy Policy</a>.</p>
                         </form>
@@ -226,17 +206,19 @@
     </section>
 
     <!-- Footer -->
-        <footer class="footer">
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
                     <a href="../" class="logo">
                         <div class="logo-placeholder"><i class="fas fa-graduation-cap"></i></div>
-                        <span class="logo-text"><span class="logo-signature">Abhi's</span> <span class="highlight">Craft Soft</span></span>
+                        <span class="logo-text"><span class="logo-signature">Abhi's</span> <span class="highlight">Craft
+                                Soft</span></span>
                     </a>
-                    <p>Empowering careers through quality education and professional IT services. Your journey to excellence starts here.</p>
+                    <p>Empowering careers through quality education and professional IT services. Your journey to
+                        excellence starts here.</p>
                 </div>
-                                <div class="footer-links">
+                <div class="footer-links">
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="../courses/">Courses</a></li>
@@ -256,13 +238,16 @@
                 <div class="footer-contact">
                     <h4>Get in touch</h4>
                     <ul>
-                        <li><i class="fas fa-map-marker-alt"></i><a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8" target="_blank">Plot No. 163, Vijayasree Colony,<br>Vanasthalipuram, Hyderabad 500070</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i><a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8"
+                                target="_blank">Plot No. 163, Vijayasree Colony,<br>Vanasthalipuram, Hyderabad
+                                500070</a></li>
                         <li><i class="fas fa-phone"></i><a href="tel:+917842239090">+91 7842239090</a></li>
-                        <li><i class="fas fa-envelope"></i><a href="mailto:team.craftsoft@gmail.com">team.craftsoft@gmail.com</a></li>
+                        <li><i class="fas fa-envelope"></i><a
+                                href="mailto:team.craftsoft@gmail.com">team.craftsoft@gmail.com</a></li>
                     </ul>
                 </div>
             </div>
-                        <div class="footer-bottom">
+            <div class="footer-bottom">
                 <p> 2026 Abhi's Craft Soft. All Rights Reserved.</p>
                 <div class="footer-legal-links">
                     <a href="../about/">About Us</a>
@@ -323,7 +308,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../assets/js/supabase-website-config.js?v=1.0"></script>
     <script src="../assets/js/custom-select.js?v=1.0"></script>
-    
+
     <script src="../assets/js/main.js?v=1.1"></script>
 </body>
+
 </html>
