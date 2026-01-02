@@ -596,7 +596,7 @@
                     <div class="contact-form-card">
                         <h3>Send us a Message</h3>
                         <form id="contactForm" action="https://formspree.io/f/mlgrlggk" method="POST">
-                            <div class="form-group">
+                                                        <div class="form-group">
                                 <label for="name">Full Name *</label>
                                 <input type="text" id="name" name="name" placeholder="Enter your name" required>
                             </div>
@@ -605,16 +605,16 @@
                                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
                             </div>
                             <div class="form-group">
-                                <label for="phone">Phone Number</label>
+                                <label for="phone">Phone Number *</label>
                                 <div class="phone-input-wrapper">
                                     <span class="country-code">+91</span>
                                     <input type="tel" id="phone" name="phone" placeholder="10-digit number"
-                                        maxlength="10" pattern="[0-9]{10}" inputmode="numeric"
+                                        maxlength="10" pattern="[0-9]{10}" inputmode="numeric" required
                                         title="Please enter a 10-digit phone number">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="interest">I'm Interested In *</label>
+                                <label for="interest">Interested In *</label>
                                 <select id="interest" name="interest" required>
                                     <option value="" disabled selected>Select an option</option>
                                     <option value="GD">Graphic Design</option>
@@ -641,15 +641,15 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="message">Message *</label>
-                                <textarea id="message" name="message" rows="4" placeholder="How can we help you?"
+                                <label for="message">Your Query *</label>
+                                <textarea id="message" name="message" rows="3" placeholder="Tell us about your goals..."
                                     required></textarea>
                             </div>
                             <input type="hidden" name="_subject" value="New Website Inquiry from Craft Soft">
                             <div class="form-buttons">
-                                <button type="submit" class="btn btn-primary">Send Message</button>
+                                <button type="submit" class="btn btn-primary">Book Free Session</button>
                                 <span class="or-divider">or</span>
-                                <a href="https://wa.me/917842239090?text=Hi! I'd like to know more about your courses/services."
+                                <a href="https://wa.me/917842239090?text=Hi! I'd like to book a free counseling session."
                                     target="_blank" class="btn btn-whatsapp">
                                     <i class="fab fa-whatsapp"></i> Chat on WhatsApp
                                 </a>

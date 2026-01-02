@@ -60,12 +60,8 @@
   to = "/services.html"
   status = 301
 
+# favicon.ico is handled by meta tags, keeping SVG as primary
 [[redirects]]
-  from = "/index.html#contact"
-  to = "/contact.html"
-  status = 301
-
-[[redirects]]
-  from = "/#contact"
-  to = "/contact.html"
-  status = 301
+  from = "/pay"
+  to = "/404.html"
+  status = 404
