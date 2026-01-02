@@ -9,6 +9,24 @@
     overflow: hidden;
 }
 
+.counseling-wrapper {
+    background: rgba(9, 132, 227, 0.05);
+    border-radius: 2rem;
+    padding: 3rem;
+    margin-top: var(--spacing-3xl);
+}
+
+@media (max-width: 768px) {
+    .counseling-wrapper {
+        padding: 1.5rem 1rem;
+        border-radius: 1.5rem;
+    }
+
+    .contact-section {
+        padding: 3rem 0;
+    }
+}
+
 .contact-wrapper {
     display: grid;
     grid-template-columns: 1fr 1.1fr;
@@ -16,7 +34,6 @@
     align-items: start;
     max-width: var(--container-max);
     margin: 0 auto;
-    padding: 0 var(--container-padding);
 }
 
 /* Section Tag Pill */
@@ -340,7 +357,9 @@
 
 @media (max-width: 991px) {
     .contact-wrapper {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+        gap: 3rem;
+        padding: 0 1rem;
     }
 
     .contact-text-side {
@@ -369,18 +388,46 @@
 
 @media (max-width: 576px) {
     .contact-form-card {
-        padding: 2rem 1.5rem;
+        padding: 1.5rem 1.25rem;
+        border-radius: 1.5rem;
+    }
+
+    .contact-form-card h3 {
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
     }
 
     .form-buttons {
         flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
     }
 
     .btn-form {
         width: 100%;
+        height: 50px;
+        font-size: 0.95rem;
     }
 
     .divider-or {
-        margin: 0.5rem 0;
+        margin: 0.25rem 0;
+    }
+}
+
+@media (max-width: 380px) {
+    .contact-methods-grid {
+        gap: 1rem;
+    }
+
+    .method-card {
+        padding: 1rem;
+    }
+
+    .contact-text-side h2 {
+        font-size: 2.2rem;
     }
 }
