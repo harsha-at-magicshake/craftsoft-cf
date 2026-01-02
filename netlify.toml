@@ -75,10 +75,21 @@
 # Subdomain 404 Handling
 [[redirects]]
   host = "pay-fee.craftsoft.co.in"
+  from = "/"
+  to = "/pay/index.html"
+  status = 200
+
+[[redirects]]
+  host = "pay-fee.craftsoft.co.in"
+  from = "/*"
+  to = "/pay/:splat"
+  status = 200
+
+[[redirects]]
+  host = "pay-fee.craftsoft.co.in"
   from = "/*"
   to = "/404/subdomain.html"
   status = 404
-  force = true
 
 [[redirects]]
   host = "admin.craftsoft.co.in"
@@ -100,6 +111,12 @@
   status = 200
 
 [[redirects]]
+  host = "signup.craftsoft.co.in"
+  from = "/*"
+  to = "/404/subdomain.html"
+  status = 404
+
+[[redirects]]
   host = "admin.craftsoft.co.in"
   from = "/"
   to = "/admin/index.html"
@@ -110,6 +127,18 @@
   from = "/login"
   to = "/admin/login.html"
   status = 200
+
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/*"
+  to = "/admin/:splat"
+  status = 200
+
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/*"
+  to = "/404/subdomain.html"
+  status = 404
 
 # Blocked / Non-existent paths
 [[redirects]]
