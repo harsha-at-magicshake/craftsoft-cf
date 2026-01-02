@@ -487,12 +487,13 @@
     }
 
     .footer-contact ul li {
+        width: 100%;
         justify-content: center;
         text-align: center;
-        flex-direction: column;
+        margin-bottom: var(--spacing-sm);
+        display: flex;
         align-items: center;
-        gap: var(--spacing-xs);
-        width: 100%;
+        gap: 8px;
     }
 
     .footer-contact ul li i {
