@@ -6,7 +6,8 @@
 (function () {
     // Inject the transition overlay HTML if it doesn't exist
     function injectOverlay() {
-        if (document.querySelector('.page-transition')) return;
+        const existing = document.querySelector('.page-transition');
+        if (existing) return existing;
 
         const overlay = document.createElement('div');
         overlay.className = 'page-transition';
@@ -25,16 +26,19 @@
     function initTransitions() {
         const overlay = injectOverlay();
 
-        // Ensure overlay is visible initially (should be by default in CSS)
+        function hideOverlay() {
+            if (overlay && !overlay.classList.contains('loaded')) {
+                overlay.classList.add('loaded');
+            }
+        }
 
         // Fade out overlay when page is fully loaded
         window.addEventListener('load', () => {
-            setTimeout(() => {
-                if (overlay) {
-                    overlay.classList.add('loaded');
-                }
-            }, 100); // Tiny delay for smoother feel
+            setTimeout(hideOverlay, 100);
         });
+
+        // Failsafe: hide overlay after 3 seconds anyway
+        setTimeout(hideOverlay, 3000);
 
         // Handle internal navigation
         document.addEventListener('click', (e) => {
