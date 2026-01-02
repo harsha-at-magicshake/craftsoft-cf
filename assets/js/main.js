@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initChatWidget();
     initDynamicCopyright();
     initPrivacyProtection();
+    initDynamicFooter();
 });
 
 /* ============================================
@@ -747,4 +748,52 @@ function initPrivacyProtection() {
             }
         });
     });
+}
+
+/* ============================================
+   DYNAMIC FOOTER POPULATION
+   ============================================ */
+function initDynamicFooter() {
+    // All available courses
+    const allCourses = [
+        { name: 'Graphic design', url: 'pages/courses/graphic-design.html' },
+        { name: 'UI/UX design', url: 'pages/courses/ui-ux.html' },
+        { name: 'Full stack development', url: 'pages/courses/full-stack.html' },
+        { name: 'DevOps engineering', url: 'pages/courses/devops.html' },
+        { name: 'AWS cloud', url: 'pages/courses/aws.html' },
+        { name: 'Python programming', url: 'pages/courses/python.html' },
+        { name: 'Resume & interview', url: 'pages/courses/resume-interview.html' },
+        { name: 'Spoken English', url: 'pages/courses/spoken-english.html' }
+    ];
+
+    // All available services
+    const allServices = [
+        { name: 'Graphic design', url: 'pages/services/graphic-design.html' },
+        { name: 'UI/UX design', url: 'pages/services/ui-ux-design.html' },
+        { name: 'Web development', url: 'pages/services/web-development.html' },
+        { name: 'Brand identity', url: 'pages/services/branding.html' },
+        { name: 'Cloud & DevOps', url: 'pages/services/cloud-devops.html' },
+        { name: 'Career services', url: 'pages/services/career-services.html' }
+    ];
+
+    // Shuffle and pick 4
+    const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+    const selectedCourses = shuffle([...allCourses]).slice(0, 4);
+    const selectedServices = shuffle([...allServices]).slice(0, 4);
+
+    // Populate courses
+    const coursesContainer = document.getElementById('footer-trending-courses');
+    if (coursesContainer) {
+        coursesContainer.innerHTML = selectedCourses.map(c =>
+            `<li><a href="${c.url}">${c.name}</a></li>`
+        ).join('');
+    }
+
+    // Populate services
+    const servicesContainer = document.getElementById('footer-services');
+    if (servicesContainer) {
+        servicesContainer.innerHTML = selectedServices.map(s =>
+            `<li><a href="${s.url}">${s.name}</a></li>`
+        ).join('');
+    }
 }

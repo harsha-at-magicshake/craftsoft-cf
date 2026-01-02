@@ -4,15 +4,14 @@
 .footer {
     background: var(--gray-900);
     color: var(--gray-400);
-    padding: var(--spacing-xl) 0;
-    /* Reduced top padding from 3xl */
+    padding: var(--spacing-lg) 0;
 }
 
 .footer-content {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1fr;
-    gap: var(--spacing-2xl);
-    padding-bottom: var(--spacing-2xl);
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    gap: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
