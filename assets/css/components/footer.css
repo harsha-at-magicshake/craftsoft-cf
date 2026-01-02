@@ -4,14 +4,14 @@
 .footer {
     background: var(--gray-900);
     color: var(--gray-400);
-    padding: var(--spacing-lg) 0;
+    padding: 0;
 }
 
 .footer-content {
     display: grid;
     grid-template-columns: 1.5fr 1fr 1fr 1fr 1.2fr;
     gap: var(--spacing-xl);
-    padding-bottom: var(--spacing-lg);
+    padding: var(--spacing-3xl) 0 var(--spacing-xl);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     align-items: start;
 }
@@ -26,11 +26,14 @@
 
 .footer-brand .logo-text {
     color: var(--white);
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
 .footer-brand p {
     line-height: 1.7;
     font-size: 0.95rem;
+    max-width: 300px;
 }
 
 .footer-links h4,
@@ -38,6 +41,7 @@
     color: var(--white);
     font-size: 1.1rem;
     margin-bottom: var(--spacing-lg);
+    font-weight: 600;
 }
 
 .footer-links ul li {
@@ -47,12 +51,12 @@
 .footer-links ul li a {
     color: var(--gray-400);
     font-size: 0.95rem;
+    text-decoration: none;
     transition: var(--transition-base);
 }
 
 .footer-links ul li a:hover {
     color: var(--primary-400);
-    padding-left: 5px;
 }
 
 .footer-contact ul li {
@@ -71,6 +75,8 @@
 }
 
 .footer-contact ul li a {
+    text-decoration: none;
+    color: inherit;
     line-height: 1.6;
 }
 
@@ -78,6 +84,37 @@
     color: var(--primary-400);
 }
 
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-xl) 0;
+    font-size: 0.9rem;
+    color: var(--gray-400);
+}
+
+.footer-legal-links {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.footer-legal-links a {
+    color: var(--gray-400);
+    text-decoration: none;
+    transition: var(--transition-base);
+}
+
+.footer-legal-links a:hover {
+    color: var(--white);
+}
+
+.footer-legal-links span {
+    color: rgba(255, 255, 255, 0.1);
+    font-size: 0.8rem;
+}
+
+/* Responsive Footer */
 @media (max-width: 992px) {
     .footer-content {
         grid-template-columns: 1fr 1fr;
@@ -88,6 +125,9 @@
     .footer-brand {
         grid-column: 1 / -1;
         margin-bottom: var(--spacing-lg);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .footer-contact {
@@ -114,6 +154,13 @@
 
     .footer-bottom {
         flex-direction: column;
+        gap: var(--spacing-md);
         text-align: center;
+    }
+
+    .footer-legal-links {
+        justify-content: center;
+        width: 100%;
+        flex-wrap: wrap;
     }
 }
