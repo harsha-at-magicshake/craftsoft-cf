@@ -1,108 +1,236 @@
-/* Services/Clients Page Styles */
+/* Premium Clients Module Styles */
 
-/* Empty State */
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-muted);
+/* ============================================
+   Form Styling (Premium)
+   ============================================ */
+
+.form-group {
+    margin-bottom: 1.25rem;
 }
 
-.empty-state i {
-    font-size: 48px;
-    color: var(--primary-color);
-    margin-bottom: 16px;
-    opacity: 0.6;
-}
-
-.empty-state p {
-    font-size: 18px;
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
     font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--text-dark);
+    color: var(--admin-text-primary, #0f172a);
+    margin-bottom: 0.5rem;
 }
 
-.empty-state span {
-    font-size: 14px;
+.form-group label .required {
+    color: #ef4444;
+    margin-left: 2px;
 }
 
-/* Services Tags */
-.services-tags {
-    font-size: 12px;
-    color: var(--text-muted);
-    max-width: 150px;
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.inline-form-body input[type="text"],
+.inline-form-body input[type="email"],
+.inline-form-body input[type="tel"],
+.inline-form-body input[type="number"],
+.inline-form-body textarea,
+.inline-form-body select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    background: var(--admin-input-bg, #f8fafc);
+    border: 1.5px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 12px;
+    color: var(--admin-text-primary, #0f172a);
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.inline-form-body input:focus,
+.inline-form-body textarea:focus,
+.inline-form-body select:focus {
+    border-color: var(--primary-color, #2896cd);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon .input-icon {
+    position: absolute;
+    left: 1rem;
+    color: var(--admin-text-muted, #94a3b8);
+    font-size: 1rem;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.input-with-icon input {
+    padding-left: 2.75rem !important;
+}
+
+/* Checkbox List */
+.checkbox-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--gray-50, #f8fafc);
+    border: 1.5px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 12px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #fff;
+    border: 1px solid var(--gray-200, #e2e8f0);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 0.875rem;
+}
+
+.checkbox-item:hover {
+    border-color: var(--primary-color);
+    background: rgba(40, 150, 205, 0.05);
+}
+
+.checkbox-item.checked {
+    background: rgba(40, 150, 205, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.checkbox-item input {
+    display: none;
 }
 
 /* Fee Section */
-.fee-section {
-    background: rgba(40, 150, 205, 0.05);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    margin-top: 16px;
+.form-section {
+    background: var(--gray-50, #f8fafc);
+    border: 1.5px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
 }
 
-.fee-breakdown {
+.fee-section {
+    background: linear-gradient(135deg, rgba(40, 150, 205, 0.05) 0%, rgba(108, 92, 231, 0.05) 100%);
+    border-color: rgba(40, 150, 205, 0.2);
+}
+
+.form-section-header {
+    margin-bottom: 1rem;
+}
+
+.form-section-header label {
+    font-weight: 600;
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 12px;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .fee-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 12px;
-    background: var(--bg-card);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-color);
-}
-
-.fee-item-name {
-    font-weight: 600;
-    color: var(--text-dark);
-    font-size: 14px;
-}
-
-.fee-item-input input {
-    width: 120px;
-    padding: 6px 10px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    text-align: right;
-}
-
-.fee-item-input input:focus {
-    border-color: var(--primary-color);
-    outline: none;
+    padding: 0.75rem 1rem;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid var(--gray-200, #e2e8f0);
+    margin-bottom: 0.5rem;
 }
 
 .fee-total-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
-    background: var(--primary-color);
-    border-radius: var(--radius-sm);
-    margin-top: 16px;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 10px;
+    border: 2px solid var(--primary-color);
 }
 
 .fee-total-label {
     font-weight: 600;
-    color: white;
 }
 
 .fee-total-amount {
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 700;
-    color: white;
+    color: var(--primary-color);
+}
+
+/* Inline Form Container */
+.inline-form-container {
+    background: #fff;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 16px;
+    margin: 1.5rem 0;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(40, 150, 205, 0.08);
+}
+
+.inline-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, rgba(40, 150, 205, 0.05) 0%, rgba(108, 92, 231, 0.05) 100%);
+    border-bottom: 1px solid var(--admin-input-border, #e2e8f0);
+}
+
+.inline-form-header h3 {
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.inline-form-body {
+    padding: 1.5rem;
+}
+
+.inline-form-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--gray-50, #f8fafc);
+    border-top: 1px solid var(--admin-input-border, #e2e8f0);
+}
+
+/* Table Specifics */
+.services-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.services-tags span {
+    background: rgba(40, 150, 205, 0.1);
+    color: var(--primary-color);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
 }
 
 /* Status Badges */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 .status-new {
     background: rgba(40, 150, 205, 0.15);
     color: var(--primary-color);
@@ -118,118 +246,43 @@
     color: #ca8a04;
 }
 
-/* Actions Cell */
-.actions-cell {
-    display: flex;
-    gap: 8px;
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
 }
 
-.actions-cell .btn-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+.empty-state i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.6;
+}
+
+/* Delete Overlay */
+.delete-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
 }
 
-.actions-cell .edit-btn {
-    background: rgba(40, 150, 205, 0.1);
-    color: var(--primary-color);
+.delete-confirm-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    max-width: 340px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
-.actions-cell .edit-btn:hover {
-    background: var(--primary-color);
-    color: white;
-}
-
-.actions-cell .whatsapp {
-    background: rgba(37, 211, 102, 0.1);
-    color: #25d366;
-}
-
-.actions-cell .whatsapp:hover {
-    background: #25d366;
-    color: white;
-}
-
-.actions-cell .delete {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
-}
-
-.actions-cell .delete:hover {
-    background: #ef4444;
-    color: white;
-}
-
-/* Checkbox List */
-.checkbox-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 12px;
-    background: var(--bg-light);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-color);
-}
-
-.checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 14px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 13px;
-}
-
-.checkbox-item:hover {
-    border-color: var(--primary-color);
-}
-
-.checkbox-item.checked {
-    background: rgba(40, 150, 205, 0.1);
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-}
-
-.checkbox-item input {
-    display: none;
-}
-
-.checkbox-item i {
-    display: none;
-    color: var(--primary-color);
-}
-
-.checkbox-item.checked i {
-    display: inline;
-}
-
-/* Mobile Responsive */
 @media (max-width: 768px) {
-    .fee-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-
-    .fee-item-input input {
-        width: 100%;
-    }
-
-    .actions-cell {
-        flex-wrap: wrap;
-    }
-
-    .services-tags {
-        max-width: 100px;
+    .form-row {
+        grid-template-columns: 1fr;
     }
 }

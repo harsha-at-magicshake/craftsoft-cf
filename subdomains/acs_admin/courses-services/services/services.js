@@ -111,31 +111,51 @@ async function syncServices() {
     try {
         const { data: existing, error: fetchError } = await window.supabaseClient
             .from('services')
-            .select('service_code');
+            .select('*');
         if (fetchError) throw fetchError;
 
-        const existingMap = new Map(existing?.map(s => [s.service_code, true]) || []);
+        // Create Maps for easy lookup
+        const existingByCode = new Map(existing?.map(s => [s.service_code, s]) || []);
+        const existingByName = new Map(existing?.map(s => [s.name?.toLowerCase(), s]) || []);
 
-        let synced = 0;
-        for (let i = 0; i < websiteServices.length; i++) {
-            const svc = websiteServices[i];
+        for (const svc of websiteServices) {
+            // Find ALL matches by code or name
+            const matches = existing.filter(ex =>
+                ex.service_code === svc.code ||
+                ex.name?.toLowerCase() === svc.name.toLowerCase()
+            );
 
-            if (existingMap.has(svc.code)) {
-                // Update name
+            if (matches.length > 0) {
+                // Keep the first one and update it
+                const primary = matches[0];
                 await window.supabaseClient.from('services')
-                    .update({ name: svc.name })
-                    .eq('service_code', svc.code);
+                    .update({
+                        service_code: svc.code,
+                        name: svc.name
+                    })
+                    .eq('id', primary.id);
+                updated++;
+
+                // Delete all other matches (duplicates)
+                if (matches.length > 1) {
+                    const extraIds = matches.slice(1).map(m => m.id);
+                    await window.supabaseClient.from('services')
+                        .delete()
+                        .in('id', extraIds);
+                }
             } else {
                 // Insert new
                 await window.supabaseClient.from('services').insert({
                     service_code: svc.code,
                     name: svc.name
                 });
+                synced++;
             }
-            synced++;
         }
 
-        Toast.success('Synced', `${synced} services synced from website`);
+        // Optional: Remove duplicates that might still exist if multiple entries matched the same name/code logic
+        // (Just a simple message for now)
+        Toast.success('Synced', `${synced} new services, ${updated} updated`);
         await loadServices();
     } catch (e) {
         console.error('Sync error:', e);
