@@ -306,14 +306,37 @@ async function payForCourse(courseId) {
             }
         };
 
-        const razorpay = new Razorpay(razorpayOptions);
-        razorpay.on('payment.failed', function (response) {
-            payBtn.disabled = false;
-            payBtn.innerHTML = '<i class="fa-brands fa-gg"></i> Pay';
-            showToast(response.error.description || 'Payment failed');
-        });
-
-        razorpay.open();
+        // Check if Razorpay is loaded
+        if (typeof Razorpay === 'undefined') {
+            // Wait for Razorpay to load (max 5 seconds)
+            let attempts = 0;
+            const waitForRazorpay = setInterval(() => {
+                attempts++;
+                if (typeof Razorpay !== 'undefined') {
+                    clearInterval(waitForRazorpay);
+                    const razorpay = new Razorpay(razorpayOptions);
+                    razorpay.on('payment.failed', function (response) {
+                        payBtn.disabled = false;
+                        payBtn.innerHTML = '<i class="fa-brands fa-gg"></i> Pay';
+                        showToast(response.error.description || 'Payment failed');
+                    });
+                    razorpay.open();
+                } else if (attempts >= 50) {
+                    clearInterval(waitForRazorpay);
+                    showToast('Payment service not available. Please refresh and try again.');
+                    payBtn.disabled = false;
+                    payBtn.innerHTML = '<i class="fa-brands fa-gg"></i> Pay';
+                }
+            }, 100);
+        } else {
+            const razorpay = new Razorpay(razorpayOptions);
+            razorpay.on('payment.failed', function (response) {
+                payBtn.disabled = false;
+                payBtn.innerHTML = '<i class="fa-brands fa-gg"></i> Pay';
+                showToast(response.error.description || 'Payment failed');
+            });
+            razorpay.open();
+        }
 
     } catch (err) {
         console.error('Payment error:', err);

@@ -101,14 +101,27 @@
         </footer>
     </div>
 
-    <!-- Razorpay Checkout -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Razorpay Checkout - Load first with cache-busting -->
+    <script>
+        // Load Razorpay dynamically to ensure it's available
+        var razorpayScript = document.createElement('script');
+        razorpayScript.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        razorpayScript.onload = function () {
+            console.log('Razorpay loaded successfully');
+            window.razorpayLoaded = true;
+        };
+        razorpayScript.onerror = function () {
+            console.error('Failed to load Razorpay');
+            alert('Payment service failed to load. Please refresh the page.');
+        };
+        document.head.appendChild(razorpayScript);
+    </script>
 
-    <!-- Supabase (for initial lookup only - backend handles sensitive ops) -->
+    <!-- Supabase (for initial lookup only) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- Page Script -->
-    <script src="pay.js"></script>
+    <!-- Page Script with cache-busting -->
+    <script src="pay.js?v=2.0"></script>
 </body>
 
 </html>
