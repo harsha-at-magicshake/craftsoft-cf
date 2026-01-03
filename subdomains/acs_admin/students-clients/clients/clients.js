@@ -3,6 +3,7 @@ let allClients = [];
 let allServicesForClients = [];
 let deleteTargetId = null;
 let serviceFees = {}; // Store per-service fees { serviceCode: fee }
+let selectedClientIds = new Set();
 
 // Pagination State
 let currentPage = 1;
@@ -35,6 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.getElementById('add-client-btn')?.addEventListener('click', () => openForm());
     document.getElementById('client-search')?.addEventListener('input', (e) => filterClients(e.target.value));
+    document.getElementById('bulk-delete-btn')?.addEventListener('click', bulkDeleteClients);
 
 
     // Check for prefill from inquiry conversion
@@ -136,33 +138,41 @@ function filterClients(query) {
     const filtered = allClients.filter(c =>
         (c.first_name + ' ' + (c.last_name || '')).toLowerCase().includes(q) ||
         c.phone?.includes(q) ||
-        c.client_id?.toLowerCase().includes(q)
+        c.client_id?.toLowerCase().includes(q) ||
+        (c.services || []).some(s => s.toLowerCase().includes(q))
     );
     renderClients(filtered);
 }
 
 function renderClients(clients) {
-    const container = document.getElementById('clients-content');
+    const tableContainer = document.getElementById('clients-table-container');
+    const cardsContainer = document.getElementById('clients-cards');
 
     if (!clients || clients.length === 0) {
-        container.innerHTML = `
+        const emptyHTML = `
             <div class="empty-state">
                 <i class="fa-solid fa-person-digging"></i>
                 <p>No clients found</p>
                 <span>Convert service inquiries or add clients manually</span>
             </div>
         `;
+        if (tableContainer) tableContainer.innerHTML = emptyHTML;
+        if (cardsContainer) cardsContainer.innerHTML = emptyHTML;
+        updateBulkActionsBar();
         return;
     }
 
-    // Pagination
     const totalPages = Math.ceil(clients.length / itemsPerPage);
     const startIdx = (currentPage - 1) * itemsPerPage;
     const pageClients = clients.slice(startIdx, startIdx + itemsPerPage);
 
-    let html = `<div class="table-wrapper"><table class="data-table">
+    // Render Table
+    let tableHtml = `<div class="table-wrapper"><table class="data-table">
         <thead>
             <tr>
+                <th width="40">
+                    <input type="checkbox" id="select-all-clients" ${isAllSelected(pageClients) ? 'checked' : ''}>
+                </th>
                 <th>Client ID</th>
                 <th>Name</th>
                 <th>Phone</th>
@@ -180,8 +190,9 @@ function renderClients(clients) {
         const statusClass = c.status === 'COMPLETED' ? 'status-converted' :
             c.status === 'ON-HOLD' ? 'status-demo' : 'status-new';
 
-        html += `
+        tableHtml += `
             <tr>
+                <td><input type="checkbox" class="client-checkbox" data-id="${c.id}" ${selectedClientIds.has(c.id) ? 'checked' : ''}></td>
                 <td><span class="badge badge-primary">${c.client_id || '-'}</span></td>
                 <td>${fullName}</td>
                 <td>${c.phone || '-'}</td>
@@ -203,12 +214,68 @@ function renderClients(clients) {
         `;
     });
 
-    html += `</tbody></table></div>`;
-    container.innerHTML = html;
+    tableHtml += `</tbody></table></div>`;
+    if (tableContainer) tableContainer.innerHTML = tableHtml;
 
-    // Render pagination
+    // Render Cards
+    let cardsHtml = pageClients.map(c => {
+        const fullName = `${c.first_name} ${c.last_name || ''}`.trim();
+        const servicesList = (c.services || []).join(', ') || '-';
+        const statusClass = c.status === 'COMPLETED' ? 'status-converted' :
+            c.status === 'ON-HOLD' ? 'status-demo' : 'status-new';
+
+        return `
+            <div class="premium-card" data-id="${c.id}">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <input type="checkbox" class="client-checkbox" data-id="${c.id}" ${selectedClientIds.has(c.id) ? 'checked' : ''}>
+                        <span class="card-id-badge">${c.client_id || 'CL-ACS-XXX'}</span>
+                    </div>
+                    <span class="status-badge ${statusClass}">${c.status || 'ACTIVE'}</span>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-name">${fullName}</h4>
+                    <div class="card-info-row">
+                        <span class="card-info-item"><i class="fa-solid fa-phone"></i> ${c.phone || '-'}</span>
+                    </div>
+                    <div class="card-info-row">
+                        <span class="card-info-item"><i class="fa-solid fa-briefcase"></i> ${servicesList}</span>
+                    </div>
+                    <div class="card-info-row fee-row">
+                        <span class="card-info-item"><i class="fa-solid fa-indian-rupee-sign"></i> ₹${formatNumber(c.total_fee || 0)}</span>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="btn btn-outline btn-sm edit-btn" data-id="${c.id}"><i class="fa-solid fa-pen"></i> Edit</button>
+                    <button class="btn btn-outline btn-sm whatsapp" data-phone="${c.phone}"><i class="fa-brands fa-whatsapp"></i> Chat</button>
+                    <button class="btn btn-danger-outline btn-sm delete" data-id="${c.id}" data-name="${fullName}"><i class="fa-solid fa-trash"></i>Delete</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    if (cardsContainer) cardsContainer.innerHTML = cardsHtml;
+
     renderPagination(totalPages);
     bindTableActions();
+    updateBulkActionsBar();
+}
+
+function updateBulkActionsBar() {
+    const bar = document.getElementById('bulk-actions-container');
+    const countEl = document.getElementById('selected-count');
+    if (!bar || !countEl) return;
+
+    if (selectedClientIds.size > 0) {
+        bar.style.display = 'block';
+        countEl.textContent = selectedClientIds.size;
+    } else {
+        bar.style.display = 'none';
+    }
+}
+
+function isAllSelected(pageClients) {
+    if (pageClients.length === 0) return false;
+    return pageClients.every(c => selectedClientIds.has(c.id));
 }
 
 function renderPagination(totalPages) {
@@ -240,6 +307,29 @@ function bindTableActions() {
         window.open(`https://wa.me/91${p}`, '_blank');
     });
     document.querySelectorAll('.delete').forEach(b => b.onclick = () => showDeleteConfirm(b.dataset.id, b.dataset.name));
+
+    // Checkbox logic
+    document.getElementById('select-all-clients')?.addEventListener('change', (e) => {
+        const pageCheckboxes = document.querySelectorAll('.client-checkbox');
+        pageCheckboxes.forEach(cb => {
+            cb.checked = e.target.checked;
+            if (e.target.checked) selectedClientIds.add(cb.dataset.id);
+            else selectedClientIds.delete(cb.dataset.id);
+        });
+        updateBulkActionsBar();
+    });
+
+    document.querySelectorAll('.client-checkbox').forEach(cb => {
+        cb.onchange = (e) => {
+            if (e.target.checked) selectedClientIds.add(cb.dataset.id);
+            else {
+                selectedClientIds.delete(cb.dataset.id);
+                const selectAll = document.getElementById('select-all-clients');
+                if (selectAll) selectAll.checked = false;
+            }
+            updateBulkActionsBar();
+        };
+    });
 }
 
 // =====================
@@ -547,14 +637,45 @@ function hideDeleteConfirm() {
 
 async function confirmDelete() {
     if (!deleteTargetId) return;
+    const { Toast } = window.AdminUtils;
     try {
-        await window.supabaseClient.from('clients').delete().eq('id', deleteTargetId);
+        const { error } = await window.supabaseClient.from('clients').delete().eq('id', deleteTargetId);
+        if (error) throw error;
+
+        selectedClientIds.delete(deleteTargetId);
         hideDeleteConfirm();
         await loadClients();
-        window.AdminUtils.Toast.success('Deleted', 'Client removed');
+        Toast.success('Deleted', 'Client removed');
     } catch (e) {
         console.error(e);
-        window.AdminUtils.Toast.error('Error', 'Failed to delete');
+        Toast.error('Error', 'Failed to delete');
+    }
+}
+
+async function bulkDeleteClients() {
+    if (selectedClientIds.size === 0) return;
+    const { Toast } = window.AdminUtils;
+
+    if (!confirm(`Are you sure you want to delete ${selectedClientIds.size} clients?`)) return;
+
+    const btn = document.getElementById('bulk-delete-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Deleting...';
+
+    try {
+        const ids = Array.from(selectedClientIds);
+        const { error } = await window.supabaseClient.from('clients').delete().in('id', ids);
+        if (error) throw error;
+
+        selectedClientIds.clear();
+        Toast.success('Deleted', 'Selected clients removed');
+        await loadClients();
+    } catch (e) {
+        console.error(e);
+        Toast.error('Error', 'Bulk delete failed');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-trash"></i> Delete Selected';
     }
 }
 

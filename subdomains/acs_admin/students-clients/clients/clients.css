@@ -281,6 +281,140 @@
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
+/* Responsive Layout Toggles */
+.data-cards {
+    display: none;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Bulk Actions Styling */
+#bulk-actions-container {
+    margin-bottom: 1.5rem;
+}
+
+.bulk-actions-bar {
+    background: #fff;
+    border: 1.5px solid #ef444433;
+    border-radius: 12px;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.08);
+}
+
+.bulk-actions-info {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--admin-text-primary, #0f172a);
+}
+
+#selected-count {
+    background: #ef44441a;
+    color: #ef4444;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-right: 4px;
+}
+
+/* Premium Card (Mobile View) */
+.premium-card {
+    background: #fff;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 20px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 12px rgba(40, 150, 205, 0.05);
+    transition: transform 0.2s ease;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.card-id-badge {
+    background: rgba(40, 150, 205, 0.1);
+    color: var(--primary-color);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.card-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--admin-text-primary, #0f172a);
+}
+
+.card-info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--admin-text-muted, #64748b);
+    font-size: 0.9rem;
+}
+
+.card-info-row i {
+    width: 20px;
+    color: var(--primary-color);
+}
+
+.card-info-row.fee-row {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--admin-input-border, #e2e8f0);
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.btn-danger-outline {
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid #ef444433;
+    color: #ef4444;
+}
+
+/* Responsive Overrides */
+@media (max-width: 992px) {
+    .table-container {
+        display: none !important;
+    }
+
+    .data-cards {
+        display: flex;
+    }
+
+    .section-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-box {
+        width: 100%;
+        margin-top: 1rem;
+    }
+}
+
 @media (max-width: 768px) {
     .form-row {
         grid-template-columns: 1fr;

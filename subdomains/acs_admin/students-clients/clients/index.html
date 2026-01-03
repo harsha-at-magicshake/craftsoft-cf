@@ -93,6 +93,17 @@
                     </div>
                 </div>
 
+                <div id="bulk-actions-container" style="display: none;">
+                    <div class="bulk-actions-bar">
+                        <div class="bulk-actions-info">
+                            <span id="selected-count">0</span> clients selected
+                        </div>
+                        <button class="btn btn-danger btn-sm" id="bulk-delete-btn">
+                            <i class="fa-solid fa-trash"></i> Delete Selected
+                        </button>
+                    </div>
+                </div>
+
                 <div class="section-actions">
 
                     <button class="btn btn-primary" id="add-client-btn">
@@ -192,8 +203,16 @@
 
                 <div class="section-divider"></div>
                 <div id="clients-content">
-                    <div class="loading-spinner">
-                        <i class="fa-solid fa-spinner fa-spin"></i> Loading clients...
+                    <!-- Desktop Table -->
+                    <div class="table-container" id="clients-table-container">
+                        <div class="loading-spinner">
+                            <i class="fa-solid fa-spinner fa-spin"></i> Loading clients...
+                        </div>
+                    </div>
+
+                    <!-- Mobile Cards -->
+                    <div class="data-cards" id="clients-cards">
+                        <!-- Populated by JS -->
                     </div>
                 </div>
                 <div class="pagination-container" id="pagination-container"></div>
