@@ -168,10 +168,9 @@ async function initiatePayment(courseId, courseName) {
             key: order.key_id,
             amount: order.amount,
             currency: order.currency,
-            name: `${currentStudent.first_name} ${currentStudent.last_name}`,
-            description: `${courseName} - Fee Payment | Abhi's Craftsoft`,
+            name: "Abhi's Craftsoft",
+            description: "Fee Payment",
             order_id: order.order_id,
-            // Header Branding
             image: "https://craftsoft.co.in/favicon.svg",
             prefill: {
                 name: `${currentStudent.first_name} ${currentStudent.last_name}`,
@@ -179,26 +178,22 @@ async function initiatePayment(courseId, courseName) {
                 email: currentStudent.email || "",
                 method: "upi"
             },
-            notes: {
-                student_id: currentStudent.student_id,
-                course: courseName
-            },
             theme: { color: "#2896cd" },
-            // Restrict methods using config while keeping header
             config: {
                 display: {
                     blocks: {
-                        banks: {
-                            name: "Select Payment Method",
-                            instruments: [
-                                { method: "upi" },
-                                { method: "paylater" }
-                            ]
+                        upi: {
+                            name: "Pay via UPI",
+                            instruments: [{ method: "upi" }]
+                        },
+                        paylater: {
+                            name: "Pay Later",
+                            instruments: [{ method: "paylater" }]
                         }
                     },
-                    sequence: ["block.banks"],
+                    sequence: ["block.upi", "block.paylater"],
                     preferences: {
-                        show_default_blocks: true // This ensures header is shown
+                        show_default_blocks: false
                     }
                 }
             },
