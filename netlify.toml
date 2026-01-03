@@ -72,8 +72,15 @@
 
 [[redirects]]
   host = "admin.craftsoft.co.in"
+  from = "/students"
+  to = "/subdomains/acs_admin/students-services/students/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  host = "admin.craftsoft.co.in"
   from = "/students/*"
-  to = "/subdomains/acs_admin/students/:splat"
+  to = "/subdomains/acs_admin/students-services/students/:splat"
   status = 200
   force = true
 
@@ -100,15 +107,15 @@
 
 [[redirects]]
   host = "admin.craftsoft.co.in"
-  from = "/acs_services"
-  to = "/subdomains/acs_admin/acs_services/index.html"
+  from = "/services"
+  to = "/subdomains/acs_admin/students-services/services/index.html"
   status = 200
   force = true
 
 [[redirects]]
   host = "admin.craftsoft.co.in"
-  from = "/acs_services/*"
-  to = "/subdomains/acs_admin/acs_services/:splat"
+  from = "/services/*"
+  to = "/subdomains/acs_admin/students-services/services/:splat"
   status = 200
   force = true
 

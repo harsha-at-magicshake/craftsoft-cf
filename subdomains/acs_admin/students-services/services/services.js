@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // 2. Initialize Sidebar (Flat item on desktop, child on mobile)
-    AdminSidebar.init('acs_services');
+    AdminSidebar.init('services');
 
     // 3. Render Header
     const headerContainer = document.getElementById('header-container');

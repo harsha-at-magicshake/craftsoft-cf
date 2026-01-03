@@ -27,8 +27,8 @@ const AdminSidebar = {
             <aside class="admin-sidebar" id="admin-sidebar">
                 <nav class="sidebar-nav">
                     ${this.navItem('dashboard', 'Dashboard', 'fa-chart-pie')}
-                    ${this.navItem('students', 'Students', 'fa-user-graduate')}
-                    ${this.navItem('acs_services', 'Services', 'fa-person-digging')}
+                    ${this.navItem('students', 'Students', 'fa-user-graduate', 'students')}
+                    ${this.navItem('services', 'Services', 'fa-person-digging', 'services')}
                     ${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user')}
                     ${this.navItem('inquiries', 'Inquiries', 'fa-phone-volume')}
                     ${this.navItem('courses', 'Courses', 'fa-book-bookmark')}
@@ -44,7 +44,7 @@ const AdminSidebar = {
         `;
 
         // Mobile nav bottom sheet (collapsible)
-        const activeGroup = ['students', 'acs_services'].includes(this.currentPage) ? 'students_services' : (isPaymentsChild ? 'payments' : null);
+        const activeGroup = ['students', 'services'].includes(this.currentPage) ? 'students_services' : (isPaymentsChild ? 'payments' : null);
 
         const mobileNavHTML = `
             <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
@@ -68,7 +68,7 @@ const AdminSidebar = {
                         <div class="mobile-nav-children">
                             <div style="min-height: 0;">
                                 ${this.mobileNavItemChild('students', 'Students', 'fa-user-graduate', 'students')}
-                                ${this.mobileNavItemChild('acs_services', 'Services', 'fa-person-digging', 'acs_services')}
+                                ${this.mobileNavItemChild('services', 'Services', 'fa-person-digging', 'services')}
                             </div>
                         </div>
                     </div>
