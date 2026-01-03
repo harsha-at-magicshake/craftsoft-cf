@@ -168,9 +168,23 @@ async function initiatePayment(courseId, courseName) {
             key: order.key_id,
             amount: order.amount,
             currency: order.currency,
-            name: "Abhi's Craftsoft",
-            description: `${courseName} Fee Payment | ${currentStudent.first_name} ${currentStudent.last_name}`,
+            name: `${currentStudent.first_name} ${currentStudent.last_name}`,
+            description: `${courseName} - Fee Payment | Abhi's Craftsoft`,
             order_id: order.order_id,
+            // Header Branding
+            image: "https://craftsoft.co.in/favicon.svg",
+            prefill: {
+                name: `${currentStudent.first_name} ${currentStudent.last_name}`,
+                contact: currentStudent.phone,
+                email: currentStudent.email || "",
+                method: "upi"
+            },
+            notes: {
+                student_id: currentStudent.student_id,
+                course: courseName
+            },
+            theme: { color: "#2896cd" },
+            // Restrict methods using config while keeping header
             config: {
                 display: {
                     blocks: {
@@ -184,20 +198,13 @@ async function initiatePayment(courseId, courseName) {
                     },
                     sequence: ["block.banks"],
                     preferences: {
-                        show_default_blocks: false
+                        show_default_blocks: true // This ensures header is shown
                     }
                 }
             },
             handler: async (res) => {
                 await verifyPayment(res, courseId, amount);
             },
-            prefill: {
-                name: `${currentStudent.first_name} ${currentStudent.last_name}`,
-                contact: currentStudent.phone,
-                email: currentStudent.email || "",
-                method: "upi"
-            },
-            theme: { color: "#2896cd" },
             modal: {
                 ondismiss: () => {
                     payBtn.disabled = false;
