@@ -105,7 +105,6 @@ exports.handler = async (event) => {
 
         // Step 5: Generate Receipt ID (Matching Format: 001-ACS-KS-AWS)
         const studentName = `${students[0]?.first_name || ''} ${students[0]?.last_name || ''}`.trim();
-        const courseName = courses[0]?.course_name || 'Course';
 
         // Get sequence number from existing receipts
         const allReceipts = await supabaseSelect(supabaseUrl, supabaseServiceKey, 'receipts', 'order=created_at.desc&limit=1');
@@ -116,8 +115,8 @@ exports.handler = async (event) => {
         }
 
         const initials = studentName.split(' ').map(w => w[0]?.toUpperCase() || '').join('');
-        const courseAbbr = courseName.replace(/[^a-zA-Z0-9]/g, '').slice(0, 3).toUpperCase();
-        const receiptId = `${String(seq).padStart(3, '0')}-ACS-${initials}-${courseAbbr}`;
+        // Using courseCode (e.g. AWS, GD, UIX) instead of name abbreviation
+        const receiptId = `${String(seq).padStart(3, '0')}-ACS-${initials}-${courseCode}`;
 
         // Step 6: Create entry in 'receipts' table
         await supabaseInsert(supabaseUrl, supabaseServiceKey, 'receipts', {
