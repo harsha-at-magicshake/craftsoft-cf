@@ -44,56 +44,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // =====================
-// Sync Services from Website
-// =====================
-async function syncServices() {
-    const { Toast } = window.AdminUtils;
-    const btn = document.getElementById('sync-services-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Syncing...';
-
-    try {
-        const { data: existing, error: fetchError } = await window.supabaseClient
-            .from('services')
-            .select('service_code');
-        if (fetchError) throw fetchError;
-
-        const existingMap = new Map(existing?.map(s => [s.service_code, true]) || []);
-
-        let synced = 0;
-        for (let i = 0; i < websiteServices.length; i++) {
-            const svc = websiteServices[i];
-            const sid = `SV-${String(i + 1).padStart(3, '0')}`;
-
-            if (existingMap.has(svc.code)) {
-                // Update name
-                await window.supabaseClient.from('services')
-                    .update({
-                        name: svc.name
-                    })
-                    .eq('service_code', svc.code);
-            } else {
-                // Insert new
-                await window.supabaseClient.from('services').insert({
-                    service_code: svc.code,
-                    name: svc.name
-                });
-            }
-            synced++;
-        }
-
-        Toast.success('Synced', `${synced} services synced from website`);
-        await loadServicesForClients();
-    } catch (e) {
-        console.error('Sync error:', e);
-        Toast.error('Error', e.message || 'Failed to sync services');
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Sync Services';
-    }
-}
-
-// =====================
 // Load Services Master Data
 // =====================
 async function loadServicesForClients() {

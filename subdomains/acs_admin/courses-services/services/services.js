@@ -1,7 +1,6 @@
 // Services Master Table Module
 const websiteServices = [
     { code: 'S-WDEV', name: 'Website Development' },
-    { code: 'S-UIUX', name: 'UI/UX Design Services' },
     { code: 'S-GD', name: 'Graphic Design Services' },
     { code: 'S-BRND', name: 'Branding & Marketing' },
     { code: 'S-CLOUD', name: 'Cloud & DevOps Solutions' },
