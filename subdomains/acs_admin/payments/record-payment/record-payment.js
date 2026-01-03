@@ -243,7 +243,7 @@ async function handlePayment(e) {
             student_id: selectedStudent,
             [isServiceMode ? 'service_id' : 'course_id']: selectedItem,
             amount_paid: amount,
-            payment_mode: mode === 'OFFLINE_UPI' ? 'UPI' : 'CASH',
+            payment_mode: mode,
             reference_id: referenceId,
             status: 'SUCCESS',
             payment_date: paymentDate
