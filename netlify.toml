@@ -132,8 +132,44 @@
   to = "/subdomains/acs_admin/settings/:splat"
   status = 200
   force = true
+# Add explicit redirects for dashboard and other folders without trailing slash
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/dashboard"
+  to = "/subdomains/acs_admin/dashboard/index.html"
+  status = 200
+  force = true
 
-# Catch-all for other files in acs_admin root (js, css, etc.)
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/tutors"
+  to = "/subdomains/acs_admin/tutors/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/inquiries"
+  to = "/subdomains/acs_admin/inquiries/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/courses"
+  to = "/subdomains/acs_admin/courses/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/settings"
+  to = "/subdomains/acs_admin/settings/index.html"
+  status = 200
+  force = true
+
+# Catch-all for other files in acs_admin (MUST be last for admin subdomain)
+# This handles JS, CSS, and other static files
 [[redirects]]
   host = "admin.craftsoft.co.in"
   from = "/*"
