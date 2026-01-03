@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - CraftSoft Admin</title>
+    <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Admin Styles -->
+    <link rel="stylesheet" href="../../assets/css/base/variables.css">
+    <link rel="stylesheet" href="../../assets/admin/css/base/variables.css">
+    <link rel="stylesheet" href="../../assets/admin/css/base/reset.css">
+    <link rel="stylesheet" href="../../assets/admin/css/base/typography.css">
+    <link rel="stylesheet" href="../../assets/admin/css/layout/dashboard.css">
+    <link rel="stylesheet" href="../../assets/admin/css/layout/header.css">
+    <link rel="stylesheet" href="../../assets/admin/css/layout/sidebar.css">
+    <link rel="stylesheet" href="../../assets/admin/css/components/buttons.css">
+    <link rel="stylesheet" href="../../assets/admin/css/components/cards.css">
+    <link rel="stylesheet" href="../../assets/admin/css/components/modals.css">
+    <link rel="stylesheet" href="../../assets/admin/css/components/toasts.css">
+    <link rel="stylesheet" href="../../assets/admin/css/components/account-panel.css">
+
+    <style>
+        .maintenance-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 150px);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .maintenance-icon-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .maintenance-icon {
+            font-size: 5rem;
+            color: var(--primary-color);
+            animation: pulse-worker 2s infinite ease-in-out;
+        }
+
+        .maintenance-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .maintenance-text {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        @keyframes pulse-worker {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 0 rgba(40, 150, 205, 0));
+            }
+
+            50% {
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 20px rgba(40, 150, 205, 0.3));
+            }
+
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 0 rgba(40, 150, 205, 0));
+            }
+        }
+
+        .construction-tag {
+            background: rgba(40, 150, 205, 0.1);
+            color: var(--primary-color);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+        <main class="admin-main">
+            <div id="header-container"></div>
+
+            <div class="content-card">
+                <div class="maintenance-container">
+                    <div class="construction-tag">
+                        <i class="fa-solid fa-screwdriver-wrench"></i> Under Development
+                    </div>
+
+                    <div class="maintenance-icon-wrapper">
+                        <i class="fa-solid fa-person-digging maintenance-icon"></i>
+                    </div>
+
+                    <h2 class="maintenance-title">Module Under Maintenance</h2>
+                    <p class="maintenance-text">
+                        We are currently building this service management system to help you track and manage your
+                        business services better. Check back soon!
+                    </p>
+
+                    <a href="../dashboard/" class="btn btn-primary">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../assets/admin/js/supabase-config.js"></script>
+    <script src="../../assets/admin/js/admin-utils.js"></script>
+    <script src="../../assets/admin/js/auth.js"></script>
+    <script src="../../assets/admin/js/sidebar.js"></script>
+    <script src="../../assets/admin/js/notifications.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = await window.supabaseConfig.getSession();
+            if (!session) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            AdminSidebar.init('services');
+
+            const headerContainer = document.getElementById('header-container');
+            if (headerContainer) {
+                headerContainer.innerHTML = AdminHeader.render('Services Management');
+            }
+
+            const admin = await window.Auth.getCurrentAdmin();
+            await AdminSidebar.renderAccountPanel(session, admin);
+        });
+    </script>
+</body>
+
+</html>

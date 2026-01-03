@@ -28,10 +28,10 @@ const AdminSidebar = {
                 <nav class="sidebar-nav">
                     ${this.navItem('dashboard', 'Dashboard', 'fa-chart-pie')}
                     ${this.navItem('students', 'Students', 'fa-user-graduate')}
+                    ${this.navItem('acs_services', 'Services', 'fa-person-digging')}
                     ${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user')}
                     ${this.navItem('inquiries', 'Inquiries', 'fa-phone-volume')}
                     ${this.navItem('courses', 'Courses', 'fa-book-bookmark')}
-                    ${this.navItem('acs_services', 'Services', 'fa-briefcase')}
                     
                     <!-- Payments Section (No parent label on desktop/tablet) -->
                     ${this.navItem('record-payment', 'Record Payment', 'fa-money-bill-1', 'payments/record-payment')}
@@ -44,6 +44,8 @@ const AdminSidebar = {
         `;
 
         // Mobile nav bottom sheet (collapsible)
+        const activeGroup = ['students', 'acs_services'].includes(this.currentPage) ? 'students_services' : (isPaymentsChild ? 'payments' : null);
+
         const mobileNavHTML = `
             <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
             <div class="mobile-nav-sheet" id="mobile-nav-sheet">
@@ -55,14 +57,28 @@ const AdminSidebar = {
                 </div>
                 <nav class="mobile-nav-list">
                     ${this.mobileNavItem('dashboard', 'Dashboard', 'fa-chart-pie')}
-                    ${this.mobileNavItem('students', 'Students', 'fa-user-graduate')}
+
+                    <!-- Students & Services Parent (Mobile Only) -->
+                    <div class="mobile-nav-parent ${activeGroup === 'students_services' ? 'expanded' : ''}" id="mobile-students-services-parent">
+                        <button class="mobile-nav-parent-btn" id="mobile-students-services-toggle">
+                            <i class="fa-solid fa-list-check"></i>
+                            <span>Students & Services</span>
+                            <i class="fa-solid fa-chevron-right mobile-nav-arrow"></i>
+                        </button>
+                        <div class="mobile-nav-children">
+                            <div style="min-height: 0;">
+                                ${this.mobileNavItemChild('students', 'Students', 'fa-user-graduate', 'students')}
+                                ${this.mobileNavItemChild('acs_services', 'Services', 'fa-person-digging', 'acs_services')}
+                            </div>
+                        </div>
+                    </div>
+
                     ${this.mobileNavItem('tutors', 'Tutors', 'fa-chalkboard-user')}
                     ${this.mobileNavItem('inquiries', 'Inquiries', 'fa-phone-volume')}
                     ${this.mobileNavItem('courses', 'Courses', 'fa-book-bookmark')}
-                    ${this.mobileNavItem('acs_services', 'Services', 'fa-briefcase')}
                     
                     <!-- Payments Parent (collapsible on mobile) -->
-                    <div class="mobile-nav-parent ${isPaymentsChild ? 'expanded' : ''}" id="mobile-payments-parent">
+                    <div class="mobile-nav-parent ${activeGroup === 'payments' ? 'expanded' : ''}" id="mobile-payments-parent">
                         <button class="mobile-nav-parent-btn" id="mobile-payments-toggle">
                             <i class="fa-solid fa-money-bill-wave"></i>
                             <span>Payments</span>
@@ -169,6 +185,13 @@ const AdminSidebar = {
         // Close mobile nav on X click
         document.getElementById('mobile-nav-close')?.addEventListener('click', () => {
             this.closeMobileNav();
+        });
+
+        // Mobile Students & Services expand/collapse
+        document.getElementById('mobile-students-services-toggle')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            const parent = document.getElementById('mobile-students-services-parent');
+            parent?.classList.toggle('expanded');
         });
 
         // Mobile Payments expand/collapse toggle

@@ -46,20 +46,27 @@
     <!-- Admin Styles - Responsive -->
     <link rel="stylesheet" href="../../../assets/admin/css/responsive/tablet.css">
     <link rel="stylesheet" href="../../../assets/admin/css/responsive/mobile.css">
-    <!-- Page Specific & Components -->
-    <link rel="stylesheet" href="../../../assets/admin/css/components/pagination.css">
+
+    <!-- Page Specific -->
     <link rel="stylesheet" href="../../../assets/admin/css/components/notifications.css">
+    <link rel="stylesheet" href="acs_services.css">
+
     <!-- FOUC Protection -->
     <style>
-        .no-fouc { opacity: 0; }
-        body { transition: opacity 0.3s ease; }
+        .no-fouc {
+            opacity: 0;
+        }
+
+        body {
+            transition: opacity 0.3s ease;
+        }
     </style>
     <script>
         document.documentElement.className += ' no-fouc';
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             document.documentElement.classList.remove('no-fouc');
         });
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             document.documentElement.classList.remove('no-fouc');
         });
     </script>
@@ -71,31 +78,24 @@
         <main class="admin-main">
             <div id="header-container"></div>
 
-            <div class="content-card">
-                <div class="section-header">
-                    <div class="section-header-left">
-                        <div class="section-icon">
-                            <i class="fa-solid fa-briefcase"></i> </div>
-                        <div class="section-info">
-                            <h2 class="section-title">Services</h2>
-                            <p class="section-subtitle">Manage IT services and offerings</p>
-                        </div>
+            <div class="content-card maintenance-board-container">
+                <div class="maintenance-content">
+                    <div class="maintenance-icon-wrapper">
+                        <i class="fa-solid fa-person-digging maintenance-icon"></i>
                     </div>
-                    <div class="section-actions">
-                        <button class="btn btn-primary" id="sync-services-btn">
-                            <i class="fa-solid fa-rotate"></i> Sync from Website
-                        </button>
+                    <h2 class="maintenance-title">Module Under Maintenance</h2>
+                    <p class="maintenance-description">
+                        We are currently building the service management system.<br>
+                        This module will allow you to manage IT services, tracking, and more.
+                    </p>
+                    <div class="maintenance-status">
+                        <span class="status-pulse"></span>
+                        <span class="status-text">Development in Progress</span>
                     </div>
+                    <a href="../dashboard/" class="btn btn-primary">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                    </a>
                 </div>
-
-                <div class="section-divider"></div>
-
-                <div id="services-content">
-                    <div class="loading-spinner">
-                        <i class="fa-solid fa-spinner fa-spin"></i> <span>Loading services...</span>
-                    </div>
-                </div>
-                <div class="pagination-container" id="pagination-container"></div>
             </div>
         </main>
     </div>
@@ -111,9 +111,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
