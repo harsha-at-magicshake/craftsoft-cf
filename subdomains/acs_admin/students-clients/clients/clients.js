@@ -242,7 +242,7 @@ function renderClients(clients) {
                         <span class="card-info-item"><i class="fa-solid fa-phone"></i> ${c.phone || '-'}</span>
                     </div>
                     <div class="card-info-row">
-                        <span class="card-info-item"><i class="fa-solid fa-briefcase"></i> ${servicesList}</span>
+                        <span class="card-info-item"><i class="fa-solid fa-wrench"></i> ${servicesList}</span>
                     </div>
                     <div class="card-info-row fee-row">
                         <span class="card-info-item"><i class="fa-solid fa-indian-rupee-sign"></i> ₹${formatNumber(c.total_fee || 0)}</span>

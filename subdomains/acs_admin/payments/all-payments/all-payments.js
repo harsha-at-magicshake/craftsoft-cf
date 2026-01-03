@@ -141,7 +141,7 @@ function renderPayments() {
                         <i class="fa-solid fa-user"></i> 
                         ${entityName} (${displayId})
                     </span>
-                    <span class="card-info-item"><i class="fa-solid fa-book"></i> ${itemName}</span>
+                    <span class="card-info-item"><i class="fa-solid ${p.service_id ? 'fa-wrench' : 'fa-book'}"></i> ${itemName}</span>
                     <span class="card-info-item"><i class="fa-solid fa-hashtag"></i> ${p.reference_id}</span>
                 </div>
             </div>

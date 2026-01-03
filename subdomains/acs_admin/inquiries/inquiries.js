@@ -174,7 +174,7 @@ function renderInquiries(items) {
                                 <div class="action-btns">
                                     <button class="action-btn edit-btn" data-id="${inq.id}"><i class="fa-solid fa-pen"></i></button>
                                     <button class="action-btn whatsapp" data-phone="${inq.phone}"><i class="fa-brands fa-whatsapp"></i></button>
-                                    <button class="action-btn convert" data-id="${inq.id}" title="${isSrv ? 'Convert to Client' : 'Convert to Student'}"><i class="fa-solid fa-${isSrv ? 'briefcase' : 'user-graduate'}"></i></button>
+                                    <button class="action-btn convert" data-id="${inq.id}" title="${isSrv ? 'Convert to Client' : 'Convert to Student'}"><i class="fa-solid fa-${isSrv ? 'wrench' : 'user-graduate'}"></i></button>
                                     <button class="action-btn delete" data-id="${inq.id}" data-name="${inq.name}"><i class="fa-solid fa-trash"></i></button>
                                 </div>
                             </td>
@@ -213,7 +213,7 @@ function renderInquiries(items) {
                     <div class="inquiry-card-actions">
                         <button class="action-btn edit-btn" data-id="${inq.id}"><i class="fa-solid fa-pen"></i></button>
                         <button class="action-btn whatsapp" data-phone="${inq.phone}"><i class="fa-brands fa-whatsapp"></i></button>
-                        <button class="action-btn convert" data-id="${inq.id}" title="${isSrv ? 'Convert to Client' : 'Convert to Student'}"><i class="fa-solid fa-${isSrv ? 'briefcase' : 'user-graduate'}"></i></button>
+                        <button class="action-btn convert" data-id="${inq.id}" title="${isSrv ? 'Convert to Client' : 'Convert to Student'}"><i class="fa-solid fa-${isSrv ? 'wrench' : 'user-graduate'}"></i></button>
                         <button class="action-btn delete" data-id="${inq.id}" data-name="${inq.name}"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>

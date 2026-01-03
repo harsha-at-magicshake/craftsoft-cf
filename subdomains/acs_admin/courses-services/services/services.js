@@ -64,11 +64,11 @@ function renderServicesList(services) {
 
     if (!services || services.length === 0) {
         const emptyHTML = `
-            <div class="empty-state">
-                <div class="empty-state-icon"><i class="fa-solid fa-briefcase"></i></div>
-                <h3>No services yet</h3>
-                <p>Click "Sync from Website" to populate services</p>
-            </div>`;
+                <div class="empty-state">
+                    <div class="empty-state-icon"><i class="fa-solid fa-wrench"></i></div>
+                    <h3>No services yet</h3>
+                    <p>Click "Sync from Website" to populate services</p>
+                </div>`;
         if (tableContainer) tableContainer.innerHTML = emptyHTML;
         if (cardsContainer) cardsContainer.innerHTML = '';
         return;
@@ -80,40 +80,40 @@ function renderServicesList(services) {
     // Render Table
     if (tableContainer) {
         tableContainer.innerHTML = `
-            <div class="data-table-wrapper">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Code</th><th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${paginatedServices.map(s => `
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
                             <tr>
-                                <td><span class="badge badge-primary">${s.service_code}</span></td>
-                                <td>${s.name || '-'}</td>
+                                <th>Code</th><th>Name</th>
                             </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-        `;
+                        </thead>
+                        <tbody>
+                            ${paginatedServices.map(s => `
+                                <tr>
+                                    <td><span class="badge badge-primary">${s.service_code}</span></td>
+                                    <td>${s.name || '-'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
     }
 
     // Render Cards
     if (cardsContainer) {
         cardsContainer.innerHTML = paginatedServices.map(s => `
-            <div class="premium-card">
-                <div class="card-header">
-                    <span class="card-id-badge">${s.service_code}</span>
-                </div>
-                <div class="card-body">
-                    <div class="card-info-row">
-                        <span class="card-info-item"><i class="fa-solid fa-briefcase"></i> ${s.name || '-'}</span>
+                <div class="premium-card">
+                    <div class="card-header">
+                        <span class="card-id-badge">${s.service_code}</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-info-row">
+                            <span class="card-info-item"><i class="fa-solid fa-wrench"></i> ${s.name || '-'}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `).join('');
+            `).join('');
     }
 
     // Common Footer
