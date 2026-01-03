@@ -30,6 +30,21 @@
   to = "/favicon.svg"
   status = 200
 
+# Block /admin/* on main domain - must only be accessed via subdomain
+[[redirects]]
+  from = "/admin"
+  to = "/404/"
+  status = 404
+  force = true
+  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in", "abhiscraftsoft.netlify.app", "abhis-craftsoft.netlify.app"]}
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/404/"
+  status = 404
+  force = true
+  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in", "abhiscraftsoft.netlify.app", "abhis-craftsoft.netlify.app"]}
+
 # Legacy HTML to Clean URL Redirects
 [[redirects]]
   from = "/about.html"
@@ -153,7 +168,8 @@
   status = 404
   force = true
 
+# Global 404 catch-all - any unavailable page uses our custom 404
 [[redirects]]
-  from = "/admin"
-  to = "/admin/"
-  status = 301
+  from = "/*"
+  to = "/404/"
+  status = 404
