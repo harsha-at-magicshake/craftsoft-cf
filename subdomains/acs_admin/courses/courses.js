@@ -18,7 +18,8 @@ const websiteCourses = [
     { code: 'ENG', name: 'Spoken English Mastery' },
     { code: 'SOFT', name: 'Soft Skills Training' },
     { code: 'RESUME', name: 'Resume Writing & Interview Prep' },
-    { code: 'HW', name: 'Handwriting Improvement' }
+    { code: 'HW', name: 'Handwriting Improvement' },
+    { code: 'CAREER', name: 'Career Counselling' }
 ];
 
 let allCourses = []; // Store fetched courses
@@ -165,6 +166,9 @@ async function syncCourses() {
             const m = maxData[0].course_id.match(/C-(\d+)/);
             if (m) nextNum = parseInt(m[1]) + 1;
         }
+
+        // Purge old Career Counselling records with wrong codes (if any)
+        await window.supabaseClient.from('courses').delete().eq('course_name', 'Career Counselling').neq('course_code', 'CAREER');
 
         let synced = 0;
         for (const c of websiteCourses) {
