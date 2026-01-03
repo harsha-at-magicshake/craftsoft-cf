@@ -654,15 +654,9 @@ const Auth = {
         // DO NOT call signOut() - this is a remote logout for this tab only
         // Other tabs should remain unaffected
 
-        // Show message and redirect using custom modal
-        const { Modal } = window.AdminUtils || {};
-        if (Modal && typeof Modal.alert === 'function') {
-            Modal.alert('warning', 'Session Ended', 'Your session was logged out from another device.', () => {
-                window.location.href = window.location.pathname.includes('/admin/') ? '/admin/' : '/';
-            });
-        } else {
-            window.location.href = window.location.pathname.includes('/admin/') ? '/admin/' : '/';
-        }
+        // Show message and redirect silently
+        // We previously removed the modal approach here to prevent "false" alerts
+        window.location.href = window.location.pathname.includes('/admin/') ? '/admin/' : '/';
     }
 };
 
