@@ -1,5 +1,5 @@
-// Pay Your Fees - Public Payment Page
 // Students enter Student ID, see balances, and pay via UPI
+console.log('Pay JS Version 3.0 loaded');
 
 // Supabase config (public anon key only - for read-only lookups)
 const SUPABASE_URL = 'https://afocbygdakyqtmmrjvmy.supabase.co';
@@ -257,7 +257,7 @@ async function payForCourse(courseId) {
 
     try {
         // Step 1: Create Razorpay order
-        const orderResponse = await fetch('https://craftsoft.co.in/.netlify/functions/pay-create-order', {
+        const orderResponse = await fetch('/.netlify/functions/pay-create-order', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -329,6 +329,12 @@ async function payForCourse(courseId) {
                 }
             }, 100);
         } else {
+            if (typeof Razorpay === 'undefined') {
+                showToast('Razorpay script not loaded. Please refresh the page.');
+                payBtn.disabled = false;
+                payBtn.innerHTML = '<i class="fa-brands fa-gg"></i> Pay';
+                return;
+            }
             const razorpay = new Razorpay(razorpayOptions);
             razorpay.on('payment.failed', function (response) {
                 payBtn.disabled = false;
@@ -349,7 +355,7 @@ async function payForCourse(courseId) {
 // Verify Payment
 async function verifyPayment(razorpayResponse, courseId) {
     try {
-        const verifyResponse = await fetch('https://craftsoft.co.in/.netlify/functions/pay-verify-payment', {
+        const verifyResponse = await fetch('/.netlify/functions/pay-verify-payment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
