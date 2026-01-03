@@ -132,7 +132,10 @@
   to = "/subdomains/acs_admin/settings/:splat"
   status = 200
   force = true
-# Add explicit redirects for dashboard and other folders without trailing slash
+# Add explicit redirects for paths WITHOUT and WITH trailing slash
+# These must come BEFORE the catch-all
+
+# Dashboard
 [[redirects]]
   host = "admin.craftsoft.co.in"
   from = "/dashboard"
@@ -142,11 +145,27 @@
 
 [[redirects]]
   host = "admin.craftsoft.co.in"
+  from = "/dashboard/"
+  to = "/subdomains/acs_admin/dashboard/index.html"
+  status = 200
+  force = true
+
+# Tutors
+[[redirects]]
+  host = "admin.craftsoft.co.in"
   from = "/tutors"
   to = "/subdomains/acs_admin/tutors/index.html"
   status = 200
   force = true
 
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/tutors/"
+  to = "/subdomains/acs_admin/tutors/index.html"
+  status = 200
+  force = true
+
+# Inquiries
 [[redirects]]
   host = "admin.craftsoft.co.in"
   from = "/inquiries"
@@ -156,6 +175,14 @@
 
 [[redirects]]
   host = "admin.craftsoft.co.in"
+  from = "/inquiries/"
+  to = "/subdomains/acs_admin/inquiries/index.html"
+  status = 200
+  force = true
+
+# Courses
+[[redirects]]
+  host = "admin.craftsoft.co.in"
   from = "/courses"
   to = "/subdomains/acs_admin/courses/index.html"
   status = 200
@@ -163,13 +190,44 @@
 
 [[redirects]]
   host = "admin.craftsoft.co.in"
+  from = "/courses/"
+  to = "/subdomains/acs_admin/courses/index.html"
+  status = 200
+  force = true
+
+# Settings
+[[redirects]]
+  host = "admin.craftsoft.co.in"
   from = "/settings"
   to = "/subdomains/acs_admin/settings/index.html"
   status = 200
   force = true
 
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/settings/"
+  to = "/subdomains/acs_admin/settings/index.html"
+  status = 200
+  force = true
+
+# Students (with trailing slash)
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/students/"
+  to = "/subdomains/acs_admin/students-services/students/index.html"
+  status = 200
+  force = true
+
+# Services (with trailing slash)
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/services/"
+  to = "/subdomains/acs_admin/students-services/services/index.html"
+  status = 200
+  force = true
+
 # Catch-all for other files in acs_admin (MUST be last for admin subdomain)
-# This handles JS, CSS, and other static files
+# This handles JS, CSS, images and other static files
 [[redirects]]
   host = "admin.craftsoft.co.in"
   from = "/*"
