@@ -169,15 +169,31 @@ async function initiatePayment(courseId, courseName) {
             amount: order.amount,
             currency: order.currency,
             name: "Abhi's Craftsoft",
-            description: `${courseName} Fee`,
+            description: `${courseName} Fee Payment | ${currentStudent.first_name} ${currentStudent.last_name}`,
             order_id: order.order_id,
+            config: {
+                display: {
+                    blocks: {
+                        utib: { // UPI & PayLater block
+                            name: "Pay via UPI or PayLater",
+                            methods: ["upi", "paylater"]
+                        }
+                    },
+                    sequence: ["block.utib"],
+                    preferences: {
+                        show_default_blocks: false
+                    }
+                }
+            },
             handler: async (res) => {
                 await verifyPayment(res, courseId, amount);
             },
             prefill: {
                 name: `${currentStudent.first_name} ${currentStudent.last_name}`,
                 contact: currentStudent.phone,
-                email: currentStudent.email || ""
+                email: currentStudent.email || "",
+                method: "upi",
+                "vpa": "phonepe" // Suggesting phonepe flow
             },
             theme: { color: "#2896cd" },
             modal: {
