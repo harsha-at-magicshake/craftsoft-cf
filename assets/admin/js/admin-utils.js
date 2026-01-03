@@ -1026,7 +1026,7 @@ const AccountManager = {
                 <form id="add-account-form" class="auth-form" style="margin-top: 1.5rem;">
                     <div class="form-group">
                         <label class="form-label" for="add-identifier">Email or Admin ID</label>
-                        <input type="text" id="add-identifier" class="form-input" placeholder="admin@example.com or ACS-01" required>
+                        <input type="text" id="add-identifier" class="form-input" placeholder="Enter Email or Admin ID" required>
                         <div id="add-identifier-error" class="form-error"></div>
                     </div>
                     
