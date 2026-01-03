@@ -141,7 +141,12 @@ async function calculateFeeSummary(itemId) {
     if (!isServiceMode) {
         totalFee = item.final_fee;
         try {
-            const { data: payments } = await window.supabaseClient.from('payments').select('amount_paid').eq('student_id', selectedStudent).eq('course_id', item.id);
+            const { data: payments } = await window.supabaseClient
+                .from('payments')
+                .select('amount_paid')
+                .eq('student_id', selectedStudent)
+                .eq('course_id', item.id)
+                .eq('status', 'SUCCESS');
             paidSoFar = (payments || []).reduce((sum, p) => sum + parseFloat(p.amount_paid || 0), 0);
             balanceDue = totalFee - paidSoFar;
 
@@ -265,8 +270,19 @@ async function createReceipt(payment) {
         const itemName = masterItems.find(i => i.id == selectedItem)?.name || 'Unknown';
 
         // Generate consistent Receipt ID (Format: 001-ACS-NA-GD)
-        const { count } = await window.supabaseClient.from('receipts').select('*', { count: 'exact', head: true });
-        const seq = (count || 0) + 1;
+        const { data: lastReceipt } = await window.supabaseClient
+            .from('receipts')
+            .select('receipt_id')
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+
+        let seq = 1;
+        if (lastReceipt && lastReceipt.receipt_id) {
+            const match = lastReceipt.receipt_id.match(/^(\d+)-/);
+            if (match) seq = parseInt(match[1]) + 1;
+        }
+
         const initials = ((student.first_name?.charAt(0) || '') + (student.last_name?.charAt(0) || '')).toUpperCase();
         const courseCode = masterItems.find(i => i.id == selectedItem)?.code || 'NA';
         const receiptId = `${String(seq).padStart(3, '0')}-ACS-${initials}-${courseCode}`;
@@ -284,5 +300,15 @@ async function createReceipt(payment) {
         };
 
         await window.supabaseClient.from('receipts').insert(receiptPayload);
-    } catch (err) { console.error('Receipt error:', err); }
+
+        // Record Activity
+        await window.supabaseClient.from('activities').insert({
+            activity_type: 'fee_recorded',
+            activity_name: `${student.first_name} ${student.last_name}`,
+            activity_link: '/admin/payments/receipts/',
+            activity_time: new Date().toISOString()
+        });
+    } catch (err) {
+        console.error('Receipt error:', err);
+    }
 }

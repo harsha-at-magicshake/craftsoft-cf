@@ -35,7 +35,8 @@
     color: var(--success-600, #16a34a);
 }
 
-.mode-badge.online {
+.mode-badge.online,
+.mode-badge.upi {
     background: var(--primary-50);
     color: var(--primary-600);
 }
