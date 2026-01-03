@@ -30,7 +30,7 @@
   to = "/favicon.svg"
   status = 200
 
-# Block /admin/* on main domain - must only be accessed via subdomain
+# Block /admin/* and /subdomains/* on main domain
 [[redirects]]
   from = "/admin"
   to = "/404/website/"
@@ -40,6 +40,13 @@
 
 [[redirects]]
   from = "/admin/*"
+  to = "/404/website/"
+  status = 404
+  force = true
+  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in", "abhiscraftsoft.netlify.app", "abhis-craftsoft.netlify.app"]}
+
+[[redirects]]
+  from = "/subdomains/*"
   to = "/404/website/"
   status = 404
   force = true
@@ -63,7 +70,7 @@
 
 [[redirects]]
   from = "/services.html"
-  to = "/services/"
+  to = "/acs_services/"
   status = 301
 
 [[redirects]]
@@ -84,86 +91,90 @@
 
 [[redirects]]
   from = "/pages/services/*"
-  to = "/services/:splat/"
+  to = "/acs_services/:splat/"
   status = 301
 
-# Subdomain 404 Handling
+# ============================================
+# PAY SUBDOMAIN (pay-fee.craftsoft.co.in)
+# ============================================
 [[redirects]]
   host = "pay-fee.craftsoft.co.in"
   from = "/"
-  to = "/pay/index.html"
+  to = "/subdomains/pay/index.html"
   status = 200
 
 [[redirects]]
   host = "pay-fee.craftsoft.co.in"
   from = "/*"
-  to = "/pay/:splat"
+  to = "/subdomains/pay/:splat"
   status = 200
 
 [[redirects]]
   host = "pay-fee.craftsoft.co.in"
   from = "/*"
-  to = "/404/pay/"
+  to = "/subdomains/pay/404/"
   status = 404
 
+# ============================================
+# ADMIN SUBDOMAIN (admin.craftsoft.co.in)
+# ============================================
 [[redirects]]
   host = "admin.craftsoft.co.in"
   from = "/signup/*"
-  to = "/404/admin/"
+  to = "/subdomains/acs_admin/404/"
   status = 404
   force = true
 
 [[redirects]]
-  host = "signup.craftsoft.co.in"
-  from = "/"
-  to = "/admin/signup/index.html"
-  status = 200
-
-[[redirects]]
-  host = "signup.craftsoft.co.in"
-  from = "/*"
-  to = "/admin/signup/:splat"
-  status = 200
-
-[[redirects]]
-  host = "signup.craftsoft.co.in"
-  from = "/*"
-  to = "/404/signup/"
-  status = 404
-
-[[redirects]]
   host = "admin.craftsoft.co.in"
   from = "/"
-  to = "/admin/index.html"
+  to = "/subdomains/acs_admin/index.html"
   status = 200
 
 [[redirects]]
   host = "admin.craftsoft.co.in"
   from = "/login"
-  to = "/admin/login.html"
+  to = "/subdomains/acs_admin/login.html"
   status = 200
 
 [[redirects]]
   host = "admin.craftsoft.co.in"
   from = "/*"
-  to = "/admin/:splat"
+  to = "/subdomains/acs_admin/:splat"
   status = 200
 
 [[redirects]]
   host = "admin.craftsoft.co.in"
   from = "/*"
-  to = "/404/admin/"
+  to = "/subdomains/acs_admin/404/"
   status = 404
 
-# Blocked / Non-existent paths
+# ============================================
+# SIGNUP SUBDOMAIN (signup.craftsoft.co.in)
+# ============================================
+[[redirects]]
+  host = "signup.craftsoft.co.in"
+  from = "/"
+  to = "/subdomains/acs_admin/signup/index.html"
+  status = 200
+
+[[redirects]]
+  host = "signup.craftsoft.co.in"
+  from = "/*"
+  to = "/subdomains/acs_admin/signup/:splat"
+  status = 200
+
+[[redirects]]
+  host = "signup.craftsoft.co.in"
+  from = "/*"
+  to = "/subdomains/acs_admin/signup/404/"
+  status = 404
+
+# ============================================
+# BLOCKED PATHS ON MAIN DOMAIN
+# ============================================
 [[redirects]]
   from = "/pay/*"
-  to = "/404/website/"
-  status = 404
-  force = true
-
-[[redirects]]
-  from = "/admin/signup/*"
   to = "/404/website/"
   status = 404
   force = true
