@@ -16,7 +16,7 @@ export default async (request, context) => {
 
     // 2. Admin Subdomain
     if (hostname.includes("admin.craftsoft")) {
-        // Assets, Shared, and Subdomains should be served from root
+        // Bypasses for direct file access
         if (pathname.startsWith("/assets/") || pathname.startsWith("/shared/") || pathname.startsWith("/subdomains/")) {
             return;
         }
@@ -29,24 +29,28 @@ export default async (request, context) => {
             return context.rewrite("/subdomains/acs_admin/login.html");
         }
 
-        // --- MAPPING LOGIC ---
+        // Precise Mapping Logic
         let targetPath = pathname;
 
-        // Handle nested folder mappings
-        if (pathname.startsWith("/students")) {
-            targetPath = pathname.replace("/students", "/students-clients/students");
-        } else if (pathname.startsWith("/clients")) {
-            targetPath = pathname.replace("/clients", "/students-clients/clients");
-        } else if (pathname.startsWith("/courses")) {
-            targetPath = pathname.replace("/courses", "/courses-services/courses");
-        } else if (pathname.startsWith("/services")) {
-            targetPath = pathname.replace("/services", "/courses-services/services");
+        // Only apply short-url mapping if the full path isn't already used
+        if (!pathname.startsWith("/students-clients/") && !pathname.startsWith("/courses-services/")) {
+            if (pathname.startsWith("/students")) {
+                targetPath = pathname.replace("/students", "/students-clients/students");
+            } else if (pathname.startsWith("/clients")) {
+                targetPath = pathname.replace("/clients", "/students-clients/clients");
+            } else if (pathname.startsWith("/courses")) {
+                targetPath = pathname.replace("/courses", "/courses-services/courses");
+            } else if (pathname.startsWith("/services")) {
+                targetPath = pathname.replace("/services", "/courses-services/services");
+            }
         }
 
-        // Redirect directory to trailing slash
-        const needsSlash = ["/dashboard", "/inquiries", "/students", "/clients", "/courses", "/services", "/payments", "/tutors", "/settings"];
-        if (needsSlash.some(folder => pathname === folder)) {
-            return Response.redirect(`${request.url}/`, 301);
+        // Redirect directories to trailing slash (except for file-like paths)
+        const adminFolders = ["/dashboard", "/inquiries", "/students", "/clients", "/courses", "/services", "/payments", "/tutors", "/settings", "/students-clients", "/courses-services"];
+        if (adminFolders.some(folder => pathname === folder || pathname === folder + "/students" || pathname === folder + "/clients" || pathname === folder + "/courses" || pathname === folder + "/services")) {
+            if (!pathname.endsWith("/")) {
+                return Response.redirect(`${request.url}/`, 301);
+            }
         }
 
         // Final Rewrite
