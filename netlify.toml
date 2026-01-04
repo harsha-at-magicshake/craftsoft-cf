@@ -12,7 +12,6 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    # Content-Security-Policy (Cleaned)
     Content-Security-Policy = "default-src 'self' https://*.craftsoft.co.in https://craftsoft.co.in; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.craftsoft.co.in https://craftsoft.co.in https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://maps.googleapis.com https://maps.gstatic.com; style-src 'self' 'unsafe-inline' https://*.craftsoft.co.in https://craftsoft.co.in https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob: https://maps.gstatic.com https://maps.googleapis.com; frame-src 'self' https://www.google.com https://maps.google.com; connect-src 'self' https://*.supabase.co https://*.craftsoft.co.in https://craftsoft.co.in https://maps.googleapis.com https://maps.gstatic.com wss://*.supabase.co https://ifsc.razorpay.com;"
 
 [[headers]]
@@ -26,388 +25,206 @@
     Cache-Control = "public, max-age=0, must-revalidate"
 
 # ============================================
-# ADMIN SUBDOMAIN (admin.craftsoft.co.in)
+# MAIN WEBSITE (craftsoft.co.in / www.craftsoft.co.in)
 # ============================================
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/signup/*"
-  to = "/subdomains/acs_admin/404/"
-  status = 404
-  force = true
 
+# Redirect root to index.html for main domains
 [[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/assets/*"
-  to = "/assets/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/shared/*"
-  to = "/shared/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
   from = "/"
-  to = "/subdomains/acs_admin/index.html"
+  to = "/index.html"
   status = 200
   force = true
+  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in"]}
 
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/login"
-  to = "/subdomains/acs_admin/login.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/dashboard/*"
-  to = "/subdomains/acs_admin/dashboard/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/students"
-  to = "/subdomains/acs_admin/students-clients/students/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/students/*"
-  to = "/subdomains/acs_admin/students-clients/students/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/clients"
-  to = "/subdomains/acs_admin/students-clients/clients/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/clients/*"
-  to = "/subdomains/acs_admin/students-clients/clients/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/tutors/*"
-  to = "/subdomains/acs_admin/tutors/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/inquiries/*"
-  to = "/subdomains/acs_admin/inquiries/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/courses"
-  to = "/subdomains/acs_admin/courses-services/courses/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/courses/*"
-  to = "/subdomains/acs_admin/courses-services/courses/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/services"
-  to = "/subdomains/acs_admin/courses-services/services/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/services/*"
-  to = "/subdomains/acs_admin/courses-services/services/:splat"
-  status = 200
-  force = true
-
-# Payments - All sub-routes need explicit handling
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/payments/record-payment"
-  to = "/subdomains/acs_admin/payments/record-payment/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/payments/record-payment/"
-  to = "/subdomains/acs_admin/payments/record-payment/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/payments/all-payments"
-  to = "/subdomains/acs_admin/payments/all-payments/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/payments/all-payments/"
-  to = "/subdomains/acs_admin/payments/all-payments/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/payments/receipts"
-  to = "/subdomains/acs_admin/payments/receipts/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/payments/receipts/"
-  to = "/subdomains/acs_admin/payments/receipts/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/payments/*"
-  to = "/subdomains/acs_admin/payments/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/settings/*"
-  to = "/subdomains/acs_admin/settings/:splat"
-  status = 200
-  force = true
-# Add explicit redirects for paths WITHOUT and WITH trailing slash
-# These must come BEFORE the catch-all
-
-# Dashboard
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/dashboard"
-  to = "/subdomains/acs_admin/dashboard/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/dashboard/"
-  to = "/subdomains/acs_admin/dashboard/index.html"
-  status = 200
-  force = true
-
-# Tutors
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/tutors"
-  to = "/subdomains/acs_admin/tutors/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/tutors/"
-  to = "/subdomains/acs_admin/tutors/index.html"
-  status = 200
-  force = true
-
-# Inquiries
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/inquiries"
-  to = "/subdomains/acs_admin/inquiries/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/inquiries/"
-  to = "/subdomains/acs_admin/inquiries/index.html"
-  status = 200
-  force = true
-
-# Courses
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/courses"
-  to = "/subdomains/acs_admin/courses-services/courses/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/courses/"
-  to = "/subdomains/acs_admin/courses-services/courses/index.html"
-  status = 200
-  force = true
-
-# Services
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/services/"
-  to = "/subdomains/acs_admin/courses-services/services/index.html"
-  status = 200
-  force = true
-
-# Settings
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/settings"
-  to = "/subdomains/acs_admin/settings/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/settings/"
-  to = "/subdomains/acs_admin/settings/index.html"
-  status = 200
-  force = true
-
-# Students (with trailing slash)
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/students/"
-  to = "/subdomains/acs_admin/students-clients/students/index.html"
-  status = 200
-  force = true
-
-# Clients (with trailing slash)
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/clients/"
-  to = "/subdomains/acs_admin/students-clients/clients/index.html"
-  status = 200
-  force = true
-
-# Catch-all for files in acs_admin (Static assets)
-# This handles JS, CSS, images - does NOT use force so it only serves if file exists
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/*"
-  to = "/subdomains/acs_admin/:splat"
-  status = 200
-
-# Admin Subdomain 404 (MUST follow assets catch-all)
-[[redirects]]
-  conditions = {Host = ["admin.craftsoft.co.in"]}
-  from = "/*"
-  to = "/subdomains/acs_admin/404/index.html"
-  status = 404
-  force = true
-
-# ============================================
-
-# Redirect favicon.ico to master favicon.svg
-[[redirects]]
-  from = "/favicon.ico"
-  to = "/favicon.svg"
-  status = 200
-
-# Block /admin/* and /subdomains/* on main domain
-[[redirects]]
-  from = "/admin"
-  to = "/404/website/"
-  status = 404
-  force = true
-  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in", "abhiscraftsoft.netlify.app", "abhis-craftsoft.netlify.app"]}
-
-[[redirects]]
-  from = "/admin/*"
-  to = "/404/website/"
-  status = 404
-  force = true
-  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in", "abhiscraftsoft.netlify.app", "abhis-craftsoft.netlify.app"]}
-
-[[redirects]]
-  from = "/subdomains/*"
-  to = "/404/website/"
-  status = 404
-  force = true
-  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in", "abhiscraftsoft.netlify.app", "abhis-craftsoft.netlify.app"]}
-
-# Legacy HTML to Clean URL Redirects
+# Legacy redirects for main site
 [[redirects]]
   from = "/about.html"
   to = "/about/"
   status = 301
+  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in"]}
 
 [[redirects]]
   from = "/contact.html"
   to = "/contact/"
   status = 301
+  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in"]}
 
 [[redirects]]
   from = "/courses.html"
   to = "/courses/"
   status = 301
+  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in"]}
 
 [[redirects]]
   from = "/services.html"
   to = "/acs_services/"
   status = 301
-
-[[redirects]]
-  from = "/privacy-policy.html"
-  to = "/privacy-policy/"
-  status = 301
-
-[[redirects]]
-  from = "/terms-of-service.html"
-  to = "/terms-of-service/"
-  status = 301
-
-# Subpage Redirects (Old pages/ structure)
-[[redirects]]
-  from = "/pages/courses/*"
-  to = "/courses/:splat/"
-  status = 301
-
-[[redirects]]
-  from = "/pages/services/*"
-  to = "/acs_services/:splat/"
-  status = 301
-
-# ============================================
+  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in"]}
 
 # ============================================
 # SIGNUP SUBDOMAIN (signup.craftsoft.co.in)
 # ============================================
 [[redirects]]
-  conditions = {Host = ["signup.craftsoft.co.in"]}
   from = "/"
   to = "/subdomains/acs_admin/signup/index.html"
   status = 200
+  force = true
+  conditions = {Host = ["signup.craftsoft.co.in"]}
 
 [[redirects]]
-  conditions = {Host = ["signup.craftsoft.co.in"]}
   from = "/*"
   to = "/subdomains/acs_admin/signup/:splat"
   status = 200
+  force = true
+  conditions = {Host = ["signup.craftsoft.co.in"]}
+
+# ============================================
+# ADMIN SUBDOMAIN (admin.craftsoft.co.in)
+# ============================================
 
 [[redirects]]
-  conditions = {Host = ["signup.craftsoft.co.in"]}
+  from = "/"
+  to = "/subdomains/acs_admin/index.html"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/login"
+  to = "/subdomains/acs_admin/login.html"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/subdomains/acs_admin/dashboard/index.html"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/dashboard/*"
+  to = "/subdomains/acs_admin/dashboard/:splat"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/inquiries"
+  to = "/subdomains/acs_admin/inquiries/index.html"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/inquiries/*"
+  to = "/subdomains/acs_admin/inquiries/:splat"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/students"
+  to = "/subdomains/acs_admin/students-clients/students/index.html"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/students/*"
+  to = "/subdomains/acs_admin/students-clients/students/:splat"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/clients"
+  to = "/subdomains/acs_admin/students-clients/clients/index.html"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/clients/*"
+  to = "/subdomains/acs_admin/students-clients/clients/:splat"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/courses"
+  to = "/subdomains/acs_admin/courses-services/courses/index.html"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/courses/*"
+  to = "/subdomains/acs_admin/courses-services/courses/:splat"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/services"
+  to = "/subdomains/acs_admin/courses-services/services/index.html"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/services/*"
+  to = "/subdomains/acs_admin/courses-services/services/:splat"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/payments/record-payment"
+  to = "/subdomains/acs_admin/payments/record-payment/index.html"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/payments/all-payments"
+  to = "/subdomains/acs_admin/payments/all-payments/index.html"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/payments/*"
+  to = "/subdomains/acs_admin/payments/:splat"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
+  from = "/settings/*"
+  to = "/subdomains/acs_admin/settings/:splat"
+  status = 200
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+[[redirects]]
   from = "/*"
-  to = "/subdomains/acs_admin/signup/404/"
+  to = "/subdomains/acs_admin/:splat"
+  status = 200
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+# Admin 404
+[[redirects]]
+  from = "/*"
+  to = "/subdomains/acs_admin/404/index.html"
   status = 404
+  force = true
+  conditions = {Host = ["admin.craftsoft.co.in"]}
+
+# ============================================
+# FALLBACKS
+# ============================================
 
 # Global 404 catch-all (Main Site Only)
 [[redirects]]
