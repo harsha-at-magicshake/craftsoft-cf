@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Italianno&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
     <!-- Icons -->
@@ -46,48 +46,192 @@
     <!-- Admin Styles - Responsive -->
     <link rel="stylesheet" href="https://craftsoft.co.in/assets/admin/css/responsive/tablet.css">
     <link rel="stylesheet" href="https://craftsoft.co.in/assets/admin/css/responsive/mobile.css">
+
+    <style>
+        /* Verified State Styles */
+        .verified-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            animation: pulse-success 2s infinite;
+        }
+
+        .verified-icon i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        @keyframes pulse-success {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 15px rgba(16, 185, 129, 0);
+            }
+        }
+
+        .admin-id-display {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 1rem 0;
+            letter-spacing: 1px;
+        }
+
+        .redirect-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .redirect-text .countdown {
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 1.5ch;
+            display: inline-block;
+        }
+
+        .redirect-text.redirecting {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .redirect-text.redirecting i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Hide states */
+        .state-pending,
+        .state-verified {
+            display: none;
+        }
+
+        .state-pending.active,
+        .state-verified.active {
+            display: block;
+        }
+
+        /* Smooth transitions */
+        .auth-card {
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 480px) {
+            .verified-icon {
+                width: 70px;
+                height: 70px;
+            }
+
+            .verified-icon i {
+                font-size: 2rem;
+            }
+
+            .admin-id-display {
+                font-size: 1.1rem;
+                padding: 0.6rem 1.2rem;
+            }
+
+            .redirect-text {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div class="auth-container">
         <!-- Logo -->
         <div class="auth-logo">
-            <span class="auth-logo-text">Craft Soft</span>
+            <span class="logo-text"><span class="logo-signature">Abhi's</span> <span class="highlight">Craft
+                    Soft</span></span>
         </div>
 
         <!-- Verify Email Card -->
         <div class="auth-card">
-            <div class="verify-icon">
-                <i class="fa-solid fa-envelope"></i> </div>
 
-            <div class="auth-header">
-                <h1>Check Your Email</h1>
-                <p>We've sent a verification link to:</p>
-                <p class="verify-email-text" id="email-display">your-email@example.com</p>
+            <!-- STATE A: Pending Verification -->
+            <div id="state-pending" class="state-pending active">
+                <div class="verify-icon">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+
+                <div class="auth-header">
+                    <h1>Check Your Email</h1>
+                    <p>We've sent a verification link to:</p>
+                    <p class="verify-email-text" id="email-display">your-email@example.com</p>
+                </div>
+
+                <ul class="verify-steps">
+                    <li>
+                        <i class="fa-solid fa-inbox"></i> <span>Check your inbox (and spam folder)</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-mouse-pointer"></i> <span>Click the verification link in the email</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> <span>You'll be redirected to the login
+                            page</span>
+                    </li>
+                </ul>
+
+                <button id="resend-btn" class="btn btn-outline btn-full" disabled>
+                    <i class="fa-solid fa-paper-plane"></i> Resend Verification Email
+                </button>
+                <p id="resend-timer" class="resend-timer">Resend available in <span id="countdown">60</span> seconds</p>
+
+                <div class="auth-divider">or</div>
+
+                <a href="https://signup.craftsoft.co.in" class="btn btn-outline btn-full"
+                    style="text-decoration: none;">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Sign Up
+                </a>
             </div>
 
-            <ul class="verify-steps">
-                <li>
-                    <i class="fa-solid fa-inbox"></i> <span>Check your inbox (and spam folder)</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-mouse-pointer"></i> <span>Click the verification link in the email</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-arrow-right-to-bracket"></i> <span>You'll be redirected to the login page</span>
-                </li>
-            </ul>
+            <!-- STATE B: Verified -->
+            <div id="state-verified" class="state-verified">
+                <div class="verified-icon">
+                    <i class="fa-solid fa-check"></i>
+                </div>
 
-            <button id="resend-btn" class="btn btn-outline btn-full" disabled>
-                <i class="fa-solid fa-paper-plane"></i> Resend Verification Email
-            </button>
-            <p id="resend-timer" class="resend-timer">Resend available in <span id="countdown">60</span> seconds</p>
+                <div class="auth-header">
+                    <h1>Email Verified!</h1>
+                    <p>Your account is now active</p>
+                </div>
 
-            <div class="auth-divider">or</div>
+                <div class="admin-id-display" id="admin-id-display">ACS-XX</div>
 
-            <a href="https://signup.craftsoft.co.in" class="btn btn-outline btn-full" style="text-decoration: none;">
-                <i class="fa-solid fa-arrow-left"></i> Back to Sign Up
-            </a>
+                <p class="redirect-text" id="redirect-text">
+                    Redirecting to login in <span class="countdown" id="redirect-countdown">5</span>...
+                </p>
+            </div>
+
         </div>
 
         <!-- Back to Website -->
@@ -112,6 +256,15 @@
             const resendTimer = document.getElementById('resend-timer');
             const countdownEl = document.getElementById('countdown');
 
+            const statePending = document.getElementById('state-pending');
+            const stateVerified = document.getElementById('state-verified');
+            const adminIdDisplay = document.getElementById('admin-id-display');
+            const redirectText = document.getElementById('redirect-text');
+            const redirectCountdown = document.getElementById('redirect-countdown');
+
+            let verificationPollInterval = null;
+            let resendCountdownInterval = null;
+
             // Display email
             if (email) {
                 emailDisplay.textContent = email;
@@ -121,14 +274,74 @@
                 return;
             }
 
+            // Check if already verified on page load and start polling
+            checkVerificationStatus();
+            verificationPollInterval = setInterval(checkVerificationStatus, 5000);
+
+            // Stop polling after 10 minutes
+            setTimeout(() => {
+                if (verificationPollInterval) {
+                    clearInterval(verificationPollInterval);
+                }
+            }, 10 * 60 * 1000);
+
+            // Check verification status
+            async function checkVerificationStatus() {
+                try {
+                    const { data: admin, error } = await window.supabaseClient
+                        .from('admins')
+                        .select('admin_id, status')
+                        .eq('email', email)
+                        .maybeSingle();
+
+                    if (admin && admin.status === 'ACTIVE') {
+                        // Email is verified!
+                        clearInterval(verificationPollInterval);
+                        clearInterval(resendCountdownInterval);
+                        showVerifiedState(admin.admin_id);
+                    }
+                } catch (err) {
+                    console.error('Verification check error:', err);
+                }
+            }
+
+            // Show verified state with redirect countdown
+            function showVerifiedState(adminId) {
+                statePending.classList.remove('active');
+                stateVerified.classList.add('active');
+                adminIdDisplay.textContent = adminId;
+
+                // Clear temp email
+                clearTempEmail();
+
+                // Start redirect countdown
+                let count = 5;
+                redirectCountdown.textContent = count;
+
+                const redirectInterval = setInterval(() => {
+                    count--;
+                    if (count > 0) {
+                        redirectCountdown.textContent = count;
+                    } else {
+                        clearInterval(redirectInterval);
+                        redirectText.innerHTML = '<i class="fa-solid fa-spinner"></i> Redirecting to Login...';
+                        redirectText.classList.add('redirecting');
+
+                        setTimeout(() => {
+                            window.location.href = 'https://admin.craftsoft.co.in/';
+                        }, 500);
+                    }
+                }, 1000);
+            }
+
             // Countdown timer for resend
             let countdown = 60;
-            const timer = setInterval(() => {
+            resendCountdownInterval = setInterval(() => {
                 countdown--;
                 countdownEl.textContent = countdown;
 
                 if (countdown <= 0) {
-                    clearInterval(timer);
+                    clearInterval(resendCountdownInterval);
                     resendBtn.disabled = false;
                     resendTimer.style.display = 'none';
                 }
@@ -153,12 +366,12 @@
 
                     resendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Resend Verification Email';
 
-                    const newTimer = setInterval(() => {
+                    resendCountdownInterval = setInterval(() => {
                         countdown--;
                         countdownEl.textContent = countdown;
 
                         if (countdown <= 0) {
-                            clearInterval(newTimer);
+                            clearInterval(resendCountdownInterval);
                             resendBtn.disabled = false;
                             resendTimer.style.display = 'none';
                         }
@@ -174,9 +387,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
