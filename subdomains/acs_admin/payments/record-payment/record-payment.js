@@ -53,8 +53,13 @@ function bindTypeToggle() {
     });
 }
 
-function resetForm() {
-    selectedStudent = null;
+function resetForm(keepEntity = false) {
+    if (!keepEntity) {
+        selectedStudent = null;
+        const studentSelect = document.getElementById('student-select');
+        if (studentSelect) studentSelect.value = '';
+    }
+
     selectedItem = null;
     totalFee = 0;
     paidSoFar = 0;
@@ -66,9 +71,10 @@ function resetForm() {
     select.disabled = true;
 
     document.getElementById('fee-summary').style.display = 'none';
-    document.getElementById('amount-input').value = '';
-    document.getElementById('amount-input').disabled = true;
-    document.getElementById('utr-group').style.display = 'none'; // Assuming 'utr-input-container' is 'utr-group'
+    const amountInput = document.getElementById('amount-input');
+    amountInput.value = '';
+    amountInput.disabled = true;
+    document.getElementById('utr-group').style.display = 'none';
     updateProceedButton();
 }
 
@@ -216,7 +222,7 @@ function updateProceedButton() {
 function bindEvents() {
     document.getElementById('student-select').addEventListener('change', async (e) => {
         selectedStudent = e.target.value;
-        resetForm();
+        resetForm(true); // Keep student, reset course info
         if (selectedStudent) {
             if (isServiceMode) await loadClientServices(selectedStudent);
             else await loadStudentCourses(selectedStudent);
@@ -226,7 +232,8 @@ function bindEvents() {
     document.getElementById('course-select').addEventListener('change', async (e) => {
         selectedItem = e.target.value;
         if (selectedItem) await calculateFeeSummary(selectedItem);
-        else resetForm();
+        // If course unselected, we still have a student, so keepEntity = true
+        else resetForm(true);
     });
 
     document.getElementById('amount-input').addEventListener('input', updateProceedButton);
