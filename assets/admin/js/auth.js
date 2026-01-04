@@ -75,8 +75,8 @@ const Auth = {
 
             // Check if identifier is an Admin ID (ACS-XX)
             if (Validators.isValidAdminId(identifier)) {
-                // Normalize Admin ID using utility functions (handles padding e.g. ACS-1 -> ACS-01)
-                const normalizedId = window.AdminUtils.formatAdminId(window.AdminUtils.parseAdminId(identifier));
+                // Normalize Admin ID to uppercase (e.g., acs-01 -> ACS-01)
+                const normalizedId = identifier.toUpperCase();
 
                 // Fetch email by admin_id
                 const { data: adminData, error: adminError } = await supabase
