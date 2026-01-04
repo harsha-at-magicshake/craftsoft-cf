@@ -251,15 +251,22 @@ function getTimeAgo(timestamp) {
 
 function renderRecentActivity() {
     const activityList = document.getElementById('recentActivityList');
+    const clearAllBtn = document.getElementById('clearAllActivityBtn');
     if (!activityList) return;
 
     const unread = getUnreadNotifications();
 
+    // Hide/show clear all button based on activity count
+    if (clearAllBtn) {
+        clearAllBtn.style.display = unread.length > 0 ? 'flex' : 'none';
+    }
+
     if (unread.length === 0) {
         activityList.innerHTML = `
             <div class="activity-empty">
-                <i class="fa-solid fa-check-circle"></i>
-                <p>No recent activity</p>
+                <i class="fa-solid fa-inbox"></i>
+                <p class="activity-empty-title">All caught up!</p>
+                <p class="activity-empty-subtitle">No new activity to show</p>
             </div>
         `;
         return;

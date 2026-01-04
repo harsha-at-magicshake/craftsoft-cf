@@ -587,20 +587,28 @@
 
 .activity-empty {
     text-align: center;
-    padding: 2rem 1rem;
+    padding: 2.5rem 1rem;
     color: var(--admin-text-muted, #94a3b8);
 }
 
 .activity-empty i {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
-    opacity: 0.4;
-    color: #10b981;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+    color: var(--primary-500, #2896cd);
 }
 
-.activity-empty p {
+.activity-empty-title {
+    margin: 0 0 0.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--admin-text-primary, #0f172a);
+}
+
+.activity-empty-subtitle {
     margin: 0;
-    font-size: 0.875rem;
+    font-size: 0.85rem;
+    color: var(--admin-text-muted, #94a3b8);
 }
 
 /* Desktop Only */

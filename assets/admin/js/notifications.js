@@ -16,6 +16,15 @@ function initNotifications() {
 
 // Create notification bell in header
 function createNotificationBell() {
+    // Skip bell on dashboard page (desktop) - we have Recent Activity section there
+    const isDashboard = window.location.pathname.includes('/dashboard/');
+    const isMobile = window.innerWidth <= 768;
+
+    if (isDashboard && !isMobile) {
+        // On dashboard desktop, still setup realtime but no bell
+        return;
+    }
+
     const header = document.querySelector('.admin-header .header-actions') ||
         document.querySelector('.admin-header');
 
