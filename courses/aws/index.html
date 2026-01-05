@@ -103,7 +103,18 @@
       <div class="container">
         <div class='course-detail-header' style='align-items: flex-start;'>
           <div class="course-detail-info">
-            <span class="section-tag">About This Course</span>
+            <!-- Share Bar (Inline) -->
+            <div class="share-course" style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e5e7eb;">
+              <i class="fas fa-share-alt" style="color: #2896CD; font-size: 1rem;"></i>
+              <span style="font-weight: 600; color: #6b7280;">Share This Course</span>
+              <div class="share-icons" style="display: flex; gap: 0.5rem; margin-left: 0.5rem;">
+                <a href="#" class="share-icon whatsapp" data-share="whatsapp" title="WhatsApp" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #25D366; color: white; text-decoration: none; font-size: 0.9rem;"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="share-icon twitter" data-share="twitter" title="X/Twitter" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #000000; color: white; text-decoration: none; font-size: 0.9rem;"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" class="share-icon linkedin" data-share="linkedin" title="LinkedIn" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #0077b5; color: white; text-decoration: none; font-size: 0.9rem;"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="share-icon copy" data-share="copy" title="Copy Link" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #636e72; color: white; text-decoration: none; font-size: 0.9rem;"><i class="fa-regular fa-copy"></i></a>
+              </div>
+            </div>
+<span class="section-tag">About This Course</span>
             <p>
               Our AWS Cloud Excellence course takes you from cloud basics to
               building production-grade AWS architectures. Learn the most
@@ -113,6 +124,7 @@
               Get hands-on experience with real AWS services and build projects
               that demonstrate your cloud expertise.
             </p>
+            <div style='border-bottom: 1px solid #e5e7eb; margin: 1.5rem 0;'></div>
             <span class='section-tag' style='display: table; margin: 1.5rem 0 1rem;'>Course Overview</span>
             <div class="course-highlights">
               <div class="highlight-item">
@@ -136,16 +148,7 @@
                 <i class="fas fa-handshake"></i
                 ><span>Placement Assistance</span>
               </div>
-            </div>            <!-- Share Bar -->
-            <div class="share-course" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-200);">
-              <span class="share-label" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; font-weight: 600; color: var(--gray-600);"><i class="fas fa-share-alt" style="color: var(--primary-500);"></i> Share This Course</span>
-              <div class="share-icons" style="display: flex; justify-content: center; gap: 0.8rem;">
-                <a href="#" class="share-icon whatsapp" data-share="whatsapp" title="WhatsApp" style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #25D366; color: white; text-decoration: none;"><i class="fab fa-whatsapp"></i></a>
-                <a href="#" class="share-icon twitter" data-share="twitter" title="X/Twitter" style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #000000; color: white; text-decoration: none;"><i class="fab fa-x-twitter"></i></a>
-                <a href="#" class="share-icon linkedin" data-share="linkedin" title="LinkedIn" style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #0077b5; color: white; text-decoration: none;"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="share-icon copy" data-share="copy" title="Copy Link" style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #636e72; color: white; text-decoration: none;"><i class="fa-regular fa-copy"></i></a>
-              </div>
-            </div>
+            </div>            
 </div>
           <div class='course-cta-card' style='text-align: center;'>
             <span class='section-tag' style='display: table; margin: 0 auto 1.5rem;'>Enroll Now</span>
@@ -553,6 +556,7 @@
   </script>
 </body>
 </html>
+
 
 
 
