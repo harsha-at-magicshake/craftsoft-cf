@@ -1,4 +1,4 @@
-let allStudents = [];
+﻿let allStudents = [];
 let allCoursesForStudents = [];
 let allTutorsForStudents = [];
 let deleteTargetId = null;
@@ -175,7 +175,7 @@ function renderStudentsList(students) {
                             <td>
                                 <input type="checkbox" class="student-checkbox" data-id="${s.id}" ${selectedStudents.has(s.id) ? 'checked' : ''}>
                             </td>
-                            <td><span class="cell-badge clickable" data-id="${s.id}" onclick="openStudentProfile('${s.id}')">${s.student_id}</span></td>
+                            <td><span class="cell-badge clickable btn-view-profile" data-id="${s.id}">${s.student_id}</span></td>
                             <td><span class="cell-title">${s.first_name} ${s.last_name}</span></td>
                             <td><span class="cell-phone">${s.phone}</span></td>
                             <td>
@@ -208,7 +208,7 @@ function renderStudentsList(students) {
                     <div class="card-header">
                         <div style="display: flex; gap: 0.75rem; align-items: center;">
                             <input type="checkbox" class="student-checkbox" data-id="${s.id}" ${selectedStudents.has(s.id) ? 'checked' : ''}>
-                            <span class="card-id-badge clickable" onclick="openStudentProfile('${s.id}')">${s.student_id}</span>
+                            <span class="card-id-badge clickable btn-view-profile" data-id="${s.id}">${s.student_id}</span>
                         </div>
                     </div>
                     <div class="card-body">
@@ -257,6 +257,8 @@ function renderStudentsList(students) {
         btn.addEventListener('click', () => openForm(btn.dataset.id)));
     document.querySelectorAll('.btn-delete-student').forEach(btn =>
         btn.addEventListener('click', () => showDeleteConfirm(btn.dataset.id, btn.dataset.name)));
+    document.querySelectorAll('.btn-view-profile').forEach(btn =>
+        btn.addEventListener('click', () => openStudentProfile(btn.dataset.id)));
 
     bindBulkActions();
 }
@@ -472,12 +474,12 @@ function updateFeeBreakdown() {
         html += `
             <div class="fee-item">
                 <div class="fee-item-name">${course?.course_name || code}</div>
-                <div class="fee-item-price">₹${formatNumber(fee)}</div>
+                <div class="fee-item-price">â‚¹${formatNumber(fee)}</div>
                 <div class="fee-item-discount">
-                    <span>-₹</span>
+                    <span>-â‚¹</span>
                     <input type="number" value="${discount}" min="0" max="${fee}" data-course="${code}" class="discount-input">
                 </div>
-                <div class="fee-item-net" data-net="${code}">₹${formatNumber(net)}</div>
+                <div class="fee-item-net" data-net="${code}">â‚¹${formatNumber(net)}</div>
             </div>
         `;
     });
@@ -499,7 +501,7 @@ function updateFeeBreakdown() {
             const course = allCoursesForStudents.find(c => c.course_code === code);
             const fee = course?.fee || 0;
             const net = Math.max(0, fee - val);
-            document.querySelector(`.fee-item-net[data-net="${code}"]`).textContent = `₹${formatNumber(net)}`;
+            document.querySelector(`.fee-item-net[data-net="${code}"]`).textContent = `â‚¹${formatNumber(net)}`;
 
             recalculateTotal();
         });
@@ -519,7 +521,7 @@ function recalculateTotal() {
         total += Math.max(0, fee - discount);
     });
 
-    totalEl.textContent = `₹${formatNumber(total)}`;
+    totalEl.textContent = `â‚¹${formatNumber(total)}`;
 }
 
 async function openForm(studentId = null) {
@@ -842,12 +844,12 @@ async function openStudentProfile(studentId) {
 
 function renderProfileContent(student, payments, totalPaid, balanceDue) {
     const formatDate = (dateStr) => {
-        if (!dateStr) return '—';
+        if (!dateStr) return 'â€”';
         const d = new Date(dateStr);
         return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
     };
     
-    const formatCurrency = (num) => '₹' + (num || 0).toLocaleString('en-IN');
+    const formatCurrency = (num) => 'â‚¹' + (num || 0).toLocaleString('en-IN');
     
     return `
         <!-- Basic Info Section -->
@@ -877,7 +879,7 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                 </div>
                 <div class="profile-info-item">
                     <span class="profile-info-label">Email</span>
-                    <span class="profile-info-value">${student.email || '—'}</span>
+                    <span class="profile-info-value">${student.email || 'â€”'}</span>
                 </div>
                 <div class="profile-info-item">
                     <span class="profile-info-label">Joined</span>
@@ -885,7 +887,7 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                 </div>
                 <div class="profile-info-item">
                     <span class="profile-info-label">Batch Time</span>
-                    <span class="profile-info-value">${student.batch_time || '—'}</span>
+                    <span class="profile-info-value">${student.batch_time || 'â€”'}</span>
                 </div>
             </div>
             <div class="profile-contact-btns">
@@ -993,7 +995,7 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                                         ${p.payment_mode}
                                     </span>
                                 </td>
-                                <td>${p.reference_id || '—'}</td>
+                                <td>${p.reference_id || 'â€”'}</td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -1063,3 +1065,5 @@ function bindProfileEvents() {
         }
     });
 }
+
+

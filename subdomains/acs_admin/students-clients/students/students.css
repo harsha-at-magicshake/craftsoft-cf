@@ -1,4 +1,4 @@
-/* Students Module - Inline Form Styles */
+﻿/* Students Module - Inline Form Styles */
 
 /* ============================================
    Form Input Styling (Premium)
@@ -1381,12 +1381,12 @@
 .cell-badge.clickable {
     cursor: pointer;
     transition: all 0.2s ease;
+    color: #2896cd;
 }
 
 .cell-badge.clickable:hover {
-    background: linear-gradient(135deg, #2896cd 0%, #1a7eb0 100%);
-    color: #fff;
-    transform: scale(1.05);
+    text-decoration: underline;
+    color: #1a7eb0;
 }
 
 /* Mobile Responsive */
@@ -1425,10 +1425,12 @@
 .card-id-badge.clickable {
     cursor: pointer;
     transition: all 0.2s ease;
+    color: #2896cd;
 }
 
 .card-id-badge.clickable:hover {
-    background: linear-gradient(135deg, #2896cd 0%, #1a7eb0 100%);
-    color: #fff;
-    transform: scale(1.05);
+    text-decoration: underline;
+    color: #1a7eb0;
 }
+
+
