@@ -32,6 +32,14 @@
     --gray-800: #1e293b;
     --gray-900: #0f172a;
 
+    /* Blue-Tinted Theme Colors */
+    --page-bg: #f0f7fb;
+    --card-bg: rgba(40, 150, 205, 0.04);
+    --card-bg-hover: rgba(40, 150, 205, 0.08);
+    --section-bg: rgba(40, 150, 205, 0.06);
+    --card-border: rgba(40, 150, 205, 0.12);
+    --divider-color: rgba(40, 150, 205, 0.15);
+
     /* Semantic Colors */
     --success: #10B981;
     --warning: #F59E0B;

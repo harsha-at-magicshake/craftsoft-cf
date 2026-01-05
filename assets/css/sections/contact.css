@@ -1,10 +1,10 @@
-/* ============================================
+﻿/* ============================================
    CONTACT Section - Premium Image-Matched Styles
    ============================================ */
 /* Global Container for Contact Sections */
 .contact-section {
     padding: 1.5rem 0;
-    background: var(--primary-50);
+    background: var(--page-bg);
     /* Changed from #f8fafc to theme color */
     position: relative;
     overflow: hidden;
@@ -192,11 +192,11 @@
 
 /* Form Card Styling - Match Image 2/3 */
 .contact-form-card {
-    background: linear-gradient(135deg, #ffffff 0%, var(--primary-50) 100%);
+    background: var(--section-bg);
     padding: 3rem;
     border-radius: 2rem;
     box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(59, 130, 246, 0.1);
+    border: 1px solid var(--card-border);
 }
 
 .contact-form-card h3 {

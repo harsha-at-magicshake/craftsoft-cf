@@ -17,7 +17,7 @@ html {
 
 body {
     font-family: var(--font-secondary);
-    background-color: var(--primary-50);
+    background-color: var(--page-bg);
     /* Light bluish theme background */
     color: var(--gray-700);
     line-height: 1.6;

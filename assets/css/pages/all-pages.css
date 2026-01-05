@@ -556,7 +556,7 @@
     align-items: center;
     gap: var(--spacing-sm);
     padding: var(--spacing-md);
-    background: var(--primary-50);
+    background: var(--card-bg);
     border-radius: var(--radius-lg);
 }
 
@@ -571,8 +571,8 @@
 }
 
 .course-cta-card {
-    background: linear-gradient(135deg, var(--white) 0%, var(--primary-50) 100%);
-    border: 2px solid var(--primary-100);
+    background: var(--section-bg);
+    border: 2px solid var(--card-border);
     border-radius: var(--radius-2xl);
     padding: var(--spacing-2xl);
     position: sticky;
@@ -628,7 +628,7 @@
 
 /* Course Curriculum Section */
 .course-curriculum {
-    background: var(--gray-50);
+    background: var(--section-bg);
     border-radius: var(--radius-2xl);
     padding: var(--spacing-2xl);
     margin-bottom: 2rem;
@@ -640,12 +640,17 @@
 }
 
 .curriculum-module {
-    background: var(--white);
+    background: var(--card-bg);
     border-radius: var(--radius-lg);
     margin-bottom: var(--spacing-md);
     overflow: hidden;
-    border: 1px solid var(--gray-100);
+    border: 1px solid var(--card-border);
     box-shadow: var(--shadow-sm);
+    transition: background 0.2s ease;
+}
+
+.curriculum-module:hover {
+    background: var(--card-bg-hover);
 }
 
 .module-header {
