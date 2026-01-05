@@ -141,7 +141,7 @@
 }
 
 .course-category {
-    margin-bottom: var(--spacing-4xl);
+    margin-bottom: 2rem;
     transition: all 0.3s ease;
 }
 
@@ -155,8 +155,8 @@
     gap: var(--spacing-md);
     font-size: 1.75rem;
     color: var(--gray-800);
-    margin-bottom: var(--spacing-2xl);
-    padding-bottom: var(--spacing-lg);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
     border-bottom: 3px solid var(--primary-100);
 }
 
@@ -341,8 +341,8 @@
 /* Tech Stack Section */
 .tech-stack-section {
     text-align: center;
-    padding: var(--spacing-3xl) 0;
-    margin-bottom: var(--spacing-3xl);
+    padding: 2rem 0;
+    margin-bottom: 2rem;
     background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 50%, var(--primary-50) 100%);
     border-radius: var(--radius-2xl);
     border: 1px solid var(--gray-100);
@@ -527,9 +527,9 @@
 .course-detail-header {
     display: grid;
     grid-template-columns: 1fr 400px;
-    gap: var(--spacing-3xl);
+    gap: 2rem;
     align-items: start;
-    margin-bottom: var(--spacing-3xl);
+    margin-bottom: 2rem;
 }
 
 .course-detail-info h1 {
@@ -631,7 +631,7 @@
     background: var(--gray-50);
     border-radius: var(--radius-2xl);
     padding: var(--spacing-2xl);
-    margin-bottom: var(--spacing-3xl);
+    margin-bottom: 2rem;
 }
 
 .course-curriculum h2 {
