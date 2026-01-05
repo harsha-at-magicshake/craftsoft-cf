@@ -1,4 +1,4 @@
-﻿let allStudents = [];
+﻿﻿let allStudents = [];
 let allCoursesForStudents = [];
 let allTutorsForStudents = [];
 let deleteTargetId = null;
@@ -786,20 +786,20 @@ async function openStudentProfile(studentId) {
     const overlay = document.getElementById('student-profile-overlay');
     const content = document.getElementById('profile-content');
     const footer = document.getElementById('profile-footer');
-    
+
     if (!overlay || !content) return;
-    
+
     currentProfileStudentId = studentId;
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
-    
+
     // Show loading
     content.innerHTML = `
         <div class="loading-spinner">
             <i class="fa-solid fa-spinner fa-spin"></i> Loading profile...
         </div>
     `;
-    
+
     try {
         // Fetch student data
         const { data: student, error: studentError } = await window.supabaseClient
@@ -807,31 +807,31 @@ async function openStudentProfile(studentId) {
             .select('*')
             .eq('id', studentId)
             .single();
-        
+
         if (studentError) throw studentError;
-        
+
         // Fetch payments for this student
         const { data: payments, error: paymentsError } = await window.supabaseClient
             .from('payments')
             .select('*, courses(course_code, course_name)')
             .eq('student_id', studentId)
             .order('payment_date', { ascending: false });
-        
+
         if (paymentsError) console.warn('Error loading payments:', paymentsError);
-        
+
         // Calculate totals
         const totalPaid = (payments || []).reduce((sum, p) => sum + parseFloat(p.amount_paid || 0), 0);
         const balanceDue = (student.final_fee || 0) - totalPaid;
-        
+
         // Render profile content
         content.innerHTML = renderProfileContent(student, payments || [], totalPaid, balanceDue);
-        
+
         // Update footer buttons
         updateProfileFooter(studentId);
-        
+
         // Bind close events
         bindProfileEvents();
-        
+
     } catch (e) {
         console.error('Error loading student profile:', e);
         content.innerHTML = `
@@ -845,13 +845,13 @@ async function openStudentProfile(studentId) {
 
 function renderProfileContent(student, payments, totalPaid, balanceDue) {
     const formatDate = (dateStr) => {
-        if (!dateStr) return 'â€”';
+        if (!dateStr) return 'N/A';
         const d = new Date(dateStr);
         return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
     };
-    
-    const formatCurrency = (num) => 'â‚¹' + (num || 0).toLocaleString('en-IN');
-    
+
+    const formatCurrency = (num) => 'Rs.' + (num || 0).toLocaleString('en-IN');
+
     return `
         <!-- Basic Info Section -->
         <div class="profile-section">
@@ -880,7 +880,7 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                 </div>
                 <div class="profile-info-item">
                     <span class="profile-info-label">Email</span>
-                    <span class="profile-info-value">${student.email || 'â€”'}</span>
+                    <span class="profile-info-value">${student.email || 'N/A'}</span>
                 </div>
                 <div class="profile-info-item">
                     <span class="profile-info-label">Joined</span>
@@ -888,7 +888,7 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                 </div>
                 <div class="profile-info-item">
                     <span class="profile-info-label">Batch Time</span>
-                    <span class="profile-info-value">${student.batch_time || 'â€”'}</span>
+                    <span class="profile-info-value">${student.batch_time || 'N/A'}</span>
                 </div>
             </div>
             <div class="profile-contact-btns">
@@ -912,13 +912,13 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                     <p>No courses enrolled</p>
                 </div>
             ` : (student.courses || []).map(code => {
-                const tutorId = student.course_tutors?.[code];
-                const tutor = allTutorsForStudents.find(t => t.tutor_id === tutorId);
-                const course = allCoursesForStudents.find(c => c.course_code === code);
-                const discount = student.course_discounts?.[code] || 0;
-                const courseFee = course?.fee || 0;
-                
-                return `
+        const tutorId = student.course_tutors?.[code];
+        const tutor = allTutorsForStudents.find(t => t.tutor_id === tutorId);
+        const course = allCoursesForStudents.find(c => c.course_code === code);
+        const discount = student.course_discounts?.[code] || 0;
+        const courseFee = course?.fee || 0;
+
+        return `
                     <div class="profile-course-card">
                         <div class="profile-course-header">
                             <span class="profile-course-code">${code}</span>
@@ -932,7 +932,7 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                         </div>
                     </div>
                 `;
-            }).join('')}
+    }).join('')}
         </div>
         
         <!-- Fee Summary Section -->
@@ -1019,14 +1019,14 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
 function updateProfileFooter(studentId) {
     const editBtn = document.getElementById('profile-edit-btn');
     const paymentBtn = document.getElementById('profile-payment-btn');
-    
+
     if (editBtn) {
         editBtn.onclick = () => {
             closeStudentProfile();
             openForm(studentId);
         };
     }
-    
+
     if (paymentBtn) {
         paymentBtn.href = `/payments/record-payment/?student_id=${studentId}`;
     }
@@ -1044,11 +1044,11 @@ function closeStudentProfile() {
 function bindProfileEvents() {
     const closeBtn = document.getElementById('close-profile-btn');
     const overlay = document.getElementById('student-profile-overlay');
-    
+
     if (closeBtn) {
         closeBtn.onclick = closeStudentProfile;
     }
-    
+
     // Close on overlay click (outside panel)
     if (overlay) {
         overlay.onclick = (e) => {
@@ -1057,7 +1057,7 @@ function bindProfileEvents() {
             }
         };
     }
-    
+
     // Close on Escape key
     document.addEventListener('keydown', function escHandler(e) {
         if (e.key === 'Escape' && currentProfileStudentId) {
