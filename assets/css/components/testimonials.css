@@ -17,14 +17,12 @@
 .testimonials-wall {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
-    /* Tighter gap between rows */
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    gap: var(--spacing-xl);
+    /* Increased gap between rows for desktop */
+    width: 100%;
+    /* Back to normal container width */
+    max-width: var(--container-width);
+    margin: 0 auto;
 }
 
 /* Marquee Track */
@@ -109,38 +107,10 @@
     position: relative;
 }
 
-.author-avatar {
-    width: 42px;
-    height: 42px;
-    background: var(--accent-gradient);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--white);
-    font-weight: 700;
-    font-size: 0.85rem;
-}
-
-.author-info h4 {
-    font-size: 0.95rem;
-    color: var(--gray-900);
-    margin-bottom: 0px;
-}
-
-.author-info span {
-    font-size: 0.75rem;
-    color: var(--gray-500);
-}
-
+.author-avatar,
 .testimonial-platform {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 0;
-    font-size: 1rem;
-    color: var(--primary-400);
-    opacity: 0.5;
+    display: none;
+    /* Removed profile pics and icons on desktop too */
 }
 
 .testimonial-text {
