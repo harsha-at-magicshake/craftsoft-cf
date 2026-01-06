@@ -70,9 +70,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function initializeStats() {
     window.AdminUtils.StatsHeader.render('stats-container', [
-        { label: 'Total Inquiries', value: 0, icon: 'fa-solid fa-person-circle-question' },
-        { label: 'Today\'s Leads', value: 0, icon: 'fa-solid fa-fire', color: 'var(--danger-500)' },
-        { label: 'This Week', value: 0, icon: 'fa-solid fa-calendar-week' }
+        { label: 'Total Inquiries', value: 0, icon: 'fa-solid fa-person-circle-question', color: 'var(--primary-500)' },
+        { label: 'Today\'s Leads', value: 0, icon: 'fa-solid fa-rss', color: 'var(--error)' },
+        { label: 'Recent (7 Days)', value: 0, icon: 'fa-solid fa-calendar-week', color: 'var(--info)' }
     ]);
 
     try {
@@ -88,9 +88,9 @@ async function initializeStats() {
         ]);
 
         window.AdminUtils.StatsHeader.render('stats-container', [
-            { label: 'Total Inquiries', value: totalCount.count || 0, icon: 'fa-solid fa-person-circle-question' },
-            { label: 'Today\'s Leads', value: todayCount.count || 0, icon: 'fa-solid fa-fire', color: 'var(--danger-500)' },
-            { label: 'Recent (7 Days)', value: weekCount.count || 0, icon: 'fa-solid fa-calendar-week', color: 'var(--primary-500)' }
+            { label: 'Total Inquiries', value: totalCount.count || 0, icon: 'fa-solid fa-person-circle-question', color: 'var(--primary-500)' },
+            { label: 'Today\'s Leads', value: todayCount.count || 0, icon: 'fa-solid fa-rss', color: 'var(--error)' },
+            { label: 'Recent (7 Days)', value: weekCount.count || 0, icon: 'fa-solid fa-calendar-week', color: 'var(--info)' }
         ]);
     } catch (err) {
         console.error('Stats load error:', err);

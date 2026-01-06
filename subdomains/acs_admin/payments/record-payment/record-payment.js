@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function initializeStats() {
     // Show skeleton first via render
     window.AdminUtils.StatsHeader.render('stats-container', [
-        { label: 'Today\'s Collection', value: 0, icon: 'fa-solid fa-calendar-day', prefix: '₹' },
-        { label: 'Active Students', value: 0, icon: 'fa-solid fa-user-graduate' },
-        { label: 'Pending Balance', value: 0, icon: 'fa-solid fa-clock', prefix: '₹' }
+        { label: 'Today\'s Collection', value: 0, icon: 'fa-solid fa-calendar-day', color: 'var(--primary-500)', prefix: '₹' },
+        { label: 'Active Students', value: 0, icon: 'fa-solid fa-chalkboard', color: 'var(--success)' },
+        { label: 'Total Revenue', value: 0, icon: 'fa-solid fa-vault', color: 'var(--warning)', prefix: '₹' }
     ]);
 
     try {
@@ -62,9 +62,9 @@ async function initializeStats() {
         const cumulativeTotal = (allPayments.data || []).reduce((sum, p) => sum + (p.amount_paid || 0), 0);
 
         window.AdminUtils.StatsHeader.render('stats-container', [
-            { label: 'Today\'s Collection', value: todayTotal, icon: 'fa-solid fa-calendar-day', prefix: '₹' },
-            { label: 'Students', value: activeCount, icon: 'fa-solid fa-user-graduate', color: 'var(--success-500)' },
-            { label: 'Total Revenue', value: cumulativeTotal, icon: 'fa-solid fa-chart-pie', color: 'var(--warning-500)', prefix: '₹' }
+            { label: 'Today\'s Collection', value: todayTotal, icon: 'fa-solid fa-calendar-day', color: 'var(--primary-500)', prefix: '₹' },
+            { label: 'Students', value: activeCount, icon: 'fa-solid fa-chalkboard', color: 'var(--success)', prefix: '' },
+            { label: 'Total Revenue', value: cumulativeTotal, icon: 'fa-solid fa-vault', color: 'var(--warning)', prefix: '₹' }
         ]);
     } catch (err) {
         console.error('Stats load error:', err);

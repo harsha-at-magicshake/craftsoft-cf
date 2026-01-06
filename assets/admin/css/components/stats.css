@@ -146,17 +146,17 @@
     box-shadow: var(--admin-card-shadow);
 }
 
-/* Mobile Horizontal Strip */
+/* Mobile Vertical Stack */
 @media (max-width: 992px) {
     .stats-grid {
-        grid-template-columns: repeat(3, 280px);
+        grid-template-columns: 1fr;
         gap: 1rem;
         padding: 5px;
     }
 
     .stats-grid-wrapper {
-        margin: 0 -1rem 1.5rem;
-        padding: 0 1rem 10px;
+        margin: 0 0 1.5rem;
+        padding: 0;
     }
 
     .stat-card-premium {

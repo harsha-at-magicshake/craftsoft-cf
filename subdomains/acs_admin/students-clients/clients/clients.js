@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function initializeStats() {
     window.AdminUtils.StatsHeader.render('stats-container', [
-        { label: 'Total Clients', value: 0, icon: 'fa-solid fa-user-tie' },
-        { label: 'Active Projects', value: 0, icon: 'fa-solid fa-briefcase', color: 'var(--info-500)' },
-        { label: 'Total Value', value: 0, icon: 'fa-solid fa-file-invoice-dollar' }
+        { label: 'Total Clients', value: 0, icon: 'fa-solid fa-user-tie', color: 'var(--primary-500)' },
+        { label: 'Active Projects', value: 0, icon: 'fa-solid fa-hand-holding-hand', color: 'var(--info)' },
+        { label: 'Total Value', value: 0, icon: 'fa-solid fa-box-archive', color: 'var(--success)' }
     ]);
 
     try {
@@ -63,9 +63,9 @@ async function initializeStats() {
         const totalValue = (totalRev.data || []).reduce((sum, p) => sum + (p.amount_paid || 0), 0);
 
         window.AdminUtils.StatsHeader.render('stats-container', [
-            { label: 'Total Clients', value: totalCount.count || 0, icon: 'fa-solid fa-user-tie' },
-            { label: 'Projects', value: totalCount.count || 0, icon: 'fa-solid fa-briefcase', color: 'var(--info-500)' },
-            { label: 'Service Revenue', value: totalValue, icon: 'fa-solid fa-file-invoice-dollar', color: 'var(--success-500)', prefix: '₹' }
+            { label: 'Total Clients', value: totalCount.count || 0, icon: 'fa-solid fa-user-tie', color: 'var(--primary-500)' },
+            { label: 'Projects', value: totalCount.count || 0, icon: 'fa-solid fa-hand-holding-hand', color: 'var(--info)' },
+            { label: 'Service Revenue', value: totalValue, icon: 'fa-solid fa-box-archive', color: 'var(--success)', prefix: '₹' }
         ]);
     } catch (err) {
         console.error('Stats load error:', err);

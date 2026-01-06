@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function initializeStats() {
     window.AdminUtils.StatsHeader.render('stats-container', [
-        { label: 'Total Receipts', value: 0, icon: 'fa-solid fa-file-invoice' },
-        { label: 'This Month Revenue', value: 0, icon: 'fa-solid fa-chart-line', prefix: '₹' },
-        { label: 'Today\'s Count', value: 0, icon: 'fa-solid fa-receipt' }
+        { label: 'Total Receipts', value: 0, icon: 'fa-solid fa-file-invoice', color: 'var(--primary-500)' },
+        { label: 'This Month Revenue', value: 0, icon: 'fa-solid fa-hand-holding-dollar', color: 'var(--success)', prefix: '₹' },
+        { label: 'Today\'s Count', value: 0, icon: 'fa-regular fa-file-lines', color: 'var(--info)' }
     ]);
 
     try {
@@ -55,9 +55,9 @@ async function initializeStats() {
         const totalRevMonth = (monthData.data || []).reduce((sum, r) => sum + (r.amount_paid || 0), 0);
 
         window.AdminUtils.StatsHeader.render('stats-container', [
-            { label: 'Total Receipts', value: totalCount.count || 0, icon: 'fa-solid fa-file-invoice' },
-            { label: 'This Month Rev', value: totalRevMonth, icon: 'fa-solid fa-chart-line', color: 'var(--success-500)', prefix: '₹' },
-            { label: 'Today\'s Receipts', value: todayCount.count || 0, icon: 'fa-solid fa-receipt', color: 'var(--info-500)' }
+            { label: 'Total Receipts', value: totalCount.count || 0, icon: 'fa-solid fa-file-invoice', color: 'var(--primary-500)' },
+            { label: 'This Month Rev', value: totalRevMonth, icon: 'fa-solid fa-hand-holding-dollar', color: 'var(--success)', prefix: '₹' },
+            { label: 'Today\'s Receipts', value: todayCount.count || 0, icon: 'fa-regular fa-file-lines', color: 'var(--info)' }
         ]);
     } catch (err) {
         console.error('Stats load error:', err);

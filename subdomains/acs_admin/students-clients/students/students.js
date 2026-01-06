@@ -45,9 +45,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function initializeStats() {
     window.AdminUtils.StatsHeader.render('stats-container', [
-        { label: 'Total Students', value: 0, icon: 'fa-solid fa-user-graduate' },
-        { label: 'New This Month', value: 0, icon: 'fa-solid fa-user-plus', color: 'var(--success-500)' },
-        { label: 'Payments Count', value: 0, icon: 'fa-solid fa-credit-card' }
+        { label: 'Total Students', value: 0, icon: 'fa-solid fa-chalkboard', color: 'var(--primary-500)' },
+        { label: 'Enrolled Month', value: 0, icon: 'fa-regular fa-pen-to-square', color: 'var(--success)' },
+        { label: 'Payments Count', value: 0, icon: 'fa-solid fa-credit-card', color: 'var(--info)' }
     ]);
 
     try {
@@ -62,9 +62,9 @@ async function initializeStats() {
         ]);
 
         window.AdminUtils.StatsHeader.render('stats-container', [
-            { label: 'Total Students', value: totalCount.count || 0, icon: 'fa-solid fa-user-graduate' },
-            { label: 'Enrolled Month', value: monthCount.count || 0, icon: 'fa-solid fa-user-plus', color: 'var(--success-500)' },
-            { label: 'Payments Count', value: payCount.count || 0, icon: 'fa-solid fa-credit-card', color: 'var(--primary-500)' }
+            { label: 'Total Students', value: totalCount.count || 0, icon: 'fa-solid fa-chalkboard', color: 'var(--primary-500)' },
+            { label: 'Enrolled Month', value: monthCount.count || 0, icon: 'fa-regular fa-pen-to-square', color: 'var(--success)' },
+            { label: 'Payments Count', value: payCount.count || 0, icon: 'fa-solid fa-credit-card', color: 'var(--info)' }
         ]);
     } catch (err) {
         console.error('Stats load error:', err);
