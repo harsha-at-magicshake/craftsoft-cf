@@ -47,6 +47,12 @@ const AdminSidebar = {
                     
                     ${this.navItem('settings', 'Settings', 'fa-gear')}
                 </nav>
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="copyright-text">
+                    Abhi's CraftSoft &copy; ${new Date().getFullYear()} <span class="version-badge">v1.0</span>
+                </div>
+            </div>
             </aside>
         `;
 
@@ -117,6 +123,13 @@ const AdminSidebar = {
                     
                     ${this.mobileNavItem('settings', 'Settings', 'fa-gear')}
                 </nav>
+                
+                <!-- Mobile Nav Footer -->
+                <div class="mobile-nav-footer">
+                     <div class="copyright-text">
+                        Abhi's CraftSoft &copy; ${new Date().getFullYear()} <span class="version-badge">v1.0</span>
+                    </div>
+                </div>
             </div>
         `;
 

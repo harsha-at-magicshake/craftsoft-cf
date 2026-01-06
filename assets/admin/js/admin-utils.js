@@ -746,41 +746,68 @@ const AccountManager = {
                 </button>
                 
                 <div class="account-dropdown" id="account-dropdown">
-                    <div class="account-dropdown-header">
-                        <span>Manage Accounts</span>
-                    </div>
-                    
-                    <div class="account-list" id="account-list">
-                        ${accounts.map(acc => `
-                            <div class="account-item ${acc.is_current ? 'current' : ''}" data-account-id="${acc.id}">
-                                <div class="account-item-avatar">${acc.initials}</div>
-                                <div class="account-item-details">
-                                    <span class="account-item-name">${acc.full_name}</span>
-                                    <span class="account-item-email">${acc.email}</span>
-                                    <span class="account-item-id">${acc.admin_id || 'Pending'}</span>
-                                </div>
-                                ${acc.is_current
+                    <!-- VIEW: LIST -->
+                    <div id="account-view-list">
+                        <div class="account-dropdown-header">
+                            <span>Manage Accounts</span>
+                        </div>
+                        
+                        <div class="account-list" id="account-list">
+                            ${accounts.map(acc => `
+                                <div class="account-item ${acc.is_current ? 'current' : ''}" data-account-id="${acc.id}">
+                                    <div class="account-item-avatar">${acc.initials}</div>
+                                    <div class="account-item-details">
+                                        <span class="account-item-name">${acc.full_name}</span>
+                                        <span class="account-item-email">${acc.email}</span>
+                                        <span class="account-item-id">${acc.admin_id || 'Pending'}</span>
+                                    </div>
+                                    ${acc.is_current
                 ? '<span class="account-current-badge"><i class="fa-solid fa-check"></i></span>'
                 : `<button class="account-remove-btn" data-account-id="${acc.id}" title="Remove account">
-                                        <i class="fa-solid fa-xmark"></i>
-                                       </button>`
+                                            <i class="fa-solid fa-xmark"></i>
+                                           </button>`
             }
-                            </div>
-                        `).join('')}
-                    </div>
-                    
-                    <button class="account-add-btn" id="add-account-btn">
-                        <div class="account-add-icon">
-                            <i class="fa-solid fa-plus"></i>
+                                </div>
+                            `).join('')}
                         </div>
-                        <span>Add another account</span>
-                    </button>
-                    
-                    <div class="account-actions">
-                        <button class="account-action-btn" id="logout-current-btn">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            Logout
+                        
+                        <button class="account-add-btn" id="add-account-btn">
+                            <div class="account-add-icon">
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                            <span>Add another account</span>
                         </button>
+                        
+                        <div class="account-actions">
+                            <button class="account-action-btn" id="logout-current-btn">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- VIEW: ADD ACCOUNT (Inline) -->
+                    <div id="account-view-add" style="display: none;">
+                        <div class="account-dropdown-header" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <button class="account-back-btn" id="account-back-btn" style="background:none; border:none; color:inherit; cursor:pointer;">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <span>Add Account</span>
+                        </div>
+                        <div class="account-add-form" style="padding: 1rem;">
+                            <div style="margin-bottom: 0.75rem;">
+                                <input type="text" id="inline-email" placeholder="Email or Admin ID" 
+                                       style="width: 100%; padding: 0.6rem; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 0.9rem;">
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <input type="password" id="inline-password" placeholder="Password" 
+                                       style="width: 100%; padding: 0.6rem; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 0.9rem;">
+                            </div>
+                            <button id="inline-login-btn" 
+                                    style="width: 100%; padding: 0.75rem; background: var(--primary-500, #2896cd); color: #fff; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; transition: background 0.2s;">
+                                Sign In to Account
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -793,6 +820,8 @@ const AccountManager = {
     initPanelEvents() {
         const trigger = document.getElementById('account-trigger');
         const dropdown = document.getElementById('account-dropdown');
+        const viewList = document.getElementById('account-view-list');
+        const viewAdd = document.getElementById('account-view-add');
 
         if (!trigger || !dropdown) return;
 
@@ -807,6 +836,10 @@ const AccountManager = {
 
             dropdown.classList.toggle('open');
             trigger.classList.toggle('open');
+
+            // Reset to list view when opening
+            viewList.style.display = 'block';
+            viewAdd.style.display = 'none';
         });
 
         // Close on outside click
@@ -817,7 +850,91 @@ const AccountManager = {
             }
         });
 
-        // Account item click (switch) - but not when clicking remove button
+        // Toggle Views: Show Add Form (INLINE)
+        document.getElementById('add-account-btn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            viewList.style.display = 'none';
+            viewAdd.style.display = 'block';
+            document.getElementById('inline-email')?.focus();
+        });
+
+        // Toggle Views: Back to List
+        document.getElementById('account-back-btn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            viewAdd.style.display = 'none';
+            viewList.style.display = 'block';
+        });
+
+        // INLINE LOGIN LOGIC
+        document.getElementById('inline-login-btn')?.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const emailInput = document.getElementById('inline-email');
+            const passwordInput = document.getElementById('inline-password');
+            const btn = document.getElementById('inline-login-btn');
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                window.AdminUtils.Toast.error('Error', 'Please enter email/ID and password');
+                return;
+            }
+
+            // Show loading
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Signing in...';
+            btn.disabled = true;
+
+            try {
+                // Determine if email or ID
+                let actualEmail = email;
+                if (!email.includes('@')) {
+                    // It's an ID, find the email
+                    const { data, error } = await window.supabaseClient
+                        .from('admins')
+                        .select('email')
+                        .eq('admin_id', email.toUpperCase()) // Handle case insensitive inputs
+                        .single();
+
+                    if (error || !data) throw new Error('Invalid Admin ID');
+                    actualEmail = data.email;
+                }
+
+                // Authenticate
+                const { data, error } = await window.supabaseClient.auth.signInWithPassword({
+                    email: actualEmail,
+                    password: password
+                });
+
+                if (error) throw error;
+
+                // Success! Get user details
+                const admin = await window.Auth.getCurrentAdmin();
+
+                // Add account
+                window.AdminUtils.AccountManager.addAccount({
+                    id: data.user.id,
+                    admin_id: admin.admin_id,
+                    email: admin.email,
+                    full_name: admin.full_name,
+                    initials: window.AdminUtils.AccountManager.getInitials(admin.full_name)
+                }, true); // Make current
+
+                // Store session
+                window.AdminUtils.AccountManager.storeSession(data.user.id, data.session);
+
+                window.AdminUtils.Toast.success('Welcome', `Signed in as ${admin.full_name}`);
+                location.reload();
+
+            } catch (err) {
+                console.error('Login error:', err);
+                window.AdminUtils.Toast.error('Login Failed', err.message || 'Invalid credentials');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        // Account item click items
         document.querySelectorAll('.account-item').forEach(item => {
             item.addEventListener('click', async (e) => {
                 // Don't switch if clicking the remove button
@@ -837,13 +954,6 @@ const AccountManager = {
                 const accountId = btn.dataset.accountId;
                 this.handleRemoveAccount(accountId);
             });
-        });
-
-        // Add account button
-        document.getElementById('add-account-btn')?.addEventListener('click', () => {
-            dropdown.classList.remove('open');
-            trigger.classList.remove('open');
-            this.showAddAccountModal();
         });
 
         // Logout current

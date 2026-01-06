@@ -394,4 +394,33 @@
         font-size: 0.95rem;
         width: 20px;
     }
+
+    /* Mobile Nav Footer (Copyright) */
+    .mobile-nav-footer {
+        margin-top: auto;
+        padding: 1rem 1.25rem;
+        border-top: 1px solid var(--sidebar-border);
+        background: rgba(40, 150, 205, 0.02);
+        text-align: center;
+    }
+
+    .copyright-text {
+        font-size: 0.75rem;
+        color: var(--admin-text-muted);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .version-badge {
+        font-size: 0.65rem;
+        background: var(--primary-100);
+        color: var(--primary-600);
+        padding: 0.1rem 0.3rem;
+        border-radius: 4px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
 }
