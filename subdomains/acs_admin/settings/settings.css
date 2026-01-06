@@ -4,9 +4,83 @@
    Settings Container
    ============================================ */
 .settings-container {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+@media (max-width: 992px) {
+    .settings-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+/* ============================================
+   Settings Tabs
+   ============================================ */
+.settings-tabs {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.5rem;
+    background: #fff;
+    padding: 0.75rem;
+    border-radius: 16px;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    position: sticky;
+    top: 2rem;
+}
+
+.settings-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    color: var(--admin-text-secondary, #64748b);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.settings-tab-btn i {
+    width: 20px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.settings-tab-btn:hover {
+    background: var(--gray-50, #f8fafc);
+    color: var(--admin-text-primary, #0f172a);
+}
+
+.settings-tab-btn.active {
+    background: var(--primary-50, #edf6fb);
+    color: var(--primary-500, #2896cd);
+}
+
+.settings-tab-btn.active i {
+    color: var(--primary-500, #2896cd);
+    transform: scale(1.1);
+}
+
+@media (max-width: 992px) {
+    .settings-tabs {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 0.5rem;
+        position: static;
+        white-space: nowrap;
+    }
+
+    .settings-tab-btn {
+        padding: 0.75rem 1rem;
+    }
 }
 
 /* ============================================
@@ -17,6 +91,19 @@
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .settings-section-header {

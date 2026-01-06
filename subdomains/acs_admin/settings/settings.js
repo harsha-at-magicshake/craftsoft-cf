@@ -3,6 +3,7 @@ let settingsData = {};
 let currentAdmin = null;
 let sessionsData = [];
 let currentTabId = null;
+let currentSettingsTab = 'profile'; // profile, institute, bank, security
 let sessionsChannel = null;
 
 // Format password last updated text
@@ -176,12 +177,55 @@ function renderSettings() {
     const container = document.getElementById('settings-content');
 
     container.innerHTML = `
-        <!-- Profile Section -->
+        <!-- Left Sidebar: Tabs -->
+        <div class="settings-tabs">
+            <button class="settings-tab-btn ${currentSettingsTab === 'profile' ? 'active' : ''}" data-tab="profile">
+                <i class="fa-solid fa-user-circle"></i> My Profile
+            </button>
+            <button class="settings-tab-btn ${currentSettingsTab === 'institute' ? 'active' : ''}" data-tab="institute">
+                <i class="fa-solid fa-building"></i> Institute Details
+            </button>
+            <button class="settings-tab-btn ${currentSettingsTab === 'bank' ? 'active' : ''}" data-tab="bank">
+                <i class="fa-solid fa-credit-card"></i> Payment Settings
+            </button>
+            <button class="settings-tab-btn ${currentSettingsTab === 'security' ? 'active' : ''}" data-tab="security">
+                <i class="fa-solid fa-shield-halved"></i> Security & Sessions
+            </button>
+        </div>
+
+        <!-- Right Content: Tab Body -->
+        <div class="settings-tab-body">
+            ${renderCurrentTabContent()}
+        </div>
+    `;
+
+    // Bind tab clicks (need to do it after innerHTML)
+    document.querySelectorAll('.settings-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentSettingsTab = btn.dataset.tab;
+            renderSettings();
+            bindEvents();
+        });
+    });
+}
+
+function renderCurrentTabContent() {
+    switch (currentSettingsTab) {
+        case 'profile': return renderProfileTab();
+        case 'institute': return renderInstituteTab();
+        case 'bank': return renderBankTab();
+        case 'security': return renderSecurityTab();
+        default: return '';
+    }
+}
+
+function renderProfileTab() {
+    return `
         <div class="settings-section" id="section-profile">
             <div class="settings-section-header">
                 <h3 class="settings-section-title">
                     <i class="fa-solid fa-user"></i>
-                    Profile
+                    Profile Information
                 </h3>
             </div>
             <div class="settings-section-body">
@@ -208,7 +252,50 @@ function renderSettings() {
             </div>
         </div>
 
-        <!-- Institute Details Section -->
+        <!-- Contact Section Grouped with Profile -->
+        <div class="settings-section" style="margin-top: 2rem;" id="section-contact">
+            <div class="settings-section-header">
+                <h3 class="settings-section-title">
+                    <i class="fa-solid fa-phone"></i>
+                    Contact Details
+                </h3>
+                <button class="settings-edit-btn" data-section="contact">
+                    <i class="fa-solid fa-pen"></i> Edit
+                </button>
+            </div>
+            <div class="settings-section-body">
+                <div class="settings-display">
+                    ${renderFieldRow('Primary Phone', settingsData.primary_phone ? `+91-${settingsData.primary_phone}` : '')}
+                    ${renderFieldRow('Secondary Phone', settingsData.secondary_phone ? `+91-${settingsData.secondary_phone}` : '')}
+                    ${renderFieldRow('Contact Email', settingsData.contact_email)}
+                </div>
+                <div class="settings-edit-form">
+                    <div class="settings-form-group">
+                        <label>Primary Phone</label>
+                        <input type="tel" id="edit-primary_phone" value="${settingsData.primary_phone || ''}" maxlength="10" placeholder="10-digit number">
+                    </div>
+                    <div class="settings-form-group">
+                        <label>Secondary Phone (optional)</label>
+                        <input type="tel" id="edit-secondary_phone" value="${settingsData.secondary_phone || ''}" maxlength="10" placeholder="10-digit number">
+                    </div>
+                    <div class="settings-form-group">
+                        <label>Contact Email</label>
+                        <input type="email" id="edit-contact_email" value="${settingsData.contact_email || ''}" placeholder="info@example.com">
+                    </div>
+                    <div class="settings-form-actions">
+                        <button class="btn btn-outline cancel-edit-btn" data-section="contact">Cancel</button>
+                        <button class="btn btn-primary save-edit-btn" data-section="contact">
+                            <i class="fa-solid fa-check"></i> Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function renderInstituteTab() {
+    return `
         <div class="settings-section" id="section-institute">
             <div class="settings-section-header">
                 <h3 class="settings-section-title">
@@ -274,48 +361,11 @@ function renderSettings() {
                 </div>
             </div>
         </div>
+    `;
+}
 
-        <!-- Contact Details Section -->
-        <div class="settings-section" id="section-contact">
-            <div class="settings-section-header">
-                <h3 class="settings-section-title">
-                    <i class="fa-solid fa-phone"></i>
-                    Contact Details
-                </h3>
-                <button class="settings-edit-btn" data-section="contact">
-                    <i class="fa-solid fa-pen"></i> Edit
-                </button>
-            </div>
-            <div class="settings-section-body">
-                <div class="settings-display">
-                    ${renderFieldRow('Primary Phone', settingsData.primary_phone ? `+91-${settingsData.primary_phone}` : '')}
-                    ${renderFieldRow('Secondary Phone', settingsData.secondary_phone ? `+91-${settingsData.secondary_phone}` : '')}
-                    ${renderFieldRow('Contact Email', settingsData.contact_email)}
-                </div>
-                <div class="settings-edit-form">
-                    <div class="settings-form-group">
-                        <label>Primary Phone</label>
-                        <input type="tel" id="edit-primary_phone" value="${settingsData.primary_phone || ''}" maxlength="10" placeholder="10-digit number">
-                    </div>
-                    <div class="settings-form-group">
-                        <label>Secondary Phone (optional)</label>
-                        <input type="tel" id="edit-secondary_phone" value="${settingsData.secondary_phone || ''}" maxlength="10" placeholder="10-digit number">
-                    </div>
-                    <div class="settings-form-group">
-                        <label>Contact Email</label>
-                        <input type="email" id="edit-contact_email" value="${settingsData.contact_email || ''}" placeholder="info@example.com">
-                    </div>
-                    <div class="settings-form-actions">
-                        <button class="btn btn-outline cancel-edit-btn" data-section="contact">Cancel</button>
-                        <button class="btn btn-primary save-edit-btn" data-section="contact">
-                            <i class="fa-solid fa-check"></i> Save
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bank & Payment Details Section -->
+function renderBankTab() {
+    return `
         <div class="settings-section" id="section-bank">
             <div class="settings-section-header">
                 <h3 class="settings-section-title">
@@ -359,12 +409,34 @@ function renderSettings() {
                 </div>
             </div>
         </div>
+    `;
+}
 
-        <!-- Security Section -->
-
+function renderSecurityTab() {
+    return `
+        <!-- Active Sessions Section -->
+        <div class="settings-section">
+            <div class="settings-section-header">
+                <h3 class="settings-section-title">
+                    <i class="fa-solid fa-laptop-code"></i>
+                    Active Sessions
+                </h3>
+                <button class="btn btn-sm btn-outline" id="logout-all-sessions-btn" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">
+                    Logout All
+                </button>
+            </div>
+            <div class="settings-section-body">
+                <p class="settings-section-description">
+                    Manage and sign out of your active sessions on other devices.
+                </p>
+                <div class="sessions-list" id="sessions-list">
+                    ${renderSessionsList()}
+                </div>
+            </div>
+        </div>
 
         <!-- Session Timeout Section -->
-        <div class="settings-section" id="section-timeout">
+        <div class="settings-section" style="margin-top: 2rem;" id="section-timeout">
             <div class="settings-section-header">
                 <h3 class="settings-section-title">
                     <i class="fa-regular fa-clock"></i>
@@ -405,6 +477,7 @@ function renderSettings() {
         </div>
     `;
 }
+
 
 function renderFieldRow(label, value) {
     const isEmpty = !value || value === '—';
