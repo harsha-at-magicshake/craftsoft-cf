@@ -138,7 +138,11 @@ async function loadStudents() {
 
     // Show skeleton loading
     if (Skeleton) {
-        Skeleton.show('students-content', 'table', 5);
+        if (window.innerWidth <= 768) {
+            Skeleton.show('students-content', 'cards', 3);
+        } else {
+            Skeleton.show('students-content', 'table', 5);
+        }
     }
 
     try {
@@ -196,8 +200,10 @@ function renderStudentsList(students) {
                         <th width="14%">STUDENT ID</th>
                         <th width="22%">NAME</th>
                         <th width="15%">PHONE</th>
-                        <th width="32%">COURSE(S)</th>
-                        <th width="17%" class="text-right">ACTIONS</th>
+                        <th width="20%">COURSE(S)</th>
+                        <th width="15%" class="text-right">DISCOUNTED FEE</th>
+                        <th width="12%" class="text-right">TOTAL</th>
+                        <th width="15%" class="text-right">ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -214,17 +220,22 @@ function renderStudentsList(students) {
                                     ${(s.courses || []).map(code => {
         const tutorId = s.course_tutors?.[code];
         const tutor = allTutorsForStudents.find(t => t.tutor_id === tutorId);
-        return `<span class="glass-tag" title="${tutor ? `Tutor: ${tutor.full_name}` : 'No tutor assigned'}">
-                                            ${code}${tutor ? ` (${tutor.full_name.split(' ')[0]})` : ''}
-                                        </span>`;
+        return `<span class="glass-tag" title="${tutor ? `Tutor: ${tutor.full_name}` : 'No tutor assigned'}">${code}${tutor ? ` (${tutor.full_name.split(' ')[0]})` : ''}</span>`;
     }).join('')}
                                 </div>
                             </td>
-                            </td>
                             <td class="text-right">
-                                <div class="cell-actions">
+                                ${(s.courses || []).map(code => {
+        const course = allCoursesForStudents.find(c => c.course_code === code);
+        const netFee = (course?.course_fee || 0) - (s.course_discounts?.[code] || 0);
+        return `<div style="font-size: 0.8rem; color: var(--admin-text-muted);">${code}: ₹${formatNumber(netFee)}</div>`;
+    }).join('')}
+                            </td>
+                            <td class="text-right" style="font-weight: 700; color: var(--primary-color);">₹${formatNumber(s.total_fee || 0)}</td>
+                            <td class="text-right">
+                                <div class="cell-actions" style="justify-content: flex-end;">
                                     <button class="action-btn edit btn-edit-student" data-id="${s.id}" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                                    <a href="https://wa.me/91${s.phone.replace(/\D/g, '')}" target="_blank" class="action-btn whatsapp" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                                    <a href="https://wa.me/91${s.phone.replace(/\D/g, '')}" target="_blank" class="action-btn whatsapp" title="Chat"><i class="fa-brands fa-whatsapp"></i></a>
                                     <button class="action-btn delete btn-delete-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Delete"><i class="fa-solid fa-trash"></i></button>
                                 </div>
                             </td>
@@ -242,21 +253,29 @@ function renderStudentsList(students) {
                             <span class="card-id-badge clickable btn-view-profile" data-id="${s.id}">${s.student_id}</span>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <h4 class="card-name">${s.first_name} ${s.last_name}</h4>
+                    <div class="card-body" style="text-align: left;">
+                        <h4 class="card-name" style="margin-bottom: 0.75rem;">${s.first_name} ${s.last_name}</h4>
                         <div class="card-info-row">
-                            <span class="card-info-item"><i class="fa-solid fa-phone"></i> ${s.phone}</span>
-                            <div class="card-info-item" style="align-items: flex-start; gap: 0.5rem;">
-                                <i class="fa-solid fa-book-open" style="margin-top: 4px;"></i> 
-                                <div class="cell-tags" style="display: flex; flex-wrap: wrap; gap: 4px;">
-                                    ${(s.courses || []).map(code => {
-        const tutorId = s.course_tutors?.[code];
-        const tutor = allTutorsForStudents.find(t => t.tutor_id === tutorId);
-        return `<span class="glass-tag" style="background: rgba(40, 150, 205, 0.1); color: var(--primary-color); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">
-                                            ${code}${tutor ? ` (${tutor.full_name.split(' ')[0]})` : ''}
-                                        </span>`;
+                            <div class="card-info-item" style="color: var(--admin-text-muted);"><i class="fa-solid fa-phone" style="color: #10b981;"></i> ${s.phone}</div>
+                            <div class="card-info-item" style="color: var(--admin-text-muted); margin-top: 4px;"><i class="fa-solid fa-book" style="color: #6366f1;"></i> ${(s.courses || []).join(', ')}</div>
+                        </div>
+
+                        <div style="margin: 1rem 0; border-top: 1px dashed var(--admin-input-border); opacity: 0.5;"></div>
+
+                        <div class="card-breakdown">
+                            ${(s.courses || []).map(code => {
+        const course = allCoursesForStudents.find(c => c.course_code === code);
+        const netFee = (course?.course_fee || 0) - (s.course_discounts?.[code] || 0);
+        return `
+                                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.25rem;">
+                                        <span style="color: var(--admin-text-muted);">${code}</span>
+                                        <span style="font-weight: 500;">₹${formatNumber(netFee)}</span>
+                                    </div>
+                                `;
     }).join('')}
-                                </div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-weight: 700; color: var(--primary-color); font-size: 1rem;">
+                                <span>Total</span>
+                                <span>₹${formatNumber(s.total_fee || 0)}</span>
                             </div>
                         </div>
                     </div>
@@ -265,7 +284,7 @@ function renderStudentsList(students) {
                             <i class="fa-solid fa-pen"></i> <span>Edit</span>
                         </button>
                         <a href="https://wa.me/91${s.phone.replace(/\D/g, '')}" target="_blank" class="card-action-btn whatsapp">
-                            <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp</span>
+                            <i class="fa-brands fa-whatsapp"></i> <span>Chat</span>
                         </a>
                         <button class="card-action-btn delete btn-delete-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}">
                             <i class="fa-solid fa-trash"></i> <span>Delete</span>

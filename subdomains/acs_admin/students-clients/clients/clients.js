@@ -94,11 +94,7 @@ async function loadServicesForClients() {
 // Load Clients
 // =====================
 async function loadClients() {
-    const tableContainer = document.getElementById('clients-table-container');
-    const cardsContainer = document.getElementById('clients-cards');
-
-    // Show spinners if containers exist
-    if (tableContainer) tableContainer.innerHTML = '<div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i> Loading clients...</div>';
+    showSkeletons();
 
     try {
         const { data, error } = await window.supabaseClient
@@ -111,7 +107,80 @@ async function loadClients() {
         renderClients(allClients);
     } catch (e) {
         console.error('Error loading clients:', e);
+        const tableContainer = document.getElementById('clients-table-container');
         if (tableContainer) tableContainer.innerHTML = `<p class="text-error">Failed to load clients.</p>`;
+    }
+}
+
+function showSkeletons() {
+    const tableContainer = document.getElementById('clients-table-container');
+    const cardsContainer = document.getElementById('clients-cards');
+
+    if (tableContainer) {
+        let tableRows = '';
+        for (let i = 0; i < 5; i++) {
+            tableRows += `
+                <tr>
+                    <td><div class="skeleton" style="height: 16px; width: 16px;"></div></td>
+                    <td><div class="skeleton" style="height: 24px; width: 80px;"></div></td>
+                    <td><div class="skeleton" style="height: 16px; width: 120px;"></div></td>
+                    <td><div class="skeleton" style="height: 16px; width: 100px;"></div></td>
+                    <td><div class="skeleton" style="height: 16px; width: 150px;"></div></td>
+                    <td class="text-right"><div class="skeleton" style="height: 16px; width: 60px; margin-left: auto;"></div></td>
+                    <td class="text-right"><div class="skeleton" style="height: 16px; width: 60px; margin-left: auto;"></div></td>
+                    <td class="text-right"><div class="skeleton" style="height: 32px; width: 100px; margin-left: auto;"></div></td>
+                </tr>
+            `;
+        }
+        tableContainer.innerHTML = `
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th width="40"><div class="skeleton" style="height: 16px; width: 16px;"></div></th>
+                            <th>Client ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Services</th>
+                            <th class="text-right">Fee Breakdown</th>
+                            <th class="text-right">Total Fee</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>${tableRows}</tbody>
+                </table>
+            </div>
+        `;
+    }
+
+    if (cardsContainer) {
+        let cards = '';
+        for (let i = 0; i < 3; i++) {
+            cards += `
+                <div class="premium-card" style="margin-bottom: 1rem; padding: 1.5rem; border-radius: 16px; background: #fff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                    <div class="card-header" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="skeleton" style="height: 16px; width: 16px; border-radius: 4px;"></div>
+                        <div class="skeleton" style="height: 24px; width: 80px; border-radius: 20px;"></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="skeleton" style="height: 20px; width: 60%; margin-bottom: 1rem;"></div>
+                        <div class="skeleton" style="height: 14px; width: 40%; margin-bottom: 0.5rem;"></div>
+                        <div class="skeleton" style="height: 14px; width: 50%;"></div>
+                        <div style="margin: 1.25rem 0; border-top: 1px dashed #eee;"></div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div class="skeleton" style="height: 14px; width: 30%;"></div>
+                            <div class="skeleton" style="height: 14px; width: 20%;"></div>
+                        </div>
+                    </div>
+                    <div class="card-actions" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-top: 1.25rem;">
+                        <div class="skeleton" style="height: 36px; border-radius: 12px;"></div>
+                        <div class="skeleton" style="height: 36px; border-radius: 12px;"></div>
+                        <div class="skeleton" style="height: 36px; border-radius: 12px;"></div>
+                    </div>
+                </div>
+            `;
+        }
+        cardsContainer.innerHTML = cards;
     }
 }
 
@@ -159,9 +228,9 @@ function renderClients(clients) {
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Services</th>
-                <th>Fee</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th class="text-right">Fee Breakdown</th>
+                <th class="text-right">Total Fee</th>
+                <th class="text-right">Actions</th>
             </tr>
         </thead>
         <tbody>`;
@@ -179,18 +248,25 @@ function renderClients(clients) {
                 <td>${fullName}</td>
                 <td>${c.phone || '-'}</td>
                 <td><span class="services-tags">${servicesList}</span></td>
-                <td><i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(c.total_fee || 0)}</td>
-                <td><span class="status-badge ${statusClass}">${c.status || 'ACTIVE'}</span></td>
-                <td class="actions-cell">
-                    <button class="btn-icon edit-btn" data-id="${c.id}" title="Edit">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button class="btn-icon whatsapp" data-phone="${c.phone}" title="WhatsApp">
-                        <i class="fa-brands fa-whatsapp"></i>
-                    </button>
-                    <button class="btn-icon delete" data-id="${c.id}" data-name="${fullName}" title="Delete">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
+                <td class="text-right">
+                    ${(c.services || []).map(code => {
+            const fee = c.service_fees?.[code] || 0;
+            return `<div style="font-size: 0.8rem; color: var(--admin-text-muted);">${code}: ₹${formatNumber(fee)}</div>`;
+        }).join('')}
+                </td>
+                <td class="text-right" style="font-weight: 700; color: var(--primary-color);">₹${formatNumber(c.total_fee || 0)}</td>
+                <td class="actions-cell text-right">
+                    <div class="cell-actions" style="justify-content: flex-end;">
+                        <button class="action-btn edit-btn" data-id="${c.id}" title="Edit">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <a href="https://wa.me/91${c.phone.replace(/\D/g, '')}" target="_blank" class="action-btn whatsapp" title="WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="action-btn delete" data-id="${c.id}" data-name="${fullName}" title="Delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>
         `;
@@ -214,13 +290,28 @@ function renderClients(clients) {
                         <span class="card-id-badge">${c.client_id || 'CL-ACS-XXX'}</span>
                     </div>
                 </div>
-                <div class="card-body">
-                    <h4 class="card-name">${fullName}</h4>
+                <div class="card-body" style="text-align: left;">
+                    <h4 class="card-name" style="margin-bottom: 0.75rem;">${fullName}</h4>
                     <div class="card-info-row">
-                        <span class="card-info-item"><i class="fa-solid fa-phone"></i> ${c.phone || '-'}</span>
-                        <span class="card-info-item"><i class="fa-solid fa-wrench"></i> ${servicesList}</span>
-                        <div class="card-info-item fee-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--table-border); color: var(--primary-color); font-weight: 700;">
-                            <i class="fa-solid fa-indian-rupee-sign"></i> ${formatNumber(c.total_fee || 0)}
+                        <div class="card-info-item" style="color: var(--admin-text-muted);"><i class="fa-solid fa-phone" style="color: #10b981;"></i> ${c.phone || '-'}</div>
+                        <div class="card-info-item" style="color: var(--admin-text-muted); margin-top: 4px;"><i class="fa-solid fa-wrench" style="color: #6366f1;"></i> ${servicesList}</div>
+                    </div>
+
+                    <div style="margin: 1rem 0; border-top: 1px dashed var(--admin-input-border); opacity: 0.5;"></div>
+
+                    <div class="card-breakdown">
+                        ${(c.services || []).map(code => {
+            const fee = c.service_fees?.[code] || 0;
+            return `
+                                <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.25rem;">
+                                    <span style="color: var(--admin-text-muted);">${code}</span>
+                                    <span style="font-weight: 500;">₹${formatNumber(fee)}</span>
+                                </div>
+                            `;
+        }).join('')}
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-weight: 700; color: var(--primary-color); font-size: 1rem;">
+                            <span>Total Quotation</span>
+                            <span>₹${formatNumber(c.total_fee || 0)}</span>
                         </div>
                     </div>
                 </div>
@@ -228,10 +319,10 @@ function renderClients(clients) {
                     <button class="card-action-btn edit edit-btn" data-id="${c.id}">
                         <i class="fa-solid fa-pen"></i> <span>Edit</span>
                     </button>
-                    <button class="card-action-btn whatsapp whatsapp" data-phone="${c.phone}">
+                    <a href="https://wa.me/91${c.phone.replace(/\D/g, '')}" target="_blank" class="card-action-btn whatsapp">
                         <i class="fa-brands fa-whatsapp"></i> <span>Chat</span>
-                    </button>
-                    <button class="card-action-btn delete delete" data-id="${c.id}" data-name="${fullName}">
+                    </a>
+                    <button class="card-action-btn delete" data-id="${c.id}" data-name="${fullName}">
                         <i class="fa-solid fa-trash"></i> <span>Delete</span>
                     </button>
                 </div>

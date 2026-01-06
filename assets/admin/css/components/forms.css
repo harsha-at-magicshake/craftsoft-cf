@@ -99,6 +99,23 @@
     font-size: 1.1rem;
 }
 
+/* Textarea with Icon alignment */
+.form-input-wrapper.textarea-icon {
+    align-items: flex-start;
+}
+
+.form-input-wrapper.textarea-icon .input-icon {
+    top: 0.95rem;
+}
+
+.input-with-icon.textarea-icon {
+    align-items: flex-start;
+}
+
+.input-with-icon.textarea-icon .input-icon {
+    top: 0.95rem;
+}
+
 /* Form Error */
 .form-error {
     font-size: 0.8rem;

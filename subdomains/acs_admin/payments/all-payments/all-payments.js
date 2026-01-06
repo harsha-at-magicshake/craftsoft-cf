@@ -269,39 +269,5 @@ function bindEvents() {
     document.getElementById('filter-mode').addEventListener('change', handleFilter);
     document.getElementById('filter-type').addEventListener('change', handleFilter);
 
-    // Export CSV
-    document.getElementById('export-csv').addEventListener('click', exportToCSV);
-}
-
-// =====================
-// Export CSV
-// =====================
-function exportToCSV() {
-    if (filteredPayments.length === 0) return;
-
-    const headers = ['Date', 'Entity Name', 'ID', 'Item', 'Amount', 'Mode', 'Reference'];
-    const rows = filteredPayments.map(p => {
-        const entity = p.student || p.client;
-        return [
-            formatDate(p.created_at),
-            entity ? `${entity.first_name} ${entity.last_name || ''}` : 'Unknown',
-            entity ? (entity.student_id || entity.client_id) : '-',
-            p.course?.course_name || p.service?.name || 'Unknown',
-            p.amount_paid,
-            p.payment_mode,
-            p.reference_id || '-'
-        ].map(val => `"${val}"`).join(',');
-    });
-
-    const csvContent = [headers.join(','), ...rows].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-
-    link.setAttribute('href', url);
-    link.setAttribute('download', `payments_export_${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    document.getElementById('filter-type').addEventListener('change', handleFilter);
 }
