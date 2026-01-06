@@ -176,7 +176,10 @@ function renderPayments() {
         <div class="premium-card">
             <div class="card-header">
                 <span class="card-id-badge">${formatDate(p.created_at)}</span>
-                <span class="card-amount"><i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(p.amount_paid)}</span>
+                <div class="card-header-right">
+                    <span class="glass-tag ${p.payment_mode.toLowerCase()}">${p.payment_mode}</span>
+                    <span class="card-amount"><i class="fa-solid fa-indian-rupee-sign"></i> ${formatNumber(p.amount_paid)}</span>
+                </div>
             </div>
             <div class="card-body">
                 <div class="card-info-row">
@@ -189,7 +192,6 @@ function renderPayments() {
                 </div>
             </div>
             <div class="card-footer">
-                <span class="glass-tag ${p.payment_mode.toLowerCase()}">${p.payment_mode}</span>
                 <span class="badge ${p.student_id ? 'badge-primary' : 'badge-info'}" style="font-size: 0.65rem;">${p.student_id ? 'COURSES' : 'SERVICES'}</span>
             </div>
         </div>
@@ -276,4 +278,14 @@ function bindEvents() {
     document.getElementById('filter-type').addEventListener('change', handleFilter);
     document.getElementById('filter-date-from').addEventListener('change', handleFilter);
     document.getElementById('filter-date-to').addEventListener('change', handleFilter);
+
+    // Reset button
+    document.getElementById('reset-filters-btn')?.addEventListener('click', () => {
+        document.getElementById('search-input').value = '';
+        document.getElementById('filter-mode').value = 'all';
+        document.getElementById('filter-type').value = 'all';
+        document.getElementById('filter-date-from').value = '';
+        document.getElementById('filter-date-to').value = '';
+        handleFilter();
+    });
 }

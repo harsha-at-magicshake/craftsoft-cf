@@ -29,7 +29,7 @@ const AdminSidebar = {
             <aside class="admin-sidebar" id="admin-sidebar">
                 <nav class="sidebar-nav">
                     ${this.navItem('dashboard', 'Dashboard', 'fa-chart-pie')}
-                    ${this.navItem('inquiries', 'Inquiries', 'fa-regular fa-circle-question')}
+                    ${this.navItem('inquiries', 'Inquiries', 'fa-solid fa-circle-question')}
                     ${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user')}
                     
                     <!-- Courses & Services (flat on desktop) -->
@@ -72,7 +72,7 @@ const AdminSidebar = {
                 </div>
                 <nav class="mobile-nav-list">
                     ${this.mobileNavItem('dashboard', 'Dashboard', 'fa-chart-pie')}
-                    ${this.mobileNavItem('inquiries', 'Inquiries', 'fa-regular fa-circle-question')}
+                    ${this.mobileNavItem('inquiries', 'Inquiries', 'fa-solid fa-circle-question')}
                     ${this.mobileNavItem('tutors', 'Tutors', 'fa-chalkboard-user')}
 
                     <!-- Courses & Services Parent (Mobile Only) -->

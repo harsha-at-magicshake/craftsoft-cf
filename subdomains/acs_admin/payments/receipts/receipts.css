@@ -249,7 +249,54 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.75rem;
-    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--table-header-bg);
+    border-top: 1px solid var(--table-border);
+}
+
+/* Card Header Right - Payment Mode + Amount */
+.card-header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.card-header-right .card-amount {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-600);
+}
+
+/* PDF Button Style */
+.card-action-btn.pdf {
+    background: rgba(108, 92, 231, 0.1);
+    color: #6c5ce7;
+}
+
+.card-action-btn.pdf:hover {
+    background: rgba(108, 92, 231, 0.2);
+}
+
+/* Reset Button */
+.btn-outline.btn-sm {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    border: 1px solid var(--admin-input-border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--admin-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.btn-outline.btn-sm:hover {
+    background: rgba(40, 150, 205, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 /* Empty State */

@@ -187,6 +187,7 @@
     .filter-controls {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
     }
 
     .premium-card {
@@ -194,13 +195,46 @@
         border: 1px solid var(--admin-card-border);
         box-shadow: var(--admin-card-shadow);
     }
+}
 
-    .card-amount {
-        background: var(--btn-primary-bg);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-size: 1.5rem;
-        font-weight: 800;
-    }
+/* Card Header Right - Payment Mode + Amount */
+.card-header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.card-header-right .card-amount {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-600);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.card-header-right .card-amount i {
+    font-size: 0.9rem;
+}
+
+/* Reset Button */
+.btn-outline.btn-sm {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    border: 1px solid var(--admin-input-border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--admin-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.btn-outline.btn-sm:hover {
+    background: rgba(40, 150, 205, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
 }

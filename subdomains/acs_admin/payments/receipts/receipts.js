@@ -183,7 +183,10 @@ function renderReceipts() {
                     <span class="card-id-badge">${r.receipt_id}</span>
                     <span style="font-size: 0.75rem; color: var(--admin-text-muted);">${formatDate(r.created_at)}</span>
                 </div>
-                <span class="card-amount">${formatCurrency(r.amount_paid)}</span>
+                <div class="card-header-right">
+                    <span class="glass-tag ${r.payment_mode.toLowerCase()}">${r.payment_mode}</span>
+                    <span class="card-amount">${formatCurrency(r.amount_paid)}</span>
+                </div>
             </div>
             <div class="card-body">
                 <div class="card-info-row">
@@ -197,21 +200,16 @@ function renderReceipts() {
                     </span>
                 </div>
             </div>
-            <div class="card-footer" style="display: flex; flex-direction: column; gap: 0.75rem; padding: 0;">
-                <div style="padding: 0.75rem 1rem; border-top: 1px dashed var(--table-border);">
-                     <span class="glass-tag ${r.payment_mode.toLowerCase()}" style="background: rgba(40, 150, 205, 0.1); color: var(--primary-color); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">${r.payment_mode}</span>
-                </div>
-                <div class="card-actions">
-                    <button class="card-action-btn edit" onclick="viewReceipt('${r.receipt_id}')">
-                        <i class="fa-solid fa-eye"></i> <span>View</span>
-                    </button>
-                    <button class="card-action-btn" style="background: rgba(108, 92, 231, 0.1); color: #6c5ce7;" onclick="downloadReceipt('${r.receipt_id}')">
-                        <i class="fa-solid fa-download"></i> <span>PDF</span>
-                    </button>
-                    <button class="card-action-btn whatsapp" onclick="sendWhatsApp('${r.receipt_id}')">
-                        <i class="fa-brands fa-whatsapp"></i> <span>Chat</span>
-                    </button>
-                </div>
+            <div class="card-actions">
+                <button class="card-action-btn edit" onclick="viewReceipt('${r.receipt_id}')">
+                    <i class="fa-solid fa-eye"></i> <span>View</span>
+                </button>
+                <button class="card-action-btn pdf" onclick="downloadReceipt('${r.receipt_id}')">
+                    <i class="fa-solid fa-download"></i> <span>PDF</span>
+                </button>
+                <button class="card-action-btn whatsapp" onclick="sendWhatsApp('${r.receipt_id}')">
+                    <i class="fa-brands fa-whatsapp"></i> <span>Chat</span>
+                </button>
             </div>
         </div>
     `}).join('');
@@ -499,6 +497,14 @@ function bindEvents() {
     document.getElementById('search-input')?.addEventListener('input', handleFilter);
     document.getElementById('filter-date-from')?.addEventListener('change', handleFilter);
     document.getElementById('filter-date-to')?.addEventListener('change', handleFilter);
+
+    // Reset button
+    document.getElementById('reset-filters-btn')?.addEventListener('click', () => {
+        document.getElementById('search-input').value = '';
+        document.getElementById('filter-date-from').value = '';
+        document.getElementById('filter-date-to').value = '';
+        handleFilter();
+    });
 
     document.getElementById('close-receipt-modal')?.addEventListener('click', closeReceiptModal);
     document.getElementById('receipt-cancel-btn')?.addEventListener('click', closeReceiptModal);
