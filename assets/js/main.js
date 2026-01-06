@@ -1,4 +1,4 @@
-/* ============================================
+﻿/* ============================================
    Abhi's Craft Soft - Main JavaScript
    ============================================ */
 
@@ -30,44 +30,40 @@ function initShareBarPosition() {
     const relatedSection = document.querySelector('.related-courses');
     const courseOverview = document.querySelector('.course-highlights');
 
-    if (!shareBar || !relatedSection) return;
+    if (!shareBar) return;
 
-    // Store original parent for desktop restoration
-    const originalParent = shareBar.parentElement;
-    const originalNextSibling = shareBar.nextElementSibling;
+    // Remove the separator border from share bar since we're moving it
+    shareBar.style.borderBottom = 'none';
+    shareBar.style.marginBottom = '0';
+    shareBar.style.paddingBottom = '0';
 
     function repositionShareBar() {
         const isMobile = window.innerWidth <= 768;
 
-        if (isMobile) {
+        if (isMobile && relatedSection) {
             // Mobile: Move before related courses section
-            if (shareBar.parentElement !== relatedSection.parentElement) {
-                relatedSection.parentElement.insertBefore(shareBar, relatedSection);
-                shareBar.style.margin = '2rem auto';
-                shareBar.style.maxWidth = '90%';
-                shareBar.style.padding = '1rem';
-                shareBar.style.background = 'rgba(40, 150, 205, 0.05)';
-                shareBar.style.borderRadius = '12px';
-                shareBar.style.border = '1px solid rgba(40, 150, 205, 0.1)';
-                shareBar.style.justifyContent = 'center';
-            }
-        } else {
+            relatedSection.parentElement.insertBefore(shareBar, relatedSection);
+            shareBar.style.margin = '2rem auto';
+            shareBar.style.maxWidth = '90%';
+            shareBar.style.padding = '1rem';
+            shareBar.style.background = 'rgba(40, 150, 205, 0.05)';
+            shareBar.style.borderRadius = '12px';
+            shareBar.style.border = '1px solid rgba(40, 150, 205, 0.1)';
+            shareBar.style.justifyContent = 'center';
+        } else if (courseOverview) {
             // Desktop: Move after course overview/highlights
-            if (courseOverview && shareBar.parentElement !== originalParent) {
-                if (originalNextSibling) {
-                    originalParent.insertBefore(shareBar, originalNextSibling);
-                } else {
-                    originalParent.appendChild(shareBar);
-                }
-                // Reset mobile styles
-                shareBar.style.margin = '';
-                shareBar.style.maxWidth = '';
-                shareBar.style.padding = '';
-                shareBar.style.background = '';
-                shareBar.style.borderRadius = '';
-                shareBar.style.border = '';
-                shareBar.style.justifyContent = '';
-            }
+            const parent = courseOverview.parentElement;
+            // Insert share bar right after course-highlights
+            courseOverview.insertAdjacentElement('afterend', shareBar);
+            // Style for desktop - clean divider look
+            shareBar.style.margin = '1.5rem 0 0';
+            shareBar.style.maxWidth = '';
+            shareBar.style.padding = '1.5rem 0 0';
+            shareBar.style.background = '';
+            shareBar.style.borderRadius = '';
+            shareBar.style.border = '';
+            shareBar.style.borderTop = '1px solid #e5e7eb';
+            shareBar.style.justifyContent = '';
         }
     }
 
@@ -617,8 +613,8 @@ function initDynamicCopyright() {
     const currentYear = new Date().getFullYear();
 
     copyrightElements.forEach(el => {
-        if (el.textContent.includes('©')) {
-            el.textContent = el.textContent.replace(/© \d{4}/, `© ${currentYear}`);
+        if (el.textContent.includes('Â©')) {
+            el.textContent = el.textContent.replace(/Â© \d{4}/, `Â© ${currentYear}`);
         }
     });
 }
