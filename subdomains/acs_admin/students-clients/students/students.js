@@ -854,6 +854,12 @@ async function confirmDelete() {
 // =====================
 
 let currentProfileStudentId = null;
+let profilePaymentsPage = 1;
+const profilePaymentsPerPage = 5;
+let allProfilePayments = [];
+let currentProfileStudent = null;
+let profileTotalPaid = 0;
+let profileBalanceDue = 0;
 
 async function openStudentProfile(studentId) {
     console.log('openStudentProfile called with:', studentId);
@@ -893,17 +899,20 @@ async function openStudentProfile(studentId) {
 
         if (paymentsError) console.warn('Error loading payments:', paymentsError);
 
-        // Calculate totals
-        const totalPaid = (payments || []).reduce((sum, p) => sum + parseFloat(p.amount_paid || 0), 0);
-        const balanceDue = (student.final_fee || 0) - totalPaid;
+        // Store data globally for pagination
+        allProfilePayments = payments || [];
+        currentProfileStudent = student;
+        profileTotalPaid = allProfilePayments.reduce((sum, p) => sum + parseFloat(p.amount_paid || 0), 0);
+        profileBalanceDue = (student.final_fee || 0) - profileTotalPaid;
+        profilePaymentsPage = 1;
 
         // Render profile content
-        content.innerHTML = renderProfileContent(student, payments || [], totalPaid, balanceDue);
+        content.innerHTML = renderProfileContent(currentProfileStudent, allProfilePayments, profileTotalPaid, profileBalanceDue);
 
         // Update footer buttons
         updateProfileFooter(studentId);
 
-        // Bind close events
+        // Bind close events and payment pagination
         bindProfileEvents();
 
     } catch (e) {
@@ -1042,7 +1051,12 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                     <i class="fa-solid fa-receipt"></i>
                     <p>No payments recorded yet</p>
                 </div>
-            ` : `
+            ` : (() => {
+            const totalPages = Math.ceil(payments.length / profilePaymentsPerPage);
+            const start = (profilePaymentsPage - 1) * profilePaymentsPerPage;
+            const paginatedPayments = payments.slice(start, start + profilePaymentsPerPage);
+
+            return `
                 <table class="profile-payments-table">
                     <thead>
                         <tr>
@@ -1053,7 +1067,7 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                         </tr>
                     </thead>
                     <tbody>
-                        ${payments.map(p => `
+                        ${paginatedPayments.map(p => `
                             <tr>
                                 <td>${formatDate(p.payment_date)}</td>
                                 <td><strong>${formatCurrency(p.amount_paid)}</strong></td>
@@ -1063,12 +1077,24 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                                         ${p.payment_mode}
                                     </span>
                                 </td>
-                                <td>${p.reference_id || 'â€”'}</td>
+                                <td>${p.reference_id || '—'}</td>
                             </tr>
                         `).join('')}
                     </tbody>
                 </table>
-            `}
+                ${totalPages > 1 ? `
+                    <div class="profile-pagination">
+                        <button class="profile-pagination-btn" id="profile-prev-page" ${profilePaymentsPage === 1 ? 'disabled' : ''}>
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <span class="profile-pagination-info">Page ${profilePaymentsPage} of ${totalPages}</span>
+                        <button class="profile-pagination-btn" id="profile-next-page" ${profilePaymentsPage === totalPages ? 'disabled' : ''}>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                ` : ''}
+                `;
+        })()}
         </div>
         
         <!-- Notes Section -->
@@ -1132,6 +1158,37 @@ function bindProfileEvents() {
             document.removeEventListener('keydown', escHandler);
         }
     });
+
+    // Payment history pagination
+    const prevBtn = document.getElementById('profile-prev-page');
+    const nextBtn = document.getElementById('profile-next-page');
+
+    if (prevBtn) {
+        prevBtn.onclick = () => {
+            if (profilePaymentsPage > 1) {
+                profilePaymentsPage--;
+                rerenderProfileContent();
+            }
+        };
+    }
+
+    if (nextBtn) {
+        nextBtn.onclick = () => {
+            const totalPages = Math.ceil(allProfilePayments.length / profilePaymentsPerPage);
+            if (profilePaymentsPage < totalPages) {
+                profilePaymentsPage++;
+                rerenderProfileContent();
+            }
+        };
+    }
+}
+
+function rerenderProfileContent() {
+    const content = document.getElementById('profile-content');
+    if (content && currentProfileStudent) {
+        content.innerHTML = renderProfileContent(currentProfileStudent, allProfilePayments, profileTotalPaid, profileBalanceDue);
+        bindProfileEvents();
+    }
 }
 
 
