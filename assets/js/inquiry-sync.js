@@ -105,33 +105,32 @@ const InquirySync = {
         }
     },
 
-    // Insert with retry to handle race conditions for sequential IDs
-    async insertInquiry(payload, maxRetries = 3) {
-        for (let i = 0; i < maxRetries; i++) {
-            try {
-                // Refresh ID on each attempt to get the latest sequence
-                payload.inquiry_id = await this.getNextInquiryId();
+    // Insert inquiry and let database generate the ID
+    async insertInquiry(payload) {
+        try {
+            // Remove inquiry_id from payload to let the database trigger handle it
+            const submissionPayload = { ...payload };
+            delete submissionPayload.inquiry_id;
 
-                const { data, error } = await window.supabaseClient
-                    .from('inquiries')
-                    .insert(payload);
+            const { data, error } = await window.supabaseClient
+                .from('inquiries')
+                .insert(submissionPayload)
+                .select('inquiry_id')
+                .single();
 
-                if (error) {
-                    // Check for duplicate key error (23505)
-                    if (error.code === '23505' && i < maxRetries - 1) {
-                        console.warn(`Duplicate ID ${payload.inquiry_id}, retrying... (${i + 1})`);
-                        await new Promise(resolve => setTimeout(resolve, 100 * (i + 1))); // Small backoff
-                        continue;
-                    }
-                    throw error;
-                }
-
-                return { success: true, inquiryId: payload.inquiry_id };
-            } catch (e) {
-                if (i === maxRetries - 1) throw e;
+            if (error) {
+                console.error('Inquiry submission error:', error);
+                throw error;
             }
+
+            return {
+                success: true,
+                inquiryId: data ? data.inquiry_id : 'Submitted'
+            };
+        } catch (e) {
+            console.error('Error inserting inquiry:', e);
+            throw e;
         }
-        return { success: false, error: 'Maximum retries reached' };
     },
 
     showSuccess(form, inquiryId, message = 'Thank you! Your inquiry has been submitted successfully.') {
