@@ -58,6 +58,9 @@ function resetForm(keepEntity = false) {
         selectedStudent = null;
         const studentSelect = document.getElementById('student-select');
         if (studentSelect) studentSelect.value = '';
+        if (studentSearchableSelect) {
+            studentSearchableSelect.updateTriggerText(isServiceMode ? 'Select a client' : 'Select a student');
+        }
     }
 
     selectedItem = null;
@@ -69,6 +72,10 @@ function resetForm(keepEntity = false) {
     const prompt = isServiceMode ? 'Select client first' : 'Select student first';
     select.innerHTML = `<option value="">${prompt}</option>`;
     select.disabled = true;
+    if (courseSearchableSelect) {
+        courseSearchableSelect.updateTriggerText(prompt);
+        courseSearchableSelect.syncWithOptions();
+    }
 
     document.getElementById('fee-summary').style.display = 'none';
     const amountInput = document.getElementById('amount-input');
@@ -77,6 +84,8 @@ function resetForm(keepEntity = false) {
     document.getElementById('utr-group').style.display = 'none';
     updateProceedButton();
 }
+
+let studentSearchableSelect = null;
 
 async function loadEntities() {
     const select = document.getElementById('student-select');
@@ -93,16 +102,29 @@ async function loadEntities() {
         students = data || []; // Reusing 'students' array for simplicity
         select.innerHTML = `<option value="">Select a ${label.toLowerCase()}</option>` +
             students.map(s => `<option value="${s.id}">${s.first_name} ${s.last_name || ''} (${s.phone || '-'})</option>`).join('');
+
+        // Initialize or Sync SearchableSelect
+        if (!studentSearchableSelect) {
+            studentSearchableSelect = new window.AdminUtils.SearchableSelect('student-select', {
+                placeholder: `Search for a ${label.toLowerCase()}...`
+            });
+        } else {
+            studentSearchableSelect.options.placeholder = `Search for a ${label.toLowerCase()}...`;
+            studentSearchableSelect.syncWithOptions();
+        }
     } catch (err) {
         console.error(err);
         select.innerHTML = `<option value="">Error loading ${label.toLowerCase()}s</option>`;
     }
 }
 
+let courseSearchableSelect = null;
+
 async function loadStudentCourses(studentId) {
     const select = document.getElementById('course-select');
     select.disabled = true;
     select.innerHTML = '<option value="">Loading courses...</option>';
+    if (courseSearchableSelect) courseSearchableSelect.syncWithOptions();
 
     try {
         const { data: student, error: sErr } = await window.supabaseClient.from('students').select('courses, course_discounts').eq('id', studentId).single();
@@ -113,6 +135,7 @@ async function loadStudentCourses(studentId) {
 
         if (enrolled.length === 0) {
             select.innerHTML = '<option value="">No courses found</option>';
+            if (courseSearchableSelect) courseSearchableSelect.syncWithOptions();
             return;
         }
 
@@ -129,6 +152,15 @@ async function loadStudentCourses(studentId) {
         select.innerHTML = '<option value="">Select a course</option>' +
             masterItems.map(c => `<option value="${c.id}">${c.name} (${c.code})</option>`).join('');
         select.disabled = false;
+
+        // Initialize or Sync
+        if (!courseSearchableSelect) {
+            courseSearchableSelect = new window.AdminUtils.SearchableSelect('course-select', {
+                placeholder: 'Select a course...'
+            });
+        } else {
+            courseSearchableSelect.syncWithOptions();
+        }
     } catch (err) {
         console.error(err);
     }
@@ -138,6 +170,7 @@ async function loadClientServices(clientId) {
     const select = document.getElementById('course-select');
     select.disabled = true;
     select.innerHTML = '<option value="">Loading services...</option>';
+    if (courseSearchableSelect) courseSearchableSelect.syncWithOptions();
 
     try {
         const { data: client, error: cErr } = await window.supabaseClient.from('clients').select('services, service_fees').eq('id', clientId).single();
@@ -148,6 +181,7 @@ async function loadClientServices(clientId) {
 
         if (enrolled.length === 0) {
             select.innerHTML = '<option value="">No services found</option>';
+            if (courseSearchableSelect) courseSearchableSelect.syncWithOptions();
             return;
         }
 
@@ -164,6 +198,15 @@ async function loadClientServices(clientId) {
         select.innerHTML = '<option value="">Select a service</option>' +
             masterItems.map(s => `<option value="${s.id}">${s.name} (${s.code})</option>`).join('');
         select.disabled = false;
+
+        // Initialize or Sync
+        if (!courseSearchableSelect) {
+            courseSearchableSelect = new window.AdminUtils.SearchableSelect('course-select', {
+                placeholder: 'Select a service...'
+            });
+        } else {
+            courseSearchableSelect.syncWithOptions();
+        }
     } catch (err) {
         console.error(err);
     }

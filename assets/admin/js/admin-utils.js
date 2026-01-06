@@ -1612,5 +1612,184 @@ window.AdminUtils = {
     parseAdminId,
     setTempEmail,
     getTempEmail,
-    clearTempEmail
+    clearTempEmail,
+    SearchableSelect: class SearchableSelect {
+        constructor(selectId, options = {}) {
+            this.select = document.getElementById(selectId);
+            if (!this.select) return;
+
+            this.options = {
+                placeholder: options.placeholder || 'Select an option...',
+                noResultsText: options.noResultsText || 'No results found',
+                onSelect: options.onSelect || null,
+                ...options
+            };
+
+            this.isOpen = false;
+            this.focusedIndex = -1;
+            this.filteredData = [];
+            this.init();
+        }
+
+        init() {
+            // Hide native select
+            this.select.style.display = 'none';
+
+            // Create container
+            this.container = document.createElement('div');
+            this.container.className = 'searchable-select-container';
+            this.select.parentNode.insertBefore(this.container, this.select.nextSibling);
+
+            // Create trigger/display
+            this.trigger = document.createElement('div');
+            this.trigger.className = 'searchable-select-trigger';
+            this.trigger.innerHTML = `
+                <span class="trigger-text">${this.options.placeholder}</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            `;
+            this.container.appendChild(this.trigger);
+
+            // Create dropdown menu
+            this.menu = document.createElement('div');
+            this.menu.className = 'searchable-select-menu';
+
+            // Search input
+            this.searchWrapper = document.createElement('div');
+            this.searchWrapper.className = 'searchable-select-search';
+            this.searchInput = document.createElement('input');
+            this.searchInput.type = 'text';
+            this.searchInput.placeholder = 'Search...';
+            this.searchWrapper.appendChild(this.searchInput);
+            this.menu.appendChild(this.searchWrapper);
+
+            // Options list
+            this.list = document.createElement('div');
+            this.list.className = 'searchable-select-list';
+            this.menu.appendChild(this.list);
+
+            this.container.appendChild(this.menu);
+
+            // Bind events
+            this.trigger.addEventListener('click', () => this.toggle());
+            this.searchInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
+            this.searchInput.addEventListener('keydown', (e) => this.handleKeydown(e));
+
+            // Close on click outside
+            document.addEventListener('click', (e) => {
+                if (!this.container.contains(e.target)) this.close();
+            });
+
+            // Initial data pull
+            this.syncWithOptions();
+
+            // Observe native select for changes (dynamic updates)
+            const observer = new MutationObserver(() => this.syncWithOptions());
+            observer.observe(this.select, { childList: true });
+        }
+
+        syncWithOptions() {
+            this.data = Array.from(this.select.options)
+                .filter(opt => opt.value !== "")
+                .map(opt => ({
+                    value: opt.value,
+                    text: opt.textContent,
+                    selected: opt.selected
+                }));
+
+            this.handleSearch('');
+
+            // If an option is selected natively, show it
+            const selected = this.data.find(d => d.selected);
+            if (selected) {
+                this.updateTriggerText(selected.text);
+            }
+        }
+
+        open() {
+            this.isOpen = true;
+            this.container.classList.add('open');
+            this.searchInput.focus();
+            this.searchInput.value = '';
+            this.handleSearch('');
+        }
+
+        close() {
+            this.isOpen = false;
+            this.container.classList.remove('open');
+            this.focusedIndex = -1;
+        }
+
+        toggle() {
+            this.isOpen ? this.close() : this.open();
+        }
+
+        handleSearch(query) {
+            query = query.toLowerCase();
+            this.filteredData = this.data.filter(d =>
+                d.text.toLowerCase().includes(query)
+            );
+
+            this.renderList();
+        }
+
+        renderList() {
+            if (this.filteredData.length === 0) {
+                this.list.innerHTML = `<div class="no-results">${this.options.noResultsText}</div>`;
+                return;
+            }
+
+            this.list.innerHTML = this.filteredData.map((d, index) => `
+                <div class="searchable-option ${this.select.value === d.value ? 'selected' : ''}" data-index="${index}">
+                    ${d.text}
+                </div>
+            `).join('');
+
+            // Bind click to options
+            this.list.querySelectorAll('.searchable-option').forEach(el => {
+                el.addEventListener('click', () => {
+                    const index = parseInt(el.dataset.index);
+                    this.selectValue(this.filteredData[index]);
+                });
+            });
+        }
+
+        selectValue(item) {
+            this.select.value = item.value;
+            this.updateTriggerText(item.text);
+            this.select.dispatchEvent(new Event('change', { bubbles: true }));
+            this.close();
+            if (this.options.onSelect) this.options.onSelect(item);
+        }
+
+        updateTriggerText(text) {
+            const textEl = this.trigger.querySelector('.trigger-text');
+            textEl.textContent = text;
+            textEl.classList.remove('placeholder');
+        }
+
+        handleKeydown(e) {
+            const options = this.list.querySelectorAll('.searchable-option');
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                this.focusedIndex = Math.min(this.focusedIndex + 1, options.length - 1);
+                this.highlightOption(options);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                this.focusedIndex = Math.max(this.focusedIndex - 1, 0);
+                this.highlightOption(options);
+            } else if (e.key === 'Enter' && this.focusedIndex >= 0) {
+                e.preventDefault();
+                this.selectValue(this.filteredData[this.focusedIndex]);
+            } else if (e.key === 'Escape') {
+                this.close();
+            }
+        }
+
+        highlightOption(options) {
+            options.forEach((opt, idx) => {
+                opt.classList.toggle('focused', idx === this.focusedIndex);
+                if (idx === this.focusedIndex) opt.scrollIntoView({ block: 'nearest' });
+            });
+        }
+    }
 };
