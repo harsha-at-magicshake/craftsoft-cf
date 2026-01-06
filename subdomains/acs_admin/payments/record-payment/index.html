@@ -44,6 +44,7 @@
     <link rel="stylesheet" href="/assets/admin/css/responsive/mobile.css">
     <!-- Page Specific -->
     <link rel="stylesheet" href="/assets/admin/css/components/notifications.css">
+    <link rel="stylesheet" href="/assets/admin/css/components/stats.css">
     <link rel="stylesheet" href="record-payment.css">
     <!-- FOUC Protection -->
     <style>
@@ -74,28 +75,31 @@
             <!-- Header injected by JS -->
             <div id="header-container"></div>
 
-            <div class="content-card">
-                <!-- Form Section -->
-                <div class="payment-form-section">
-                    <div class="section-header">
-                        <div class="section-icon">
-                            <i class="fa-solid fa-indian-rupee-sign"></i>
-                        </div>
-                        <div class="section-info">
-                            <h2 class="section-title">Record Payment</h2>
-                            <p class="section-subtitle">Record a new payment for a student</p>
-                        </div>
+            <!-- Stats Bar -->
+            <div id="stats-container" class="admin-stats-bar"></div>
+
+            <div class="payment-workspace animate-up">
+                <!-- Page Header (Inside Workspace now) -->
+                <div class="workspace-header">
+                    <div class="section-icon">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
                     </div>
+                    <div class="section-info">
+                        <h2 class="workspace-title">Record Payment</h2>
+                        <p class="workspace-subtitle">Record a new payment for a student or service client</p>
+                    </div>
+                </div>
 
-                    <form id="payment-form" class="payment-form">
-                        <div class="payment-grid">
-                            <!-- Left Column: Selection -->
-                            <div class="payment-grid-left">
-                                <div class="payment-card">
-                                    <div class="card-header-mini">
-                                        <i class="fa-solid fa-user-check"></i> Selection
-                                    </div>
+                <form id="payment-form" class="payment-form">
+                    <div class="payment-grid">
+                        <!-- Left Column: Selection -->
+                        <div class="payment-grid-left">
+                            <div class="floating-card selection-card">
+                                <div class="card-header-mini">
+                                    <i class="fa-solid fa-user-check"></i> Selection
+                                </div>
 
+                                <div class="card-body">
                                     <!-- Payment Type Toggle -->
                                     <div class="form-group">
                                         <label class="form-label">Payment Type</label>
@@ -139,62 +143,65 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Right Column: Summary & Payment -->
-                            <div class="payment-grid-right">
-                                <!-- Fee Summary Card -->
-                                <div class="fee-summary-card" id="fee-summary" style="display: none;">
-                                    <div class="card-header-mini">
-                                        <i class="fa-solid fa-file-invoice"></i> Payment Summary
+                        <!-- Right Column: Summary & Payment -->
+                        <div class="payment-grid-right">
+                            <!-- Fee Summary Card (Visible when student selected) -->
+                            <div class="floating-card summary-card glow-card" id="fee-summary" style="display: none;">
+                                <div class="card-header-mini">
+                                    <i class="fa-solid fa-file-invoice"></i> Live Summary
+                                </div>
+                                <div class="fee-summary-body">
+                                    <div class="fee-row">
+                                        <span class="fee-label">Total Fee</span>
+                                        <span class="fee-value" id="total-fee">₹ 0</span>
                                     </div>
-                                    <div class="fee-summary-body">
-                                        <div class="fee-row">
-                                            <span class="fee-label">Total Fee</span>
-                                            <span class="fee-value" id="total-fee">₹ 0</span>
-                                        </div>
-                                        <div class="fee-row">
-                                            <span class="fee-label">Paid So Far</span>
-                                            <span class="fee-value fee-paid" id="paid-so-far">₹ 0</span>
-                                        </div>
-                                        <div class="fee-divider"></div>
-                                        <div class="fee-row fee-row-highlight">
-                                            <span class="fee-label">Balance Due</span>
-                                            <span class="fee-value fee-due" id="balance-due">₹ 0</span>
-                                        </div>
+                                    <div class="fee-row">
+                                        <span class="fee-label">Paid So Far</span>
+                                        <span class="fee-value text-success" id="paid-so-far">₹ 0</span>
+                                    </div>
+                                    <div class="fee-divider"></div>
+                                    <div class="fee-row fee-row-highlight">
+                                        <span class="fee-label">Balance Due</span>
+                                        <span class="fee-value text-danger" id="balance-due">₹ 0</span>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Payment Details Card -->
-                                <div class="payment-card">
-                                    <div class="card-header-mini">
-                                        <i class="fa-solid fa-credit-card"></i> Payment Details
-                                    </div>
+                            <!-- Payment Details Card -->
+                            <div class="floating-card payment-card">
+                                <div class="card-header-mini">
+                                    <i class="fa-solid fa-credit-card"></i> Payment Action
+                                </div>
 
+                                <div class="card-body">
                                     <!-- Amount Input -->
                                     <div class="form-group">
                                         <label class="form-label">Amount to Pay <span class="required">*</span></label>
                                         <div class="amount-input-wrapper">
-                                            <span class="currency-symbol"><i
-                                                    class="fa-solid fa-indian-rupee-sign"></i></span>
+                                            <span class="currency-symbol">₹</span>
                                             <input type="number" id="amount-input" class="form-input amount-input"
-                                                placeholder="Enter amount" min="1" required disabled>
+                                                placeholder="0.00" min="1" required disabled>
                                         </div>
                                     </div>
 
                                     <!-- Payment Mode -->
                                     <div class="form-group">
-                                        <label class="form-label">Payment Mode <span class="required">*</span></label>
+                                        <label class="form-label">Payment Mode</label>
                                         <div class="payment-mode-options">
-                                            <label class="payment-mode-option">
+                                            <label class="mode-option">
                                                 <input type="radio" name="payment-mode" value="CASH" checked>
-                                                <div class="mode-card">
-                                                    <i class="fa-solid fa-money-bill-wave"></i> <span>Cash</span>
+                                                <div class="mode-box">
+                                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                                    <span>Cash</span>
                                                 </div>
                                             </label>
-                                            <label class="payment-mode-option">
+                                            <label class="mode-option">
                                                 <input type="radio" name="payment-mode" value="OFFLINE_UPI">
-                                                <div class="mode-card">
-                                                    <i class="fa-solid fa-qrcode"></i> <span>UPI</span>
+                                                <div class="mode-box">
+                                                    <i class="fa-solid fa-qrcode"></i>
+                                                    <span>UPI</span>
                                                 </div>
                                             </label>
                                         </div>
@@ -214,13 +221,13 @@
                                     <!-- Submit Button -->
                                     <button type="submit" class="btn btn-primary btn-lg btn-block" id="proceed-btn"
                                         disabled>
-                                        <i class="fa-solid fa-check-circle"></i> Record Payment
+                                        <i class="fa-solid fa-check-double"></i> Record Payment
                                     </button>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </main>
     </div>

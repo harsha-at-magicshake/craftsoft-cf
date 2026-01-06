@@ -23,12 +23,46 @@ document.addEventListener('DOMContentLoaded', async () => {
     const currentAdmin = await window.Auth.getCurrentAdmin();
     await AdminSidebar.renderAccountPanel(session, currentAdmin);
 
+    // Initial stats with count-up
+    initializeStats();
+
     // Load receipts
     await loadReceipts();
 
     // Bind events
     bindEvents();
 });
+
+async function initializeStats() {
+    window.AdminUtils.StatsHeader.render('stats-container', [
+        { label: 'Total Receipts', value: 0, icon: 'fa-solid fa-file-invoice' },
+        { label: 'This Month Revenue', value: 0, icon: 'fa-solid fa-chart-line', prefix: '₹' },
+        { label: 'Today\'s Count', value: 0, icon: 'fa-solid fa-receipt' }
+    ]);
+
+    try {
+        const today = new Date().toISOString().split('T')[0];
+        const monthStart = new Date();
+        monthStart.setDate(1);
+        const monthStartISO = monthStart.toISOString().split('T')[0];
+
+        const [totalCount, monthData, todayCount] = await Promise.all([
+            window.supabaseClient.from('receipts').select('receipt_id', { count: 'exact', head: true }),
+            window.supabaseClient.from('receipts').select('amount_paid').gte('created_at', monthStartISO),
+            window.supabaseClient.from('receipts').select('receipt_id', { count: 'exact', head: true }).gte('created_at', today)
+        ]);
+
+        const totalRevMonth = (monthData.data || []).reduce((sum, r) => sum + (r.amount_paid || 0), 0);
+
+        window.AdminUtils.StatsHeader.render('stats-container', [
+            { label: 'Total Receipts', value: totalCount.count || 0, icon: 'fa-solid fa-file-invoice' },
+            { label: 'This Month Rev', value: totalRevMonth, icon: 'fa-solid fa-chart-line', color: 'var(--success-500)', prefix: '₹' },
+            { label: 'Today\'s Receipts', value: todayCount.count || 0, icon: 'fa-solid fa-receipt', color: 'var(--info-500)' }
+        ]);
+    } catch (err) {
+        console.error('Stats load error:', err);
+    }
+}
 
 // =====================
 // Load Receipts

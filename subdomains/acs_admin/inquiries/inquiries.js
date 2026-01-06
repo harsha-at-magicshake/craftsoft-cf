@@ -37,7 +37,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             await window.AdminSidebar.renderAccountPanel(session, admin);
         }
 
-        // 3. Load Data
+        // 3. Load Stats & Data
+        console.log('Inquiries: Loading stats');
+        initializeStats();
+
         console.log('Inquiries: Loading master data');
         await Promise.all([loadCourses(), loadServices()]);
 
@@ -48,13 +51,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('Inquiries: Binding events');
         bindFormEvents();
         bindDeleteEvents();
-        bindSearchEvents();
-        bindTypeToggle();
 
-        console.log('Inquiries: Initialization complete');
+        // Finalize
+        setupSearch();
 
-    } catch (err) {
-        console.error('Inquiries: Initialization fatal error:', err);
+    } catch (error) {
+        console.error('CRITICAL: Inquiries initialization failed:', error);
         const content = document.getElementById('inquiries-content');
         if (content) {
             content.innerHTML = `<div class="p-4 text-center text-danger">

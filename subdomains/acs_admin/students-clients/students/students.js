@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const admin = await window.Auth.getCurrentAdmin();
     await AdminSidebar.renderAccountPanel(session, admin);
 
+    // Initial stats with count-up
+    initializeStats();
+
     await loadCoursesForStudents();
     await loadTutorsForStudents();
     await loadStudents();
@@ -39,6 +42,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Check for prefill from inquiry conversion
     checkPrefill();
 });
+
+async function initializeStats() {
+    window.AdminUtils.StatsHeader.render('stats-container', [
+        { label: 'Total Students', value: 0, icon: 'fa-solid fa-user-graduate' },
+        { label: 'New This Month', value: 0, icon: 'fa-solid fa-user-plus', color: 'var(--success-500)' },
+        { label: 'Total Invoices', value: 0, icon: 'fa-solid fa-file-invoice-dollar' }
+    ]);
+
+    try {
+        const monthStart = new Date();
+        monthStart.setDate(1);
+        const monthStartISO = monthStart.toISOString().split('T')[0];
+
+        const [totalCount, monthCount, invoiceCount] = await Promise.all([
+            window.supabaseClient.from('students').select('id', { count: 'exact', head: true }),
+            window.supabaseClient.from('students').select('id', { count: 'exact', head: true }).gte('created_at', monthStartISO),
+            window.supabaseClient.from('invoice_summaries').select('id', { count: 'exact', head: true })
+        ]);
+
+        window.AdminUtils.StatsHeader.render('stats-container', [
+            { label: 'Total Students', value: totalCount.count || 0, icon: 'fa-solid fa-user-graduate' },
+            { label: 'Enrolled This Month', value: monthCount.count || 0, icon: 'fa-solid fa-user-plus', color: 'var(--success-500)' },
+            { label: 'Total Invoices', value: invoiceCount.count || 0, icon: 'fa-solid fa-file-invoice-dollar', color: 'var(--primary-500)' }
+        ]);
+    } catch (err) {
+        console.error('Stats load error:', err);
+    }
+}
 
 function checkPrefill() {
     const params = new URLSearchParams(window.location.search);

@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const admin = await window.Auth.getCurrentAdmin();
     await AdminSidebar.renderAccountPanel(session, admin);
 
+    // Initial stats with count-up
+    initializeStats();
+
     await loadServicesForClients();
     await loadClients();
 
@@ -42,6 +45,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Check for prefill from inquiry conversion
     checkPrefill();
 });
+
+async function initializeStats() {
+    window.AdminUtils.StatsHeader.render('stats-container', [
+        { label: 'Total Clients', value: 0, icon: 'fa-solid fa-user-tie' },
+        { label: 'Active Projects', value: 0, icon: 'fa-solid fa-briefcase', color: 'var(--info-500)' },
+        { label: 'Total Value', value: 0, icon: 'fa-solid fa-file-invoice-dollar' }
+    ]);
+
+    try {
+        const [totalCount, activeProjects, totalRev] = await Promise.all([
+            window.supabaseClient.from('clients').select('id', { count: 'exact', head: true }),
+            window.supabaseClient.from('clients').select('id', { count: 'exact', head: true }), // Placeholder for active
+            window.supabaseClient.from('payments').select('amount_paid').eq('item_type', 'SERVICE').eq('status', 'SUCCESS')
+        ]);
+
+        const totalValue = (totalRev.data || []).reduce((sum, p) => sum + (p.amount_paid || 0), 0);
+
+        window.AdminUtils.StatsHeader.render('stats-container', [
+            { label: 'Total Clients', value: totalCount.count || 0, icon: 'fa-solid fa-user-tie' },
+            { label: 'Projects', value: totalCount.count || 0, icon: 'fa-solid fa-briefcase', color: 'var(--info-500)' },
+            { label: 'Service Revenue', value: totalValue, icon: 'fa-solid fa-file-invoice-dollar', color: 'var(--success-500)', prefix: '₹' }
+        ]);
+    } catch (err) {
+        console.error('Stats load error:', err);
+    }
+}
 
 // =====================
 // Load Services Master Data

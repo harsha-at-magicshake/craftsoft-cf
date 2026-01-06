@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const currentAdmin = await window.Auth.getCurrentAdmin();
     await AdminSidebar.renderAccountPanel(session, currentAdmin);
 
+    // Initial stats with count-up
+    initializeStats();
+
     await loadEntities();
 
     // Set default date
@@ -35,6 +38,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     bindEvents();
     bindTypeToggle();
 });
+
+async function initializeStats() {
+    // Show skeleton first via render
+    window.AdminUtils.StatsHeader.render('stats-container', [
+        { label: 'Today\'s Collection', value: 0, icon: 'fa-solid fa-calendar-day', prefix: '₹' },
+        { label: 'Active Students', value: 0, icon: 'fa-solid fa-user-graduate' },
+        { label: 'Pending Balance', value: 0, icon: 'fa-solid fa-clock', prefix: '₹' }
+    ]);
+
+    try {
+        const today = new Date().toISOString().split('T')[0];
+
+        // Parallel fetch for speed
+        const [todayPayments, studentsCount, pendingSum] = await Promise.all([
+            window.supabaseClient.from('payments').select('amount_paid').eq('status', 'SUCCESS').gte('created_at', today),
+            window.supabaseClient.from('students').select('id', { count: 'exact', head: true }),
+            window.supabaseClient.from('invoice_summaries').select('total_balance').gt('total_balance', 0)
+        ]);
+
+        const todayTotal = (todayPayments.data || []).reduce((sum, p) => sum + (p.amount_paid || 0), 0);
+        const activeCount = studentsCount.count || 0;
+        const totalPending = (pendingSum.data || []).reduce((sum, i) => sum + (i.total_balance || 0), 0);
+
+        window.AdminUtils.StatsHeader.render('stats-container', [
+            { label: 'Today\'s Collection', value: todayTotal, icon: 'fa-solid fa-calendar-day', prefix: '₹' },
+            { label: 'Active Students', value: activeCount, icon: 'fa-solid fa-user-graduate', color: 'var(--success-500)' },
+            { label: 'Pending Balance', value: totalPending, icon: 'fa-solid fa-clock', color: 'var(--warning-500)', prefix: '₹' }
+        ]);
+    } catch (err) {
+        console.error('Stats load error:', err);
+    }
+}
 
 function bindTypeToggle() {
     document.querySelectorAll('input[name="payment-type"]').forEach(radio => {
@@ -234,9 +269,15 @@ async function calculateFeeSummary(itemId) {
         paidSoFar = (payments || []).reduce((sum, p) => sum + parseFloat(p.amount_paid || 0), 0);
         balanceDue = totalFee - paidSoFar;
 
-        document.getElementById('total-fee').textContent = formatCurrency(totalFee);
-        document.getElementById('paid-so-far').textContent = formatCurrency(paidSoFar);
-        document.getElementById('balance-due').textContent = formatCurrency(balanceDue);
+        // Use animateValue for Pro feel
+        const totalEl = document.getElementById('total-fee');
+        const paidEl = document.getElementById('paid-so-far');
+        const dueEl = document.getElementById('balance-due');
+
+        window.AdminUtils.animateValue(totalEl, 0, totalFee, 600, '₹ ');
+        window.AdminUtils.animateValue(paidEl, 0, paidSoFar, 600, '₹ ');
+        window.AdminUtils.animateValue(dueEl, 0, balanceDue, 800, '₹ ');
+
         document.getElementById('fee-summary').style.display = 'block';
 
         const amountInput = document.getElementById('amount-input');

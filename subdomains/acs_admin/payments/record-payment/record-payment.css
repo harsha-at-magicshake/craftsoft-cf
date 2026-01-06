@@ -1,50 +1,36 @@
 /* ============================================
-   Record Payment Page Styles (Grid Layout)
+   Record Payment Page Styles (PRO Version)
    ============================================ */
 
-.payment-form-section {
-    max-width: 1100px;
+.payment-workspace {
+    padding: 0 1rem;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
-.section-header {
+.workspace-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+    padding: 0 0.5rem;
 }
 
-.section-icon {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--accent-gradient);
-    border-radius: 12px;
-    color: #fff;
-    font-size: 1.25rem;
-}
-
-.section-info {
-    flex: 1;
-}
-
-.section-title {
+.workspace-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
     color: var(--admin-text-primary);
     margin: 0;
 }
 
-.section-subtitle {
-    font-size: 0.9rem;
+.workspace-subtitle {
+    font-size: 0.95rem;
     color: var(--admin-text-muted);
     margin: 0.25rem 0 0;
 }
 
-/* Payment Layout Grid */
+/* Page Layout Grid */
 .payment-grid {
     display: grid;
     grid-template-columns: 1fr 400px;
@@ -52,121 +38,48 @@
     align-items: start;
 }
 
-@media (max-width: 1024px) {
-    .payment-grid {
-        grid-template-columns: 1fr;
-    }
+/* Floating Card Base */
+.floating-card {
+    background: #fff;
+    border: 1px solid var(--admin-input-border);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Common Card Style */
-.payment-card {
-    background: var(--admin-card-bg-solid);
-    border: 1px solid var(--admin-input-border);
-    border-radius: var(--admin-radius-xl);
-    padding: 1.5rem;
-    box-shadow: var(--admin-card-shadow);
-    margin-bottom: 1.5rem;
-    animation: slideInUp 0.4s ease-out;
+.floating-card:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
 }
 
 .card-header-mini {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     color: var(--primary-500);
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.75rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-}
-
-.card-header-mini i {
-    font-size: 0.9rem;
-}
-
-/* Form Styles */
-.form-group {
-    display: flex;
-    flex-direction: column;
     gap: 0.6rem;
-    margin-bottom: 1.25rem;
+    opacity: 0.8;
 }
 
-.form-group.no-margin {
-    margin-bottom: 0;
-}
-
-.form-label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--admin-text-secondary);
-}
-
-.form-label .required {
-    color: var(--danger-500, #ef4444);
-}
-
-.form-select,
-.form-input {
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--admin-input-border);
-    border-radius: 10px;
-    font-size: 0.95rem;
-    color: var(--admin-text-primary);
-    background: var(--admin-input-bg);
-    transition: all 0.2s;
-}
-
-.form-select:focus,
-.form-input:focus {
-    outline: none;
-    border-color: var(--primary-500);
-    box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
-    background: #fff;
-}
-
-/* Amount Input */
-.amount-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.currency-symbol {
-    position: absolute;
-    left: 1.25rem;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--primary-500);
-}
-
-.amount-input {
-    padding-left: 2.75rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-600);
-}
-
-/* Fee Summary Card */
-.fee-summary-card {
+/* Summary Card Special Styling */
+.summary-card.glow-card {
     background: var(--accent-gradient);
-    border-radius: var(--admin-radius-xl);
-    padding: 1.5rem;
+    border: none;
     color: #fff;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 10px 25px rgba(40, 150, 205, 0.2);
-    animation: slideInUp 0.3s ease-out;
 }
 
-.fee-summary-card .card-header-mini {
+.summary-card.glow-card .card-header-mini {
     color: rgba(255, 255, 255, 0.8);
 }
 
 .fee-summary-body {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .fee-row {
@@ -176,123 +89,144 @@
 }
 
 .fee-label {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     opacity: 0.9;
 }
 
 .fee-value {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
 }
 
 .fee-divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
     margin: 0.5rem 0;
 }
 
 .fee-row-highlight {
-    font-size: 1.25rem;
-    padding-top: 0.25rem;
+    font-size: 1.35rem;
+    padding: 0.5rem 0;
 }
 
 .fee-row-highlight .fee-value {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Payment Mode */
+/* Form Styling */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--admin-text-secondary);
+    margin-bottom: 0.6rem;
+    display: block;
+}
+
+.form-select,
+.form-input {
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    border: 1.5px solid var(--admin-input-border);
+    border-radius: 12px;
+    font-size: 1rem;
+    background: var(--admin-input-bg);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-select:focus,
+.form-input:focus {
+    border-color: var(--primary-500);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
+}
+
+/* Amount Input Specifics */
+.amount-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 1.25rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary-500);
+}
+
+.amount-input {
+    padding-left: 2.75rem !important;
+    font-size: 1.75rem !important;
+    font-weight: 800 !important;
+    color: var(--primary-600);
+    height: 64px;
+}
+
+/* Payment Mode Grid */
 .payment-mode-options {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
 }
 
-.payment-mode-option input[type="radio"] {
+.mode-option input {
     display: none;
 }
 
-.mode-card {
+.mode-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.6rem;
-    padding: 1.25rem 1rem;
-    border: 1px solid var(--admin-input-border);
-    border-radius: 12px;
+    gap: 0.75rem;
+    padding: 1.5rem 1rem;
+    border: 1.5px solid var(--admin-input-border);
+    border-radius: 16px;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     background: var(--admin-input-bg);
+    transition: all 0.2s;
 }
 
-.mode-card i {
+.mode-box i {
     font-size: 1.75rem;
     color: var(--admin-text-muted);
 }
 
-.mode-card span {
+.mode-box span {
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--admin-text-secondary);
 }
 
-.payment-mode-option input:checked+.mode-card {
+.mode-option input:checked+.mode-box {
     border-color: var(--primary-500);
     background: var(--primary-50);
-    box-shadow: 0 4px 12px rgba(40, 150, 205, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(40, 150, 205, 0.1);
 }
 
-.payment-mode-option input:checked+.mode-card i {
+.mode-option input:checked+.mode-box i {
     color: var(--primary-500);
-    transform: scale(1.1);
 }
 
-.payment-mode-option input:checked+.mode-card span {
+.mode-option input:checked+.mode-box span {
     color: var(--primary-700);
 }
 
-.mode-card:hover {
-    border-color: var(--primary-300);
-    background: #fff;
+/* Animation Utils */
+.animate-up {
+    animation: slideUpFade 0.6s ease-out both;
 }
 
-/* Input with Icon */
-.input-with-icon {
-    position: relative;
-    width: 100%;
-}
-
-.input-with-icon .input-icon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--admin-text-muted);
-    font-size: 0.9rem;
-}
-
-.input-with-icon .form-input {
-    padding-left: 2.75rem;
-    width: 100%;
-}
-
-/* Submit Button */
-.btn-block {
-    width: 100%;
-    margin-top: 1rem;
-}
-
-.btn-lg {
-    padding: 1rem 1.5rem;
-    font-size: 1.1rem;
-    border-radius: 12px;
-    font-weight: 700;
-}
-
-/* Animations */
-@keyframes slideInUp {
+@keyframes slideUpFade {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
 
     to {
@@ -301,39 +235,53 @@
     }
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
+/* Responsive Overrides */
+@media (max-width: 1024px) {
     .payment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .floating-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .payment-grid-right {
+        /* Mobile: Summary card at top, selection middle, payment bottom */
         display: flex;
         flex-direction: column;
     }
 
-    .payment-grid-right {
-        order: -1;
-        /* Summary card goes to top on mobile */
+    .payment-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
     }
 
-    .fee-summary-card {
-        margin-bottom: 1.5rem;
-        padding: 1.25rem;
+    .payment-grid-left {
+        order: 1;
     }
 
-    .fee-row-highlight .fee-value {
-        font-size: 1.25rem;
+    /* Selection Card */
+    .summary-card {
+        order: 0;
+        margin-bottom: 0 !important;
     }
 
-    .mode-card {
-        padding: 1rem 0.5rem;
+    /* Summary at TOP */
+    .payment-card {
+        order: 2;
     }
 
-    .mode-card i {
+    /* Payment Action at BOTTOM */
+
+    .workspace-title {
         font-size: 1.5rem;
     }
-}
 
-.form-hint {
-    font-size: 0.75rem;
-    color: var(--admin-text-muted);
-    margin-top: 0.4rem;
-    display: block;
+    .amount-input {
+        font-size: 1.5rem !important;
+        height: 56px;
+    }
 }

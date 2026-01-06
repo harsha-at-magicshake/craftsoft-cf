@@ -1609,10 +1609,73 @@ window.AdminUtils = {
     requireAuth,
     requireNoAuth,
     formatAdminId,
-    parseAdminId,
-    setTempEmail,
-    getTempEmail,
+    parseAdminId(id) {
+        const match = id.match(/^ACS-(\d+)$/);
+        return match ? parseInt(match[1], 10) : null;
+    },
+    setTempEmail(email) {
+        sessionStorage.setItem('pending_verification_email', email);
+    },
+    getTempEmail() {
+        return sessionStorage.getItem('pending_verification_email');
+    },
     clearTempEmail,
+    animateValue(id, start, end, duration, prefix = '', suffix = '') {
+        const obj = typeof id === 'string' ? document.getElementById(id) : id;
+        if (!obj) return;
+
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const value = Math.floor(progress * (end - start) + start);
+
+            // Format for currency if needed (simplified check)
+            let displayValue = value.toLocaleString('en-IN');
+            obj.innerHTML = `${prefix}${displayValue}${suffix}`;
+
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            } else {
+                obj.innerHTML = `${prefix}${end.toLocaleString('en-IN')}${suffix}`;
+            }
+        };
+        window.requestAnimationFrame(step);
+    },
+    StatsHeader: {
+        render(containerId, stats) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="stats-grid-wrapper">
+                    <div class="stats-grid">
+                        ${stats.map((stat, index) => `
+                            <div class="stat-card-premium animate-up" style="animation-delay: ${index * 0.1}s">
+                                <div class="stat-card-icon" style="background: ${stat.color || 'var(--primary-500)'}">
+                                    <i class="${stat.icon}"></i>
+                                </div>
+                                <div class="stat-card-info">
+                                    <span class="stat-card-label">${stat.label}</span>
+                                    <h3 class="stat-card-value" id="stat-value-${index}">
+                                        <div class="skeleton-text skeleton-pulse" style="width: 80px; height: 24px;"></div>
+                                    </h3>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Trigger animations after a small delay to simulate loading
+            stats.forEach((stat, index) => {
+                setTimeout(() => {
+                    const el = document.getElementById(`stat-value-${index}`);
+                    window.AdminUtils.animateValue(el, 0, stat.value, 1000, stat.prefix || '', stat.suffix || '');
+                }, 500 + (index * 150));
+            });
+        }
+    },
     SearchableSelect: class SearchableSelect {
         constructor(selectId, options = {}) {
             this.select = document.getElementById(selectId);
