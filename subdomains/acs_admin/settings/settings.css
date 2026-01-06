@@ -141,6 +141,21 @@
     font-size: 0.85rem;
 }
 
+/* Password change section alignment */
+.password-change-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.password-last-updated {
+    font-size: 0.8rem;
+    color: var(--admin-text-muted);
+    font-style: italic;
+}
+
 .settings-edit-btn {
     display: flex;
     align-items: center;

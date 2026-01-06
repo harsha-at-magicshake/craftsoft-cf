@@ -128,7 +128,7 @@
 #course-only-fields {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 2rem;
     margin-top: 0.5rem;
 }
 

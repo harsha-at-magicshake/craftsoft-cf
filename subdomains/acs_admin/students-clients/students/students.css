@@ -998,8 +998,13 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .profile-panel {
@@ -1014,8 +1019,13 @@
 }
 
 @keyframes slideIn {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
 }
 
 .profile-header {
@@ -1394,28 +1404,28 @@
     .profile-panel {
         max-width: 100%;
     }
-    
+
     .profile-info-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .profile-fee-grid {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .profile-payments-table {
         font-size: 0.8rem;
     }
-    
+
     .profile-payments-table th,
     .profile-payments-table td {
         padding: 0.5rem 0.375rem;
     }
-    
+
     .profile-contact-btns {
         flex-direction: column;
     }
-    
+
     .profile-footer {
         flex-direction: column;
     }
@@ -1434,8 +1444,9 @@
 }
 
 
- 
- 
+
+   
+
 /* Profile Payment Pagination */
 .profile-pagination {
     display: flex;
@@ -1476,4 +1487,9 @@
     font-size: 0.875rem;
     color: var(--admin-text-secondary, #64748b);
     font-weight: 500;
+}
+
+/* Fix spacing for Fee Section in Add/Edit Student Form */
+.fee-section {
+    margin-top: 1.5rem;
 }
