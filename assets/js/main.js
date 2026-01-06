@@ -32,7 +32,7 @@ function initHeroTypingEffect() {
     if (!typingElement) return;
 
     const phrases = [
-        'Expert-Led Training',
+        'Expert Training',
         'Hands-On Projects',
         'Placement Support',
         'Industry Skills'
@@ -41,7 +41,6 @@ function initHeroTypingEffect() {
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    let currentPhrase = phrases[0];
 
     function type() {
         const current = phrases[phraseIndex];
