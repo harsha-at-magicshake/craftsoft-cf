@@ -348,7 +348,7 @@ async function viewReceipt(receiptId) {
 }
 
 // =====================
-// Download Receipt as PDF
+// Download Receipt as PDF - Professional Layout
 // =====================
 async function downloadReceipt(receiptId) {
     const receipt = receipts.find(r => r.receipt_id === receiptId);
@@ -358,32 +358,154 @@ async function downloadReceipt(receiptId) {
     Toast.info('Generating', 'Creating PDF...');
 
     try {
-        // Ensure receipt is rendered
-        if (!currentReceipt || currentReceipt.receipt_id !== receiptId) {
-            await viewReceipt(receiptId);
+        const isSrv = !!receipt.service;
+        const entity = receipt.student || receipt.client;
+        const item = isSrv ? receipt.service : receipt.course;
+        const table = isSrv ? 'clients' : 'students';
+        const idCol = isSrv ? 'client_id' : 'student_id';
+        const itemIdCol = isSrv ? 'service_id' : 'course_id';
+
+        // Get payment history
+        const { data: history } = await window.supabaseClient
+            .from('receipts')
+            .select('amount_paid')
+            .eq(idCol, entity?.id)
+            .eq(itemIdCol, item?.id);
+
+        // Get fee info
+        const { data: record } = await window.supabaseClient
+            .from(table)
+            .select(isSrv ? 'service_fees, total_fee' : 'course_discounts, final_fee')
+            .eq('id', entity?.id)
+            .single();
+
+        let totalItemFee = 0;
+        if (isSrv) {
+            totalItemFee = (record?.service_fees || {})[item.service_code || item.code] || 0;
+            if (!totalItemFee) totalItemFee = receipt.amount_paid + (receipt.balance_due || 0);
+        } else {
+            const { data: courseData } = await window.supabaseClient.from('courses').select('fee').eq('id', item.id).single();
+            const discount = (record?.course_discounts || {})[item.course_code] || 0;
+            totalItemFee = (courseData?.fee || 0) - discount;
         }
-        await new Promise(resolve => setTimeout(resolve, 500));
 
-        const element = document.getElementById('receipt-printable');
-        if (!element) {
-            throw new Error('Receipt element not found');
-        }
+        const totalPaidForItem = (history || []).reduce((sum, r) => sum + (r.amount_paid || 0), 0);
+        const pendingForItem = Math.max(0, totalItemFee - totalPaidForItem);
 
-        // Use html2canvas + jsPDF
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: '#ffffff'
-        });
+        const entityName = entity ? `${entity.first_name} ${entity.last_name || ''}` : 'Unknown';
+        const entityId = entity?.student_id || entity?.client_id || '-';
+        const itemName = item?.name || item?.course_name || 'Unknown Item';
 
-        const imgData = canvas.toDataURL('image/png');
+        // Generate PDF using jsPDF
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF('p', 'mm', 'a4');
 
-        const imgWidth = 190;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        let y = 20;
 
-        pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+        // Header with brand color
+        pdf.setFillColor(40, 150, 205);
+        pdf.rect(0, 0, pageWidth, 35, 'F');
+
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(20);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text("ABHI'S CRAFTSOFT", pageWidth / 2, 18, { align: 'center' });
+
+        pdf.setFontSize(10);
+        pdf.setFont('helvetica', 'normal');
+        pdf.text('Plot no. 163, Vijayasree Colony, Vanasthalipuram, Hyderabad 500070', pageWidth / 2, 27, { align: 'center' });
+        pdf.text('+91-7842239090 | www.craftsoft.co.in', pageWidth / 2, 32, { align: 'center' });
+
+        y = 50;
+        pdf.setTextColor(0, 0, 0);
+
+        // Receipt Info
+        pdf.setFontSize(12);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('PAYMENT RECEIPT', 15, y);
+        pdf.setFont('helvetica', 'normal');
+        pdf.text(`Receipt: ${receipt.receipt_id}`, pageWidth - 15, y, { align: 'right' });
+
+        y += 8;
+        pdf.text(`Date: ${formatDate(receipt.payment_date || receipt.created_at)}`, pageWidth - 15, y, { align: 'right' });
+
+        // Divider
+        y += 10;
+        pdf.setDrawColor(200, 200, 200);
+        pdf.line(15, y, pageWidth - 15, y);
+
+        // Customer Info
+        y += 12;
+        pdf.setFontSize(11);
+        pdf.text(`${isSrv ? 'Client' : 'Student'}:`, 15, y);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(`${entityName} (${entityId})`, 50, y);
+
+        y += 8;
+        pdf.setFont('helvetica', 'normal');
+        pdf.text(`${isSrv ? 'Service' : 'Course'}:`, 15, y);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(itemName, 50, y);
+
+        // Divider
+        y += 12;
+        pdf.setDrawColor(200, 200, 200);
+        pdf.line(15, y, pageWidth - 15, y);
+
+        // Payment Details
+        y += 12;
+        pdf.setFontSize(11);
+        pdf.setFont('helvetica', 'normal');
+
+        pdf.text('Total Fee:', 15, y);
+        pdf.text(`₹ ${totalItemFee.toLocaleString('en-IN')}`, pageWidth - 15, y, { align: 'right' });
+
+        y += 8;
+        pdf.setTextColor(40, 150, 205);
+        pdf.text('Amount Paid:', 15, y);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(`₹ ${totalPaidForItem.toLocaleString('en-IN')}`, pageWidth - 15, y, { align: 'right' });
+
+        y += 8;
+        pdf.setTextColor(pendingForItem > 0 ? 239 : 22, pendingForItem > 0 ? 68 : 163, pendingForItem > 0 ? 68 : 74);
+        pdf.text('Balance Due:', 15, y);
+        pdf.text(`₹ ${pendingForItem.toLocaleString('en-IN')}`, pageWidth - 15, y, { align: 'right' });
+
+        // Divider
+        y += 12;
+        pdf.setDrawColor(200, 200, 200);
+        pdf.setTextColor(0, 0, 0);
+        pdf.line(15, y, pageWidth - 15, y);
+
+        // Payment Mode
+        y += 12;
+        pdf.setFont('helvetica', 'normal');
+        pdf.text('Payment Mode:', 15, y);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(receipt.payment_mode === 'CASH' ? 'CASH' : 'UPI', pageWidth - 15, y, { align: 'right' });
+
+        y += 8;
+        pdf.setFont('helvetica', 'normal');
+        pdf.text('Reference ID:', 15, y);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(receipt.reference_id || '-', pageWidth - 15, y, { align: 'right' });
+
+        // Footer
+        y += 25;
+        pdf.setDrawColor(200, 200, 200);
+        pdf.setLineDashPattern([2, 2], 0);
+        pdf.line(15, y, pageWidth - 15, y);
+
+        y += 10;
+        pdf.setFontSize(9);
+        pdf.setFont('helvetica', 'normal');
+        pdf.setTextColor(100, 100, 100);
+        pdf.text('-- System Generated Receipt --', pageWidth / 2, y, { align: 'center' });
+
+        y += 6;
+        pdf.text("Abhi's Craftsoft © " + new Date().getFullYear() + ' | www.craftsoft.co.in', pageWidth / 2, y, { align: 'center' });
+
         pdf.save(`Receipt-${receiptId}.pdf`);
 
         Toast.success('Downloaded', 'Receipt PDF saved');
