@@ -205,7 +205,7 @@ function renderReceipts() {
                 <button class="card-action-btn edit" onclick="viewReceipt('${r.receipt_id}')">
                     <i class="fa-solid fa-eye"></i> <span>View</span>
                 </button>
-                <button class="card-action-btn pdf" onclick="downloadReceipt('${r.receipt_id}')">
+                <button class="card-action-btn pdf" onclick="showDownloadConfirm('${r.receipt_id}')">
                     <i class="fa-solid fa-download"></i> <span>PDF</span>
                 </button>
                 <button class="card-action-btn whatsapp" onclick="sendWhatsApp('${r.receipt_id}')">
@@ -426,7 +426,7 @@ async function downloadReceipt(receiptId) {
         pdfContainer.innerHTML = `
             <style>
                 #pdf-receipt-container * { font-family: 'Tahoma', Arial, sans-serif; box-sizing: border-box; }
-                .pdf-wrap { padding: 50px; background: white; }
+                .pdf-wrap { padding: 50px; background: white; min-height: 1100px; display: flex; flex-direction: column; }
                 .pdf-headline { font-size: 22px; font-weight: bold; color: #2896cd; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1.5px solid #f1f5f9; }
                 .pdf-brand { position: relative; padding-left: 20px; margin-bottom: 50px; }
                 .pdf-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: #e0f2fe; border-left: 3px solid #2896cd; }
@@ -460,7 +460,7 @@ async function downloadReceipt(receiptId) {
                 .pdf-divider { height: 1px; background: #eee; margin: 15px 0; }
                 .pdf-sum-row.due .label { font-size: 16px; }
                 .pdf-sum-row.due .val { font-size: 18px; color: #2896cd; }
-                .pdf-footer { margin-top: 50px; text-align: center; padding-top: 25px; border-top: 1px dashed #ddd; }
+                .pdf-footer { margin-top: auto; text-align: center; padding-top: 30px; border-top: 1px dashed #ddd; }
                 .pdf-footer p { font-size: 10px; color: #64748b; margin: 3px 0; }
             </style>
             <div class="pdf-wrap">
@@ -668,15 +668,37 @@ function bindEvents() {
         handleFilter();
     });
 
+    // Receipt View Modal
     document.getElementById('close-receipt-modal')?.addEventListener('click', closeReceiptModal);
     document.getElementById('receipt-cancel-btn')?.addEventListener('click', closeReceiptModal);
     document.getElementById('receipt-modal')?.addEventListener('click', (e) => {
         if (e.target.id === 'receipt-modal') closeReceiptModal();
     });
 
-    document.getElementById('receipt-download-btn')?.addEventListener('click', () => {
-        // Disabled for now
-        // if (currentReceipt) downloadReceipt(currentReceipt.receipt_id);
+    // Download Confirmation Modal
+    document.getElementById('close-download-modal')?.addEventListener('click', closeDownloadModal);
+    document.getElementById('download-cancel-btn')?.addEventListener('click', closeDownloadModal);
+    document.getElementById('download-confirm-modal')?.addEventListener('click', (e) => {
+        if (e.target.id === 'download-confirm-modal') closeDownloadModal();
     });
+    document.getElementById('download-confirm-btn')?.addEventListener('click', () => {
+        const receiptId = document.getElementById('download-receipt-id').dataset.receiptId;
+        if (receiptId) {
+            closeDownloadModal();
+            downloadReceipt(receiptId);
+        }
+    });
+}
+
+// Show download confirmation modal
+function showDownloadConfirm(receiptId) {
+    document.getElementById('download-receipt-id').textContent = receiptId;
+    document.getElementById('download-receipt-id').dataset.receiptId = receiptId;
+    document.getElementById('download-confirm-modal').classList.add('active');
+}
+
+// Close download confirmation modal
+function closeDownloadModal() {
+    document.getElementById('download-confirm-modal').classList.remove('active');
 }
 

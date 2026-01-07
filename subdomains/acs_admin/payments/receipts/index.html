@@ -172,10 +172,31 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" id="receipt-cancel-btn">
-                    Cancel
+                    Close
                 </button>
-                <button class="btn btn-primary" id="receipt-download-btn">
-                    <i class="fa-solid fa-download"></i> Download PDF
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Confirmation Modal -->
+    <div class="modal-overlay" id="download-confirm-modal">
+        <div class="modal" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Download Receipt</h3>
+                <button class="modal-close" id="close-download-modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 1.5rem; text-align: center;">
+                <i class="fa-solid fa-file-pdf" style="font-size: 48px; color: #2896cd; margin-bottom: 15px;"></i>
+                <p style="margin: 0; font-size: 14px; color: #64748b;">Are you sure you want to download the receipt
+                    PDF?</p>
+                <p id="download-receipt-id" style="margin: 10px 0 0; font-weight: bold; color: #0f172a;"></p>
+            </div>
+            <div class="modal-footer" style="justify-content: center; gap: 10px;">
+                <button class="btn btn-outline" id="download-cancel-btn">Cancel</button>
+                <button class="btn btn-primary" id="download-confirm-btn">
+                    <i class="fa-solid fa-download"></i> Download
                 </button>
             </div>
         </div>
