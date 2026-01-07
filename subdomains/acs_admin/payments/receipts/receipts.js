@@ -231,7 +231,7 @@ function renderReceipts() {
 }
 
 // =====================
-// View Receipt
+// View Receipt - Professional Design
 // =====================
 async function viewReceipt(receiptId) {
     currentReceipt = receipts.find(r => r.receipt_id === receiptId);
@@ -245,22 +245,22 @@ async function viewReceipt(receiptId) {
     const itemIdCol = isSrv ? 'service_id' : 'course_id';
     const item = isSrv ? currentReceipt.service : currentReceipt.course;
 
-    // Show loading state in modal first
     const content = document.getElementById('receipt-content');
-    content.innerHTML = '<div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i> Loading Ledger...</div>';
+    content.innerHTML = '<div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
     document.getElementById('receipt-modal').classList.add('active');
 
     try {
-        // 1. Calculate Live Item Balance
+        // Get payment history for this item
         const { data: history, error: hErr } = await window.supabaseClient
             .from('receipts')
-            .select('amount_paid')
+            .select('amount_paid, payment_date, reference_id, payment_mode')
             .eq(idCol, entity?.id)
-            .eq(itemIdCol, item?.id);
+            .eq(itemIdCol, item?.id)
+            .order('payment_date', { ascending: true });
 
         if (hErr) throw hErr;
 
-        // 2. Get Fee info
+        // Get fee info
         const { data: record } = await window.supabaseClient
             .from(table)
             .select(isSrv ? 'service_fees, total_fee' : 'course_discounts, final_fee')
@@ -270,7 +270,6 @@ async function viewReceipt(receiptId) {
         let totalItemFee = 0;
         if (isSrv) {
             totalItemFee = (record?.service_fees || {})[item.service_code || item.code] || 0;
-            // Fallback if not found in map
             if (!totalItemFee) totalItemFee = currentReceipt.amount_paid + (currentReceipt.balance_due || 0);
         } else {
             const { data: courseData } = await window.supabaseClient.from('courses').select('fee').eq('id', item.id).single();
@@ -281,7 +280,19 @@ async function viewReceipt(receiptId) {
         const totalPaidForItem = history.reduce((sum, r) => sum + (r.amount_paid || 0), 0);
         const pendingForItem = Math.max(0, totalItemFee - totalPaidForItem);
 
-        // 3. Global Summary
+        // Status calculation
+        let statusText = 'Due';
+        let statusClass = 'status-due';
+        if (pendingForItem <= 0) {
+            statusText = 'Fully Paid';
+            statusClass = 'status-paid';
+        } else if (totalPaidForItem > 0) {
+            const pct = Math.round((totalPaidForItem / totalItemFee) * 100);
+            statusText = `Partial (${pct}%)`;
+            statusClass = 'status-partial';
+        }
+
+        // Global summary
         const { data: allReceipts } = await window.supabaseClient
             .from('receipts')
             .select('amount_paid')
@@ -290,77 +301,105 @@ async function viewReceipt(receiptId) {
         const globalTotal = isSrv ? (record?.total_fee || 0) : (record?.final_fee || 0);
         const globalPending = Math.max(0, globalTotal - globalPaid);
 
-        const entityLabel = isSrv ? 'Client' : 'Student';
-        const entityName = entity ? `${entity.first_name} ${entity.last_name || ''} (${entity.student_id || entity.client_id || '-'})` : 'Unknown';
+        const entityName = entity ? `${entity.first_name} ${entity.last_name || ''}` : 'Unknown';
+        const entityId = entity?.student_id || entity?.client_id || '-';
         const itemName = item?.name || item?.course_name || 'Unknown Item';
-        const itemLabel = isSrv ? 'Service' : 'Course';
+
+        // Build history rows
+        const historyRows = history.map((h, idx) => {
+            const isLatest = idx === history.length - 1;
+            return `<tr class="${isLatest ? 'latest' : ''}">
+                <td>${formatDate(h.payment_date)}</td>
+                <td>${h.payment_mode === 'CASH' ? 'Cash' : 'UPI'} - ${h.reference_id || '-'}</td>
+                <td style="text-align:right">₹ ${h.amount_paid.toLocaleString('en-IN')}</td>
+            </tr>`;
+        }).join('');
 
         content.innerHTML = `
             <div class="receipt-view" id="receipt-printable">
-                <div class="receipt-header">
-                    <div class="receipt-subtitle">Payment Receipt</div>
-                </div>
-                
-                <div class="receipt-details">
-                    <div class="receipt-row">
-                        <span class="receipt-label">Receipt ID</span>
-                        <span class="receipt-value">${currentReceipt.receipt_id}</span>
-                    </div>
-                    <div class="receipt-row">
-                        <span class="receipt-label">Date</span>
-                        <span class="receipt-value">${formatDate(currentReceipt.payment_date || currentReceipt.created_at)}</span>
-                    </div>
-                    <div class="receipt-row">
-                        <span class="receipt-label">${entityLabel}</span>
-                        <span class="receipt-value">${entityName}</span>
-                    </div>
-                    <div class="receipt-row">
-                        <span class="receipt-label">${itemLabel}</span>
-                        <span class="receipt-value">${itemName}</span>
-                    </div>
-                    <div class="receipt-row receipt-amount-row">
-                        <span class="receipt-label">Amount Paid</span>
-                        <span class="receipt-value">${formatCurrency(currentReceipt.amount_paid)}</span>
-                    </div>
-                    <div class="receipt-row">
-                        <span class="receipt-label">Payment Mode</span>
-                        <span class="receipt-value">${currentReceipt.payment_mode === 'CASH' ? 'Cash' : 'Online (UPI)'}</span>
-                    </div>
-                    <div class="receipt-row">
-                        <span class="receipt-label">Reference ID</span>
-                        <span class="receipt-value" style="font-size: 0.75rem; font-family: monospace;">${currentReceipt.reference_id || '-'}</span>
-                    </div>
-                </div>
+                <div class="receipt-watermark"></div>
+                <div class="receipt-content">
+                    <div class="receipt-headline">Payment receipt</div>
 
-                <div class="receipt-ledger">
-                    <div class="ledger-header">ITEM LEDGER (${item.service_code || item.course_code || 'NA'})</div>
-                    <div class="ledger-row">
-                        <span>Total: ${formatCurrency(totalItemFee)}</span>
-                        <span>Paid: ${formatCurrency(totalPaidForItem)}</span>
-                        <strong class="${pendingForItem <= 0 ? 'text-success' : 'text-danger'}">
-                            Pending: ${formatCurrency(pendingForItem)}
-                        </strong>
+                    <div class="receipt-brand-container">
+                        <div class="receipt-accent-bar"></div>
+                        <div class="receipt-header-main">
+                            <div class="receipt-brand-info">
+                                <h1>Abhi's Craftsoft</h1>
+                                <p>Plot no. 163, Vijayasree Colony,<br>Vanasthalipuram, Hyderabad 500070</p>
+                                <div class="receipt-contact-row">+91-7842239090 | https://www.craftsoft.co.in</div>
+                            </div>
+                            <div class="receipt-meta-info">
+                                <p>Date: <strong>${formatDate(currentReceipt.payment_date || currentReceipt.created_at)}</strong></p>
+                                <p>Receipt No: <strong>${currentReceipt.receipt_id}</strong></p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                ${globalPending > 0 ? `
-                <div class="receipt-global-summary">
-                    <div class="ledger-header">GLOBAL PENDING (Total Account)</div>
-                    <div class="ledger-row">
-                        <strong class="text-danger">Outstanding: ${formatCurrency(globalPending)}</strong>
+                    <div class="receipt-customer-section">
+                        <div class="receipt-issue-to">
+                            <span>Issued To</span>
+                            <h3>${entityName}</h3>
+                        </div>
+                        <div class="receipt-id-box">
+                            <span>${isSrv ? 'Client ID' : 'Student ID'}</span>
+                            <strong>${entityId}</strong>
+                        </div>
                     </div>
-                </div>
-                ` : ''}
-                
-                <div class="receipt-footer">
-                    <p>This is a system-generated receipt.</p>
-                    <p>Abhi's Craftsoft</p>
+
+                    <div class="receipt-section-header">Account & Payment Overview</div>
+                    <table class="receipt-main-table">
+                        <thead>
+                            <tr>
+                                <th width="50%">Item Description</th>
+                                <th>Total Fee</th>
+                                <th>Paid</th>
+                                <th style="text-align:right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>${itemName}</td>
+                                <td>₹ ${totalItemFee.toLocaleString('en-IN')}</td>
+                                <td>${totalPaidForItem > 0 ? '₹ ' + totalPaidForItem.toLocaleString('en-IN') : '--'}</td>
+                                <td style="text-align:right"><span class="${statusClass}">${statusText}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="receipt-section-header">Payment History</div>
+                    <table class="receipt-history-table">
+                        <tbody>
+                            ${historyRows || '<tr><td colspan="3">No history available</td></tr>'}
+                        </tbody>
+                    </table>
+
+                    <div class="receipt-summary-box">
+                        <div class="summary-row">
+                            <span class="label">Item Total</span>
+                            <span class="val">₹ ${totalItemFee.toLocaleString('en-IN')}</span>
+                        </div>
+                        <div class="summary-row accented">
+                            <span class="label">Amount Paid</span>
+                            <span class="val">₹ ${totalPaidForItem.toLocaleString('en-IN')}</span>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row total-due">
+                            <span class="label">Balance Due</span>
+                            <span class="val">₹ ${pendingForItem.toLocaleString('en-IN')}</span>
+                        </div>
+                    </div>
+
+                    <div class="receipt-footer">
+                        <p class="receipt-footer-note">This is a system-generated secure receipt and does not require a physical signature.</p>
+                        <p class="receipt-footer-note">Abhi's Craftsoft © ${new Date().getFullYear()} | https://www.craftsoft.co.in</p>
+                    </div>
                 </div>
             </div>
         `;
     } catch (err) {
         console.error(err);
-        Toast.error('Load Error', 'Failed to fetch ledger details');
+        Toast.error('Load Error', 'Failed to fetch receipt details');
         closeReceiptModal();
     }
 }

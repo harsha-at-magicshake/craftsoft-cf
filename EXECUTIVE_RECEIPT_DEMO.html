@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Craftsoft Professional Statement</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            --receipt-font: 'Tahoma', sans-serif;
+            --brand-blue: #2896cd;
+            --brand-blue-light: #e0f2fe;
+            --dark-navy: #0f172a;
+            --slate: #64748b;
+            --border-light: #f1f5f9;
+        }
+
+        body {
+            background: #f1f5f9;
+            padding: 40px 20px;
+            font-family: var(--receipt-font);
+            color: var(--dark-navy);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .btn {
+            background: #111;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Tahoma', sans-serif;
+        }
+
+        .receipt-wrap {
+            width: 100%;
+            max-width: 850px;
+            background: white;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.05);
+            padding: 50px;
+            position: relative;
+            box-sizing: border-box;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='120' viewBox='0 0 200 120' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' fill='%2364748b' font-family='monospace' font-size='10' text-anchor='middle' transform='rotate(-25 100 60)'%3ECRAFTSOFT SECURE CRAFTSOFT%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        .receipt-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .headline {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--brand-blue);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1.5px solid var(--border-light);
+        }
+
+        .brand-container {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 50px;
+        }
+
+        .accent-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: var(--brand-blue-light);
+            border-left: 3px solid var(--brand-blue);
+        }
+
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .brand-info h1 {
+            font-size: 26px;
+            margin: 0;
+            color: var(--dark-navy);
+            font-weight: bold;
+        }
+
+        .brand-info p {
+            font-size: 11px;
+            margin: 6px 0;
+            color: var(--slate);
+            line-height: 1.5;
+        }
+
+        .contact-row {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--brand-blue);
+            margin-top: 10px;
+        }
+
+        .meta-info {
+            text-align: right;
+            font-size: 13px;
+        }
+
+        .meta-info p {
+            margin: 8px 0;
+        }
+
+        .meta-info strong {
+            color: var(--dark-navy);
+            font-weight: 800;
+        }
+
+        .customer-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .issue-to h3 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--dark-navy);
+        }
+
+        .issue-to span {
+            font-size: 10px;
+            color: var(--slate);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .id-box {
+            text-align: right;
+            padding: 10px 15px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+        }
+
+        .id-box span {
+            font-size: 9px;
+            color: var(--slate);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .id-box strong {
+            font-size: 14px;
+            color: var(--brand-blue);
+            font-weight: bold;
+        }
+
+        .section-header {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--slate);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        .main-table th {
+            text-align: left;
+            padding: 12px;
+            font-size: 11px;
+            color: var(--slate);
+            border-bottom: 2px solid #eee;
+            text-transform: uppercase;
+        }
+
+        .main-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 13px;
+        }
+
+        .status-paid {
+            color: #16a34a;
+            font-weight: bold;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .status-partial {
+            color: #2896cd;
+            font-weight: bold;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .status-due {
+            color: #ef4444;
+            font-weight: bold;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .history-table tr td {
+            padding: 10px 12px;
+            font-size: 12px;
+            border-bottom: 1px solid #f9f9f9;
+        }
+
+        .history-table tr.latest {
+            background: #fcfdfe;
+            font-weight: bold;
+            color: var(--dark-navy);
+        }
+
+        .summary-box {
+            margin-top: 30px;
+            margin-left: auto;
+            width: 350px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .summary-row .label {
+            color: var(--dark-navy);
+            font-weight: bold;
+        }
+
+        .summary-row .val {
+            color: var(--dark-navy);
+            font-weight: bold;
+        }
+
+        .summary-row.accented .label,
+        .summary-row.accented .val {
+            color: var(--brand-blue);
+        }
+
+        .summary-divider {
+            height: 1px;
+            background: #eee;
+            margin: 15px 0;
+        }
+
+        .summary-row.total-due .label {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .summary-row.total-due .val {
+            font-size: 18px;
+            color: var(--brand-blue);
+            font-weight: bold;
+        }
+
+        .receipt-footer {
+            margin-top: 60px;
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .footer-note {
+            font-size: 10px;
+            color: var(--slate);
+            margin: 3px 0;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .receipt-wrap {
+                box-shadow: none;
+                border: none;
+                width: 100%;
+                max-width: 100%;
+                padding: 0.5in;
+            }
+
+            .controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="controls">
+        <button class="btn" onclick="downloadPDF()">Download PDF</button>
+    </div>
+
+    <div class="receipt-wrap" id="receipt">
+        <div class="watermark"></div>
+
+        <div class="receipt-content">
+            <div class="headline">Payment receipt</div>
+
+            <div class="brand-container">
+                <div class="accent-bar"></div>
+                <div class="header-main">
+                    <div class="brand-info">
+                        <h1>Abhi's Craftsoft</h1>
+                        <p>Plot no. 163, Vijayasree Colony,<br>Vanasthalipuram, Hyderabad 500070</p>
+                        <div class="contact-row">+91-7842239090 | https://www.craftsoft.co.in</div>
+                    </div>
+                    <div class="meta-info">
+                        <p>Date: <strong>07-Jan-2026</strong></p>
+                        <p>Receipt No: <strong>RCT-ACS-102</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="customer-section">
+                <div class="issue-to">
+                    <span>Issued To</span>
+                    <h3>Kamsani Srujana</h3>
+                </div>
+                <div class="id-box">
+                    <span>Student ID</span>
+                    <strong>ST-ACS-505</strong>
+                </div>
+            </div>
+
+            <div class="section-header">Account & Payment Overview</div>
+            <table class="main-table">
+                <thead>
+                    <tr>
+                        <th width="50%">Item Description</th>
+                        <th>Total Fee</th>
+                        <th>Paid</th>
+                        <th style="text-align:right">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Python Full Stack Development</td>
+                        <td>₹ 25,000</td>
+                        <td>₹ 25,000</td>
+                        <td style="text-align:right"><span class="status-paid">Fully Paid</span></td>
+                    </tr>
+                    <tr>
+                        <td>Cloud Computing & AWS Architecture</td>
+                        <td>₹ 20,000</td>
+                        <td>₹ 10,000</td>
+                        <td style="text-align:right"><span class="status-partial">Partial (50%)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Professional Resume & HR Service</td>
+                        <td>₹ 5,000</td>
+                        <td>--</td>
+                        <td style="text-align:right"><span class="status-due">Due</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="section-header">Recent Payment History (Cloud Computing)</div>
+            <table class="history-table">
+                <tbody>
+                    <tr>
+                        <td width="25%">15-Dec-2025</td>
+                        <td>UPI Transfer - TXN_88122</td>
+                        <td style="text-align:right">₹ 5,000.00</td>
+                    </tr>
+                    <tr class="latest">
+                        <td width="25%">07-Jan-2026</td>
+                        <td>UPI Transfer - TXN_99238 (Current)</td>
+                        <td style="text-align:right">₹ 5,000.00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="summary-box">
+                <div class="summary-row">
+                    <span class="label">Course Sub-Total</span>
+                    <span class="val">₹ 50,000.00</span>
+                </div>
+                <div class="summary-row accented">
+                    <span class="label">Total Amount Paid</span>
+                    <span class="val">₹ 35,000.00</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-row total-due">
+                    <span class="label">Global Balance Due</span>
+                    <span class="val">₹ 15,000.00</span>
+                </div>
+            </div>
+
+            <div class="receipt-footer">
+                <p class="footer-note">This is a system-generated secure receipt and does not require a physical
+                    signature.</p>
+                <p class="footer-note">Abhi's Craftsoft © 2026 | https://www.craftsoft.co.in</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function downloadPDF() {
+            const element = document.getElementById('receipt');
+            const opt = {
+                margin: [0.3, 0.3],
+                filename: 'Statement_ACS_Srujana.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 3, letterRendering: true, useCORS: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+
+</html>
