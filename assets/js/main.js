@@ -5,6 +5,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize all modules
     initNavbar();
+    initThemeToggle();
     initMobileMenu();
     initSmoothScroll();
     initScrollAnimations();
@@ -23,6 +24,26 @@ document.addEventListener('DOMContentLoaded', function () {
     initRandomFloatingCards();
     initScrollToNext();
 });
+
+/* ============================================
+   THEME TOGGLE (Dark/Light Mode)
+   ============================================ */
+function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+
+    themeToggle.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const newTheme = isDark ? 'light' : 'dark';
+
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+
+        // Dynamic feedback
+        console.log(`Theme switched to: ${newTheme}`);
+    });
+}
+
 
 /* ============================================
    SCROLL TO NEXT SECTION

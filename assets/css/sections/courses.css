@@ -2,7 +2,7 @@
    COURSES Preview Section
    ============================================ */
 .courses-preview {
-    background: rgba(40, 150, 205, 0.05);
+    background: var(--section-bg);
 }
 
 .courses-grid {

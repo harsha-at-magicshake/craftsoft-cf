@@ -16,8 +16,8 @@
 
 
     // Supabase Project Credentials
-    const SUPABASE_URL = '[[SUPABASE_URL]]';
-    const SUPABASE_ANON_KEY = '[[SUPABASE_ANON_KEY]]';
+    const SUPABASE_URL = 'https://test.co';
+    const SUPABASE_ANON_KEY = 'test-key';
 
     // Initialize Supabase Client with sessionStorage for per-tab sessions
     // This allows different tabs to have different logged-in users

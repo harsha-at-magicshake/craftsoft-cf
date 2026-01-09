@@ -27,6 +27,14 @@
         }
     </style>
     <script>
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
         document.documentElement.className += ' no-fouc';
         document.addEventListener('DOMContentLoaded', function () {
             document.documentElement.classList.remove('no-fouc');
@@ -63,11 +71,15 @@
                 <li><a href="../contact/" class="nav-link">Contact</a></li>
             </ul>
 
-            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
+            <div class="nav-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon moon-icon"></i>
+                    <i class="fas fa-sun sun-icon"></i>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </button>
+            </div>
         </div>
         <div class="nav-overlay" id="navOverlay"></div>
     </nav>
@@ -325,4 +337,3 @@
 </body>
 
 </html>
-

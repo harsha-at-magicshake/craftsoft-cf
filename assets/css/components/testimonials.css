@@ -2,7 +2,7 @@
    TESTIMONIALS Wall (Full-Width Infinite Marquee)
    ============================================ */
 .testimonials {
-    background: linear-gradient(180deg, var(--white) 0%, rgba(40, 150, 205, 0.05) 100%);
+    background: linear-gradient(180deg, var(--white) 0%, var(--section-bg) 100%);
     padding: var(--spacing-xl) 0 var(--spacing-3xl);
     /* Tighter top padding */
     overflow: hidden;

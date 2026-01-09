@@ -2,7 +2,7 @@
    WHY CHOOSE US Section
    ============================================ */
 .why-choose-us {
-    background: linear-gradient(180deg, var(--primary-50) 0%, rgba(40, 150, 205, 0.05) 100%);
+    background: linear-gradient(180deg, var(--white) 0%, var(--section-bg) 100%);
 }
 
 .why-choose-us .section-tag {

@@ -18,6 +18,7 @@
     /* Accent Colors */
     --accent-gradient: linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%);
     --accent-gradient-2: linear-gradient(135deg, #00B894 0%, #00CEC9 100%);
+    --header-gradient: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
 
     /* Neutral Colors */
     --white: #ffffff;
@@ -85,4 +86,59 @@
     /* Container */
     --container-max: 1240px;
     --container-padding: 2.5rem;
+}
+
+/* ============================================
+   Dark Theme Overrides
+   ============================================ */
+[data-theme="dark"] {
+    /* Theme Colors - Careers Page Aesthetic */
+    --white: #0d121d;
+    /* Card Surface */
+    --gray-50: #050a14;
+    /* Deep Background */
+    --gray-100: #121826;
+    --gray-200: #1e293b;
+    --gray-300: #334155;
+    --gray-400: #475569;
+    --gray-500: #94a3b8;
+    --gray-600: #cbd5e1;
+    --gray-700: #e2e8f0;
+    --gray-800: #f1f5f9;
+    --gray-900: #e0e0e0;
+    /* Main Text */
+
+    /* Blue-Tinted Theme Colors */
+    --page-bg: #050a14;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --card-bg-hover: rgba(255, 255, 255, 0.06);
+    --section-bg: rgba(255, 255, 255, 0.02);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --divider-color: rgba(255, 255, 255, 0.05);
+    --header-gradient: linear-gradient(180deg, #050a14 0%, #0d121d 100%);
+
+    /* Shadows Adjustment for Dark */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.8);
+    --shadow-glow: 0 0 40px rgba(0, 229, 255, 0.05);
+}
+
+/* Specific Component Fixes for Dark Mode */
+[data-theme="dark"] .skeleton {
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.05) 25%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(255, 255, 255, 0.05) 75%) !important;
+    background-size: 200% 100% !important;
+}
+
+[data-theme="dark"] .skeleton-card {
+    background: var(--white) !important;
+    border-color: var(--card-border) !important;
+}
+
+[data-theme="dark"] .testimonial-card-inner {
+    background: var(--white);
+    border: 1px solid var(--card-border);
 }
