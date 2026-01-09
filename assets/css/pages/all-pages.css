@@ -4,7 +4,7 @@
 
 /* Page Header */
 .page-header {
-    background: var(--header-gradient);
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
     padding: 100px 0 24px;
     position: relative;
     overflow: hidden;
@@ -44,7 +44,7 @@
 /* Courses Page */
 .courses-page {
     padding: 1rem 0;
-    background: var(--section-bg);
+    background: rgba(40, 150, 205, 0.05);
 }
 
 /* Breadcrumbs Navigation */
@@ -243,7 +243,7 @@
 /* Services Page */
 .services-page {
     padding: 1rem 0;
-    background: var(--section-bg);
+    background: rgba(40, 150, 205, 0.05);
 }
 
 /* Service Category */
@@ -1254,7 +1254,7 @@
    Courses Contact Section
    ============================================ */
 .courses-contact-section {
-    background: var(--section-bg);
+    background: rgba(40, 150, 205, 0.05);
     border-radius: var(--radius-2xl);
     padding: var(--spacing-2xl) 0;
     /* Reduced from 3xl */

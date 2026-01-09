@@ -27,14 +27,6 @@
         }
     </style>
     <script>
-        // Check for saved theme preference or use system preference
-        const savedTheme = localStorage.getItem('theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
-
         document.documentElement.className += ' no-fouc';
         document.addEventListener('DOMContentLoaded', function () {
             document.documentElement.classList.remove('no-fouc');
@@ -70,16 +62,9 @@
                 <li><a href="../portfolio/" class="nav-link">Portfolio</a></li>
                 <li><a href="../contact/" class="nav-link">Contact</a></li>
             </ul>
-
-            <div class="nav-actions">
-                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
-                    <i class="fas fa-moon moon-icon"></i>
-                    <i class="fas fa-sun sun-icon"></i>
-                </button>
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-                </button>
-            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </button>
         </div>
         <div class="nav-overlay" id="navOverlay"></div>
     </nav>
@@ -134,8 +119,7 @@
                                 <span><i class="fas fa-certificate"></i> Certificate Included</span>
                             </div>
                         </div>
-                        <a href="graphic-design/" class="btn btn-primary">View Details <i
-                                class="fas fa-arrow-right"></i></a>
+                        <a href="graphic-design/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="course-card-full">
                         <div class="course-icon"><i class="fas fa-window-maximize"></i></div>
@@ -170,8 +154,7 @@
                                 <span><i class="fas fa-certificate"></i> Certificate Included</span>
                             </div>
                         </div>
-                        <a href="full-stack/" class="btn btn-primary">View Details <i
-                                class="fas fa-arrow-right"></i></a>
+                        <a href="full-stack/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="course-card-full">
                         <div class="course-icon"><i class="fab fa-python"></i></div>
@@ -227,8 +210,7 @@
                                 <span><i class="fas fa-certificate"></i> Certificate Included</span>
                             </div>
                         </div>
-                        <a href="Data-analytics/" class="btn btn-primary">View Details <i
-                                class="fas fa-arrow-right"></i></a>
+                        <a href="Data-analytics/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="course-card-full">
                         <div class="course-icon"><i class="fab fa-salesforce"></i></div>
@@ -242,8 +224,7 @@
                                 <span><i class="fas fa-certificate"></i> Salesforce Cert Prep</span>
                             </div>
                         </div>
-                        <a href="salesforce/" class="btn btn-primary">View Details <i
-                                class="fas fa-arrow-right"></i></a>
+                        <a href="salesforce/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="course-card-full">
                         <div class="course-icon"><i class="fab fa-python"></i></div>
@@ -257,8 +238,7 @@
                                 <span><i class="fas fa-certificate"></i> Certificate Included</span>
                             </div>
                         </div>
-                        <a href="python-programming/" class="btn btn-primary">View Details <i
-                                class="fas fa-arrow-right"></i></a>
+                        <a href="python-programming/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="course-card-full">
                         <div class="course-icon"><i class="fab fa-react"></i></div>
@@ -286,8 +266,7 @@
                                 <span><i class="fas fa-certificate"></i> Certificate Included</span>
                             </div>
                         </div>
-                        <a href="git-github/" class="btn btn-primary">View Details <i
-                                class="fas fa-arrow-right"></i></a>
+                        <a href="git-github/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -364,8 +343,7 @@
                                 <span><i class="fas fa-certificate"></i> Certificate Included</span>
                             </div>
                         </div>
-                        <a href="automation-python/" class="btn btn-primary">View Details <i
-                                class="fas fa-arrow-right"></i></a>
+                        <a href="automation-python/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -386,8 +364,7 @@
                                 <span><i class="fas fa-certificate"></i> Certificate Included</span>
                             </div>
                         </div>
-                        <a href="spoken-english/" class="btn btn-primary">View Details <i
-                                class="fas fa-arrow-right"></i></a>
+                        <a href="spoken-english/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="course-card-full">
                         <div class="course-icon"><i class="fas fa-comments"></i></div>
@@ -401,8 +378,7 @@
                                 <span><i class="fas fa-certificate"></i> Certificate Included</span>
                             </div>
                         </div>
-                        <a href="soft-skills/" class="btn btn-primary">View Details <i
-                                class="fas fa-arrow-right"></i></a>
+                        <a href="soft-skills/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="course-card-full">
                         <div class="course-icon"><i class="fas fa-file-invoice"></i></div>
@@ -416,8 +392,7 @@
                                 <span><i class="fas fa-certificate"></i> Certificate Included</span>
                             </div>
                         </div>
-                        <a href="resume-interview/" class="btn btn-primary">View Details <i
-                                class="fas fa-arrow-right"></i></a>
+                        <a href="resume-interview/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="course-card-full">
                         <div class="course-icon"><i class="fas fa-pen-fancy"></i></div>
@@ -431,8 +406,7 @@
                                 <span><i class="fas fa-certificate"></i> Certificate Included</span>
                             </div>
                         </div>
-                        <a href="handwriting/" class="btn btn-primary">View Details <i
-                                class="fas fa-arrow-right"></i></a>
+                        <a href="handwriting/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -450,51 +424,44 @@
                                     recommend the perfect learning path for you.
                                 </p>
 
-                                <div class="contact-methods-grid">
-                                    <!-- Row 1: Phone + Email -->
-                                    <a href="tel:+917842239090" class="method-card">
-                                        <div class="method-card-header">
-                                            <i class="fas fa-phone"></i>
-                                            <h4>Phone / WhatsApp</h4>
-                                        </div>
-                                        <span>+91 7842239090</span>
-                                    </a>
-                                    <a href="mailto:team.craftsoft@gmail.com" class="method-card">
-                                        <div class="method-card-header">
-                                            <i class="fas fa-envelope"></i>
-                                            <h4>Email</h4>
-                                        </div>
-                                        <span>team.craftsoft@gmail.com</span>
-                                    </a>
-                                    <!-- Row 2: LinkedIn + Instagram -->
-                                    <a href="https://www.linkedin.com/company/abhis-craftsoft" target="_blank"
-                                        class="method-card">
-                                        <div class="method-card-header">
-                                            <i class="fab fa-linkedin"></i>
-                                            <h4>LinkedIn</h4>
-                                        </div>
-                                        <span>Abhi's Craftsoft</span>
-                                    </a>
-                                    <a href="https://www.instagram.com/craftsoft_" target="_blank" class="method-card">
-                                        <div class="method-card-header">
-                                            <i class="fab fa-instagram"></i>
-                                            <h4>Instagram</h4>
-                                        </div>
-                                        <span>@craftsoft_</span>
-                                    </a>
-                                    <!-- Row 3: Visit Us (full width) -->
-                                    <a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8" target="_blank"
-                                        class="method-card" style="grid-column: 1 / -1;">
-                                        <div class="method-card-header">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            <h4>Visit Us</h4>
-                                        </div>
-                                        <span>Plot no. 163, Vijayasree Colony, Vanasthalipuram, Hyderabad 500070</span>
-                                    </a>
-                                </div>
+                                                                                        <div class="contact-methods-grid">
+                                <!-- Row 1: Phone + Email -->
+                                <a href="tel:+917842239090" class="method-card">
+                                    <div class="method-card-header">
+                                        <i class="fas fa-phone"></i> <h4>Phone / WhatsApp</h4>
+                                    </div>
+                                    <span>+91 7842239090</span>
+                                </a>
+                                <a href="mailto:team.craftsoft@gmail.com" class="method-card">
+                                    <div class="method-card-header">
+                                        <i class="fas fa-envelope"></i> <h4>Email</h4>
+                                    </div>
+                                    <span>team.craftsoft@gmail.com</span>
+                                </a>
+                                <!-- Row 2: LinkedIn + Instagram -->
+                                <a href="https://www.linkedin.com/company/abhis-craftsoft" target="_blank" class="method-card">
+                                    <div class="method-card-header">
+                                        <i class="fab fa-linkedin"></i> <h4>LinkedIn</h4>
+                                    </div>
+                                    <span>Abhi's Craftsoft</span>
+                                </a>
+                                <a href="https://www.instagram.com/craftsoft_" target="_blank" class="method-card">
+                                    <div class="method-card-header">
+                                        <i class="fab fa-instagram"></i> <h4>Instagram</h4>
+                                    </div>
+                                    <span>@craftsoft_</span>
+                                </a>
+                                <!-- Row 3: Visit Us (full width) -->
+                                <a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8" target="_blank" class="method-card" style="grid-column: 1 / -1;">
+                                    <div class="method-card-header">
+                                        <i class="fas fa-map-marker-alt"></i> <h4>Visit Us</h4>
+                                    </div>
+                                    <span>Plot no. 163, Vijayasree Colony, Vanasthalipuram, Hyderabad 500070</span>
+                                </a>
                             </div>
+                        </div>
 
-                            <div class="contact-form-side">
+                        <div class="contact-form-side">
                                 <div class="contact-form-card">
                                     <h3>Get Free Counseling</h3>
                                     <form id="courses-inquiry-form">
@@ -636,22 +603,19 @@
                 <div class="chat-options">
                     <a href="https://wa.me/917842239090?text=Hi! I'd like to know more about your courses."
                         target="_blank" class="chat-option whatsapp">
-                        <i class="fab fa-whatsapp"></i>
-                        <div class="chat-option-text">
+                        <i class="fab fa-whatsapp"></i> <div class="chat-option-text">
                             <h5>WhatsApp</h5>
                             <span>Fastest response</span>
                         </div>
                     </a>
                     <a href="tel:+917842239090" class="chat-option phone">
-                        <i class="fas fa-phone"></i>
-                        <div class="chat-option-text">
+                        <i class="fas fa-phone"></i> <div class="chat-option-text">
                             <h5>Call Us</h5>
                             <span>+91 7842239090</span>
                         </div>
                     </a>
                     <a href="mailto:team.craftsoft@gmail.com" class="chat-option email">
-                        <i class="fas fa-envelope"></i>
-                        <div class="chat-option-text">
+                        <i class="fas fa-envelope"></i> <div class="chat-option-text">
                             <h5>Email</h5>
                             <span>team.craftsoft@gmail.com</span>
                         </div>
@@ -685,3 +649,8 @@
 </body>
 
 </html>
+
+
+
+
+

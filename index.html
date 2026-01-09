@@ -166,14 +166,6 @@
         }
     </style>
     <script>
-        // Check for saved theme preference or use system preference
-        const savedTheme = localStorage.getItem('theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
-
         document.documentElement.className += ' no-fouc';
         document.addEventListener('DOMContentLoaded', function () {
             document.documentElement.classList.remove('no-fouc');
@@ -211,15 +203,9 @@
                 <li><a href="contact/" class="nav-link">Contact</a></li>
             </ul>
 
-            <div class="nav-actions">
-                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
-                    <i class="fas fa-moon moon-icon"></i>
-                    <i class="fas fa-sun sun-icon"></i>
-                </button>
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-                </button>
-            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </button>
         </div>
         <div class="nav-overlay" id="navOverlay"></div>
     </nav>
@@ -376,7 +362,7 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="testimonials">
+    <section class="testimonials" style="background: rgba(9, 132, 227, 0.05);">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Success Stories</span>
@@ -645,7 +631,7 @@
 
 
     <!-- Why Choose Us Section -->
-    <section class="why-choose-us">
+    <section class="why-choose-us" style="background: rgba(40, 150, 205, 0.05);">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Why Us</span>
@@ -867,3 +853,4 @@
 </body>
 
 </html>
+

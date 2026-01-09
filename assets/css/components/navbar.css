@@ -171,60 +171,6 @@
     transition: all 0.3s ease;
 }
 
-/* Nav Actions Container */
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-}
-
-/* Theme Toggle Button */
-.theme-toggle {
-    background: var(--gray-50);
-    border: none;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--gray-700);
-    font-size: 1.15rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-.theme-toggle:hover {
-    background: var(--gray-100);
-    transform: rotate(15deg) scale(1.05);
-    color: var(--primary-500);
-}
-
-.theme-toggle .sun-icon {
-    display: none;
-}
-
-[data-theme="dark"] .theme-toggle .moon-icon {
-    display: none;
-}
-
-[data-theme="dark"] .theme-toggle .sun-icon {
-    display: block;
-    color: #FDB813;
-}
-
-/* Update Navbar for Dark Mode Background */
-[data-theme="dark"] .navbar {
-    background: rgba(5, 10, 20, 0.85);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-[data-theme="dark"] .navbar.scrolled {
-    background: rgba(5, 10, 20, 0.98);
-}
-
 /* Admin Login Icon (Desktop) */
 .admin-login-icon {
     display: flex;
@@ -248,9 +194,5 @@
 @media (max-width: 768px) {
     .admin-login-icon {
         display: none;
-    }
-
-    .hamburger {
-        display: flex;
     }
 }
