@@ -1,22 +1,26 @@
-const CACHE_NAME = 'craftsoft-offline-v1';
-const OFFLINE_URL = '/offline.html';
+const CACHE_NAME = 'craftsoft-offline-v2';
+const OFFLINE_URL = 'offline.html'; // Changed to relative path
 
 const ASSETS_TO_CACHE = [
-    '/',
-    '/index.html',
-    '/offline.html',
-    '/favicon.svg',
-    '/assets/css/master.css?v=2.0',
-    'https://fonts.googleapis.com/css2?family=Italianno&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
+    './',
+    './index.html',
+    './offline.html',
+    './favicon.svg',
+    './assets/css/master.css?v=2.0'
 ];
 
 // Install Service Worker
 self.addEventListener('install', (event) => {
+    console.log('[SW] Install Event starting...');
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             console.log('[SW] Caching critical assets');
-            return cache.addAll(ASSETS_TO_CACHE);
+            // Using addAll but catching errors so one failing asset doesn't break the whole SW
+            return Promise.allSettled(
+                ASSETS_TO_CACHE.map(url => {
+                    return cache.add(url).catch(err => console.error(`[SW] Failed to cache: ${url}`, err));
+                })
+            );
         })
     );
     self.skipWaiting();
@@ -24,12 +28,12 @@ self.addEventListener('install', (event) => {
 
 // Activate Service Worker
 self.addEventListener('activate', (event) => {
+    console.log('[SW] Activate Event');
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cache) => {
                     if (cache !== CACHE_NAME) {
-                        console.log('[SW] Clearing old cache');
                         return caches.delete(cache);
                     }
                 })
@@ -41,23 +45,22 @@ self.addEventListener('activate', (event) => {
 
 // Fetch Interceptor
 self.addEventListener('fetch', (event) => {
-    // Only handle GET requests
-    if (event.request.method !== 'GET') return;
+    // Only handle GET and http/https
+    if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) return;
 
     event.respondWith(
         fetch(event.request)
             .catch(() => {
+                console.log('[SW] Network failed, searching cache for:', event.request.url);
                 return caches.match(event.request).then((response) => {
-                    if (response) {
-                        return response;
-                    }
+                    if (response) return response;
 
                     // Specific handling for navigation requests (HTML pages)
-                    if (event.request.mode === 'navigate') {
+                    if (event.request.mode === 'navigate' ||
+                        (event.request.method === 'GET' && event.request.headers.get('accept').includes('text/html'))) {
+                        console.log('[SW] Serving Offline Page');
                         return caches.match(OFFLINE_URL);
                     }
-
-                    return null;
                 });
             })
     );
