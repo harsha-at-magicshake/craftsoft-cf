@@ -16,8 +16,9 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-    <link rel="stylesheet" href="/../assets/css/master.css?v=2.0">    <link rel="stylesheet" href="../assets/css/utilities/skeleton.css?v=1.0">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+    <link rel="stylesheet" href="../../assets/css/master.css?v=2.0">
+    <link rel="stylesheet" href="../../assets/css/utilities/skeleton.css?v=1.0">
 
     <style>
         /* 404 Page Specific Styles */
@@ -196,15 +197,20 @@
     </style>
     <!-- FOUC Protection -->
     <style>
-        .no-fouc { opacity: 0; }
-        body { transition: opacity 0.3s ease; }
+        .no-fouc {
+            opacity: 0;
+        }
+
+        body {
+            transition: opacity 0.3s ease;
+        }
     </style>
     <script>
         document.documentElement.className += ' no-fouc';
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             document.documentElement.classList.remove('no-fouc');
         });
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             document.documentElement.classList.remove('no-fouc');
         });
     </script>
@@ -212,18 +218,18 @@
 
 <body>
     <!-- Page Transition Overlay -->
-        <!-- Page Transition Overlay -->
-            <div class="skeleton-hero-block skeleton">
-                <div class="skeleton-hero-line-1"></div>
-                <div class="skeleton-hero-line-2"></div>
-                <div class="skeleton-hero-btn"></div>
-            </div>
-            <div class="skeleton-grid-placeholder">
-                <div class="skeleton-grid-item skeleton"></div>
-                <div class="skeleton-grid-item skeleton"></div>
-                <div class="skeleton-grid-item skeleton"></div>
-            </div>
-        </div>
+    <!-- Page Transition Overlay -->
+    <div class="skeleton-hero-block skeleton">
+        <div class="skeleton-hero-line-1"></div>
+        <div class="skeleton-hero-line-2"></div>
+        <div class="skeleton-hero-btn"></div>
+    </div>
+    <div class="skeleton-grid-placeholder">
+        <div class="skeleton-grid-item skeleton"></div>
+        <div class="skeleton-grid-item skeleton"></div>
+        <div class="skeleton-grid-item skeleton"></div>
+    </div>
+    </div>
     </div>
     </div>
     <!-- Navbar Removed as requested -->
@@ -232,7 +238,8 @@
     <main class="error-page-container">
         <div class="error-content">
             <div class="illustration-wrapper">
-                <i class="fas fa-compass illustration-icon"></i> </div>
+                <i class="fas fa-compass illustration-icon"></i>
+            </div>
 
             <div class="error-code">404</div>
 
@@ -244,10 +251,10 @@
             </p>
 
             <div class="action-buttons">
-                <a href="/" class="btn btn-primary">
+                <a href="../../" class="btn btn-primary">
                     <i class="fas fa-home"></i> Back to Home
                 </a>
-                <a href="/courses.html" class="btn btn-secondary">
+                <a href="../../courses/" class="btn btn-secondary">
                     <i class="fas fa-search"></i> Browse Courses
                 </a>
             </div>
@@ -255,13 +262,13 @@
             <div class="quick-links-section">
                 <div class="quick-links-title">Helpful Links</div>
                 <div class="quick-links-grid">
-                    <a href="/about.html" class="quick-link-card">
+                    <a href="../../about/" class="quick-link-card">
                         <i class="fas fa-user-friends"></i> About Us
                     </a>
-                    <a href="/services.html" class="quick-link-card">
+                    <a href="../../acs_services/" class="quick-link-card">
                         <i class="fas fa-layer-group"></i> Services
                     </a>
-                    <a href="/#contact" class="quick-link-card">
+                    <a href="../../contact/" class="quick-link-card">
                         <i class="fas fa-envelope"></i> Contact Support
                     </a>
                 </div>
@@ -270,8 +277,8 @@
     </main>
 
     <!-- Scripts -->
-    
-    <script src="../assets/js/main.js?v=1.1"></script>
-</body>
-</html>
 
+    <script src="../../assets/js/main.js?v=1.1"></script>
+</body>
+
+</html>

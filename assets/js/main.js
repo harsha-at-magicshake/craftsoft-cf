@@ -694,12 +694,12 @@ function initDynamicContent() {
     ];
 
     const allServices = [
-        { name: 'Graphic Design', url: '/services/graphic-design/', icon: 'fas fa-palette', desc: 'Stunning visuals for your brand identity.' },
-        { name: 'UI/UX Design', url: '/services/ui-ux-design/', icon: 'fas fa-window-maximize', desc: 'User-centered design solution for digital products.' },
-        { name: 'Web Development', url: '/services/web-development/', icon: 'fas fa-globe', desc: 'Custom, responsive websites that drive results.' },
-        { name: 'Brand Identity', url: '/services/branding/', icon: 'fas fa-bullseye', desc: 'Strategic branding to set you apart.' },
-        { name: 'Cloud & DevOps', url: '/services/cloud-devops/', icon: 'fas fa-server', desc: 'Scalable infrastructure and automation.' },
-        { name: 'Career Services', url: '/services/career-services/', icon: 'fas fa-users', desc: 'Expert guidance for your professional journey.' }
+        { name: 'Graphic Design', url: '/acs_services/graphic-design/', icon: 'fas fa-palette', desc: 'Stunning visuals for your brand identity.' },
+        { name: 'UI/UX Design', url: '/acs_services/ui-ux-design/', icon: 'fas fa-window-maximize', desc: 'User-centered design solution for digital products.' },
+        { name: 'Web Development', url: '/acs_services/web-development/', icon: 'fas fa-globe', desc: 'Custom, responsive websites that drive results.' },
+        { name: 'Brand Identity', url: '/acs_services/branding/', icon: 'fas fa-bullseye', desc: 'Strategic branding to set you apart.' },
+        { name: 'Cloud & DevOps', url: '/acs_services/cloud-devops/', icon: 'fas fa-server', desc: 'Scalable infrastructure and automation.' },
+        { name: 'Career Services', url: '/acs_services/career-services/', icon: 'fas fa-users', desc: 'Expert guidance for your professional journey.' }
     ];
 
     const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
