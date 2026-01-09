@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Page not found - Abhi's Craft Soft">
+    <title>404 - Page Not Found | Abhi's Craft Soft</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/assets/css/master.css?v=2.0">
+    <link rel="stylesheet" href="/assets/css/utilities/skeleton.css?v=1.0">
+
+    <style>
+        /* 404 Page Specific Styles */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .error-page-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-4xl) var(--spacing-xl);
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.03) 0%, rgba(9, 132, 227, 0.05) 100%);
+            text-align: center;
+        }
+
+        .error-content {
+            width: 100%;
+            max-width: 640px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Illustration & Code */
+        .illustration-wrapper {
+            position: relative;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .illustration-icon {
+            font-size: 5rem;
+            color: var(--primary-300);
+            opacity: 0.5;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .error-code {
+            font-family: var(--font-primary);
+            font-size: clamp(6rem, 15vw, 10rem);
+            font-weight: 800;
+            line-height: 1;
+            margin-top: -20px;
+            margin-bottom: var(--spacing-md);
+
+            /* Gradient Text */
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Typography */
+        .error-title {
+            font-family: var(--font-primary);
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .error-description {
+            font-size: 1.125rem;
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-2xl);
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        /* Quick Links Section */
+        .quick-links-section {
+            padding-top: var(--spacing-2xl);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .quick-links-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-500);
+            margin-bottom: var(--spacing-lg);
+            font-weight: 600;
+        }
+
+        .quick-links-grid {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .quick-link-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: white;
+            border-radius: var(--radius-lg);
+            color: var(--gray-700);
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .quick-link-card:hover {
+            transform: translateY(-3px);
+            color: var(--primary-600);
+            box-shadow: var(--shadow-md);
+        }
+
+        .quick-link-card i {
+            color: var(--primary-400);
+            transition: color 0.3s;
+        }
+
+        .quick-link-card:hover i {
+            color: var(--primary-600);
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            .error-page-container {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .error-code {
+                margin-top: 0;
+                font-size: 5rem;
+                /* Explicit smaller size fallback */
+            }
+
+            .illustration-icon {
+                font-size: 4rem;
+            }
+        }
+    </style>
+    <!-- FOUC Protection -->
+    <style>
+        .no-fouc {
+            opacity: 0;
+        }
+
+        body {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+    <script>
+        document.documentElement.className += ' no-fouc';
+        document.addEventListener('DOMContentLoaded', function () {
+            document.documentElement.classList.remove('no-fouc');
+        });
+        window.addEventListener('load', function () {
+            document.documentElement.classList.remove('no-fouc');
+        });
+    </script>
+</head>
+
+<body>
+    <!-- 404 Content -->
+    <main class="error-page-container">
+        <div class="error-content">
+            <div class="illustration-wrapper">
+                <i class="fas fa-compass illustration-icon"></i>
+            </div>
+
+            <div class="error-code">404</div>
+
+            <h1 class="error-title">Page Not Found</h1>
+
+            <p class="error-description">
+                The page you are looking for might have been removed, had its name changed, or is temporarily
+                unavailable.
+            </p>
+
+            <div class="action-buttons">
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+                <a href="/courses/" class="btn btn-secondary">
+                    <i class="fas fa-search"></i> Browse Courses
+                </a>
+            </div>
+
+            <div class="quick-links-section">
+                <div class="quick-links-title">Helpful Links</div>
+                <div class="quick-links-grid">
+                    <a href="/about/" class="quick-link-card">
+                        <i class="fas fa-user-friends"></i> About Us
+                    </a>
+                    <a href="/acs_services/" class="quick-link-card">
+                        <i class="fas fa-layer-group"></i> Services
+                    </a>
+                    <a href="/contact/" class="quick-link-card">
+                        <i class="fas fa-envelope"></i> Contact Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="/assets/js/main.js?v=1.1"></script>
+</body>
+
+</html>

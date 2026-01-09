@@ -54,10 +54,8 @@
   status = 301
   conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in"]}
 
-# Global 404 catch-all (Main Site Only)
+# Global 404 catch-all
 [[redirects]]
   from = "/*"
-  to = "/404/website/index.html"
+  to = "/404.html"
   status = 404
-  force = true
-  conditions = {Host = ["craftsoft.co.in", "www.craftsoft.co.in"]}

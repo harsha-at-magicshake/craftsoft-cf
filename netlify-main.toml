@@ -21,19 +21,19 @@
 # Block admin and subdomains paths on main domain
 [[redirects]]
   from = "/admin"
-  to = "/404/website/"
+  to = "/404.html"
   status = 404
   force = true
 
 [[redirects]]
   from = "/admin/*"
-  to = "/404/website/"
+  to = "/404.html"
   status = 404
   force = true
 
 [[redirects]]
   from = "/subdomains/*"
-  to = "/404/website/"
+  to = "/404.html"
   status = 404
   force = true
 
