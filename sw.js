@@ -1,18 +1,17 @@
-const CACHE_NAME = 'craftsoft-offline-v2';
+const CACHE_NAME = 'craftsoft-offline-v3';
 const OFFLINE_URL = '/offline.html';
 
+// Only cache local assets
 const ASSETS_TO_CACHE = [
     '/offline.html',
-    '/favicon.svg',
-    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
+    '/favicon.svg'
 ];
 
 // Install event - cache critical assets
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[SW] Caching critical assets');
+            console.log('[SW] Caching offline page');
             return cache.addAll(ASSETS_TO_CACHE);
         })
     );
@@ -36,9 +35,17 @@ self.addEventListener('activate', (event) => {
     self.clients.claim();
 });
 
-// Fetch event - serve cached content when offline
+// Fetch event - ONLY handle navigation requests for offline fallback
 self.addEventListener('fetch', (event) => {
-    // Only handle navigation requests (HTML pages)
+    // Only handle same-origin navigation requests (HTML pages)
+    const url = new URL(event.request.url);
+
+    // Skip cross-origin requests entirely - let browser handle them
+    if (url.origin !== location.origin) {
+        return;
+    }
+
+    // Only handle navigation requests (page loads)
     if (event.request.mode === 'navigate') {
         event.respondWith(
             fetch(event.request)
@@ -47,24 +54,8 @@ self.addEventListener('fetch', (event) => {
                     return caches.match(OFFLINE_URL);
                 })
         );
-        return;
     }
 
-    // For other requests, try network first, then cache
-    event.respondWith(
-        fetch(event.request)
-            .then((response) => {
-                // Cache successful responses
-                if (response.status === 200) {
-                    const responseClone = response.clone();
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, responseClone);
-                    });
-                }
-                return response;
-            })
-            .catch(() => {
-                return caches.match(event.request);
-            })
-    );
+    // For all other same-origin requests, let browser handle normally
+    // (don't call event.respondWith)
 });
