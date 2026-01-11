@@ -86,17 +86,29 @@
 
     // Lookup Student from DB
     async function lookupStudent(val) {
-        // Search by student_id (text code), email or phone
-        // We wrap the value in double quotes to handle special characters like dashes in IDs
+        // Search by student_id, email or phone (Case-Insensitive)
+        // Wrappings in double quotes "val" is essential for PostgREST when dashes are present
         const { data, error } = await window.supabaseClient
             .from('students')
             .select('*')
-            .or(`student_id.eq."${val}",email.eq."${val}",phone_number.eq."${val}"`)
+            .or(`student_id.ilike."${val}",email.ilike."${val}",phone_number.ilike."${val}"`)
             .single();
 
         if (error) {
-            console.warn('Lookup error:', error.message);
-            return null;
+            // Backup check: some IDs might be exact matches without quotes in some environments
+            // But usually ilike."val" is the most stable
+            console.warn('Primary lookup failed, trying exact search...');
+            const { data: retryData, error: retryError } = await window.supabaseClient
+                .from('students')
+                .select('*')
+                .or(`student_id.eq."${val}",email.eq."${val}",phone_number.eq."${val}"`)
+                .single();
+
+            if (retryError) {
+                console.error('Lookup error:', retryError.message);
+                return null;
+            }
+            return retryData;
         }
         return data;
     }
