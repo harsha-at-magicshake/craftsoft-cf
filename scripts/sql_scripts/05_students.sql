@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS students (
     course_tutors JSONB DEFAULT '{}',
     course_discounts JSONB DEFAULT '{}',
     status TEXT DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'INACTIVE')),
+    deleted_at TIMESTAMPTZ DEFAULT NULL,  -- Soft delete timestamp (NULL = active)
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -90,3 +91,28 @@ DROP TRIGGER IF EXISTS students_updated_at ON students;
 CREATE TRIGGER students_updated_at
     BEFORE UPDATE ON students
     FOR EACH ROW EXECUTE FUNCTION update_students_updated_at();
+
+-- ================================================================================
+-- MIGRATION: Add deleted_at column to existing tables
+-- Run this if you already have a students table
+-- ================================================================================
+
+-- Add deleted_at column if it doesn't exist
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'students' AND column_name = 'deleted_at'
+    ) THEN
+        ALTER TABLE students ADD COLUMN deleted_at TIMESTAMPTZ DEFAULT NULL;
+        RAISE NOTICE 'Column deleted_at added to students table';
+    ELSE
+        RAISE NOTICE 'Column deleted_at already exists';
+    END IF;
+END $$;
+
+-- Create index for faster queries on active students
+CREATE INDEX IF NOT EXISTS idx_students_deleted_at ON students(deleted_at);
+
+-- Ensure all existing students have status = 'ACTIVE' and deleted_at = NULL
+UPDATE students SET status = 'ACTIVE', deleted_at = NULL WHERE status IS NULL;
