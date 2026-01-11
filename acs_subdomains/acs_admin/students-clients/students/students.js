@@ -847,53 +847,31 @@ async function confirmDelete() {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
     try {
-        console.log('Deleting student with id:', deleteTargetId);
+        console.log('Soft-deleting student with id:', deleteTargetId);
 
-        // Cascade delete child records manually
-        // 1. Delete associated receipts
-        const { error: receiptError } = await window.supabaseClient
-            .from('receipts')
-            .delete()
-            .eq('student_id', deleteTargetId);
-
-        if (receiptError) {
-            console.error('Receipt delete error:', receiptError);
-            // Continue anyway - receipts might not exist
-        }
-
-        // 2. Delete associated payments
-        const { error: paymentError } = await window.supabaseClient
-            .from('payments')
-            .delete()
-            .eq('student_id', deleteTargetId);
-
-        if (paymentError) {
-            console.error('Payment delete error:', paymentError);
-            // Continue anyway - payments might not exist
-        }
-
-        // 3. Delete student (this is the critical one)
+        // SOFT DELETE: Instead of deleting, mark as INACTIVE
+        // This preserves all payment history and prevents ID reuse issues
         const { error: studentError } = await window.supabaseClient
             .from('students')
-            .delete()
+            .update({
+                status: 'INACTIVE',
+                deleted_at: new Date().toISOString()
+            })
             .eq('id', deleteTargetId);
 
         if (studentError) {
-            console.error('Student delete error:', studentError);
+            console.error('Student deactivation error:', studentError);
             throw studentError;
         }
 
-        Toast.success('Deleted', 'Student and financial history removed');
+        Toast.success('Deactivated', 'Student moved to inactive. History preserved.');
         hideDeleteConfirm();
         await loadStudents();
     } catch (e) {
-        console.error('Delete failed:', e);
+        console.error('Deactivation failed:', e);
 
-        // Provide more helpful error message
-        let errorMsg = 'Failed to delete student';
-        if (e.message?.includes('violates foreign key constraint')) {
-            errorMsg = 'Cannot delete: Student has linked records. Contact admin.';
-        } else if (e.message?.includes('RLS') || e.code === 'PGRST301') {
+        let errorMsg = 'Failed to deactivate student';
+        if (e.message?.includes('RLS') || e.code === 'PGRST301') {
             errorMsg = 'Permission denied. Check your admin access.';
         } else if (e.message) {
             errorMsg = e.message;
@@ -902,7 +880,7 @@ async function confirmDelete() {
         Toast.error('Error', errorMsg);
     } finally {
         btn.disabled = false;
-        btn.innerHTML = 'Delete';
+        btn.innerHTML = 'Deactivate';
     }
 }
 
