@@ -186,7 +186,7 @@ function renderSettings() {
                 <i class="fa-solid fa-credit-card"></i> Payment Settings
             </button>
             <button class="settings-tab-btn ${currentSettingsTab === 'security' ? 'active' : ''}" data-tab="security">
-                <i class="fa-solid fa-shield-halved"></i> Security & Sessions
+                <i class="fa-solid fa-shield-halved"></i> Security
             </button>
             <button class="settings-tab-btn ${currentSettingsTab === 'profile' ? 'active' : ''}" data-tab="profile">
                 <i class="fa-solid fa-user-circle"></i> My Profile
@@ -241,12 +241,6 @@ function renderProfileTab() {
                     <div class="settings-field-row">
                         <span class="settings-field-label">Admin ID</span>
                         <span class="settings-field-value">${currentAdmin?.admin_id || '—'}</span>
-                    </div>
-                    <div class="password-row">
-                        <button class="profile-change-password-btn" id="change-password-btn">
-                            <i class="fa-solid fa-key"></i> Change Password
-                        </button>
-                        <div class="password-last-updated">${formatPasswordLastUpdated(currentAdmin?.password_updated_at)}</div>
                     </div>
                 </div>
             </div>
@@ -452,23 +446,25 @@ function renderBankTab() {
 
 function renderSecurityTab() {
     return `
-        <!-- Active Sessions Section -->
+        <!-- Change Password Section -->
         <div class="settings-section">
             <div class="settings-section-header">
                 <h3 class="settings-section-title">
-                    <i class="fa-solid fa-laptop-code"></i>
-                    Active Sessions
+                    <i class="fa-solid fa-key"></i>
+                    Change Password
                 </h3>
-                <button class="btn btn-sm btn-outline" id="logout-all-sessions-btn" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">
-                    Logout All
-                </button>
             </div>
             <div class="settings-section-body">
                 <p class="settings-section-description">
-                    Manage and sign out of your active sessions on other devices.
+                    Update your password regularly to keep your account secure.
                 </p>
-                <div class="sessions-list" id="sessions-list">
-                    ${renderSessionsList()}
+                <div class="password-row" style="margin-top: 0; align-items: flex-start;">
+                    <button class="profile-change-password-btn" id="change-password-btn" style="margin-top: 0.5rem;">
+                        <i class="fa-solid fa-key"></i> Change Password
+                    </button>
+                    <div class="password-last-updated" style="margin-top: 0.75rem;">
+                        ${formatPasswordLastUpdated(currentAdmin?.password_updated_at)}
+                    </div>
                 </div>
             </div>
         </div>
