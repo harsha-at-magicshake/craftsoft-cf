@@ -401,9 +401,9 @@
     }
 
     /* Mobile Nav Footer (Copyright) */
-    .mobile-nav-footer {
+    .mobile-nav-sheet .mobile-nav-footer {
         margin-top: auto;
-        padding: 1rem 1.25rem;
+        padding: 1.5rem 1.25rem 2.5rem;
         border-top: 1px solid var(--sidebar-border);
         background: rgba(40, 150, 205, 0.02);
         text-align: center;
