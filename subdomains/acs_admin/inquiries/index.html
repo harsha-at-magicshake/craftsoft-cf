@@ -243,34 +243,33 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Notes -->
-                    <div class="form-group">
-                        <label>Notes</label>
-                        <div class="input-with-icon textarea-icon">
-                            <i class="fa-solid fa-sticky-note input-icon"></i> <textarea id="inquiry-notes" rows="2"
-                                placeholder="Any additional notes..."></textarea>
+                        <!-- Notes -->
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <div class="input-with-icon textarea-icon">
+                                <i class="fa-solid fa-sticky-note input-icon"></i> <textarea id="inquiry-notes" rows="2"
+                                    placeholder="Any additional notes..."></textarea>
+                            </div>
                         </div>
                     </div>
+                    <div class="inline-form-footer">
+                        <button type="button" class="btn btn-outline" id="cancel-form-btn">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="save-inquiry-btn">
+                            <i class="fa-solid fa-check"></i> Save Inquiry
+                        </button>
+                    </div>
                 </div>
-                <div class="inline-form-footer">
-                    <button type="button" class="btn btn-outline" id="cancel-form-btn">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="save-inquiry-btn">
-                        <i class="fa-solid fa-check"></i> Save Inquiry
-                    </button>
-                </div>
-            </div>
 
-            <div class="section-divider"></div>
-            <div id="inquiries-content">
-                <div class="loading-spinner">
-                    <i class="fa-solid fa-spinner fa-spin"></i> Loading inquiries...
+                <div class="section-divider"></div>
+                <div id="inquiries-content">
+                    <div class="loading-spinner">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Loading inquiries...
+                    </div>
                 </div>
+                <div class="pagination-container" id="pagination-container"></div>
             </div>
-            <div class="pagination-container" id="pagination-container"></div>
-    </div>
-    </main>
+        </main>
     </div>
 
     <!-- Delete Confirmation -->
