@@ -6,11 +6,10 @@
 (function () {
     'use strict';
 
-    // EmailJS Config (You'll need to set these up in your EmailJS dashboard)
-    // For now, I'm setting the structure. You can fill in the IDs later.
-    const EMAILJS_PUBLIC_KEY = "pC3O2G6NfR-v84E0V"; // You might already have this
-    const EMAILJS_SERVICE_ID = "service_0lq0v5m";
-    const EMAILJS_TEMPLATE_ID = "template_otp_student"; // We need to create this template
+    // Environment Variables (Injected during build)
+    const EMAILJS_PUBLIC_KEY = "[[EMAILJS_PUBLIC_KEY]]";
+    const EMAILJS_SERVICE_ID = "[[EMAILJS_SERVICE_ID]]";
+    const EMAILJS_TEMPLATE_ID = "[[EMAILJS_TEMPLATE_ID]]";
 
     emailjs.init(EMAILJS_PUBLIC_KEY);
 

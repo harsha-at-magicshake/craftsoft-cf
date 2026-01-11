@@ -9,8 +9,8 @@ const path = require('path');
 
 const filesToProcess = [
     'assets/js/supabase-website-config.js',
-    'assets/admin/js/supabase-config.js'
-    // Add other files here if they use environment variables
+    'assets/admin/js/supabase-config.js',
+    'acs_subdomains/acs_students/login.js'
 ];
 
 console.log('--- Injecting Environment Variables ---');
@@ -26,7 +26,13 @@ filesToProcess.forEach(filePath => {
     let content = fs.readFileSync(absolutePath, 'utf8');
 
     // Replace placeholders with Netlify Env Variables
-    const keys = ['SUPABASE_URL', 'SUPABASE_ANON_KEY'];
+    const keys = [
+        'SUPABASE_URL',
+        'SUPABASE_ANON_KEY',
+        'EMAILJS_PUBLIC_KEY',
+        'EMAILJS_SERVICE_ID',
+        'EMAILJS_TEMPLATE_ID'
+    ];
 
     let modified = false;
     keys.forEach(key => {
