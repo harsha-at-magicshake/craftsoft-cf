@@ -24,6 +24,7 @@
 
 let allCourses = []; // Store fetched courses
 let currentPage = 1;
+let defaultGstRate = 18; // Default fallback
 const itemsPerPage = window.innerWidth <= 768 ? 5 : 10;
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -40,6 +41,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const admin = await window.Auth.getCurrentAdmin();
     await AdminSidebar.renderAccountPanel(session, admin);
+
+    // Fetch GST Rate
+    try {
+        const { data: gstSetting } = await window.supabaseClient
+            .from('settings')
+            .select('setting_value')
+            .eq('setting_key', 'default_gst_rate')
+            .single();
+        if (gstSetting) defaultGstRate = parseFloat(gstSetting.setting_value) || 18;
+    } catch (e) { console.warn('Using default GST 18%'); }
 
     await loadCourses();
 
@@ -91,7 +102,9 @@ function renderCoursesList(courses) {
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>ID</th><th>Code</th><th>Name</th><th>Fee</th><th>Actions</th>
+                        <th>ID</th><th>Code</th><th>Name</th>
+                        <th>Base Fee</th><th>GST (${defaultGstRate}%)</th><th>Total Fee</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -100,9 +113,12 @@ function renderCoursesList(courses) {
                             <td><span class="badge badge-primary">${c.course_id}</span></td>
                             <td><strong>${c.course_code}</strong></td>
                             <td>${c.course_name}</td>
-                            <td class="fee-cell"><i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(c.fee || 0)}</td>
+                            <td class="fee-cell text-muted"><i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(c.base_fee || c.fee || 0)}</td>
+                            <td class="fee-cell text-muted"><i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(c.gst_amount || 0)}</td>
+                            <td class="fee-cell highlight"><strong><i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(c.total_fee || c.fee || 0)}</strong></td>
                             <td>
-                                <button class="btn-icon btn-edit-fee" data-id="${c.id}" data-code="${c.course_code}" data-name="${c.course_name}" data-fee="${c.fee || 0}" title="Edit Fee">
+                                <button class="btn-icon btn-edit-fee" data-id="${c.id}" data-code="${c.course_code}" data-name="${c.course_name}" 
+                                    data-base="${c.base_fee || c.fee || 0}" data-gst="${c.gst_amount || 0}" data-total="${c.total_fee || c.fee || 0}" title="Edit Pricing">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
                             </td>
@@ -120,10 +136,15 @@ function renderCoursesList(courses) {
                     </div>
                     <div class="data-card-body">
                         <h4>${c.course_name}</h4>
-                        <p class="data-card-fee"><i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(c.fee || 0)}</p>
+                        <div class="card-pricing">
+                            <div class="pricing-item"><span>Base:</span> <span>₹${formatNumber(c.base_fee || c.fee || 0)}</span></div>
+                            <div class="pricing-item"><span>GST (${defaultGstRate}%):</span> <span>₹${formatNumber(c.gst_amount || 0)}</span></div>
+                            <div class="pricing-item total"><span>Total:</span> <span>₹${formatNumber(c.total_fee || c.fee || 0)}</span></div>
+                        </div>
                     </div>
                     <div class="data-card-actions">
-                        <button class="btn btn-sm btn-outline btn-edit-fee" data-id="${c.id}" data-code="${c.course_code}" data-name="${c.course_name}" data-fee="${c.fee || 0}"><i class="fa-solid fa-pen"></i> Edit Fee</button>
+                        <button class="btn btn-sm btn-outline btn-edit-fee" data-id="${c.id}" data-code="${c.course_code}" data-name="${c.course_name}" 
+                            data-base="${c.base_fee || c.fee || 0}" data-gst="${c.gst_amount || 0}" data-total="${c.total_fee || c.fee || 0}"><i class="fa-solid fa-pen"></i> Edit Pricing</button>
                     </div>
                 </div>
             `).join('')}
@@ -216,15 +237,45 @@ function bindFormEvents() {
     document.getElementById('save-fee-btn')?.addEventListener('click', saveFee);
 }
 
-function openFeeForm(courseId, code, name, fee) {
+function openFeeForm(id, code, name, baseFee, gstAmount, totalFee) {
     const container = document.getElementById('fee-form-container');
-    document.getElementById('edit-course-id').value = courseId;
+    document.getElementById('edit-course-id').value = id;
     document.getElementById('fee-course-name').value = `${code} - ${name}`;
-    document.getElementById('fee-input').value = fee;
+    document.getElementById('fee-modal-title').innerText = `Edit Pricing (GST ${defaultGstRate}%)`;
+
+    const baseInput = document.getElementById('base-fee-input');
+    const gstInput = document.getElementById('gst-amount-input');
+    const totalInput = document.getElementById('total-fee-input');
+
+    baseInput.value = baseFee || 0;
+    gstInput.value = gstAmount || 0;
+    totalInput.value = totalFee || 0;
+
+    // Attach real-time calculation listeners
+    baseInput.oninput = () => calculateFromBase();
+    totalInput.oninput = () => calculateFromTotal();
 
     container.style.display = 'block';
     container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    document.getElementById('fee-input').focus();
+    baseInput.focus();
+}
+
+function calculateFromBase() {
+    const base = parseFloat(document.getElementById('base-fee-input').value) || 0;
+    const gst = (base * defaultGstRate) / 100;
+    const total = base + gst;
+
+    document.getElementById('gst-amount-input').value = gst.toFixed(2);
+    document.getElementById('total-fee-input').value = total.toFixed(2);
+}
+
+function calculateFromTotal() {
+    const total = parseFloat(document.getElementById('total-fee-input').value) || 0;
+    const base = total / (1 + defaultGstRate / 100);
+    const gst = total - base;
+
+    document.getElementById('base-fee-input').value = base.toFixed(2);
+    document.getElementById('gst-amount-input').value = gst.toFixed(2);
 }
 
 function closeFeeForm() {
@@ -234,16 +285,25 @@ function closeFeeForm() {
 async function saveFee() {
     const { Toast } = window.AdminUtils;
     const saveBtn = document.getElementById('save-fee-btn');
-    const courseId = document.getElementById('edit-course-id').value;
-    const fee = parseFloat(document.getElementById('fee-input').value) || 0;
+    const id = document.getElementById('edit-course-id').value;
+
+    const baseFee = parseFloat(document.getElementById('base-fee-input').value) || 0;
+    const gstAmount = parseFloat(document.getElementById('gst-amount-input').value) || 0;
+    const totalFee = parseFloat(document.getElementById('total-fee-input').value) || 0;
 
     saveBtn.disabled = true;
     saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
 
     try {
-        const { error } = await window.supabaseClient.from('courses').update({ fee }).eq('id', courseId);
+        const { error } = await window.supabaseClient.from('courses').update({
+            base_fee: baseFee,
+            gst_amount: gstAmount,
+            total_fee: totalFee,
+            fee: totalFee // For backward compatibility
+        }).eq('id', id);
+
         if (error) throw error;
-        Toast.success('Saved', 'Fee updated successfully');
+        Toast.success('Saved', 'Pricing updated successfully');
 
         // Log activity
         const courseName = document.getElementById('fee-course-name').value;
@@ -257,7 +317,7 @@ async function saveFee() {
         Toast.error('Error', e.message);
     } finally {
         saveBtn.disabled = false;
-        saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Update Fee';
+        saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Update Pricing';
     }
 }
 

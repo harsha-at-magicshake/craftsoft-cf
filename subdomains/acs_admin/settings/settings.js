@@ -378,12 +378,18 @@ function renderBankTab() {
             </div>
             <div class="settings-section-body">
                 <div class="settings-display">
+                    ${renderFieldRow('GST Rate (%)', settingsData.default_gst_rate ? `${settingsData.default_gst_rate}%` : '18%')}
                     ${renderFieldRow('Account Number', maskValue(settingsData.bank_account_number, 4))}
                     ${renderFieldRow('IFSC Code', settingsData.bank_ifsc_code)}
                     ${renderFieldRow('Branch', settingsData.bank_branch_name)}
                     ${renderFieldRow('UPI ID', maskValue(settingsData.upi_id, 4, '@'))}
                 </div>
                 <div class="settings-edit-form">
+                    <div class="settings-form-group">
+                        <label>GST Rate (%)</label>
+                        <input type="number" id="edit-default_gst_rate" value="${settingsData.default_gst_rate || '18'}" placeholder="e.g. 18" step="0.01">
+                        <span class="input-hint">Standard GST percentage for all fees</span>
+                    </div>
                     <div class="settings-form-group">
                         <label>Account Number</label>
                         <input type="text" id="edit-bank_account_number" value="${settingsData.bank_account_number || ''}" placeholder="Enter account number">
@@ -700,7 +706,7 @@ async function saveSection(section) {
         } else if (section === 'contact') {
             keysToSave = ['primary_phone', 'secondary_phone', 'contact_email'];
         } else if (section === 'bank') {
-            keysToSave = ['bank_account_number', 'bank_ifsc_code', 'bank_branch_name', 'upi_id'];
+            keysToSave = ['default_gst_rate', 'bank_account_number', 'bank_ifsc_code', 'bank_branch_name', 'upi_id'];
             // Get branch name from lookup
             const branchText = document.getElementById('ifsc-branch-text')?.textContent || '';
             if (branchText && !branchText.includes('Invalid')) {

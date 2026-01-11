@@ -92,6 +92,61 @@
                     </button>
                 </div>
 
+                <!-- Service Pricing Edit Form -->
+                <div class="inline-form-container" id="fee-form-container" style="display: none;">
+                    <div class="inline-form-header">
+                        <h3 id="fee-modal-title">Edit Service Pricing</h3>
+                        <button type="button" class="btn-icon" id="close-fee-form-btn">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="inline-form-body">
+                        <input type="hidden" id="edit-service-db-id">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Service</label>
+                                <input type="text" id="fee-service-name" disabled class="input-locked">
+                            </div>
+                        </div>
+                        <div class="form-row pricing-row"
+                            style="margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                            <div class="form-group">
+                                <label>Base Fee (Excl. GST)</label>
+                                <div class="input-with-icon">
+                                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                                    <input type="number" id="base-fee-input" value="0" min="0" step="1">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>GST Amount</label>
+                                <div class="input-with-icon">
+                                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                                    <input type="number" id="gst-amount-input" value="0" disabled class="input-locked">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Total Fee (Incl. GST)</label>
+                                <div class="input-with-icon">
+                                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                                    <input type="number" id="total-fee-input" value="0" min="0" step="1">
+                                </div>
+                            </div>
+                        </div>
+                        <p class="form-hint"
+                            style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-circle-info" style="color: var(--primary-color);"></i>
+                            <span>You can enter either the Base Fee or the Total Fee; the other will calculate
+                                automatically.</span>
+                        </p>
+                    </div>
+                    <div class="inline-form-footer">
+                        <button type="button" class="btn btn-outline" id="cancel-fee-btn">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="save-fee-btn">
+                            <i class="fa-solid fa-check"></i> Update Pricing
+                        </button>
+                    </div>
+                </div>
+
                 <div class="section-divider"></div>
                 <div id="services-content">
                     <!-- Desktop Table -->
@@ -124,7 +179,3 @@
 </body>
 
 </html>
-
-
-
-
