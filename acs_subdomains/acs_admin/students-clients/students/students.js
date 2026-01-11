@@ -847,23 +847,59 @@ async function confirmDelete() {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
     try {
+        console.log('Deleting student with id:', deleteTargetId);
+
         // Cascade delete child records manually
         // 1. Delete associated receipts
-        await window.supabaseClient.from('receipts').delete().eq('student_id', deleteTargetId);
+        const { error: receiptError } = await window.supabaseClient
+            .from('receipts')
+            .delete()
+            .eq('student_id', deleteTargetId);
+
+        if (receiptError) {
+            console.error('Receipt delete error:', receiptError);
+            // Continue anyway - receipts might not exist
+        }
 
         // 2. Delete associated payments
-        await window.supabaseClient.from('payments').delete().eq('student_id', deleteTargetId);
+        const { error: paymentError } = await window.supabaseClient
+            .from('payments')
+            .delete()
+            .eq('student_id', deleteTargetId);
 
-        // 3. Delete student
-        const { error } = await window.supabaseClient.from('students').delete().eq('id', deleteTargetId);
-        if (error) throw error;
+        if (paymentError) {
+            console.error('Payment delete error:', paymentError);
+            // Continue anyway - payments might not exist
+        }
+
+        // 3. Delete student (this is the critical one)
+        const { error: studentError } = await window.supabaseClient
+            .from('students')
+            .delete()
+            .eq('id', deleteTargetId);
+
+        if (studentError) {
+            console.error('Student delete error:', studentError);
+            throw studentError;
+        }
 
         Toast.success('Deleted', 'Student and financial history removed');
         hideDeleteConfirm();
         await loadStudents();
     } catch (e) {
-        console.error(e);
-        Toast.error('Error', 'Failed to delete student history');
+        console.error('Delete failed:', e);
+
+        // Provide more helpful error message
+        let errorMsg = 'Failed to delete student';
+        if (e.message?.includes('violates foreign key constraint')) {
+            errorMsg = 'Cannot delete: Student has linked records. Contact admin.';
+        } else if (e.message?.includes('RLS') || e.code === 'PGRST301') {
+            errorMsg = 'Permission denied. Check your admin access.';
+        } else if (e.message) {
+            errorMsg = e.message;
+        }
+
+        Toast.error('Error', errorMsg);
     } finally {
         btn.disabled = false;
         btn.innerHTML = 'Delete';
