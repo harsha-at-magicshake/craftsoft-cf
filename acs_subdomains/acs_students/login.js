@@ -115,12 +115,16 @@
 
     // Send Email via EmailJS
     async function sendOtpEmail(email, name, otp) {
-        return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        console.log(`Sending OTP to: ${email}`); // Debugging
+
+        const templateParams = {
             to_email: email,
-            to_name: name,
+            to_name: name || 'Student',
             otp_code: otp,
             reply_to: "team.craftsoft@gmail.com"
-        });
+        };
+
+        return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
     }
 
     // UI Navigation
