@@ -856,8 +856,7 @@
 
 .card-actions {
     display: flex;
-    flex-wrap: wrap;
-    /* Allow buttons to wrap if they don't fit */
+    justify-content: space-between;
     gap: 0.5rem;
     padding-top: 1.25rem;
     border-top: 1px solid var(--gray-100, #f1f5f9);
@@ -984,15 +983,26 @@
         max-height: 200px;
     }
 
-    /* Stack card actions on very small screens */
+    /* Single row actions with optimized spacing for mobile */
     .card-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        flex-direction: row;
+        gap: 0.3rem;
+        /* Tighter gap */
     }
 
     .card-action-btn {
-        padding: 0.5rem;
-        font-size: 0.8rem;
+        padding: 0.5rem 0.15rem;
+        font-size: 0.72rem;
+        /* Slightly smaller for better fit */
+        flex: 1;
+        min-width: 0;
+        gap: 0.2rem;
+        white-space: nowrap;
+    }
+
+    .card-action-btn i {
+        font-size: 0.85rem;
     }
 }
 
