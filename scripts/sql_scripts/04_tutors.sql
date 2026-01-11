@@ -53,7 +53,8 @@ BEGIN
     NEW.updated_at = NOW();
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql
+SET search_path = public;
 
 DROP TRIGGER IF EXISTS tutors_updated_at ON tutors;
 CREATE TRIGGER tutors_updated_at

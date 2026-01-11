@@ -112,8 +112,8 @@
                         <div class="search-box" style="max-width: 200px;">
                             <i class="fa-solid fa-filter"></i>
                             <select id="status-filter" class="form-select" style="padding-left: 2.5rem; height: 42px;">
-                                <option value="ACTIVE" selected>Active</option>
-                                <option value="INACTIVE">Inactive</option>
+                                <option value="ACTIVE" selected>Active Students</option>
+                                <option value="INACTIVE">Inactive Students</option>
                                 <option value="ALL">All Students</option>
                             </select>
                         </div>
@@ -290,40 +290,80 @@
     </div>
 
     <!-- Deactivate Confirmation -->
-    <div class="delete-confirm-overlay" id="delete-overlay" style="display: none;">
-        <div class="delete-confirm-box animate-scale">
-            <div class="warning-icon"><i class="fa-solid fa-user-clock"></i></div>
-            <p>Deactivate student <strong id="delete-name"></strong>?</p>
-            <p style="font-size: 13px; color: var(--admin-text-secondary); margin-top: 8px;">Their history and payments
-                will be preserved.</p>
-            <div class="delete-actions">
+    <div class="modal-overlay" id="delete-overlay">
+        <div class="modal-container modal-sm animate-scale">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-slash"></i> Deactivate Student</h3>
+                <button class="modal-close" id="close-delete-modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="delete-warning-icon warning">
+                    <i class="fa-solid fa-user-clock"></i>
+                </div>
+                <p>Deactivate student <strong id="delete-name"></strong>?</p>
+                <p class="text-muted" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                    Their history and payments will be preserved.
+                </p>
+            </div>
+            <div class="modal-footer">
                 <button class="btn btn-outline" id="cancel-delete-btn">Cancel</button>
                 <button class="btn btn-warning" id="confirm-delete-btn">Deactivate</button>
             </div>
         </div>
     </div>
 
-    <!-- Permanent Delete Confirmation (High Security) -->
-    <div class="delete-confirm-overlay" id="perm-delete-overlay" style="display: none; z-index: 1100;">
-        <div class="delete-confirm-box animate-scale" style="max-width: 400px;">
-            <div class="warning-icon" style="background: rgba(239, 68, 68, 0.1); color: #EF4444;">
-                <i class="fa-solid fa-triangle-exclamation"></i>
+    <!-- Permanent Delete Confirmation -->
+    <div class="modal-overlay" id="perm-delete-overlay">
+        <div class="modal-container modal-sm animate-scale">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-triangle-exclamation"></i> Permanent Delete</h3>
+                <button class="modal-close" id="close-perm-delete-modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-            <h3 style="margin-bottom: 10px;">Permanent Delete</h3>
-            <p>This will permanently remove <strong id="perm-delete-name"></strong> and all associated history.</p>
-            <p style="font-size: 13px; color: #EF4444; margin-top: 5px;">This action <strong>cannot be undone</strong>.
-            </p>
-
-            <div class="form-group" style="margin-top: 20px; text-align: left;">
-                <label style="font-size: 0.8rem; font-weight: 600; color: var(--admin-text-secondary);">Type "CONFIRM"
-                    to proceed:</label>
-                <input type="text" id="perm-delete-confirm-input" class="form-control" placeholder="Type CONFIRM"
-                    style="text-align: center; margin-top: 8px; border-color: rgba(239, 68, 68, 0.3);">
+            <div class="modal-body text-center">
+                <div class="delete-warning-icon danger">
+                    <i class="fa-solid fa-skull-crossbones"></i>
+                </div>
+                <p>Delete <strong id="perm-delete-name"></strong> permanently?</p>
+                <p class="text-danger" style="font-size: 0.85rem; font-weight: 600; margin-top: 0.5rem;">
+                    This CANNOT be undone. All records will be lost!
+                </p>
+                <div class="form-group" style="margin-top: 1.5rem; text-align: left;">
+                    <label>Type <span style="color: #ef4444; font-weight: 700;">CONFIRM</span> to proceed</label>
+                    <input type="text" id="perm-delete-confirm-input" placeholder="Type CONFIRM"
+                        style="text-align: center; letter-spacing: 2px;">
+                </div>
             </div>
-
-            <div class="delete-actions" style="margin-top: 25px;">
+            <div class="modal-footer">
                 <button class="btn btn-outline" id="cancel-perm-delete-btn">Cancel</button>
                 <button class="btn btn-danger" id="confirm-perm-delete-btn" disabled>Delete Forever</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restore Student Modal -->
+    <div class="modal-overlay" id="restore-modal">
+        <div class="modal-container modal-sm animate-scale">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-rotate-left"></i> Restore Student</h3>
+                <button class="modal-close" id="close-restore-modal">
+                    <i class="fa-solid fa-xmark"></i> </button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="delete-warning-icon success">
+                    <i class="fa-solid fa-user-check"></i>
+                </div>
+                <p>Restore <strong id="restore-student-name"></strong> to active list?</p>
+                <p class="text-muted" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                    They will appear in the Active Students list again.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-restore-btn">Cancel</button>
+                <button class="btn btn-success" id="confirm-restore-btn">Restore Student</button>
             </div>
         </div>
     </div>

@@ -19,8 +19,15 @@ CREATE TABLE IF NOT EXISTS payments (
 ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Allow all for authenticated users" ON payments;
-CREATE POLICY "Allow all for authenticated users" ON payments
-    FOR ALL USING ((select auth.role()) = 'authenticated');
+DROP POLICY IF EXISTS "Active admins can manage payments" ON payments;
+CREATE POLICY "Active admins can manage payments" ON payments
+    FOR ALL TO authenticated
+    USING (
+        EXISTS (SELECT 1 FROM admins WHERE id = auth.uid() AND status = 'ACTIVE')
+    )
+    WITH CHECK (
+        EXISTS (SELECT 1 FROM admins WHERE id = auth.uid() AND status = 'ACTIVE')
+    );
 
 -- Public Payment Page Policy (for balance lookup)
 DROP POLICY IF EXISTS "Public can read payments for balance" ON payments;

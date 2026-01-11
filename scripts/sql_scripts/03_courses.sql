@@ -59,7 +59,8 @@ BEGIN
     NEW.updated_at = NOW();
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql
+SET search_path = public;
 
 DROP TRIGGER IF EXISTS courses_updated_at ON courses;
 CREATE TRIGGER courses_updated_at

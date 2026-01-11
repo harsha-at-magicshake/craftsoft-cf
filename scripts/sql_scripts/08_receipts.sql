@@ -22,8 +22,15 @@ ALTER TABLE receipts ENABLE ROW LEVEL SECURITY;
 
 -- Admin full access
 DROP POLICY IF EXISTS "Allow all for authenticated users" ON receipts;
-CREATE POLICY "Allow all for authenticated users" ON receipts
-    FOR ALL USING ((select auth.role()) = 'authenticated');
+DROP POLICY IF EXISTS "Active admins can manage receipts" ON receipts;
+CREATE POLICY "Active admins can manage receipts" ON receipts
+    FOR ALL TO authenticated
+    USING (
+        EXISTS (SELECT 1 FROM admins WHERE id = auth.uid() AND status = 'ACTIVE')
+    )
+    WITH CHECK (
+        EXISTS (SELECT 1 FROM admins WHERE id = auth.uid() AND status = 'ACTIVE')
+    );
 
 -- Verification Portal (anon)
 DROP POLICY IF EXISTS "Public can lookup receipts" ON receipts;
@@ -68,8 +75,7 @@ BEGIN
         v_initials := v_initials || SUBSTRING(v_word FROM 1 FOR 1);
     END LOOP;
     
-    v_course_code := UPPER(SUBSTRING(REGEXP_REPLACE(COALESCE(p_course_name, 'SERV'), '[^a-zA-Z0-9]', '', 'g') FROM 1 FOR 3));
-    
     RETURN LPAD(v_seq::TEXT, 3, '0') || '-ACS-' || v_initials || '-' || v_course_code;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql
+SET search_path = public;

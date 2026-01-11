@@ -41,4 +41,5 @@ RETURNS void AS $$
 BEGIN
     DELETE FROM user_sessions WHERE last_active < NOW() - INTERVAL '30 days';
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = public;
