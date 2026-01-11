@@ -4,31 +4,31 @@ export default async (request, context) => {
     const pathname = url.pathname;
 
     // Bypasses for direct file access (Shared across all domains)
-    if (pathname.startsWith("/assets/") || pathname.startsWith("/shared/") || pathname.startsWith("/subdomains/")) {
+    if (pathname.startsWith("/assets/") || pathname.startsWith("/shared/") || pathname.startsWith("/acs_subdomains/")) {
         return; // Fall through to static files at root
     }
 
     // 1. Signup Subdomain
     if (hostname.includes("signup.craftsoft")) {
         if (pathname === "/") {
-            return context.rewrite("/subdomains/acs_signup/index.html");
+            return context.rewrite("/acs_subdomains/acs_signup/index.html");
         }
 
         if (!pathname.includes(".") && !pathname.endsWith("/")) {
             return Response.redirect(`${request.url}/`, 301);
         }
 
-        return context.rewrite(`/subdomains/acs_signup${pathname}`);
+        return context.rewrite(`/acs_subdomains/acs_signup${pathname}`);
     }
 
     // 2. Admin Subdomain
     if (hostname.includes("admin.craftsoft")) {
         if (pathname === "/") {
-            return context.rewrite("/subdomains/acs_admin/index.html");
+            return context.rewrite("/acs_subdomains/acs_admin/index.html");
         }
 
         if (pathname === "/login") {
-            return context.rewrite("/subdomains/acs_admin/login.html");
+            return context.rewrite("/acs_subdomains/acs_admin/login.html");
         }
 
         // Precise Mapping Logic
@@ -56,7 +56,7 @@ export default async (request, context) => {
         }
 
         // Final Rewrite
-        let finalPath = `/subdomains/acs_admin${targetPath}`;
+        let finalPath = `/acs_subdomains/acs_admin${targetPath}`;
         if (finalPath.endsWith("/")) {
             finalPath += "index.html";
         }
