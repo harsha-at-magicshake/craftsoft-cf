@@ -3,6 +3,7 @@ let allCoursesForStudents = [];
 let allTutorsForStudents = [];
 let deleteTargetId = null;
 let courseDiscounts = {}; // Store per-course discounts { courseCode: discount }
+let currentStatusFilter = 'ACTIVE'; // Status filter: ACTIVE, INACTIVE, ALL
 
 // Pagination State
 let currentPage = 1;
@@ -38,6 +39,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.getElementById('add-student-btn')?.addEventListener('click', () => openForm());
     document.getElementById('student-search')?.addEventListener('input', (e) => filterStudents(e.target.value));
+
+    // Status filter
+    document.getElementById('status-filter')?.addEventListener('change', async (e) => {
+        currentStatusFilter = e.target.value;
+        currentPage = 1;
+        await loadStudents();
+    });
 
     // Check for prefill from inquiry conversion
     checkPrefill();
@@ -154,11 +162,20 @@ async function loadStudents() {
     }
 
     try {
-        const { data: students, error } = await window.supabaseClient
+        let query = window.supabaseClient
             .from('students')
             .select('*')
-            .eq('status', 'ACTIVE')
             .order('student_id', { ascending: true });
+
+        // Apply status filter
+        if (currentStatusFilter === 'ACTIVE') {
+            query = query.eq('status', 'ACTIVE');
+        } else if (currentStatusFilter === 'INACTIVE') {
+            query = query.eq('status', 'INACTIVE');
+        }
+        // If 'ALL', no filter applied
+
+        const { data: students, error } = await query;
 
         if (error) throw error;
         allStudents = students || [];
@@ -247,7 +264,11 @@ function renderStudentsList(students) {
                                 <div class="cell-actions" style="justify-content: flex-end;">
                                     <button class="action-btn edit btn-edit-student" data-id="${s.id}" title="Edit"><i class="fa-solid fa-pen"></i></button>
                                     <a href="https://wa.me/91${s.phone.replace(/\D/g, '')}" target="_blank" class="action-btn whatsapp" title="Chat"><i class="fa-brands fa-whatsapp"></i></a>
-                                    <button class="action-btn delete btn-delete-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                                    ${s.status === 'INACTIVE'
+            ? `<button class="action-btn success btn-reactivate-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Reactivate"><i class="fa-solid fa-rotate-left"></i></button>
+                                           <button class="action-btn delete btn-perm-delete-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Permanently Delete"><i class="fa-solid fa-trash"></i></button>`
+            : `<button class="action-btn delete btn-delete-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Deactivate"><i class="fa-solid fa-user-slash"></i></button>`
+        }
                                 </div>
                             </td>
                         </tr>
@@ -275,21 +296,21 @@ function renderStudentsList(students) {
 
                         <div class="card-breakdown">
                             ${(s.courses || []).map(code => {
-        const course = allCoursesForStudents.find(c => c.course_code === code);
-        const netFee = (course?.fee || 0) - (s.course_discounts?.[code] || 0);
-        return `
+            const course = allCoursesForStudents.find(c => c.course_code === code);
+            const netFee = (course?.fee || 0) - (s.course_discounts?.[code] || 0);
+            return `
                                     <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.25rem;">
                                         <span style="color: var(--admin-text-muted);">${code}</span>
                                         <span style="font-weight: 500;">₹${formatNumber(netFee)}</span>
                                     </div>
                                 `;
-    }).join('')}
+        }).join('')}
                             <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-weight: 700; color: var(--primary-color); font-size: 1rem;">
                                 <span>Total</span>
                                 <span>₹${formatNumber((s.courses || []).reduce((sum, code) => {
-        const course = allCoursesForStudents.find(c => c.course_code === code);
-        return sum + ((course?.fee || 0) - (s.course_discounts?.[code] || 0));
-    }, 0))}</span>
+            const course = allCoursesForStudents.find(c => c.course_code === code);
+            return sum + ((course?.fee || 0) - (s.course_discounts?.[code] || 0));
+        }, 0))}</span>
                             </div>
                         </div>
                     </div>
@@ -324,6 +345,12 @@ function renderStudentsList(students) {
         btn.addEventListener('click', () => showDeleteConfirm(btn.dataset.id, btn.dataset.name)));
     document.querySelectorAll('.btn-view-profile').forEach(btn =>
         btn.addEventListener('click', () => openStudentProfile(btn.dataset.id)));
+
+    // Reactivate and Permanent Delete buttons (for inactive students)
+    document.querySelectorAll('.btn-reactivate-student').forEach(btn =>
+        btn.addEventListener('click', () => reactivateStudent(btn.dataset.id, btn.dataset.name)));
+    document.querySelectorAll('.btn-perm-delete-student').forEach(btn =>
+        btn.addEventListener('click', () => permanentlyDeleteStudent(btn.dataset.id, btn.dataset.name)));
 
     bindBulkActions();
 }
@@ -881,6 +908,73 @@ async function confirmDelete() {
     } finally {
         btn.disabled = false;
         btn.innerHTML = 'Deactivate';
+    }
+}
+
+// Reactivate an inactive student
+async function reactivateStudent(id, name) {
+    const { Toast } = window.AdminUtils;
+
+    if (!confirm(`Reactivate ${name}? They will appear in the active students list again.`)) {
+        return;
+    }
+
+    try {
+        const { error } = await window.supabaseClient
+            .from('students')
+            .update({
+                status: 'ACTIVE',
+                deleted_at: null
+            })
+            .eq('id', id);
+
+        if (error) throw error;
+
+        Toast.success('Reactivated', `${name} is now active again.`);
+        await loadStudents();
+    } catch (e) {
+        console.error('Reactivation failed:', e);
+        Toast.error('Error', 'Failed to reactivate student');
+    }
+}
+
+// Permanently delete a student (DANGER - irreversible!)
+async function permanentlyDeleteStudent(id, name) {
+    const { Toast } = window.AdminUtils;
+
+    // Extra confirmation with typing
+    const confirmation = prompt(
+        `⚠️ PERMANENT DELETE ⚠️\n\n` +
+        `This will PERMANENTLY delete ${name} and ALL their:\n` +
+        `• Payment records\n` +
+        `• Receipts\n` +
+        `• History\n\n` +
+        `This CANNOT be undone!\n\n` +
+        `Type "CONFIRM" to proceed:`
+    );
+
+    if (confirmation !== 'CONFIRM') {
+        Toast.info('Cancelled', 'Permanent delete cancelled.');
+        return;
+    }
+
+    try {
+        // Delete associated receipts
+        await window.supabaseClient.from('receipts').delete().eq('student_id', id);
+
+        // Delete associated payments
+        await window.supabaseClient.from('payments').delete().eq('student_id', id);
+
+        // Delete the student
+        const { error } = await window.supabaseClient.from('students').delete().eq('id', id);
+
+        if (error) throw error;
+
+        Toast.success('Deleted', `${name} has been permanently removed.`);
+        await loadStudents();
+    } catch (e) {
+        console.error('Permanent delete failed:', e);
+        Toast.error('Error', 'Failed to permanently delete student');
     }
 }
 

@@ -103,15 +103,24 @@
                     </div>
                 </div>
 
+
                 <div class="section-actions">
                     <button class="btn btn-primary" id="add-student-btn">
                         <i class="fa-solid fa-plus"></i> Add Student
                     </button>
+                    <div class="filter-group">
+                        <select id="status-filter" class="form-select">
+                            <option value="ACTIVE" selected>Active Students</option>
+                            <option value="INACTIVE">Inactive Students</option>
+                            <option value="ALL">All Students</option>
+                        </select>
+                    </div>
                     <div class="search-box">
                         <i class="fa-solid fa-search"></i> <input type="text" id="student-search"
                             placeholder="Search students...">
                     </div>
                 </div>
+
 
                 <!-- Inline Form (hidden by default) -->
                 <div class="inline-form-container" id="student-form-container" style="display: none;">
