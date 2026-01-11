@@ -974,3 +974,40 @@ body.modal-open {
         font-size: 0.75rem;
     }
 }
+
+/* ============================================
+   FOOTER STRIP (Matches Admin Portal)
+   ============================================ */
+.student-footer-strip {
+    margin-top: 3rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border);
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.footer-left {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.footer-right {
+    display: flex;
+    align-items: center;
+}
+
+.version-badge {
+    font-size: 0.65rem;
+    background: var(--primary-100);
+    color: var(--primary-600);
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
