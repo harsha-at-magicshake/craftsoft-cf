@@ -437,7 +437,8 @@ function setupRealtimeSubscriptions() {
         .on('postgres_changes', { event: '*', schema: 'public', table: 'students' }, (payload) => {
             if (payload.eventType === 'INSERT') {
                 const data = payload.new;
-                addNotification('student', 'New Student', `${data.name || 'Someone'} registered`, root + 'students/');
+                const studentName = [data.first_name, data.last_name].filter(Boolean).join(' ') || 'Someone';
+                addNotification('student', 'New Student', `${studentName} registered`, root + 'students-clients/students/');
             }
             triggerTableRefresh('students');
         })
@@ -455,10 +456,27 @@ function setupRealtimeSubscriptions() {
         })
         .subscribe();
 
+    // Subscribe to clients
+    supabaseClient
+        .channel('clients-changes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'clients' }, (payload) => {
+            if (payload.eventType === 'INSERT') {
+                const data = payload.new;
+                const clientName = [data.first_name, data.last_name].filter(Boolean).join(' ') || 'Someone';
+                addNotification('service', 'New Client', `${clientName} added`, root + 'students-clients/clients/');
+            }
+            triggerTableRefresh('clients');
+        })
+        .subscribe();
+
     // Subscribe to courses
     supabaseClient
         .channel('courses-changes')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'courses' }, (payload) => {
+            if (payload.eventType === 'INSERT') {
+                const data = payload.new;
+                addNotification('course', 'New Course', `${data.course_name || 'Course'} created`, root + 'courses-services/courses/');
+            }
             triggerTableRefresh('courses');
         })
         .subscribe();
@@ -467,6 +485,10 @@ function setupRealtimeSubscriptions() {
     supabaseClient
         .channel('services-changes')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'services' }, (payload) => {
+            if (payload.eventType === 'INSERT') {
+                const data = payload.new;
+                addNotification('service', 'New Service', `${data.name || 'Service'} added`, root + 'courses-services/services/');
+            }
             triggerTableRefresh('services');
         })
         .subscribe();
@@ -503,6 +525,8 @@ function triggerTableRefresh(table) {
             loadPayments();
         } else if (typeof loadReceipts === 'function' && table === 'receipts') {
             loadReceipts();
+        } else if (typeof loadClients === 'function' && table === 'clients') {
+            loadClients();
         }
     }
 }
