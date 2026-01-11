@@ -10,7 +10,7 @@ const websiteServices = [
 let allServices = [];
 let currentPage = 1;
 let defaultGstRate = 18;
-const itemsPerPage = window.innerWidth <= 768 ? 5 : 10;
+const itemsPerPage = window.innerWidth <= 1100 ? 5 : 10;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const session = await window.supabaseConfig.getSession();

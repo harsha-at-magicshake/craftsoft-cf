@@ -173,7 +173,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
     .stats-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
@@ -237,4 +237,8 @@
     background: rgba(40, 150, 205, 0.1);
     border-color: var(--primary-color);
     color: var(--primary-color);
+}
+
+.search-box {
+    max-width: 450px;
 }

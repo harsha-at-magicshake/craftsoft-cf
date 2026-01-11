@@ -905,7 +905,7 @@
 }
 
 /* Responsive Switch */
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
     .table-container {
         display: none;
     }
@@ -1442,10 +1442,6 @@
     text-decoration: underline;
     color: #1a7eb0;
 }
-
-
-
-   
 
 /* Profile Payment Pagination */
 .profile-pagination {

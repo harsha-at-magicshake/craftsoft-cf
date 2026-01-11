@@ -3,7 +3,7 @@ let receipts = [];
 let filteredReceipts = [];
 let currentReceipt = null;
 let currentPage = 1;
-const itemsPerPage = window.innerWidth <= 768 ? 5 : 10;
+const itemsPerPage = window.innerWidth <= 1100 ? 5 : 10;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const session = await window.supabaseConfig.getSession();

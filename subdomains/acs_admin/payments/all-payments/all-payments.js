@@ -2,7 +2,7 @@
 let payments = [];
 let filteredPayments = [];
 let currentPage = 1;
-const itemsPerPage = window.innerWidth <= 768 ? 5 : 10;
+const itemsPerPage = window.innerWidth <= 1100 ? 5 : 10;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const session = await window.supabaseConfig.getSession();
@@ -132,7 +132,7 @@ function renderPayments() {
     tableContainer.style.display = 'block';
 
     // Check mobile state to toggle visibility correctly
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 1100) {
         tableContainer.style.display = 'none';
         cards.style.display = 'flex';
     } else {

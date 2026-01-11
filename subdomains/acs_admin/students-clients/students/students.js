@@ -6,7 +6,7 @@ let courseDiscounts = {}; // Store per-course discounts { courseCode: discount }
 
 // Pagination State
 let currentPage = 1;
-const itemsPerPage = window.innerWidth <= 768 ? 5 : 10;
+const itemsPerPage = window.innerWidth <= 1100 ? 5 : 10;
 let selectedStudents = new Set();
 
 document.addEventListener('DOMContentLoaded', async () => {
