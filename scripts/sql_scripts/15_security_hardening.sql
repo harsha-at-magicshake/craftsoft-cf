@@ -16,14 +16,18 @@ ALTER FUNCTION public.generate_inquiry_id() SET search_path = public;
 ALTER FUNCTION public.generate_receipt_id(TEXT, TEXT) SET search_path = public;
 ALTER FUNCTION public.cleanup_old_sessions() SET search_path = public;
 
--- Check for variant function names mentioned in linter
+-- Explicitly target auto_cleanup functions mentioned in linter
+-- Using DO block for safety, but trying to be more specific
 DO $$ 
 BEGIN 
-    IF EXISTS (SELECT 1 FROM pg_proc WHERE proname = 'auto_cleanup_otps') THEN
-        EXECUTE 'ALTER FUNCTION public.auto_cleanup_otps() SET search_path = public';
+    -- Fix for public.auto_cleanup_otps
+    IF EXISTS (SELECT 1 FROM pg_proc JOIN pg_namespace ON pg_proc.pronamespace = pg_namespace.oid WHERE proname = 'auto_cleanup_otps' AND nspname = 'public') THEN
+        ALTER FUNCTION public.auto_cleanup_otps() SET search_path = public;
     END IF;
-    IF EXISTS (SELECT 1 FROM pg_proc WHERE proname = 'auto_cleanup_sessions') THEN
-        EXECUTE 'ALTER FUNCTION public.auto_cleanup_sessions() SET search_path = public';
+    
+    -- Fix for public.auto_cleanup_sessions
+    IF EXISTS (SELECT 1 FROM pg_proc JOIN pg_namespace ON pg_proc.pronamespace = pg_namespace.oid WHERE proname = 'auto_cleanup_sessions' AND nspname = 'public') THEN
+        ALTER FUNCTION public.auto_cleanup_sessions() SET search_path = public;
     END IF;
 END $$;
 
@@ -38,17 +42,18 @@ DROP POLICY IF EXISTS "admins_insert_policy" ON admins;
 DROP POLICY IF EXISTS "Admin Management" ON inquiries;
 DROP POLICY IF EXISTS "Website Lead Submission" ON inquiries;
 
--- Payments Table
+-- Payments Table (Crucial: Drop specifically named loose policies)
 DROP POLICY IF EXISTS "Allow delete on payments" ON payments;
 DROP POLICY IF EXISTS "Allow insert on payments" ON payments;
 DROP POLICY IF EXISTS "Allow update on payments" ON payments;
 DROP POLICY IF EXISTS "Allow all for authenticated users" ON payments;
 
+-- Student OTPs Table (Crucial: Drop specifically named loose policies)
+DROP POLICY IF EXISTS "Enable insert for anonymous users" ON student_otps;
+DROP POLICY IF EXISTS "Allow anonymous insert" ON student_otps;
+
 -- Services Table
 DROP POLICY IF EXISTS "Allow admin all services" ON services;
-
--- Student OTPs Table
-DROP POLICY IF EXISTS "Enable insert for anonymous users" ON student_otps;
 
 
 -- 3. APPLY: Standardized Hardened RLS Policies
