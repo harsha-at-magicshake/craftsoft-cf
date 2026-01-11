@@ -278,6 +278,11 @@ const AdminHeader = {
                     </button>
                     <span class="header-logo">CraftSoft</span>
                 </div>
+                <button class="spotlight-trigger" aria-label="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span class="trigger-text">Search...</span>
+                    <span class="trigger-kbd"><kbd>Ctrl</kbd><kbd>K</kbd></span>
+                </button>
                 <div class="header-actions">
                     ${showAddBtn ? `
                         <button class="btn btn-primary" id="${addBtnId}">
