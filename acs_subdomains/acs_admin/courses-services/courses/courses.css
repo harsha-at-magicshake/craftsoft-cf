@@ -64,6 +64,28 @@
 }
 
 /* ============================================
+   Input With Icon (Rupee Fix)
+   ============================================ */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon>i {
+    position: absolute;
+    left: 1rem;
+    color: var(--admin-text-muted, #94a3b8);
+    font-size: 0.9rem;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.input-with-icon input {
+    padding-left: 2.5rem !important;
+}
+
+/* ============================================
    Inline Form Container
    ============================================ */
 .inline-form-container {
