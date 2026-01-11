@@ -13,11 +13,32 @@ CREATE TABLE IF NOT EXISTS clients (
     services TEXT[],                          -- Array of service IDs
     service_fees JSONB DEFAULT '{}',          -- Fees per service
     notes TEXT,
-    status TEXT DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'INACTIVE')),
+    status TEXT DEFAULT 'ACTIVE', -- Removed initial CHECK for easier migration
     deleted_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- ================================================================================
+-- MIGRATION: Fix Status Constraint & Normalize
+-- Run this to allow INACTIVE status and clean up old ones
+-- ================================================================================
+DO $$
+BEGIN
+    -- 1. Normalize existing statuses to ACTIVE if they are weird
+    UPDATE clients SET status = 'ACTIVE' WHERE status NOT IN ('ACTIVE', 'INACTIVE') OR status IS NULL;
+    
+    -- 2. Drop old constraint if it exists
+    ALTER TABLE clients DROP CONSTRAINT IF EXISTS clients_status_check;
+    
+    -- 3. Add modern constraint
+    ALTER TABLE clients ADD CONSTRAINT clients_status_check CHECK (status IN ('ACTIVE', 'INACTIVE'));
+
+    -- 4. Ensure deleted_at exists (if updating from very old version)
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'clients' AND column_name = 'deleted_at') THEN
+        ALTER TABLE clients ADD COLUMN deleted_at TIMESTAMPTZ;
+    END IF;
+END $$;
 
 ALTER TABLE clients ENABLE ROW LEVEL SECURITY;
 

@@ -249,8 +249,7 @@ function renderClients(clients) {
     pageClients.forEach(c => {
         const fullName = `${c.first_name} ${c.last_name || ''}`.trim();
         const servicesList = (c.services || []).join(', ') || '-';
-        const statusClass = c.status === 'COMPLETED' ? 'status-converted' :
-            c.status === 'ON-HOLD' ? 'status-demo' : 'status-new';
+        const statusClass = c.status === 'ACTIVE' ? 'status-converted' : 'status-demo';
 
         tableHtml += `
             <tr>
@@ -299,8 +298,7 @@ function renderClients(clients) {
     let cardsHtml = pageClients.map(c => {
         const fullName = `${c.first_name} ${c.last_name || ''}`.trim();
         const servicesList = (c.services || []).join(', ') || '-';
-        const statusClass = c.status === 'COMPLETED' ? 'status-converted' :
-            c.status === 'ON-HOLD' ? 'status-demo' : 'status-new';
+        const statusClass = c.status === 'ACTIVE' ? 'status-converted' : 'status-demo';
 
         return `
             <div class="premium-card" data-id="${c.id}">
