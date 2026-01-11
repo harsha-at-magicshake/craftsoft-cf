@@ -11,12 +11,19 @@
     const firstName = document.getElementById('first-name');
     const userInitials = document.getElementById('user-initials');
     const userId = document.getElementById('user-id');
+    const dropdownName = document.getElementById('dropdown-name');
+    const dropdownId = document.getElementById('dropdown-id');
+    const dropdownInitials = document.getElementById('dropdown-initials');
     const totalPaidEl = document.getElementById('total-paid');
     const totalPendingEl = document.getElementById('total-pending');
     const nextDueEl = document.getElementById('next-due');
     const coursesList = document.getElementById('courses-list');
     const recentPayments = document.getElementById('recent-payments');
-    const btnLogout = document.getElementById('btn-logout');
+
+    // Account Panel
+    const accountTrigger = document.querySelector('.account-trigger');
+    const accountDropdown = document.getElementById('account-dropdown');
+    const btnLogoutAccount = document.getElementById('btn-logout-account');
     const btnLogoutMobile = document.getElementById('btn-logout-mobile');
 
     // Mobile Nav Controls
@@ -127,12 +134,18 @@
     }
 
     async function initDashboard() {
+        const initials = studentData.name.split(' ').map(n => n[0]).join('').toUpperCase();
+
+        // Header
         userName.textContent = studentData.name;
         firstName.textContent = studentData.name.split(' ')[0];
         userId.textContent = studentData.student_id;
+        userInitials.textContent = initials;
 
-        const names = studentData.name.split(' ');
-        userInitials.textContent = names.length > 1 ? (names[0][0] + names[1][0]).toUpperCase() : names[0][0].toUpperCase();
+        // Dropdown
+        if (dropdownName) dropdownName.textContent = studentData.name;
+        if (dropdownId) dropdownId.textContent = studentData.student_id;
+        if (dropdownInitials) dropdownInitials.textContent = initials;
 
         const profile = await fetchCompleteProfile();
         if (profile) {
@@ -252,9 +265,24 @@
                     <strong>${p.payment_mode || 'Online'}</strong>
                     <div class="date">${new Date(p.payment_date).toLocaleDateString('en-IN')}</div>
                 </div>
-                <div class="amt">+ ₹${(p.amount_paid || 0).toLocaleString()}</div>
+                <div class="amt">+ ₹${(p.amount_paid || 0).toLocaleString('en-IN')}</div>
             `;
             recentPayments.appendChild(div);
+        });
+    }
+
+    // Account Dropdown Toggle
+    if (accountTrigger && accountDropdown) {
+        accountTrigger.addEventListener('click', () => {
+            accountDropdown.classList.toggle('open');
+            accountTrigger.classList.toggle('open');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!accountTrigger.contains(e.target) && !accountDropdown.contains(e.target)) {
+                accountDropdown.classList.remove('open');
+                accountTrigger.classList.remove('open');
+            }
         });
     }
 
@@ -278,6 +306,7 @@
     // Logout with Confirmation
     function handleLogout() {
         closeMobileNav();
+        if (accountDropdown) accountDropdown.classList.remove('open');
         Modal.show({
             title: "Logout?",
             message: "Are you sure you want to exit your student portal?",
@@ -290,8 +319,8 @@
         });
     }
 
-    btnLogout.addEventListener('click', handleLogout);
-    btnLogoutMobile.addEventListener('click', handleLogout);
+    if (btnLogoutAccount) btnLogoutAccount.addEventListener('click', handleLogout);
+    if (btnLogoutMobile) btnLogoutMobile.addEventListener('click', handleLogout);
 
     checkAuth();
 

@@ -18,8 +18,8 @@
     <link rel="icon" type="image/svg+xml" href="https://craftsoft.co.in/favicon.svg">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="../dashboard/dashboard.css?v=6.0">
-    <link rel="stylesheet" href="payments.css?v=2.0">
+    <link rel="stylesheet" href="../dashboard/dashboard.css?v=8.0">
+    <link rel="stylesheet" href="payments.css?v=3.0">
 </head>
 
 <body>
@@ -47,12 +47,6 @@
                     <span>My Courses</span>
                 </a>
             </nav>
-            <div class="sidebar-footer">
-                <button id="btn-logout" class="logout-link">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout Account</span>
-                </button>
-            </div>
         </aside>
 
         <!-- Mobile Nav Overlay -->
@@ -100,12 +94,30 @@
                     </div>
                 </div>
 
+                <!-- Account Panel with Dropdown -->
                 <div class="account-panel">
                     <div class="account-trigger">
                         <div id="user-initials" class="account-avatar">?</div>
                         <div class="account-info">
                             <span id="user-name" class="account-name">Loading...</span>
-                            <span id="user-id" class="account-id">ID: Loading...</span>
+                            <span id="user-id" class="account-id">Loading...</span>
+                        </div>
+                        <i class="fas fa-chevron-down account-arrow"></i>
+                    </div>
+                    <div id="account-dropdown" class="account-dropdown">
+                        <div class="account-dropdown-header">Signed in as</div>
+                        <div class="account-user-info">
+                            <div class="account-user-avatar" id="dropdown-initials">?</div>
+                            <div class="account-user-details">
+                                <span class="account-user-name" id="dropdown-name">Student</span>
+                                <span class="account-user-id" id="dropdown-id">ID</span>
+                            </div>
+                        </div>
+                        <div class="account-dropdown-actions">
+                            <button id="btn-logout-account" class="account-logout-btn">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -161,7 +173,7 @@
     <!-- SDKs -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/assets/admin/js/supabase-config.js?v=5.0"></script>
-    <script src="payments.js?v=2.0"></script>
+    <script src="payments.js?v=3.0"></script>
 </body>
 
 </html>

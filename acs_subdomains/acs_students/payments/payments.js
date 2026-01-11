@@ -10,11 +10,18 @@
     const userNameEl = document.getElementById('user-name');
     const userInitialsEl = document.getElementById('user-initials');
     const userIdEl = document.getElementById('user-id');
+    const dropdownName = document.getElementById('dropdown-name');
+    const dropdownId = document.getElementById('dropdown-id');
+    const dropdownInitials = document.getElementById('dropdown-initials');
     const totalPaidEl = document.getElementById('total-paid');
     const totalPendingEl = document.getElementById('total-pending');
     const totalFeeEl = document.getElementById('total-fee');
     const paymentsList = document.getElementById('payments-list');
-    const btnLogout = document.getElementById('btn-logout');
+
+    // Account Panel
+    const accountTrigger = document.querySelector('.account-trigger');
+    const accountDropdown = document.getElementById('account-dropdown');
+    const btnLogoutAccount = document.getElementById('btn-logout-account');
     const btnLogoutMobile = document.getElementById('btn-logout-mobile');
 
     // Mobile Nav Controls
@@ -92,9 +99,15 @@
     }
 
     async function initPage() {
+        const initials = studentData.name.split(' ').map(n => n[0]).join('').toUpperCase();
+
         userNameEl.textContent = studentData.name;
         userIdEl.textContent = studentData.student_id;
-        userInitialsEl.textContent = studentData.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        userInitialsEl.textContent = initials;
+
+        if (dropdownName) dropdownName.textContent = studentData.name;
+        if (dropdownId) dropdownId.textContent = studentData.student_id;
+        if (dropdownInitials) dropdownInitials.textContent = initials;
 
         await loadPaymentData();
     }
@@ -155,11 +168,26 @@
                     </div>
                 </div>
                 <div class="pay-amount">
-                    <span class="amt">+ ₹${p.amount_paid.toLocaleString()}</span>
+                    <span class="amt">+ ₹${p.amount_paid.toLocaleString('en-IN')}</span>
                     <span class="mode">via ${p.payment_mode || 'Cash'}</span>
                 </div>
             `;
             paymentsList.appendChild(div);
+        });
+    }
+
+    // Account Dropdown Toggle
+    if (accountTrigger && accountDropdown) {
+        accountTrigger.addEventListener('click', () => {
+            accountDropdown.classList.toggle('open');
+            accountTrigger.classList.toggle('open');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!accountTrigger.contains(e.target) && !accountDropdown.contains(e.target)) {
+                accountDropdown.classList.remove('open');
+                accountTrigger.classList.remove('open');
+            }
         });
     }
 
@@ -183,6 +211,7 @@
     // Logout
     function handleLogout() {
         closeMobileNav();
+        if (accountDropdown) accountDropdown.classList.remove('open');
         Modal.show({
             title: "Logout?",
             message: "Are you sure you want to end your session?",
@@ -195,8 +224,8 @@
         });
     }
 
-    btnLogout.addEventListener('click', handleLogout);
-    btnLogoutMobile.addEventListener('click', handleLogout);
+    if (btnLogoutAccount) btnLogoutAccount.addEventListener('click', handleLogout);
+    if (btnLogoutMobile) btnLogoutMobile.addEventListener('click', handleLogout);
 
     checkAuth();
 
