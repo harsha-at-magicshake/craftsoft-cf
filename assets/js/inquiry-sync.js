@@ -362,16 +362,31 @@ const InquirySync = {
 
         form.removeAttribute('action');
         form.removeAttribute('method');
-
         this.bindCourseFormSubmit(form, courseName);
     },
 
     bindCourseFormSubmit(form, courseName) {
+        if (form.dataset.bound) return; // Prevent double binding
+        form.dataset.bound = 'true';
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const formData = this.extractFormData(form);
-            formData.interest = courseName;
-            await this.createCourseInquiry(formData, form);
+            const btn = form.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            }
+
+            try {
+                const formData = this.extractFormData(form);
+                formData.interest = courseName;
+                await this.createCourseInquiry(formData, form);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Book Free Session';
+                }
+            }
         });
     },
 
@@ -392,10 +407,26 @@ const InquirySync = {
     },
 
     bindServiceFormSubmit(form) {
+        if (form.dataset.bound) return; // Prevent double binding
+        form.dataset.bound = 'true';
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const formData = this.extractFormData(form);
-            await this.createServiceInquiry(formData, form);
+            const btn = form.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            }
+
+            try {
+                const formData = this.extractFormData(form);
+                await this.createServiceInquiry(formData, form);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Book Free Session';
+                }
+            }
         });
     },
 
@@ -416,18 +447,33 @@ const InquirySync = {
     },
 
     bindContactFormSubmit(form) {
+        if (form.dataset.bound) return; // Prevent double binding
+        form.dataset.bound = 'true';
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const formData = this.extractFormData(form);
-            const selectEl = form.querySelector('select[name="courses"]');
-
-            let type = 'course';
-            if (selectEl) {
-                const selected = selectEl.options[selectEl.selectedIndex];
-                type = selected.dataset.type || 'course';
+            const btn = form.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
             }
 
-            await this.createContactInquiry(formData, type, form);
+            try {
+                const formData = this.extractFormData(form);
+                const selectEl = form.querySelector('select[name="courses"]') || form.querySelector('select[name="interest"]');
+                let type = 'course';
+                if (selectEl) {
+                    const selected = selectEl.options[selectEl.selectedIndex];
+                    type = selected.dataset.type || 'course';
+                }
+
+                await this.createContactInquiry(formData, type, form);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Book Free Session';
+                }
+            }
         });
     },
 
