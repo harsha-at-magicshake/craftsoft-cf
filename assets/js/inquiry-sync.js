@@ -132,33 +132,37 @@ const InquirySync = {
         }
     },
 
-    // Insert inquiry and let database generate the ID
+    // Insert inquiry using RPC to bypass RLS (SECURITY DEFINER)
     async insertInquiry(payload) {
         try {
-            // Remove inquiry_id from payload to let the database trigger handle it
-            const submissionPayload = { ...payload };
-            delete submissionPayload.inquiry_id;
-
-            const { data, error } = await window.supabaseClient
-                .from('inquiries')
-                .insert(submissionPayload)
-                .select('inquiry_id')
-                .single();
+            const { data, error } = await window.supabaseClient.rpc('insert_inquiry', {
+                p_name: payload.name,
+                p_phone: payload.phone,
+                p_email: payload.email || null,
+                p_courses: payload.courses || [],
+                p_notes: payload.notes || null,
+                p_source: payload.source || 'Website',
+                p_status: payload.status || 'New',
+                p_demo_required: payload.demo_required || false,
+                p_demo_date: payload.demo_date || null,
+                p_demo_time: payload.demo_time || null
+            });
 
             if (error) {
-                console.error('Inquiry submission error:', error);
+                console.error('Inquiry submission (RPC) error:', error);
                 throw error;
             }
 
             return {
                 success: true,
-                inquiryId: data ? data.inquiry_id : 'Submitted'
+                inquiryId: data || 'Submitted'
             };
         } catch (e) {
-            console.error('Error inserting inquiry:', e);
+            console.error('Error in insertInquiry RPC:', e);
             throw e;
         }
     },
+
 
     showSuccess(form, inquiryId, message = 'Thank you! Your inquiry has been submitted successfully.') {
         // Store original form HTML before replacing
@@ -241,7 +245,7 @@ const InquirySync = {
             const payload = {
                 name: formData.name,
                 email: formData.email || null,
-                phone: this.formatPhone(formData.phone),
+                phone: this.formatPhone(formData.phone, formData.phone_country_code || formData['contact-phone_country_code']),
                 courses: [courseCode],
                 notes: formData.message || formData.query || null,
                 source: 'Website',
@@ -274,7 +278,7 @@ const InquirySync = {
             const payload = {
                 name: formData.name,
                 email: formData.email || null,
-                phone: this.formatPhone(formData.phone),
+                phone: this.formatPhone(formData.phone, formData.phone_country_code || formData['contact-phone_country_code']),
                 courses: [serviceCode],
                 notes: formData.message || null,
                 source: 'Website',
@@ -312,7 +316,7 @@ const InquirySync = {
             const payload = {
                 name: formData.name,
                 email: formData.email || null,
-                phone: this.formatPhone(formData.phone),
+                phone: this.formatPhone(formData.phone, formData.phone_country_code || formData['contact-phone_country_code']),
                 courses: [code],
                 notes: formData.message || null,
                 source: 'Website',
