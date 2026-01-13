@@ -84,3 +84,152 @@
   from = "/favicon.ico"
   to = "/favicon.svg"
   status = 200
+
+# Services main page rewrite
+[[redirects]]
+  from = "/services/"
+  to = "/acs_services/"
+  status = 200
+
+# ============================================
+# Neat Links for SERVICES (S- prefix)
+# ============================================
+[[redirects]]
+  from = "/s-web-development/*"
+  to = "/acs_services/web-development/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/s-ui-ux-design/*"
+  to = "/acs_services/ui-ux-design/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/s-branding/*"
+  to = "/acs_services/branding/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/s-graphic-design/*"
+  to = "/acs_services/graphic-design/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/s-cloud-devops/*"
+  to = "/acs_services/cloud-devops/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/s-career-services/*"
+  to = "/acs_services/career-services/:splat"
+  status = 200
+
+# ============================================
+# Neat Links for COURSES (C- prefix)
+# ============================================
+[[redirects]]
+  from = "/c-python/*"
+  to = "/courses/python/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-java/*"
+  to = "/courses/java/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-full-stack/*"
+  to = "/courses/full-stack/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-react/*"
+  to = "/courses/react/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-devops/*"
+  to = "/courses/devops/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-devsecops/*"
+  to = "/courses/devsecops/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-aws/*"
+  to = "/courses/aws/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-azure/*"
+  to = "/courses/azure/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-salesforce/*"
+  to = "/courses/salesforce/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-data-analytics/*"
+  to = "/courses/data-analytics/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-dsa/*"
+  to = "/courses/dsa/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-git-github/*"
+  to = "/courses/git-github/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-automation-python/*"
+  to = "/courses/automation-python/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-python-programming/*"
+  to = "/courses/python-programming/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-ui-ux/*"
+  to = "/courses/ui-ux/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-graphic-design/*"
+  to = "/courses/graphic-design/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-soft-skills/*"
+  to = "/courses/soft-skills/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-spoken-english/*"
+  to = "/courses/spoken-english/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-handwriting/*"
+  to = "/courses/handwriting/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/c-resume-interview/*"
+  to = "/courses/resume-interview/:splat"
+  status = 200
+
+# Global 404 catch-all
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
