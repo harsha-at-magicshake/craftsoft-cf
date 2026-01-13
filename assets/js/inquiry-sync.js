@@ -79,9 +79,17 @@ const InquirySync = {
     },
 
     // Format phone for storage: "+91 - 9492020292"
-    formatPhone(phone) {
+    // Can accept optional countryCode from the injected phone input
+    formatPhone(phone, countryCode = null) {
         if (!phone) return null;
         const cleaned = phone.replace(/[\s\-()]/g, '');
+
+        // If countryCode is provided (from injected input), use it
+        if (countryCode) {
+            const normalizedCode = countryCode.startsWith('+') ? countryCode : `+${countryCode}`;
+            return `${normalizedCode} - ${cleaned}`;
+        }
+
         // If already has country code format, normalize it
         if (cleaned.startsWith('+')) {
             const match = cleaned.match(/^(\+\d{1,4})(\d+)$/);
@@ -95,6 +103,7 @@ const InquirySync = {
         // Return as-is for other formats
         return phone;
     },
+
 
     // Generate unique inquiry ID (INQ-ACS-001 style)
     async getNextInquiryId() {
@@ -435,8 +444,213 @@ const InquirySync = {
                 this.bindContactFormSubmit(form);
                 break;
         }
+
+        // Re-inject phone input after form reset
+        setTimeout(() => PhoneInputInjector.init(), 100);
     }
 };
 
 window.InquirySync = InquirySync;
 
+// ============================================
+// Phone Input Auto-Injector
+// Transforms all tel inputs into flag-based country code inputs
+// ============================================
+
+const PhoneInputInjector = {
+    countryFlags: {
+        '+91': { flag: '🇮🇳', name: 'India' },
+        '+1': { flag: '🇺🇸', name: 'USA/Canada' },
+        '+44': { flag: '🇬🇧', name: 'UK' },
+        '+61': { flag: '🇦🇺', name: 'Australia' },
+        '+971': { flag: '🇦🇪', name: 'UAE' },
+        '+966': { flag: '🇸🇦', name: 'Saudi Arabia' },
+        '+65': { flag: '🇸🇬', name: 'Singapore' },
+        '+49': { flag: '🇩🇪', name: 'Germany' },
+        '+33': { flag: '🇫🇷', name: 'France' },
+        '+81': { flag: '🇯🇵', name: 'Japan' },
+        '+86': { flag: '🇨🇳', name: 'China' },
+        '+82': { flag: '🇰🇷', name: 'South Korea' },
+        '+60': { flag: '🇲🇾', name: 'Malaysia' },
+        '+63': { flag: '🇵🇭', name: 'Philippines' },
+        '+94': { flag: '🇱🇰', name: 'Sri Lanka' },
+        '+977': { flag: '🇳🇵', name: 'Nepal' },
+        '+880': { flag: '🇧🇩', name: 'Bangladesh' },
+        '+92': { flag: '🇵🇰', name: 'Pakistan' },
+        '+27': { flag: '🇿🇦', name: 'South Africa' },
+        '+234': { flag: '🇳🇬', name: 'Nigeria' },
+        '+254': { flag: '🇰🇪', name: 'Kenya' }
+    },
+
+    getFlagForCode(code) {
+        const normalized = code.startsWith('+') ? code : `+${code}`;
+        return this.countryFlags[normalized] || { flag: '🌍', name: 'Other' };
+    },
+
+    injectStyles() {
+        if (document.getElementById('phone-injector-styles')) return;
+
+        const style = document.createElement('style');
+        style.id = 'phone-injector-styles';
+        style.textContent = `
+            .phone-input-injected {
+                display: flex !important;
+                align-items: stretch !important;
+                gap: 0 !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 0.5rem !important;
+                overflow: hidden !important;
+                background: #fff !important;
+                transition: border-color 0.2s, box-shadow 0.2s !important;
+            }
+            .phone-input-injected:focus-within {
+                border-color: #2896cd !important;
+                box-shadow: 0 0 0 3px rgba(40, 150, 205, 0.15) !important;
+            }
+            .phone-input-injected .country-code-input {
+                width: 70px !important;
+                min-width: 70px !important;
+                padding: 0.75rem 0.5rem !important;
+                border: none !important;
+                border-right: 1px solid #e2e8f0 !important;
+                background: #f8fafc !important;
+                font-size: 0.9rem !important;
+                text-align: center !important;
+                outline: none !important;
+                font-family: inherit !important;
+            }
+            .phone-input-injected .flag-display-btn {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 0.25rem !important;
+                width: 70px !important;
+                min-width: 70px !important;
+                padding: 0.75rem 0.5rem !important;
+                border: none !important;
+                border-right: 1px solid #e2e8f0 !important;
+                background: #f8fafc !important;
+                cursor: pointer !important;
+                font-size: 0.85rem !important;
+                transition: background 0.2s !important;
+            }
+            .phone-input-injected .flag-display-btn:hover {
+                background: #e2e8f0 !important;
+            }
+            .phone-input-injected .flag-display-btn .flag-emoji {
+                font-size: 1.1rem !important;
+            }
+            .phone-input-injected .flag-display-btn .code-text {
+                font-size: 0.75rem !important;
+                color: #64748b !important;
+                font-weight: 500 !important;
+            }
+            .phone-input-injected .phone-number-input {
+                flex: 1 !important;
+                padding: 0.75rem !important;
+                border: none !important;
+                background: transparent !important;
+                font-size: 0.95rem !important;
+                outline: none !important;
+                font-family: inherit !important;
+            }
+            .phone-input-injected .phone-number-input::placeholder {
+                color: #94a3b8 !important;
+            }
+        `;
+        document.head.appendChild(style);
+    },
+
+    transformInput(originalInput) {
+        if (originalInput.dataset.phoneInjected) return;
+
+        const originalId = originalInput.id;
+        const originalName = originalInput.name;
+        const originalValue = originalInput.value;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'phone-input-injected';
+
+        const codeInput = document.createElement('input');
+        codeInput.type = 'text';
+        codeInput.className = 'country-code-input';
+        codeInput.id = `${originalId}-country-code`;
+        codeInput.placeholder = '+91';
+        codeInput.maxLength = 5;
+        codeInput.value = '+91';
+
+        const flagBtn = document.createElement('button');
+        flagBtn.type = 'button';
+        flagBtn.className = 'flag-display-btn';
+        flagBtn.style.display = 'none';
+        flagBtn.innerHTML = `<span class="flag-emoji">🇮🇳</span><span class="code-text">+91</span>`;
+
+        const phoneInput = document.createElement('input');
+        phoneInput.type = 'tel';
+        phoneInput.className = 'phone-number-input';
+        phoneInput.id = originalId;
+        phoneInput.name = originalName;
+        phoneInput.placeholder = 'Phone number';
+        phoneInput.value = originalValue;
+
+        const hiddenCodeInput = document.createElement('input');
+        hiddenCodeInput.type = 'hidden';
+        hiddenCodeInput.id = `${originalId}-hidden-code`;
+        hiddenCodeInput.name = `${originalName}_country_code`;
+        hiddenCodeInput.value = '+91';
+
+        wrapper.appendChild(codeInput);
+        wrapper.appendChild(flagBtn);
+        wrapper.appendChild(phoneInput);
+        wrapper.appendChild(hiddenCodeInput);
+
+        originalInput.parentNode.replaceChild(wrapper, originalInput);
+        originalInput.dataset.phoneInjected = 'true';
+
+        this.bindInputEvents(codeInput, flagBtn, hiddenCodeInput);
+    },
+
+    bindInputEvents(codeInput, flagBtn, hiddenCodeInput) {
+        const self = this;
+
+        codeInput.addEventListener('blur', () => {
+            const code = codeInput.value.trim();
+            if (!code) return;
+
+            const countryInfo = self.getFlagForCode(code);
+            const displayCode = code.startsWith('+') ? code : `+${code}`;
+
+            flagBtn.querySelector('.flag-emoji').textContent = countryInfo.flag;
+            flagBtn.querySelector('.code-text').textContent = displayCode;
+
+            hiddenCodeInput.value = displayCode;
+            codeInput.value = displayCode;
+
+            codeInput.style.display = 'none';
+            flagBtn.style.display = 'flex';
+        });
+
+        flagBtn.addEventListener('click', () => {
+            flagBtn.style.display = 'none';
+            codeInput.style.display = 'block';
+            codeInput.focus();
+            codeInput.select();
+        });
+    },
+
+    init() {
+        this.injectStyles();
+        const telInputs = document.querySelectorAll('input[type="tel"]:not([data-phone-injected])');
+        telInputs.forEach(input => this.transformInput(input));
+        console.log(`PhoneInputInjector: Transformed ${telInputs.length} phone inputs`);
+    }
+};
+
+window.PhoneInputInjector = PhoneInputInjector;
+
+// Auto-initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => PhoneInputInjector.init());
+} else {
+    PhoneInputInjector.init();
+}
