@@ -95,136 +95,136 @@
 # Neat Links for SERVICES (S- prefix)
 # ============================================
 [[redirects]]
-  from = "/s-web-development/*"
-  to = "/acs_services/web-development/:splat"
+  from = "/s-web-development/"
+  to = "/acs_services/web-development/"
   status = 200
 
 [[redirects]]
-  from = "/s-ui-ux-design/*"
-  to = "/acs_services/ui-ux-design/:splat"
+  from = "/s-ui-ux-design/"
+  to = "/acs_services/ui-ux-design/"
   status = 200
 
 [[redirects]]
-  from = "/s-branding/*"
-  to = "/acs_services/branding/:splat"
+  from = "/s-branding/"
+  to = "/acs_services/branding/"
   status = 200
 
 [[redirects]]
-  from = "/s-graphic-design/*"
-  to = "/acs_services/graphic-design/:splat"
+  from = "/s-graphic-design/"
+  to = "/acs_services/graphic-design/"
   status = 200
 
 [[redirects]]
-  from = "/s-cloud-devops/*"
-  to = "/acs_services/cloud-devops/:splat"
+  from = "/s-cloud-devops/"
+  to = "/acs_services/cloud-devops/"
   status = 200
 
 [[redirects]]
-  from = "/s-career-services/*"
-  to = "/acs_services/career-services/:splat"
+  from = "/s-career-services/"
+  to = "/acs_services/career-services/"
   status = 200
 
 # ============================================
 # Neat Links for COURSES (C- prefix)
 # ============================================
 [[redirects]]
-  from = "/c-python/*"
-  to = "/courses/python/:splat"
+  from = "/c-python/"
+  to = "/courses/python/"
   status = 200
 
 [[redirects]]
-  from = "/c-java/*"
-  to = "/courses/java/:splat"
+  from = "/c-java/"
+  to = "/courses/java/"
   status = 200
 
 [[redirects]]
-  from = "/c-full-stack/*"
-  to = "/courses/full-stack/:splat"
+  from = "/c-full-stack/"
+  to = "/courses/full-stack/"
   status = 200
 
 [[redirects]]
-  from = "/c-react/*"
-  to = "/courses/react/:splat"
+  from = "/c-react/"
+  to = "/courses/react/"
   status = 200
 
 [[redirects]]
-  from = "/c-devops/*"
-  to = "/courses/devops/:splat"
+  from = "/c-devops/"
+  to = "/courses/devops/"
   status = 200
 
 [[redirects]]
-  from = "/c-devsecops/*"
-  to = "/courses/devsecops/:splat"
+  from = "/c-devsecops/"
+  to = "/courses/devsecops/"
   status = 200
 
 [[redirects]]
-  from = "/c-aws/*"
-  to = "/courses/aws/:splat"
+  from = "/c-aws/"
+  to = "/courses/aws/"
   status = 200
 
 [[redirects]]
-  from = "/c-azure/*"
-  to = "/courses/azure/:splat"
+  from = "/c-azure/"
+  to = "/courses/azure/"
   status = 200
 
 [[redirects]]
-  from = "/c-salesforce/*"
-  to = "/courses/salesforce/:splat"
+  from = "/c-salesforce/"
+  to = "/courses/salesforce/"
   status = 200
 
 [[redirects]]
-  from = "/c-data-analytics/*"
-  to = "/courses/data-analytics/:splat"
+  from = "/c-data-analytics/"
+  to = "/courses/data-analytics/"
   status = 200
 
 [[redirects]]
-  from = "/c-dsa/*"
-  to = "/courses/dsa/:splat"
+  from = "/c-dsa/"
+  to = "/courses/dsa/"
   status = 200
 
 [[redirects]]
-  from = "/c-git-github/*"
-  to = "/courses/git-github/:splat"
+  from = "/c-git-github/"
+  to = "/courses/git-github/"
   status = 200
 
 [[redirects]]
-  from = "/c-automation-python/*"
-  to = "/courses/automation-python/:splat"
+  from = "/c-automation-python/"
+  to = "/courses/automation-python/"
   status = 200
 
 [[redirects]]
-  from = "/c-python-programming/*"
-  to = "/courses/python-programming/:splat"
+  from = "/c-python-programming/"
+  to = "/courses/python-programming/"
   status = 200
 
 [[redirects]]
-  from = "/c-ui-ux/*"
-  to = "/courses/ui-ux/:splat"
+  from = "/c-ui-ux/"
+  to = "/courses/ui-ux/"
   status = 200
 
 [[redirects]]
-  from = "/c-graphic-design/*"
-  to = "/courses/graphic-design/:splat"
+  from = "/c-graphic-design/"
+  to = "/courses/graphic-design/"
   status = 200
 
 [[redirects]]
-  from = "/c-soft-skills/*"
-  to = "/courses/soft-skills/:splat"
+  from = "/c-soft-skills/"
+  to = "/courses/soft-skills/"
   status = 200
 
 [[redirects]]
-  from = "/c-spoken-english/*"
-  to = "/courses/spoken-english/:splat"
+  from = "/c-spoken-english/"
+  to = "/courses/spoken-english/"
   status = 200
 
 [[redirects]]
-  from = "/c-handwriting/*"
-  to = "/courses/handwriting/:splat"
+  from = "/c-handwriting/"
+  to = "/courses/handwriting/"
   status = 200
 
 [[redirects]]
-  from = "/c-resume-interview/*"
-  to = "/courses/resume-interview/:splat"
+  from = "/c-resume-interview/"
+  to = "/courses/resume-interview/"
   status = 200
 
 # Global 404 catch-all
@@ -232,4 +232,5 @@
   from = "/*"
   to = "/404.html"
   status = 404
+
 
