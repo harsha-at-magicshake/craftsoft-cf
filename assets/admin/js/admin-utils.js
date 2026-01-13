@@ -200,11 +200,36 @@ const Validators = {
         return re.test(email);
     },
 
-    // Phone validation (Indian format)
+    // Phone validation (International format)
+    // Accepts: +91 - 9492020292, +61 - 412345678, or plain 10-digit Indian numbers
     isValidPhone(phone) {
+        if (!phone) return false;
         const cleaned = phone.replace(/[\s\-\(\)]/g, '');
-        const re = /^(\+91)?[6-9]\d{9}$/;
-        return re.test(cleaned);
+        // International format: +CountryCode followed by 6-14 digits
+        const intlRe = /^\+\d{1,4}\d{6,14}$/;
+        // Legacy Indian format: 10 digits starting with 6-9
+        const indianRe = /^[6-9]\d{9}$/;
+        return intlRe.test(cleaned) || indianRe.test(cleaned);
+    },
+
+    // Format phone to international standard: +91 - 9492020292
+    formatPhoneForStorage(phone, countryCode = '+91') {
+        if (!phone) return '';
+        const cleaned = phone.replace(/[\s\-\(\)]/g, '');
+        // If already has country code, just format nicely
+        if (cleaned.startsWith('+')) {
+            const match = cleaned.match(/^(\+\d{1,4})(\d+)$/);
+            if (match) return `${match[1]} - ${match[2]}`;
+            return cleaned;
+        }
+        // Add country code for plain numbers
+        return `${countryCode} - ${cleaned}`;
+    },
+
+    // Extract raw digits from formatted phone (for search/comparison)
+    extractPhoneDigits(phone) {
+        if (!phone) return '';
+        return phone.replace(/[^\d]/g, '');
     },
 
     // Password strength

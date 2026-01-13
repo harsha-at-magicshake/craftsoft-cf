@@ -466,11 +466,18 @@ function bindBulkActions() {
 
 
 function filterStudents(query) {
-    const filtered = allStudents.filter(s =>
-        `${s.first_name} ${s.last_name}`.toLowerCase().includes(query.toLowerCase()) ||
-        s.phone.includes(query) ||
-        s.student_id.toLowerCase().includes(query.toLowerCase())
-    );
+    const q = query.toLowerCase();
+    const qDigits = query.replace(/[^\d]/g, ''); // Extract digits for phone search
+
+    const filtered = allStudents.filter(s => {
+        const nameMatch = `${s.first_name} ${s.last_name}`.toLowerCase().includes(q);
+        const idMatch = s.student_id.toLowerCase().includes(q);
+        // Phone search: compare raw digits so "9492020292" matches "+91 - 9492020292"
+        const phoneDigits = (s.phone || '').replace(/[^\d]/g, '');
+        const phoneMatch = qDigits.length >= 3 && phoneDigits.includes(qDigits);
+
+        return nameMatch || idMatch || phoneMatch;
+    });
     renderStudentsList(filtered);
 }
 
@@ -772,9 +779,13 @@ async function saveStudent() {
     const finalFee = totalFee - totalDiscount;
 
     // Validation
+    const { Validators } = window.AdminUtils;
     if (!fname || !lname) { Toast.error('Required', 'Name required'); return; }
-    if (!phone || phone.length !== 10) { Toast.error('Required', 'Valid 10-digit phone required'); return; }
+    if (!Validators.isValidPhone(phone)) { Toast.error('Required', 'Valid phone number required'); return; }
     if (courses.length === 0) { Toast.error('Required', 'Select at least one course'); return; }
+
+    // Format phone for storage (e.g., "+91 - 9492020292")
+    const formattedPhone = Validators.formatPhoneForStorage(phone);
 
     // Ensure every selected course has a tutor assigned
     const missingTutor = courses.some(code => !course_tutors[code]);
@@ -790,7 +801,7 @@ async function saveStudent() {
         const studentData = {
             first_name: fname,
             last_name: lname,
-            phone,
+            phone: formattedPhone,
             email: email || null,
             courses,
             tutors,
@@ -798,6 +809,7 @@ async function saveStudent() {
             course_discounts: courseDiscounts,
             demo_scheduled: demoScheduled,
             demo_date: demoDate,
+
             demo_time: demoTime,
             joining_date: joiningDate,
             batch_time: batchTime,

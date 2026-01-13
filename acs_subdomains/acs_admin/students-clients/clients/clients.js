@@ -208,14 +208,21 @@ function showSkeletons() {
 
 function filterClients(query) {
     const q = query.toLowerCase();
-    const filtered = allClients.filter(c =>
-        (c.first_name + ' ' + (c.last_name || '')).toLowerCase().includes(q) ||
-        c.phone?.includes(q) ||
-        c.client_id?.toLowerCase().includes(q) ||
-        (c.services || []).some(s => s.toLowerCase().includes(q))
-    );
+    const qDigits = query.replace(/[^\d]/g, ''); // Extract digits for phone search
+
+    const filtered = allClients.filter(c => {
+        const nameMatch = (c.first_name + ' ' + (c.last_name || '')).toLowerCase().includes(q);
+        const idMatch = c.client_id?.toLowerCase().includes(q);
+        const serviceMatch = (c.services || []).some(s => s.toLowerCase().includes(q));
+        // Phone search: compare raw digits so "9492020292" matches "+91 - 9492020292"
+        const phoneDigits = (c.phone || '').replace(/[^\d]/g, '');
+        const phoneMatch = qDigits.length >= 3 && phoneDigits.includes(qDigits);
+
+        return nameMatch || idMatch || serviceMatch || phoneMatch;
+    });
     renderClients(filtered);
 }
+
 
 function renderClients(clients) {
     const tableContainer = document.getElementById('clients-table-container');
@@ -637,9 +644,13 @@ async function saveClient() {
     });
 
     // Validation
+    const { Validators } = window.AdminUtils;
     if (!fname) { Toast.error('Required', 'First name required'); return; }
-    if (!phone || phone.length !== 10) { Toast.error('Required', 'Valid 10-digit phone required'); return; }
+    if (!Validators.isValidPhone(phone)) { Toast.error('Required', 'Valid phone number required'); return; }
     if (services.length === 0) { Toast.error('Required', 'Select at least one service'); return; }
+
+    // Format phone for storage (e.g., "+91 - 9492020292")
+    const formattedPhone = Validators.formatPhoneForStorage(phone);
 
     saveBtn.disabled = true;
     saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
@@ -648,13 +659,14 @@ async function saveClient() {
         const clientData = {
             first_name: fname,
             last_name: lname || null,
-            phone,
+            phone: formattedPhone,
             email: email || null,
             services,
             service_fees: serviceFees,
             total_fee: totalFee,
             notes: notes || null
         };
+
 
         if (isEdit) {
             const { error } = await window.supabaseClient.from('clients').update(clientData).eq('id', editId);

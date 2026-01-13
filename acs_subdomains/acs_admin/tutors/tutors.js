@@ -271,13 +271,21 @@ function bindBulkActions() {
 }
 
 function filterTutors(query) {
-    const filtered = allTutors.filter(t =>
-        t.full_name.toLowerCase().includes(query.toLowerCase()) ||
-        t.phone.includes(query) ||
-        t.tutor_id.toLowerCase().includes(query.toLowerCase())
-    );
+    const q = query.toLowerCase();
+    const qDigits = query.replace(/[^\d]/g, ''); // Extract digits for phone search
+
+    const filtered = allTutors.filter(t => {
+        const nameMatch = t.full_name.toLowerCase().includes(q);
+        const idMatch = t.tutor_id.toLowerCase().includes(q);
+        // Phone search: compare raw digits so "9492020292" matches "+91 - 9492020292"
+        const phoneDigits = (t.phone || '').replace(/[^\d]/g, '');
+        const phoneMatch = qDigits.length >= 3 && phoneDigits.includes(qDigits);
+
+        return nameMatch || idMatch || phoneMatch;
+    });
     renderTutorsList(filtered);
 }
+
 
 // =====================
 // Inline Form
@@ -368,9 +376,13 @@ async function saveTutor() {
     const courses = Array.from(document.querySelectorAll('input[name="tutor-courses"]:checked')).map(c => c.value);
 
     // Validation
+    const { Validators } = window.AdminUtils;
     if (!name) { Toast.error('Required', 'Name required'); return; }
-    if (!phone || phone.length !== 10) { Toast.error('Required', 'Valid 10-digit phone required'); return; }
+    if (!Validators.isValidPhone(phone)) { Toast.error('Required', 'Valid phone number required'); return; }
     if (courses.length === 0) { Toast.error('Required', 'Select at least one course'); return; }
+
+    // Format phone for storage (e.g., "+91 - 9492020292")
+    const formattedPhone = Validators.formatPhoneForStorage(phone);
 
     saveBtn.disabled = true;
     saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
@@ -378,7 +390,7 @@ async function saveTutor() {
     try {
         if (isEdit) {
             const { error } = await window.supabaseClient.from('tutors').update({
-                full_name: name, phone, email: email || null,
+                full_name: name, phone: formattedPhone, email: email || null,
                 linkedin_url: linkedin || null, courses, notes
             }).eq('id', editId);
             if (error) throw error;
@@ -394,11 +406,12 @@ async function saveTutor() {
             const newId = `Tr-ACS-${String(nextNum).padStart(3, '0')}`;
 
             const { error } = await window.supabaseClient.from('tutors').insert({
-                tutor_id: newId, full_name: name, phone, email: email || null,
+                tutor_id: newId, full_name: name, phone: formattedPhone, email: email || null,
                 linkedin_url: linkedin || null, courses, notes, status: 'ACTIVE'
             });
             if (error) throw error;
             Toast.success('Added', 'Tutor added successfully');
+
 
             // Log activity
             if (window.DashboardActivities) {
