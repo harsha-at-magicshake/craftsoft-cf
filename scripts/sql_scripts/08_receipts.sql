@@ -73,7 +73,7 @@ CREATE INDEX IF NOT EXISTS idx_receipts_created ON receipts(created_at DESC);
 -- ============================================
 
 -- Function: Generate Receipt ID
--- Format: 001-ACS-JD-GRA (sequence-institute-initials-course)
+DROP FUNCTION IF EXISTS generate_receipt_id(text, text);
 CREATE OR REPLACE FUNCTION generate_receipt_id(
     p_student_name TEXT,
     p_course_code TEXT

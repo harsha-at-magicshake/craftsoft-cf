@@ -87,6 +87,7 @@ CREATE INDEX IF NOT EXISTS idx_student_otps_used ON student_otps(is_used);
 -- ============================================
 -- CLEANUP FUNCTION
 -- ============================================
+DROP FUNCTION IF EXISTS auto_cleanup_otps();
 CREATE OR REPLACE FUNCTION auto_cleanup_otps()
 RETURNS void AS $$
 BEGIN

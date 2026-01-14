@@ -44,6 +44,9 @@ CREATE POLICY "admin_manage_settings" ON settings
 -- ============================================
 -- DEFAULT SETTINGS
 -- ============================================
+-- Ensure table has description column (Migration)
+ALTER TABLE settings ADD COLUMN IF NOT EXISTS description TEXT;
+
 INSERT INTO settings (setting_key, setting_value, description) VALUES
     ('institute_name', 'Abhi''s Craftsoft', 'Name of the institute'),
     ('country', 'India', 'Country of operation'),

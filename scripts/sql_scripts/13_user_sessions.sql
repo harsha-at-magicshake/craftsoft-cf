@@ -46,6 +46,7 @@ CREATE INDEX IF NOT EXISTS idx_sessions_last_active ON user_sessions(last_active
 -- ============================================
 -- CLEANUP FUNCTION
 -- ============================================
+DROP FUNCTION IF EXISTS cleanup_old_sessions();
 CREATE OR REPLACE FUNCTION cleanup_old_sessions()
 RETURNS void AS $$
 BEGIN
@@ -56,6 +57,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = public;
 
 -- Optional: Auto-cleanup function for pg_cron
+DROP FUNCTION IF EXISTS auto_cleanup_sessions();
 CREATE OR REPLACE FUNCTION auto_cleanup_sessions()
 RETURNS void AS $$
 BEGIN
