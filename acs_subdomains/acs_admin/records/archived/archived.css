@@ -82,9 +82,10 @@
     position: relative;
     display: flex;
     align-items: center;
+    min-height: 42px;
 }
 
-.search-box i {
+.search-box>i {
     position: absolute;
     left: 1rem;
     color: var(--text-muted);
@@ -97,6 +98,10 @@
 .search-box input,
 .search-box select {
     padding-left: 2.5rem !important;
+}
+
+.search-box .searchable-select-container {
+    width: 100%;
 }
 
 .search-box .searchable-select-trigger {
