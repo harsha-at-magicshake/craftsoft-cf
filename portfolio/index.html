@@ -13,11 +13,46 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <!-- Custom Style -->
+    <!-- Global Styles (Navbar/Footer) -->
+    <link rel="stylesheet" href="../assets/css/master.css?v=2.0">
+    <link rel="stylesheet" href="../assets/css/utilities/skeleton.css?v=1.0">
+    <!-- Custom Portfolio Style -->
     <link rel="stylesheet" href="portfolio.css">
 </head>
 
 <body>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="../#home" class="logo">
+                <div class="logo-placeholder"><i class="fas fa-graduation-cap"></i></div>
+                <span class="logo-text"><span class="logo-signature">Abhi's</span> <span class="highlight">Craft
+                        Soft</span></span>
+            </a>
+            <ul class="nav-menu" id="nav-menu">
+                <div class="mobile-menu-header">
+                    <div class="logo">
+                        <div class="logo-placeholder"><i class="fas fa-graduation-cap"></i></div>
+                        <span class="logo-text"><span class="logo-signature">Abhi's</span> <span class="highlight">Craft
+                                Soft</span></span>
+                    </div>
+                    <button class="nav-close" id="navClose" aria-label="Close menu">&times;</button>
+                </div>
+                <li><a href="../#home" class="nav-link">Home</a></li>
+                <li><a href="../about/" class="nav-link">About</a></li>
+                <li><a href="../courses/" class="nav-link">Courses</a></li>
+                <li><a href="../services/" class="nav-link">Services</a></li>
+                <li><a href="./" class="nav-link active">Portfolio</a></li>
+                <li><a href="../contact/" class="nav-link">Contact</a></li>
+            </ul>
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </button>
+        </div>
+        <div class="nav-overlay" id="navOverlay"></div>
+    </nav>
 
     <!-- Header Section -->
     <header class="portfolio-hero">
@@ -155,7 +190,107 @@
         </div>
     </main>
 
-    <!-- Footer Script -->
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="../#home" class="logo"><span class="logo-text"><span class="logo-signature">Abhi's</span>
+                            <span class="highlight">Craft
+                                Soft</span></span>
+                    </a>
+                    <p>Empowering careers through quality education and professional IT services. Your journey to
+                        excellence starts here.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../courses/">Courses</a></li>
+                        <li><a href="../services/">Services</a></li>
+                        <li><a href="./">Portfolio</a></li>
+                        <li><a href="../verify/">Verify Receipt</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Courses</h4>
+                    <ul id="footer-trending-courses"></ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul id="footer-services"></ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i><a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8"
+                                target="_blank">Plot No. 163, Vijayasree Colony,<br>Vanasthalipuram, Hyderabad
+                                500070</a></li>
+                        <li><i class="fas fa-phone"></i><a href="tel:+917842239090">+91 7842239090</a></li>
+                        <li><i class="fas fa-envelope"></i><a
+                                href="mailto:team.craftsoft@gmail.com">team.craftsoft@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p> 2026 Abhi's Craft Soft. All Rights Reserved.</p>
+                <div class="footer-legal-links">
+                    <a href="../about/">About Us</a>
+                    <span>|</span>
+                    <a href="../terms-of-service/">Terms Of Service</a>
+                    <span>|</span>
+                    <a href="../privacy-policy/">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Live Chat Widget -->
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-window">
+            <div class="chat-header">
+                <h4>👋 How can we help?</h4>
+                <p>Choose how you'd like to connect with us</p>
+            </div>
+            <div class="chat-body">
+                <div class="chat-options">
+                    <a href="https://wa.me/917842239090?text=Hi! I'd like to know more about your courses."
+                        target="_blank" class="chat-option whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        <div class="chat-option-text">
+                            <h5>WhatsApp</h5>
+                            <span>Fastest response</span>
+                        </div>
+                    </a>
+                    <a href="tel:+917842239090" class="chat-option phone">
+                        <i class="fas fa-phone"></i>
+                        <div class="chat-option-text">
+                            <h5>Call Us</h5>
+                            <span>+91 7842239090</span>
+                        </div>
+                    </a>
+                    <a href="mailto:team.craftsoft@gmail.com" class="chat-option email">
+                        <i class="fas fa-envelope"></i>
+                        <div class="chat-option-text">
+                            <h5>Email</h5>
+                            <span>team.craftsoft@gmail.com</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="chat-footer">
+                We typically respond within 30 minutes
+            </div>
+        </div>
+        <button class="chat-toggle-btn" id="chatToggle" aria-label="Open chat">
+            <i class="fas fa-comments icon-chat"></i> <i class="fas fa-times icon-close"></i> </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../assets/js/supabase-website-config.js?v=1.0"></script>
+    <script src="../assets/js/main.js?v=1.1"></script>
+
+    <!-- Portfolio Specific Logic -->
     <script>
         // Dropdown Toggle Logic
         const dropdownBtn = document.getElementById('filterDropdownBtn');
@@ -174,13 +309,13 @@
         function setFilter(filter) {
             // Update UI for grid
             filterCards.forEach(card => {
-                if(card.dataset.filter === filter) card.classList.add('active');
+                if (card.dataset.filter === filter) card.classList.add('active');
                 else card.classList.remove('active');
             });
 
             // Update UI for dropdown
             dropdownItems.forEach(item => {
-                if(item.dataset.filter === filter) {
+                if (item.dataset.filter === filter) {
                     item.classList.add('active');
                     currentFilterSpan.innerHTML = item.innerHTML;
                 }
@@ -189,7 +324,7 @@
 
             // Filter projects
             projectCards.forEach(card => {
-                if(filter === 'all' || card.dataset.category === filter) {
+                if (filter === 'all' || card.dataset.category === filter) {
                     card.style.display = 'block';
                 } else {
                     card.style.display = 'none';
@@ -208,7 +343,7 @@
         });
 
         // Close dropdown when clicking outside
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (!event.target.closest('.mobile-filter-container')) {
                 dropdownContent.classList.remove('show');
             }
