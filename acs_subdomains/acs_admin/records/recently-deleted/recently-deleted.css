@@ -149,6 +149,11 @@
     padding-left: 2.5rem !important;
 }
 
+/* Hide the chevron when we have a custom icon */
+.search-box .searchable-select-trigger>i {
+    display: none;
+}
+
 /* Bulk Bar */
 .bulk-actions-container {
     background: #fff1f2;
