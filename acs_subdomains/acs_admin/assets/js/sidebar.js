@@ -27,6 +27,7 @@ const AdminSidebar = {
         const isPaymentsChild = ['record-payment', 'all-payments', 'receipts'].includes(this.currentPage);
         const isCoursesServicesChild = ['courses', 'services'].includes(this.currentPage);
         const isStudentsClientsChild = ['students', 'clients'].includes(this.currentPage);
+        const isRecordsChild = ['archived', 'recently-deleted'].includes(this.currentPage);
 
         // Desktop sidebar (always expanded)
         const sidebarHTML = `
@@ -49,6 +50,10 @@ const AdminSidebar = {
                     ${this.navItem('all-payments', 'All Payments', 'fa-money-bill-trend-up')}
                     ${this.navItem('receipts', 'Receipts', 'fa-file-invoice')}
                     
+                    <!-- Records Section -->
+                    ${this.navItem('archived', 'Archived', 'fa-box-archive', 'records/archived')}
+                    ${this.navItem('recently-deleted', 'Trash', 'fa-trash-clock', 'records/recently-deleted')}
+
                     ${this.navItem('settings', 'Settings', 'fa-gear')}
                 </nav>
             </aside>
@@ -57,7 +62,8 @@ const AdminSidebar = {
         // Mobile nav bottom sheet (collapsible groups)
         const activeGroup = isCoursesServicesChild ? 'courses_services' :
             isStudentsClientsChild ? 'students_clients' :
-                isPaymentsChild ? 'payments' : null;
+                isPaymentsChild ? 'payments' :
+                    isRecordsChild ? 'records' : null;
 
         const mobileNavHTML = `
             <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
@@ -115,6 +121,21 @@ const AdminSidebar = {
                                 ${this.mobileNavItemChild('record-payment', 'Record Payment', 'fa-indian-rupee-sign', 'record-payment')}
                                 ${this.mobileNavItemChild('all-payments', 'All Payments', 'fa-money-bill-trend-up', 'all-payments')}
                                 ${this.mobileNavItemChild('receipts', 'Receipts', 'fa-file-invoice', 'receipts')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Records Parent (collapsible on mobile) -->
+                    <div class="mobile-nav-parent ${activeGroup === 'records' ? 'expanded' : ''}" id="mobile-records-parent">
+                        <button class="mobile-nav-parent-btn" id="mobile-records-toggle">
+                            <i class="fa-solid fa-file-shield"></i>
+                            <span>Records</span>
+                            <i class="fa-solid fa-chevron-right mobile-nav-arrow"></i>
+                        </button>
+                        <div class="mobile-nav-children">
+                            <div style="min-height: 0;">
+                                ${this.mobileNavItemChild('archived', 'Archived', 'fa-box-archive', 'records/archived')}
+                                ${this.mobileNavItemChild('recently-deleted', 'Recently Deleted', 'fa-trash-clock', 'records/recently-deleted')}
                             </div>
                         </div>
                     </div>
@@ -235,6 +256,13 @@ const AdminSidebar = {
         document.getElementById('mobile-payments-toggle')?.addEventListener('click', (e) => {
             e.preventDefault();
             const parent = document.getElementById('mobile-payments-parent');
+            parent?.classList.toggle('expanded');
+        });
+
+        // Mobile Records expand/collapse toggle
+        document.getElementById('mobile-records-toggle')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            const parent = document.getElementById('mobile-records-parent');
             parent?.classList.toggle('expanded');
         });
     },

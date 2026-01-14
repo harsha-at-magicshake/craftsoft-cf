@@ -171,6 +171,7 @@ async function loadInquiries() {
         const { data, error } = await window.supabaseClient
             .from('inquiries')
             .select('*')
+            .is('deleted_at', null)
             .order('created_at', { ascending: false });
 
         if (error) throw error;
@@ -360,7 +361,10 @@ function bindBulkActions() {
                 async () => {
                     try {
                         const ids = Array.from(selectedInquiries);
-                        await window.supabaseClient.from('inquiries').delete().in('id', ids);
+                        await window.supabaseClient
+                            .from('inquiries')
+                            .update({ deleted_at: new Date().toISOString() })
+                            .in('id', ids);
 
                         window.AdminUtils.Toast.success('Deleted', `${ids.length} inquiries removed`);
                         selectedInquiries.clear();
@@ -718,7 +722,10 @@ function hideDeleteConfirm() {
 async function confirmDelete() {
     if (!inquiryToDelete) return;
     try {
-        await window.supabaseClient.from('inquiries').delete().eq('id', inquiryToDelete);
+        await window.supabaseClient
+            .from('inquiries')
+            .update({ deleted_at: new Date().toISOString() })
+            .eq('id', inquiryToDelete);
         hideDeleteConfirm();
         await loadInquiries();
     } catch (e) { console.error(e); }

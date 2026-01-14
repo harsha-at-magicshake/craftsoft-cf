@@ -114,6 +114,7 @@ async function loadClients() {
         const { data, error } = await window.supabaseClient
             .from('clients')
             .select('*')
+            .is('deleted_at', null)
             .order('created_at', { ascending: false });
 
         if (error) throw error;
@@ -885,21 +886,21 @@ async function confirmDelete() {
         const { error } = await window.supabaseClient
             .from('clients')
             .update({
-                status: 'INACTIVE'
+                deleted_at: new Date().toISOString()
             })
             .eq('id', deleteTargetId);
 
         if (error) throw error;
 
-        Toast.success('Deactivated', 'Client moved to inactive list');
+        Toast.success('Deleted', 'Client moved to Recovery Center');
         hideDeleteConfirm();
         await loadClients();
     } catch (e) {
-        console.error('Deactivation failed:', e);
-        Toast.error('Error', 'Failed to deactivate client');
+        console.error('Delete failed:', e);
+        Toast.error('Error', 'Failed to delete client');
     } finally {
         btn.disabled = false;
-        btn.innerHTML = 'Deactivate';
+        btn.innerHTML = 'Delete';
     }
 }
 

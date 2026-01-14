@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recovery Center - CraftSoft Admin</title>
+    <link rel="stylesheet" href="../../assets/css/admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .tabs-nav {
+            display: flex;
+            gap: 20px;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 20px;
+            padding-bottom: 0px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: var(--danger);
+            border-bottom-color: var(--danger);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-dark);
+        }
+
+        .trash-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 4px solid var(--danger);
+        }
+
+        .trash-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 1rem;
+        }
+
+        .trash-info p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .trash-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        .purge-tag {
+            color: var(--danger);
+            font-weight: 600;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .restore-btn {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .restore-btn:hover {
+            background: #10b981;
+            color: white;
+        }
+
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .info-banner {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: var(--info);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        #empty-trash-btn {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        #empty-trash-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+        <main class="admin-main">
+            <div id="header-container"></div>
+
+            <div class="admin-content">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title"><i class="fa-solid fa-trash-clock"></i> Recovery Center</h2>
+                        <p class="text-muted">Manage deleted records. Items are permanently removed after 30 days.</p>
+                    </div>
+                </div>
+
+                <div class="info-banner">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Items in the Recovery Center are automatically deleted after 30 days.</span>
+                    <button class="btn btn-outline btn-sm" id="empty-trash-btn" style="margin-left: auto;">
+                        <i class="fa-regular fa-trash-can"></i> Empty Trash Now
+                    </button>
+                </div>
+
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="students">Students</button>
+                    <button class="tab-btn" data-tab="clients">Clients</button>
+                    <button class="tab-btn" data-tab="inquiries">Inquiries</button>
+                    <!-- <button class="tab-btn" data-tab="receipts">Receipts</button> -->
+                </div>
+
+                <div class="filters-bar">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="trash-search" placeholder="Search deleted items...">
+                    </div>
+                </div>
+
+                <div id="trash-container">
+                    <div class="loading-spinner"></div>
+                </div>
+
+                <div id="pagination-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../assets/js/supabase-config.js"></script>
+    <script src="../../assets/js/admin-utils.js"></script>
+    <script src="../../assets/js/sidebar.js"></script>
+
+    <!-- Module Script -->
+    <script src="recently-deleted.js"></script>
+</body>
+
+</html>

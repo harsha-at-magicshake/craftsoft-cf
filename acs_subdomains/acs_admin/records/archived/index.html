@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archived Records - CraftSoft Admin</title>
+    <link rel="stylesheet" href="../../assets/css/admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .tabs-nav {
+            display: flex;
+            gap: 20px;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 20px;
+            padding-bottom: 0px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-dark);
+        }
+
+        .archive-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .archive-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 1rem;
+        }
+
+        .archive-info p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .restore-btn {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .restore-btn:hover {
+            background: #10b981;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div id="header-container"></div>
+
+            <div class="admin-content">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title"><i class="fa-solid fa-box-archive"></i> Archived Records</h2>
+                        <p class="text-muted">View and restore inactive students and clients.</p>
+                    </div>
+                </div>
+
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="students">Students</button>
+                    <button class="tab-btn" data-tab="clients">Clients</button>
+                    <!-- <button class="tab-btn" data-tab="inquiries">Inquiries</button> -->
+                </div>
+
+                <div class="filters-bar">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="archive-search" placeholder="Search archives...">
+                    </div>
+                </div>
+
+                <div id="archives-container">
+                    <!-- Dynamic Content -->
+                    <div class="loading-spinner"></div>
+                </div>
+
+                <div id="pagination-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../assets/js/supabase-config.js"></script>
+    <script src="../../assets/js/admin-utils.js"></script>
+    <script src="../../assets/js/sidebar.js"></script>
+
+    <!-- Module Script -->
+    <script src="archived.js"></script>
+</body>
+
+</html>

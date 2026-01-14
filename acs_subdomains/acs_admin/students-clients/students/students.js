@@ -172,6 +172,7 @@ async function loadStudents() {
         let query = window.supabaseClient
             .from('students')
             .select('*')
+            .is('deleted_at', null)
             .order('student_id', { ascending: true });
 
         const { data: students, error } = await query;
@@ -1022,12 +1023,10 @@ async function confirmDelete() {
     try {
         console.log('Soft-deleting student with id:', deleteTargetId);
 
-        // SOFT DELETE: Instead of deleting, mark as INACTIVE
-        // This preserves all payment history and prevents ID reuse issues
+        // SOFT DELETE: Move to Recovery Center
         const { error: studentError } = await window.supabaseClient
             .from('students')
             .update({
-                status: 'INACTIVE',
                 deleted_at: new Date().toISOString()
             })
             .eq('id', deleteTargetId);
@@ -1037,7 +1036,7 @@ async function confirmDelete() {
             throw studentError;
         }
 
-        Toast.success('Deactivated', 'Student moved to inactive. History preserved.');
+        Toast.success('Deleted', 'Student moved to Recovery Center.');
         hideDeleteConfirm();
         await loadStudents();
     } catch (e) {

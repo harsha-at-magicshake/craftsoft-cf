@@ -520,6 +520,65 @@ function renderSecurityTab() {
                 </div>
             </div>
         </div>
+
+        <!-- Data Retention Section -->
+        <div class="settings-section" style="margin-top: 2rem;" id="section-retention">
+            <div class="settings-section-header">
+                <h3 class="settings-section-title">
+                    <i class="fa-regular fa-trash-can"></i>
+                    Data Retention
+                </h3>
+            </div>
+            <div class="settings-section-body">
+                <p class="settings-section-description">
+                    Automatically permanently delete items from the Recovery Center after a set period.
+                </p>
+                <div class="timeout-display-row">
+                    <div class="timeout-current">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span id="retention-display">${getRetentionLabel(settingsData.retention_period || '30')}</span>
+                    </div>
+                    <button class="settings-edit-btn" data-section="retention">
+                        <i class="fa-solid fa-pen"></i> Edit
+                    </button>
+                </div>
+                <div class="settings-edit-form" id="retention-edit-form" style="display: none;">
+                    <div class="timeout-options-grid" id="retention-options">
+                        ${['7', '15', '30', 'never'].map(val => `
+                            <button class="timeout-option retention-option ${(settingsData.retention_period || '30') === val ? 'selected' : ''}" data-value="${val}">
+                                ${getRetentionLabel(val)}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="settings-form-actions">
+                        <button class="btn btn-outline cancel-edit-btn" data-section="retention">Cancel</button>
+                        <button class="btn btn-primary save-edit-btn" data-section="retention">
+                            <i class="fa-solid fa-check"></i> Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global Recovery Section -->
+        <div class="settings-section" style="margin-top: 2rem;" id="section-recovery">
+             <div class="settings-section-header">
+                <h3 class="settings-section-title">
+                    <i class="fa-solid fa-trash-arrow-up"></i>
+                    Global Recovery
+                </h3>
+            </div>
+            <div class="settings-section-body">
+                 <p class="settings-section-description">
+                    Bulk restore all recently deleted items by category.
+                </p>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button class="btn btn-outline" onclick="recoverAll('students')">Recover Students</button>
+                    <button class="btn btn-outline" onclick="recoverAll('clients')">Recover Clients</button>
+                    <button class="btn btn-outline" onclick="recoverAll('inquiries')">Recover Inquiries</button>
+                </div>
+            </div>
+        </div>
     `;
 }
 
@@ -549,6 +608,16 @@ function maskValue(value, showLast = 4, separator = '') {
 function getTimeoutLabel(val) {
     if (val === '0' || val === 'never') return 'Never';
     return `${val} minute${val === '1' ? '' : 's'}`;
+}
+
+function getRetentionLabel(val) {
+    if (val === 'never') return 'Never (Manual Empty)';
+    return `After ${val} Days`;
+}
+
+function getRetentionLabel(val) {
+    if (val === 'never') return 'Never (Manual Empty)';
+    return `After ${val} Days`;
 }
 
 function getBrowserName() {
@@ -655,6 +724,9 @@ function bindEvents() {
             if (section === 'timeout') {
                 document.getElementById('timeout-edit-form').style.display = 'block';
                 btn.style.display = 'none';
+            } else if (section === 'retention') {
+                document.getElementById('retention-edit-form').style.display = 'block';
+                btn.style.display = 'none';
             } else {
                 // Refresh data before editing to avoid "showing 0" UX issue
                 loadSettings().then(() => {
@@ -673,6 +745,9 @@ function bindEvents() {
             if (section === 'timeout') {
                 document.getElementById('timeout-edit-form').style.display = 'none';
                 document.querySelector('.settings-edit-btn[data-section="timeout"]').style.display = 'flex';
+            } else if (section === 'retention') {
+                document.getElementById('retention-edit-form').style.display = 'none';
+                document.querySelector('.settings-edit-btn[data-section="retention"]').style.display = 'flex';
             } else {
                 document.getElementById(`section-${section}`).classList.remove('editing');
                 renderSettings();
@@ -688,8 +763,17 @@ function bindEvents() {
 
     // Timeout options
     document.querySelectorAll('.timeout-option').forEach(opt => {
+        if (opt.classList.contains('retention-option')) return; // handled separately
         opt.addEventListener('click', () => {
-            document.querySelectorAll('.timeout-option').forEach(o => o.classList.remove('selected'));
+            document.querySelectorAll('.timeout-option:not(.retention-option)').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+        });
+    });
+
+    // Retention options
+    document.querySelectorAll('.retention-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            document.querySelectorAll('.retention-option').forEach(o => o.classList.remove('selected'));
             opt.classList.add('selected');
         });
     });
@@ -765,6 +849,16 @@ async function saveSection(section) {
                 settingsData.inactivity_timeout = selected.dataset.value;
             }
             Toast.success('Saved', 'Timeout setting updated');
+            renderSettings();
+            bindEvents();
+            return;
+        } else if (section === 'retention') {
+            const selected = document.querySelector('.retention-option.selected');
+            if (selected) {
+                await upsertSetting('retention_period', selected.dataset.value);
+                settingsData.retention_period = selected.dataset.value;
+            }
+            Toast.success('Saved', 'Retention policy updated');
             renderSettings();
             bindEvents();
             return;
@@ -1064,3 +1158,29 @@ async function registerCurrentSession() {
         }
     }
 }
+async function recoverAll(category) {
+    const table = category === 'students' ? 'students' :
+        category === 'clients' ? 'clients' : 'inquiries';
+
+    window.AdminUtils.Modal.confirm(
+        `Recover All ${category}`,
+        `Are you sure you want to restore all deleted ${category}? They will reappear in the active lists.`,
+        async () => {
+            try {
+                const { error } = await window.supabaseClient
+                    .from(table)
+                    .update({ deleted_at: null })
+                    .not('deleted_at', 'is', null);
+
+                if (error) throw error;
+
+                window.AdminUtils.Toast.success('Restored', `All deleted ${category} have been recovered.`);
+            } catch (e) {
+                console.error('Bulk recover error:', e);
+                window.AdminUtils.Toast.error('Error', 'Failed to recover items');
+            }
+        }
+    );
+}
+
+window.recoverAll = recoverAll;
