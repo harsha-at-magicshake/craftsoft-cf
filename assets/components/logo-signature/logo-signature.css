@@ -29,10 +29,10 @@
 }
 
 .logo-text-wrapper {
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-primary, 'Outfit', sans-serif);
     font-size: 1.4rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--gray-900);
     letter-spacing: -0.5px;
     display: flex;
     align-items: baseline;
@@ -43,16 +43,25 @@
     font-size: 2.2rem;
     font-weight: 400;
     margin-right: 6px;
-    color: #0f172a;
+    color: var(--gray-900);
     line-height: 1;
 }
 
 .logo-accent {
-    background: linear-gradient(135deg, #2896cd 0%, #00cec9 100%);
+    background: var(--accent-gradient, linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 1.4rem;
+}
+
+/* Footer Contrast Fix */
+.footer-brand .logo-sig {
+    color: var(--white);
+}
+
+.footer-brand .logo-text-wrapper {
+    color: var(--white);
 }
 
 /* Responsive adjustments */

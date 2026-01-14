@@ -16,6 +16,9 @@
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
     <link rel="stylesheet" href="../assets/css/master.css?v=2.0">
     <link rel="stylesheet" href="../assets/css/utilities/skeleton.css?v=1.0">
+    <!-- Logo Component Assets -->
+    <link rel="stylesheet" href="../assets/components/logo-signature/logo-signature.css">
+    <script src="../assets/components/logo-signature/logo-signature.js"></script>
     <!-- FOUC Protection -->
     <style>
         .no-fouc {
@@ -41,18 +44,10 @@
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
-            <a href="../" class="logo">
-                <div class="logo-placeholder"><i class="fas fa-graduation-cap"></i></div>
-                <span class="logo-text"><span class="logo-signature">Abhi's</span> <span class="highlight">Craft
-                        Soft</span></span>
-            </a>
+            <div class="logo-signature-component" data-link="../"></div>
             <ul class="nav-menu" id="nav-menu">
                 <div class="mobile-menu-header">
-                    <div class="logo">
-                        <div class="logo-placeholder"><i class="fas fa-graduation-cap"></i></div>
-                        <span class="logo-text"><span class="logo-signature">Abhi's</span> <span class="highlight">Craft
-                                Soft</span></span>
-                    </div>
+                    <div class="logo-signature-component" data-link="../"></div>
                     <button class="nav-close" id="navClose" aria-label="Close menu">&times;</button>
                 </div>
                 <li><a href="../" class="nav-link">Home</a></li>
@@ -244,10 +239,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <a href="../" class="logo"><span class="logo-text"><span class="logo-signature">Abhi's</span> <span
-                                class="highlight">Craft
-                                Soft</span></span>
-                    </a>
+                    <div class="logo-signature-component" data-link="../" data-footer></div>
                     <p>Empowering careers through quality education and professional IT services. Your journey to
                         excellence starts here.</p>
                 </div>
