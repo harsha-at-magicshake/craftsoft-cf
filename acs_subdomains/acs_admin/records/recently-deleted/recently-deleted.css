@@ -340,19 +340,6 @@
     .premium-card:active {
         box-shadow: 0 8px 24px rgba(40, 150, 205, 0.12);
     }
-
-    .section-actions {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .filter-group {
-        width: 100%;
-    }
-
-    .search-box {
-        width: 100%;
-    }
 }
 
 @media (max-width: 640px) {
