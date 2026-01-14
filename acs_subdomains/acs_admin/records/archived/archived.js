@@ -156,6 +156,8 @@ function renderList(items) {
                 </td>
             </tr>
         `;
+        const cardsContainer = document.getElementById('archives-cards');
+        if (cardsContainer) cardsContainer.innerHTML = '';
         document.getElementById('pagination-container').innerHTML = '';
         return;
     }
