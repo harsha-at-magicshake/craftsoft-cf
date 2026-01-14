@@ -114,10 +114,15 @@
             <div id="header-container"></div>
 
             <div class="admin-content">
-                <div class="page-header">
-                    <div>
-                        <h2 class="page-title"><i class="fa-solid fa-box"></i> Archived Records</h2>
-                        <p class="text-muted">View and restore inactive students and clients.</p>
+                <div class="section-header">
+                    <div class="section-header-left">
+                        <div class="section-icon">
+                            <i class="fa-solid fa-box"></i>
+                        </div>
+                        <div class="section-info">
+                            <h2 class="section-title">Archived Records</h2>
+                            <p class="section-subtitle">View and restore inactive students and clients.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -127,9 +132,20 @@
                     <!-- <button class="tab-btn" data-tab="inquiries">Inquiries</button> -->
                 </div>
 
-                <div class="filters-bar">
+                <div class="section-actions">
+                    <div class="filter-group">
+                        <div class="search-box">
+                            <i class="fa-solid fa-sort"></i>
+                            <select id="sort-order" class="form-select">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="name-asc">Name (A-Z)</option>
+                                <option value="name-desc">Name (Z-A)</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="search-box">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <i class="fa-solid fa-search"></i>
                         <input type="text" id="archive-search" placeholder="Search archives...">
                     </div>
                 </div>

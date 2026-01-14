@@ -50,6 +50,11 @@ function bindEvents() {
         filterAndRender(q);
     });
 
+    // Sort
+    document.getElementById('sort-order')?.addEventListener('change', () => {
+        filterAndRender();
+    });
+
     // Empty Trash
     document.getElementById('empty-trash-btn')?.addEventListener('click', emptyTrash);
 }
@@ -92,13 +97,29 @@ async function loadItems() {
 
 function filterAndRender(searchQ = '') {
     const q = searchQ || document.getElementById('trash-search')?.value.toLowerCase() || '';
+    const sortOrder = document.getElementById('sort-order')?.value || 'newest';
 
-    const filtered = allItems.filter(item => {
+    // 1. Filter
+    let filtered = allItems.filter(item => {
         const name = `${item.first_name || item.name || ''} ${item.last_name || ''}`.toLowerCase();
         const id = (item.student_id || item.client_id || item.inquiry_id || '').toLowerCase();
         const phone = (item.phone || '').toLowerCase();
 
         return !q || name.includes(q) || id.includes(q) || phone.includes(q);
+    });
+
+    // 2. Sort
+    filtered.sort((a, b) => {
+        if (sortOrder === 'newest') { // Deleted Recently
+            return new Date(b.deleted_at) - new Date(a.deleted_at);
+        } else if (sortOrder === 'oldest') { // Deleted Long Ago
+            return new Date(a.deleted_at) - new Date(b.deleted_at);
+        } else if (sortOrder === 'name-asc') {
+            const nameA = (a.first_name || a.name || '') + (a.last_name || '');
+            const nameB = (b.first_name || b.name || '') + (b.last_name || '');
+            return nameA.localeCompare(nameB);
+        }
+        return 0;
     });
 
     renderList(filtered);
