@@ -38,7 +38,69 @@ document.addEventListener('DOMContentLoaded', function () {
     initScrollProgress();
     initCardGlow();
     initHeroParallax();
+    initWorkspaceTabs();
 });
+
+/* ============================================
+   WORKSPACE TABS AUTO-ROTATION
+   ============================================ */
+function initWorkspaceTabs() {
+    const tabs = document.querySelectorAll('.workspace-tab');
+    const panels = document.querySelectorAll('.workspace-panel');
+    const progressBar = document.querySelector('.workspace-progress .progress-bar');
+
+    if (tabs.length === 0 || panels.length === 0) return;
+
+    let currentIndex = 0;
+    let progress = 0;
+    const duration = 5000; // 5 seconds per tab
+    const interval = 50; // Update progress every 50ms
+    let progressInterval;
+    let isPaused = false;
+
+    function switchTab(index) {
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+
+        tabs[index].classList.add('active');
+        panels[index].classList.add('active');
+
+        progress = 0;
+        if (progressBar) progressBar.style.width = '0%';
+    }
+
+    function startProgress() {
+        progressInterval = setInterval(() => {
+            if (isPaused) return;
+
+            progress += (interval / duration) * 100;
+            if (progressBar) progressBar.style.width = progress + '%';
+
+            if (progress >= 100) {
+                currentIndex = (currentIndex + 1) % tabs.length;
+                switchTab(currentIndex);
+            }
+        }, interval);
+    }
+
+    // Manual tab click
+    tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => {
+            currentIndex = index;
+            switchTab(index);
+        });
+    });
+
+    // Pause on hover
+    const workspace = document.querySelector('.hero-workspace');
+    if (workspace) {
+        workspace.addEventListener('mouseenter', () => isPaused = true);
+        workspace.addEventListener('mouseleave', () => isPaused = false);
+    }
+
+    // Start auto-rotation
+    startProgress();
+}
 
 /* ============================================
    HERO PARALLAX EFFECT

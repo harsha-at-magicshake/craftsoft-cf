@@ -630,75 +630,306 @@
     animation: blink 1s step-end infinite;
 }
 
-/* Floating Cards Repositioned for IDE */
-.hero-ide-mockup .floating-card {
-    position: absolute;
-}
-
-.hero-ide-mockup .card-1 {
-    top: -25px;
-    right: -60px;
-}
-
-.hero-ide-mockup .card-2 {
-    top: 30%;
-    left: -70px;
-}
-
-.hero-ide-mockup .card-3 {
-    bottom: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
 /* ============================================
-   Hero Stats Strip (Glass)
+   Multi-Tab Workspace
    ============================================ */
-.hero-stats-strip {
+.hero-workspace {
+    background: rgba(30, 30, 40, 0.95);
+    border-radius: 16px;
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    animation: fadeIn 0.8s ease 0.3s backwards;
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+}
+
+/* Tab Bar */
+.workspace-tabs {
+    display: flex;
+    background: rgba(45, 45, 55, 0.9);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.workspace-tab {
+    flex: 1;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
-    padding: 1.25rem 2rem;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
-    box-shadow:
-        0 10px 40px rgba(40, 150, 205, 0.1),
-        0 0 0 1px rgba(255, 255, 255, 0.5);
-    margin: 0 auto;
-    max-width: 900px;
-    position: relative;
-    z-index: 10;
-    animation: fadeInUp 0.6s ease 0.5s backwards;
+    gap: 6px;
 }
 
-.hero-stats-strip .stat-item {
+.workspace-tab:hover {
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.workspace-tab.active {
+    color: #fff;
+    background: rgba(40, 150, 205, 0.2);
+    border-bottom: 2px solid #2896cd;
+}
+
+.workspace-tab i {
+    font-size: 0.9rem;
+}
+
+/* Panels Container */
+.workspace-panels {
+    position: relative;
+    min-height: 220px;
+}
+
+.workspace-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.workspace-panel.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Code Panel */
+.panel-line {
+    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: #abb2bf;
+}
+
+.ln {
+    color: rgba(255, 255, 255, 0.25);
+    width: 20px;
+    display: inline-block;
+    text-align: right;
+    margin-right: 16px;
+}
+
+.kw {
+    color: #c678dd;
+}
+
+.var {
+    color: #e5c07b;
+}
+
+.prop {
+    color: #61afef;
+}
+
+.str {
+    color: #98c379;
+}
+
+.fn {
+    color: #61afef;
+}
+
+.mt {
+    color: #e5c07b;
+}
+
+/* Design Panel */
+.design-canvas {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    height: 100%;
+}
+
+.design-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.design-toolbar .tool {
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    text-align: center;
-    flex-direction: row;
-}
-
-.hero-stats-strip .stat-number {
-    font-size: 1.75rem;
-}
-
-.hero-stats-strip .stat-suffix {
-    font-size: 1.75rem;
-}
-
-.hero-stats-strip .stat-label {
+    justify-content: center;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.05);
     font-size: 0.8rem;
-    margin-top: 0;
-    margin-left: 0.25rem;
 }
 
-.hero-stats-strip .stat-divider {
-    height: 40px;
-    width: 1px;
-    background: var(--gray-200);
+.design-toolbar .tool.active {
+    background: rgba(108, 92, 231, 0.3);
+    color: #a29bfe;
+}
+
+.design-artboard {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 8px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    position: relative;
+    min-height: 140px;
+}
+
+.design-element {
+    position: absolute;
+    border-radius: 6px;
+}
+
+.design-element.el-1 {
+    top: 15%;
+    left: 10%;
+    width: 80%;
+    height: 20px;
+    background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+}
+
+.design-element.el-2 {
+    top: 45%;
+    left: 10%;
+    width: 40%;
+    height: 30px;
+    background: #2896cd;
+    border-radius: 8px;
+}
+
+.design-element.el-3 {
+    top: 45%;
+    right: 10%;
+    width: 30%;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.design-label {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.design-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.7rem;
+}
+
+.design-layers .layer {
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.design-layers .layer.active {
+    background: rgba(108, 92, 231, 0.2);
+    color: #a29bfe;
+}
+
+.design-layers .layer i {
+    font-size: 0.6rem;
+}
+
+/* Cloud Panel */
+.cloud-console {
+    height: 100%;
+}
+
+.console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 0.75rem;
+}
+
+.console-header .region {
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.console-header .status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.console-header .status.online {
+    color: #27ca40;
+}
+
+.console-header .status i {
+    font-size: 0.5rem;
+}
+
+.console-services {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.console-services .service {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.console-services .service i {
+    color: #ff9500;
+    font-size: 1rem;
+}
+
+.console-services .service .badge {
+    margin-left: auto;
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    background: rgba(0, 184, 148, 0.2);
+    color: #00b894;
+    border-radius: 10px;
+}
+
+/* Progress Bar */
+.workspace-progress {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.workspace-progress .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #2896cd, #6c5ce7);
+    transition: width 0.1s linear;
 }
 
 /* ============================================

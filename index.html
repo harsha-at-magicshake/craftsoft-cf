@@ -249,33 +249,84 @@
                         <span class="stat-label">Rating</span>
                     </div>
                 </div>
-            </div>
-            <!-- Glass IDE Mockup -->
-            <div class="hero-image">
-                <div class="hero-ide-mockup">
-                    <div class="ide-header">
-                        <div class="ide-dots">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
+                <!-- Multi-Tab Workspace Mockup -->
+                <div class="hero-image">
+                    <div class="hero-workspace">
+                        <!-- Tab Bar -->
+                        <div class="workspace-tabs">
+                            <button class="workspace-tab active" data-tab="code">
+                                <i class="fas fa-code"></i> Code
+                            </button>
+                            <button class="workspace-tab" data-tab="design">
+                                <i class="fas fa-palette"></i> Design
+                            </button>
+                            <button class="workspace-tab" data-tab="cloud">
+                                <i class="fas fa-cloud"></i> Cloud
+                            </button>
                         </div>
-                        <span class="ide-title">main.js - Craftsoft</span>
-                    </div>
-                    <div class="ide-body">
-                        <div class="ide-line"><span class="line-number">1</span><span class="keyword">const</span> <span
-                                class="variable">student</span> = {</div>
-                        <div class="ide-line"><span class="line-number">2</span> <span class="property">name</span>:
-                            <span class="string">"You"</span>,</div>
-                        <div class="ide-line"><span class="line-number">3</span> <span class="property">skills</span>:
-                            [<span class="string">"Design"</span>, <span class="string">"Code"</span>],</div>
-                        <div class="ide-line"><span class="line-number">4</span> <span class="property">future</span>:
-                            <span class="string">"<span class="ide-typing-text">Bright</span>"</span></div>
-                        <div class="ide-line"><span class="line-number">5</span>};</div>
-                        <div class="ide-line"><span class="line-number">6</span></div>
-                        <div class="ide-line"><span class="line-number">7</span><span
-                                class="function">craftsoft</span>.<span class="method">transform</span>(student);</div>
-                        <div class="ide-line typing-active"><span class="line-number">8</span><span class="comment">//
-                                Your journey starts here...<span class="ide-cursor">|</span></span></div>
+                        <!-- Tab Content Panels -->
+                        <div class="workspace-panels">
+                            <!-- Code Panel -->
+                            <div class="workspace-panel active" data-panel="code">
+                                <div class="panel-line"><span class="ln">1</span><span class="kw">const</span> <span
+                                        class="var">student</span> = {</div>
+                                <div class="panel-line"><span class="ln">2</span> <span class="prop">name</span>: <span
+                                        class="str">"You"</span>,</div>
+                                <div class="panel-line"><span class="ln">3</span> <span class="prop">skills</span>:
+                                    [<span class="str">"React"</span>, <span class="str">"Node"</span>],</div>
+                                <div class="panel-line"><span class="ln">4</span> <span class="prop">future</span>:
+                                    <span class="str">"Full Stack Dev"</span></div>
+                                <div class="panel-line"><span class="ln">5</span>};</div>
+                                <div class="panel-line"><span class="ln">6</span><span class="fn">craftsoft</span>.<span
+                                        class="mt">transform</span>(student);</div>
+                            </div>
+                            <!-- Design Panel -->
+                            <div class="workspace-panel" data-panel="design">
+                                <div class="design-canvas">
+                                    <div class="design-toolbar">
+                                        <span class="tool active"><i class="fas fa-mouse-pointer"></i></span>
+                                        <span class="tool"><i class="fas fa-vector-square"></i></span>
+                                        <span class="tool"><i class="fas fa-pen-nib"></i></span>
+                                        <span class="tool"><i class="fas fa-font"></i></span>
+                                    </div>
+                                    <div class="design-artboard">
+                                        <div class="design-element el-1"></div>
+                                        <div class="design-element el-2"></div>
+                                        <div class="design-element el-3"></div>
+                                        <div class="design-label">Your Design</div>
+                                    </div>
+                                    <div class="design-layers">
+                                        <div class="layer"><i class="fas fa-square"></i> Header</div>
+                                        <div class="layer active"><i class="fas fa-circle"></i> Button</div>
+                                        <div class="layer"><i class="fas fa-font"></i> Text</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Cloud Panel -->
+                            <div class="workspace-panel" data-panel="cloud">
+                                <div class="cloud-console">
+                                    <div class="console-header">
+                                        <span class="region"><i class="fas fa-globe"></i> ap-south-1</span>
+                                        <span class="status online"><i class="fas fa-circle"></i> All Systems
+                                            Active</span>
+                                    </div>
+                                    <div class="console-services">
+                                        <div class="service"><i class="fas fa-server"></i> EC2 <span class="badge">3
+                                                Running</span></div>
+                                        <div class="service"><i class="fas fa-database"></i> RDS <span
+                                                class="badge">Connected</span></div>
+                                        <div class="service"><i class="fas fa-hdd"></i> S3 <span class="badge">12
+                                                Buckets</span></div>
+                                        <div class="service"><i class="fas fa-code-branch"></i> Lambda <span
+                                                class="badge">Active</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Auto-Rotate Indicator -->
+                        <div class="workspace-progress">
+                            <div class="progress-bar"></div>
+                        </div>
                     </div>
                 </div>
             </div>
