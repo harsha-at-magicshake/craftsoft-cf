@@ -13,10 +13,10 @@
 }
 
 .course-card {
-    background: linear-gradient(135deg, var(--primary-50) 0%, var(--white) 100%);
+    background: linear-gradient(135deg, #e8f4fc 0%, #dbeafe 50%, #e0f2fe 100%);
     border-radius: var(--radius-xl);
     padding: var(--spacing-lg);
-    border: 1px solid var(--primary-100);
+    border: 1px solid rgba(59, 130, 246, 0.12);
     transition: var(--transition-base);
 }
 

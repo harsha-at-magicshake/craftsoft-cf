@@ -690,12 +690,18 @@ function initCurriculumAccordion() {
     if (modules.length === 0) return;
 
     // Open the first module by default in each level
-    document.querySelectorAll('.curriculum-level').forEach(level => {
-        const firstModule = level.querySelector('.curriculum-module');
-        if (firstModule) {
-            firstModule.classList.add('active');
-        }
-    });
+    const levels = document.querySelectorAll('.curriculum-level');
+    if (levels.length > 0) {
+        levels.forEach(level => {
+            const firstModule = level.querySelector('.curriculum-module');
+            if (firstModule) {
+                firstModule.classList.add('active');
+            }
+        });
+    } else {
+        // If no levels are found, open the very first module on the page
+        modules[0].classList.add('active');
+    }
 
     // Toggle accordion on click
     modules.forEach(module => {

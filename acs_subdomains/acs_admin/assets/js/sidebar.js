@@ -51,8 +51,8 @@ const AdminSidebar = {
                     ${this.navItem('receipts', 'Receipts', 'fa-file-invoice')}
                     
                     <!-- Records Section -->
-                    ${this.navItem('archived', 'Archived', 'fa-solid fa-box', 'records/archived')}
-                    ${this.navItem('recently-deleted', 'Trash', 'fa-solid fa-recycle', 'records/recently-deleted')}
+                    ${this.navItem('archived', 'Archived', 'fa-solid fa-box', 'archived')}
+                    ${this.navItem('recently-deleted', 'Trash', 'fa-solid fa-recycle', 'recently-deleted')}
 
                     ${this.navItem('settings', 'Settings', 'fa-gear')}
                 </nav>
@@ -134,8 +134,8 @@ const AdminSidebar = {
                         </button>
                         <div class="mobile-nav-children">
                             <div style="min-height: 0;">
-                                ${this.mobileNavItemChild('archived', 'Archived', 'fa-solid fa-box', 'records/archived')}
-                                ${this.mobileNavItemChild('recently-deleted', 'Recently Deleted', 'fa-solid fa-recycle', 'records/recently-deleted')}
+                                ${this.mobileNavItemChild('archived', 'Archived', 'fa-solid fa-box', 'archived')}
+                                ${this.mobileNavItemChild('recently-deleted', 'Recently Deleted', 'fa-solid fa-recycle', 'recently-deleted')}
                             </div>
                         </div>
                     </div>

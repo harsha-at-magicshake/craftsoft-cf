@@ -169,8 +169,8 @@
     display: flex;
     align-items: flex-start;
     gap: var(--spacing-xl);
-    background: linear-gradient(135deg, var(--white) 0%, var(--primary-50) 100%);
-    border: 1px solid rgba(59, 130, 246, 0.1);
+    background: linear-gradient(135deg, #e8f4fc 0%, #dbeafe 50%, #e0f2fe 100%);
+    border: 1px solid rgba(59, 130, 246, 0.12);
     border-radius: 1.5rem;
     padding: var(--spacing-2xl);
     transition: var(--transition-base);
@@ -276,8 +276,8 @@
 }
 
 .service-card-full {
-    background: linear-gradient(135deg, var(--white) 0%, var(--primary-50) 100%);
-    border: 1px solid var(--primary-100);
+    background: linear-gradient(135deg, #e8f4fc 0%, #dbeafe 50%, #e0f2fe 100%);
+    border: 1px solid rgba(59, 130, 246, 0.12);
     border-radius: var(--radius-2xl);
     padding: var(--spacing-2xl);
     transition: var(--transition-base);
@@ -708,7 +708,7 @@
 }
 
 .curriculum-module.active .module-content {
-    max-height: 500px;
+    max-height: 2000px;
     padding: 0 var(--spacing-lg) var(--spacing-lg);
     padding-left: calc(var(--spacing-lg) + 42px);
 }
