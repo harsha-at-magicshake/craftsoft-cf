@@ -641,12 +641,8 @@ async function convertToStudent(id) {
     try {
         const { data } = await window.supabaseClient.from('inquiries').select('*').eq('id', id).single();
         if (data) {
-            // Check if this is a service inquiry
-            const isServiceInquiry = document.querySelector('input[name="inquiry-type"]:checked')?.value === 'service';
-            // Also check if the inquiry has service codes (services start with different patterns)
-            const hasServiceCodes = (data.courses || []).some(code =>
-                ['WDEV', 'MDEV', 'UIUX', 'SEO', 'DIGI', 'GRPH', 'BRND'].includes(code.toUpperCase())
-            );
+            // Check if this is a service inquiry (Services start with 'S-')
+            const isServiceInquiry = (data.courses || []).some(code => code && code.startsWith('S-'));
 
             const p = new URLSearchParams({
                 prefill: '1',
@@ -657,7 +653,7 @@ async function convertToStudent(id) {
                 readable_id: data.inquiry_id || ''
             });
 
-            if (isServiceInquiry || hasServiceCodes) {
+            if (isServiceInquiry) {
                 // Redirect to Clients page (for service inquiries)
                 p.set('services', (data.courses || []).join(','));
                 window.location.href = `/clients/?${p.toString()}`;
