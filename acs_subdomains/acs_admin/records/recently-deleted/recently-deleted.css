@@ -99,11 +99,10 @@
     font-size: 0.95rem;
 }
 
-/* Action Buttons - Premium Icon Style */
+/* Action Buttons */
 .action-buttons {
     display: flex;
     gap: 0.5rem;
-    justify-content: flex-end;
 }
 
 .btn-icon {

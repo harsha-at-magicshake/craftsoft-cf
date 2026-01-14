@@ -112,11 +112,10 @@
     margin-right: 0.25rem;
 }
 
-/* Action Buttons - Premium Style */
+/* Action Buttons */
 .action-buttons {
     display: flex;
     gap: 0.5rem;
-    justify-content: flex-end;
 }
 
 .action-btn {
