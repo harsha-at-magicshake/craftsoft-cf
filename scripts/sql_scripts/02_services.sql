@@ -27,27 +27,29 @@ ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 -- Drop existing policies
 DROP POLICY IF EXISTS "Allow public read services" ON services;
 DROP POLICY IF EXISTS "Allow admin all services" ON services;
+DROP POLICY IF EXISTS "Allow public read on tutors" ON tutors;
+DROP POLICY IF EXISTS "admin_manage_tutors" ON tutors;
+DROP POLICY IF EXISTS "admin_mutate_tutors" ON tutors;
+DROP POLICY IF EXISTS "select_tutors" ON tutors;
 DROP POLICY IF EXISTS "Active admins can manage services" ON services;
 DROP POLICY IF EXISTS "Public can read services" ON services;
+DROP POLICY IF EXISTS "select_courses" ON courses;
+DROP POLICY IF EXISTS "admin_manage_courses" ON courses;
+DROP POLICY IF EXISTS "admin_mutate_courses" ON courses;
 DROP POLICY IF EXISTS "select_services" ON services;
 DROP POLICY IF EXISTS "admin_manage_services" ON services;
+DROP POLICY IF EXISTS "admin_mutate_services" ON services;
 
--- POLICY: Public read access for everyone (anon and authenticated)
+-- POLICY: Single SELECT access for everyone (anon and authenticated)
 CREATE POLICY "select_services" ON services
     FOR SELECT 
     TO public
     USING (true);
 
--- POLICY: Active admins can manage services (Insert, Update, Delete)
-CREATE POLICY "admin_manage_services" ON services
-    FOR ALL
+-- POLICY: Admin Mutations (Insert, Update, Delete)
+CREATE POLICY "admin_mutate_services" ON services
+    FOR INSERT, UPDATE, DELETE
     TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM admins 
-            WHERE id = (select auth.uid()) AND status = 'ACTIVE'
-        )
-    )
     WITH CHECK (
         EXISTS (
             SELECT 1 FROM admins 

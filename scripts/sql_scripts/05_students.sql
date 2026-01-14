@@ -63,16 +63,10 @@ CREATE POLICY "select_students" ON students
         )
     );
 
--- POLICY: Active admins can manage students (Insert, Update, Delete)
-CREATE POLICY "admin_manage_students" ON students
-    FOR ALL
+-- POLICY: Admin Mutations (Insert, Update, Delete)
+CREATE POLICY "admin_mutate_students" ON students
+    FOR INSERT, UPDATE, DELETE
     TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM admins 
-            WHERE id = (select auth.uid()) AND status = 'ACTIVE'
-        )
-    )
     WITH CHECK (
         EXISTS (
             SELECT 1 FROM admins 

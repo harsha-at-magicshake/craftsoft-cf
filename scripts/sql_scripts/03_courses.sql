@@ -33,7 +33,7 @@ DROP POLICY IF EXISTS "Public can read courses" ON courses;
 DROP POLICY IF EXISTS "select_courses" ON courses;
 DROP POLICY IF EXISTS "admin_manage_courses" ON courses;
 
--- POLICY: Global read access (Public see ACTIVE, Admins see ALL)
+-- POLICY: Global SELECT access (Public see ACTIVE, Admins see ALL)
 CREATE POLICY "select_courses" ON courses
     FOR SELECT 
     TO public
@@ -46,16 +46,10 @@ CREATE POLICY "select_courses" ON courses
         )
     );
 
--- POLICY: Active admins can manage courses (All actions)
-CREATE POLICY "admin_manage_courses" ON courses
-    FOR ALL
+-- POLICY: Admin Mutations (Insert, Update, Delete)
+CREATE POLICY "admin_mutate_courses" ON courses
+    FOR INSERT, UPDATE, DELETE
     TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM admins 
-            WHERE id = (select auth.uid()) AND status = 'ACTIVE'
-        )
-    )
     WITH CHECK (
         EXISTS (
             SELECT 1 FROM admins 

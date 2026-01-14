@@ -61,16 +61,21 @@ CREATE POLICY "anon_insert_inquiries" ON inquiries
         length(phone) > 0
     );
 
--- POLICY: Active admins can manage all inquiries (All actions)
-CREATE POLICY "admin_manage_inquiries" ON inquiries
-    FOR ALL
+-- POLICY: Admin SELECT access for inquiries
+CREATE POLICY "admin_select_inquiries" ON inquiries
+    FOR SELECT 
     TO authenticated
     USING (
         EXISTS (
             SELECT 1 FROM admins 
             WHERE id = (select auth.uid()) AND status = 'ACTIVE'
         )
-    )
+    );
+
+-- POLICY: Admin Mutations (Insert, Update, Delete)
+CREATE POLICY "admin_mutate_inquiries" ON inquiries
+    FOR INSERT, UPDATE, DELETE
+    TO authenticated
     WITH CHECK (
         EXISTS (
             SELECT 1 FROM admins 

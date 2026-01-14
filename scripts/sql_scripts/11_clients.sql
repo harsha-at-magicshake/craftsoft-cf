@@ -48,16 +48,10 @@ CREATE POLICY "select_clients" ON clients
         )
     );
 
--- POLICY: Active admins can manage all clients (Insert, Update, Delete)
-CREATE POLICY "admin_manage_clients" ON clients
-    FOR ALL 
+-- POLICY: Admin Mutations (Insert, Update, Delete)
+CREATE POLICY "admin_mutate_clients" ON clients
+    FOR INSERT, UPDATE, DELETE
     TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM admins 
-            WHERE id = (select auth.uid()) AND status = 'ACTIVE'
-        )
-    )
     WITH CHECK (
         EXISTS (
             SELECT 1 FROM admins 

@@ -33,16 +33,23 @@ DROP POLICY IF EXISTS "Active admins can delete tutors" ON tutors;
 DROP POLICY IF EXISTS "Allow public read on tutors" ON tutors;
 DROP POLICY IF EXISTS "admin_manage_tutors" ON tutors;
 
--- POLICY: Active admins can manage all tutor records
-CREATE POLICY "admin_manage_tutors" ON tutors
-    FOR ALL 
-    TO authenticated
+-- POLICY: Global SELECT access for tutors
+CREATE POLICY "select_tutors" ON tutors
+    FOR SELECT 
+    TO public
     USING (
+        status = 'ACTIVE'
+        OR
         EXISTS (
             SELECT 1 FROM admins 
             WHERE id = (select auth.uid()) AND status = 'ACTIVE'
         )
-    )
+    );
+
+-- POLICY: Admin Mutations (Insert, Update, Delete)
+CREATE POLICY "admin_mutate_tutors" ON tutors
+    FOR INSERT, UPDATE, DELETE
+    TO authenticated
     WITH CHECK (
         EXISTS (
             SELECT 1 FROM admins 

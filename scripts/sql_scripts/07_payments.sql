@@ -44,16 +44,10 @@ CREATE POLICY "select_payments" ON payments
     TO public
     USING (true);
 
--- POLICY: Active admins can manage all payments (Insert, Update, Delete)
-CREATE POLICY "admin_manage_payments" ON payments
-    FOR ALL 
+-- POLICY: Admin Mutations (Insert, Update, Delete)
+CREATE POLICY "admin_mutate_payments" ON payments
+    FOR INSERT, UPDATE, DELETE
     TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM admins 
-            WHERE id = (select auth.uid()) AND status = 'ACTIVE'
-        )
-    )
     WITH CHECK (
         EXISTS (
             SELECT 1 FROM admins 

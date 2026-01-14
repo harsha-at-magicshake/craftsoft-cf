@@ -41,16 +41,10 @@ CREATE POLICY "select_receipts" ON receipts
     TO public
     USING (true);
 
--- POLICY: Active admins can manage all receipts (Insert, Update, Delete)
-CREATE POLICY "admin_manage_receipts" ON receipts
-    FOR ALL 
+-- POLICY: Admin Mutations (Insert, Update, Delete)
+CREATE POLICY "admin_mutate_receipts" ON receipts
+    FOR INSERT, UPDATE, DELETE
     TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM admins 
-            WHERE id = (select auth.uid()) AND status = 'ACTIVE'
-        )
-    )
     WITH CHECK (
         EXISTS (
             SELECT 1 FROM admins 
