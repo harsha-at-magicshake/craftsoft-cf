@@ -91,8 +91,25 @@
                     </div>
                 </div>
 
-                <div id="trash-container">
-                    <div class="loading-spinner"></div>
+                <div class="table-container">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th width="15%">ID</th>
+                                <th width="25%">NAME</th>
+                                <th width="20%">DELETED ON</th>
+                                <th width="20%">STATUS</th>
+                                <th width="20%" class="text-right">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trash-tbody">
+                            <!-- Dynamic Content -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="trash-loading" class="loading-state" style="display: none;">
+                    <div class="spinner"></div>
                 </div>
 
                 <div id="pagination-container"></div>

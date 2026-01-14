@@ -62,8 +62,11 @@ function bindEvents() {
 }
 
 async function loadItems() {
-    const container = document.getElementById('archives-container');
-    container.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Loading archives...</p></div>';
+    const tbody = document.getElementById('archives-tbody');
+    const loading = document.getElementById('archives-loading');
+
+    tbody.innerHTML = '';
+    loading.style.display = 'flex';
 
     try {
         let query;
@@ -89,7 +92,8 @@ async function loadItems() {
 
     } catch (e) {
         console.error('Error loading archives:', e);
-        container.innerHTML = '<div class="error-state"><i class="fa-solid fa-triangle-exclamation"></i><p>Failed to load data</p></div>';
+        loading.style.display = 'none';
+        tbody.innerHTML = '<tr><td colspan="5"><div class="error-state"><i class="fa-solid fa-triangle-exclamation"></i><p>Failed to load data</p></div></td></tr>';
     }
 }
 
@@ -128,15 +132,21 @@ function filterAndRender(searchQ = '') {
 }
 
 function renderList(items) {
-    const container = document.getElementById('archives-container');
+    const tbody = document.getElementById('archives-tbody');
+    const loading = document.getElementById('archives-loading');
+    loading.style.display = 'none';
 
     if (items.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <i class="fa-solid fa-box-open"></i>
-                <h3>No Archived Records</h3>
-                <p>No inactive ${currentTab} found.</p>
-            </div>
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    <div class="empty-state">
+                        <i class="fa-solid fa-box-open"></i>
+                        <h3>No Archived Records</h3>
+                        <p>No inactive ${currentTab} found.</p>
+                    </div>
+                </td>
+            </tr>
         `;
         document.getElementById('pagination-container').innerHTML = '';
         return;
@@ -147,34 +157,40 @@ function renderList(items) {
     const start = (currentPage - 1) * itemsPerPage;
     const paginated = items.slice(start, start + itemsPerPage);
 
-    container.innerHTML = paginated.map(item => {
-        const id = item.student_id || item.client_id;
+    tbody.innerHTML = paginated.map(item => {
+        const id = item.student_id || item.client_id || 'N/A';
         const name = `${item.first_name} ${item.last_name || ''}`;
-        const typeLabel = currentTab === 'students' ? 'Student' : 'Client';
 
         // Context info
         let contextInfo = '';
         if (currentTab === 'students') {
             const courseCount = (item.courses || []).length;
-            contextInfo = `${courseCount} Course${courseCount !== 1 ? 's' : ''}`;
+            contextInfo = `<span class="badge ${courseCount > 0 ? 'badge-blue' : 'badge-gray'}">${courseCount} Course${courseCount !== 1 ? 's' : ''}</span>`;
         } else {
             const serviceCount = (item.services || []).length;
-            contextInfo = `${serviceCount} Service${serviceCount !== 1 ? 's' : ''}`;
+            contextInfo = `<span class="badge ${serviceCount > 0 ? 'badge-blue' : 'badge-gray'}">${serviceCount} Service${serviceCount !== 1 ? 's' : ''}</span>`;
         }
 
         return `
-            <div class="archive-card">
-                <div class="archive-info">
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <span class="badge badge-secondary">${id}</span>
-                        <h4>${name}</h4>
+            <tr>
+                <td><span class="badge badge-secondary">${id}</span></td>
+                <td>
+                    <div class="table-user-info">
+                        <div class="table-user-avatar">${window.AdminUtils.AccountManager.getInitials(name)}</div>
+                        <span class="table-user-name">${name}</span>
                     </div>
-                    <p>${contextInfo} • ${item.phone || 'No Phone'}</p>
-                </div>
-                <button class="restore-btn" onclick="restoreItem('${item.id}')">
-                    <i class="fa-solid fa-rotate-left"></i> Activate
-                </button>
-            </div>
+                </td>
+                <td>
+                    ${item.phone ? `<div class="text-sm"><i class="fa-solid fa-phone text-xs text-muted" style="margin-right:5px;"></i>${item.phone}</div>` : '<span class="text-muted">-</span>'}
+                    ${item.email ? `<div class="text-sm text-muted" style="margin-top:2px;">${item.email}</div>` : ''}
+                </td>
+                 <td>${contextInfo}</td>
+                <td class="text-right">
+                    <button class="btn btn-sm btn-outline-success" onclick="restoreItem('${item.id}')" title="Restore to Active">
+                        <i class="fa-solid fa-rotate-left"></i> Activate
+                    </button>
+                </td>
+            </tr>
         `;
     }).join('');
 

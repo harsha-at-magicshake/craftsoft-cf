@@ -30,79 +30,78 @@
     color: var(--text-dark);
 }
 
-.trash-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid var(--border-color);
+/* Table specific styles if needed (overriding or supplementing global) */
+.premium-table td {
+    vertical-align: middle;
+}
+
+.table-user-info {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    border-left: 4px solid var(--danger);
+    gap: 12px;
 }
 
-.trash-info h4 {
-    margin: 0 0 5px 0;
-    font-size: 1rem;
-}
-
-.trash-info p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
-.trash-meta {
+.table-user-avatar {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-100);
+    color: var(--primary-600);
+    border-radius: 50%;
     display: flex;
-    gap: 15px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-top: 5px;
-}
-
-.purge-tag {
-    color: var(--danger);
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
     font-weight: 600;
-    background: rgba(239, 68, 68, 0.1);
-    padding: 2px 8px;
-    border-radius: 4px;
 }
 
-.action-group {
+.table-user-name {
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.action-buttons {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
-.restore-btn {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.85rem;
+.btn-icon {
+    background: none;
+    border: none;
     cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    opacity: 0.7;
 }
 
-.restore-btn:hover {
-    background: #10b981;
-    color: white;
+.btn-icon:hover {
+    background: var(--bg-body);
+    opacity: 1;
 }
 
-.delete-btn {
+/* Badge supplements */
+.badge-secondary {
+    background: var(--bg-body);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}
+
+.badge-error {
     background: rgba(239, 68, 68, 0.1);
     color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    cursor: pointer;
 }
 
-.delete-btn:hover {
-    background: #ef4444;
-    color: white;
+.badge-info-soft {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
 }
+
+.badge-gray {
+    background: var(--bg-body);
+    color: var(--text-muted);
+}
+
 
 .info-banner {
     background: rgba(59, 130, 246, 0.1);

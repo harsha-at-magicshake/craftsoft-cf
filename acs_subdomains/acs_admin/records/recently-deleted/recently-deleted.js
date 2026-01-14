@@ -65,8 +65,11 @@ function bindEvents() {
 }
 
 async function loadItems() {
-    const container = document.getElementById('trash-container');
-    container.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Scanning deleted files...</p></div>';
+    const tbody = document.getElementById('trash-tbody');
+    const loading = document.getElementById('trash-loading');
+
+    tbody.innerHTML = '';
+    loading.style.display = 'flex';
 
     try {
         let table = currentTab;
@@ -92,10 +95,11 @@ async function loadItems() {
 
     } catch (e) {
         console.error('Error loading trash:', e);
+        loading.style.display = 'none';
         if (e.message.includes('missing')) {
-            container.innerHTML = `<div class="error-state"><i class="fa-solid fa-database"></i><p>${e.message}</p></div>`;
+            tbody.innerHTML = `<tr><td colspan="5"><div class="error-state"><i class="fa-solid fa-database"></i><p>${e.message}</p></div></td></tr>`;
         } else {
-            container.innerHTML = '<div class="error-state"><i class="fa-solid fa-triangle-exclamation"></i><p>Failed to load deleted records</p></div>';
+            tbody.innerHTML = '<tr><td colspan="5"><div class="error-state"><i class="fa-solid fa-triangle-exclamation"></i><p>Failed to load deleted records</p></div></td></tr>';
         }
     }
 }
@@ -131,15 +135,21 @@ function filterAndRender(searchQ = '') {
 }
 
 function renderList(items) {
-    const container = document.getElementById('trash-container');
+    const tbody = document.getElementById('trash-tbody');
+    const loading = document.getElementById('trash-loading');
+    loading.style.display = 'none';
 
     if (items.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <i class="fa-regular fa-trash-can"></i>
-                <h3>Trash is Empty</h3>
-                <p>No deleted ${currentTab} found.</p>
-            </div>
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    <div class="empty-state">
+                        <i class="fa-regular fa-trash-can"></i>
+                        <h3>Trash is Empty</h3>
+                        <p>No deleted ${currentTab} found.</p>
+                    </div>
+                </td>
+            </tr>
         `;
         document.getElementById('pagination-container').innerHTML = '';
         return;
@@ -150,7 +160,7 @@ function renderList(items) {
     const start = (currentPage - 1) * itemsPerPage;
     const paginated = items.slice(start, start + itemsPerPage);
 
-    container.innerHTML = paginated.map(item => {
+    tbody.innerHTML = paginated.map(item => {
         const id = item.student_id || item.client_id || item.inquiry_id || 'ID-UNKNOWN';
         const name = `${item.first_name || item.name || ''} ${item.last_name || ''}`;
 
@@ -165,34 +175,39 @@ function renderList(items) {
 
         let purgeTag = '';
         if (diffDays <= 3) {
-            purgeTag = `<span class="purge-tag" style="background:rgba(239,68,68,0.2)">Purging soon (${diffDays} days)</span>`;
+            purgeTag = `<span class="badge badge-error">Purge in ${diffDays}d</span>`;
         } else if (diffDays < 0) {
-            purgeTag = `<span class="purge-tag">Expired (Pending Purge)</span>`;
+            purgeTag = `<span class="badge badge-gray">Pending Purge</span>`;
         } else {
-            purgeTag = `<span class="purge-tag" style="color:var(--info); background:rgba(59,130,246,0.1)">Purging in ${diffDays} days</span>`;
+            purgeTag = `<span class="badge badge-info-soft">Purge in ${diffDays}d</span>`;
         }
 
         return `
-            <div class="trash-card">
-                <div class="trash-info">
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <span class="badge badge-secondary">${id}</span>
-                        <h4>${name}</h4>
+            <tr>
+                <td><span class="badge badge-secondary">${id}</span></td>
+                 <td>
+                    <div class="table-user-info">
+                        <div class="table-user-avatar">${window.AdminUtils.AccountManager.getInitials(name)}</div>
+                        <span class="table-user-name">${name}</span>
                     </div>
-                    <div class="trash-meta">
-                         <span><i class="fa-regular fa-calendar"></i> Deleted: ${deletedAt.toLocaleDateString()}</span>
-                         ${purgeTag}
+                </td>
+                <td>
+                    <div class="text-sm text-muted">
+                        <i class="fa-regular fa-calendar" style="margin-right:5px;"></i>${deletedAt.toLocaleDateString()}
                     </div>
-                </div>
-                <div class="action-group">
-                    <button class="restore-btn" onclick="restoreFromTrash('${item.id}')">
-                        <i class="fa-solid fa-trash-arrow-up"></i> Restore
-                    </button>
-                    <button class="delete-btn" onclick="deleteForever('${item.id}', '${name.replace(/'/g, "\\'")}')">
-                        <i class="fa-solid fa-xmark"></i> Delete Forever
-                    </button>
-                </div>
-            </div>
+                </td>
+                <td>${purgeTag}</td>
+                <td class="text-right">
+                    <div class="action-buttons" style="justify-content: flex-end;">
+                        <button class="btn-icon" style="color:var(--success)" onclick="restoreFromTrash('${item.id}')" title="Restore">
+                            <i class="fa-solid fa-trash-arrow-up"></i>
+                        </button>
+                        <button class="btn-icon" style="color:var(--danger)" onclick="deleteForever('${item.id}', '${name.replace(/'/g, "\\'")}')" title="Delete Forever">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
         `;
     }).join('');
 
