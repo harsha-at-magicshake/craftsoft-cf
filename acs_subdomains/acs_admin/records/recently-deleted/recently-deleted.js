@@ -97,17 +97,32 @@ async function loadItems() {
             const { data: set, error: setErr } = await window.supabaseClient
                 .from('settings')
                 .select('setting_value')
-                .eq('setting_key', 'data_retention_days')
+                .eq('setting_key', 'retention_period')
                 .single();
 
             if (set && set.setting_value) {
-                window.RETENTION_DAYS = parseInt(set.setting_value) || 30;
+                // Check for 'never'
+                if (set.setting_value === 'never') {
+                    window.RETENTION_DAYS = 'never';
+                } else {
+                    window.RETENTION_DAYS = parseInt(set.setting_value) || 30;
+                }
             } else {
                 window.RETENTION_DAYS = 30;
             }
         } catch (e) {
             console.warn('Failed to load retention setting', e);
             window.RETENTION_DAYS = 30;
+        }
+
+        // Update Info Banner text
+        const bannerSpan = document.querySelector('.info-banner span');
+        if (bannerSpan) {
+            if (window.RETENTION_DAYS === 'never') {
+                bannerSpan.textContent = 'Items in the Recovery Center are stored indefinitely until you empty trash manually.';
+            } else {
+                bannerSpan.textContent = `Items in the Recovery Center are automatically deleted after ${window.RETENTION_DAYS} days.`;
+            }
         }
 
         filterAndRender();
@@ -189,20 +204,26 @@ tbody.innerHTML = paginated.map(item => {
 
     // Calculate Days Left
     const deletedAt = new Date(item.deleted_at);
-    const purgeDate = new Date(deletedAt);
-    purgeDate.setDate(deletedAt.getDate() + (window.RETENTION_DAYS || 30));
-
-    const now = new Date();
-    const diffTime = purgeDate - now;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     let purgeTag = '';
-    if (diffDays <= 3) {
-        purgeTag = `<span class="badge badge-error">Purge in ${diffDays}d</span>`;
-    } else if (diffDays < 0) {
-        purgeTag = `<span class="badge badge-gray">Pending Purge</span>`;
+
+    if (window.RETENTION_DAYS === 'never') {
+        purgeTag = `<span class="badge badge-gray">Manual Purge</span>`;
     } else {
-        purgeTag = `<span class="badge badge-info-soft">Purge in ${diffDays}d</span>`;
+        const purgeDate = new Date(deletedAt);
+        purgeDate.setDate(deletedAt.getDate() + (parseInt(window.RETENTION_DAYS) || 30));
+
+        const now = new Date();
+        const diffTime = purgeDate - now;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays <= 3) {
+            purgeTag = `<span class="badge badge-error">Purge in ${diffDays}d</span>`;
+        } else if (diffDays < 0) {
+            purgeTag = `<span class="badge badge-gray">Pending Purge</span>`;
+        } else {
+            purgeTag = `<span class="badge badge-info-soft">Purge in ${diffDays}d</span>`;
+        }
     }
 
     return `
