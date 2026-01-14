@@ -63,10 +63,10 @@ function initHeroTypingEffect() {
 
     const phrases = [
         'Expert IT Training',
-        'Professional Design Services',
-        'Master In-Demand Skills',
-        'Real-World Projects',
-        'Placement Support'
+        'Expert Design Services',
+        'Master Top Tech Skills',
+        'Live Industry Projects',
+        'Career Growth Support'
     ];
 
     let phraseIndex = 0;
