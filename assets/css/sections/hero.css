@@ -640,11 +640,33 @@
         0 30px 60px rgba(0, 0, 0, 0.25),
         0 0 0 1px rgba(255, 255, 255, 0.1);
     overflow: hidden;
-    animation: fadeIn 0.8s ease 0.3s backwards;
+    animation: workspaceFloat 6s ease-in-out infinite, fadeIn 0.8s ease 0.3s backwards;
     width: 100%;
     max-width: 500px;
     margin-left: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.hero-workspace:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        0 0 40px rgba(40, 150, 205, 0.2);
+}
+
+@keyframes workspaceFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
 
 /* Tab Bar */
 .workspace-tabs {
@@ -713,6 +735,44 @@
     font-size: 0.85rem;
     line-height: 1.9;
     color: #abb2bf;
+    opacity: 0;
+    animation: fadeInLine 0.5s ease forwards;
+}
+
+.workspace-panel.active .panel-line:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.workspace-panel.active .panel-line:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.workspace-panel.active .panel-line:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.workspace-panel.active .panel-line:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+.workspace-panel.active .panel-line:nth-child(5) {
+    animation-delay: 0.3s;
+}
+
+.workspace-panel.active .panel-line:nth-child(6) {
+    animation-delay: 0.35s;
+}
+
+@keyframes fadeInLine {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .ln {
@@ -789,6 +849,32 @@
 .design-element {
     position: absolute;
     border-radius: 6px;
+    opacity: 0;
+    animation: scaleIn 0.4s ease forwards;
+}
+
+.workspace-panel.active .design-element.el-1 {
+    animation-delay: 0.1s;
+}
+
+.workspace-panel.active .design-element.el-2 {
+    animation-delay: 0.2s;
+}
+
+.workspace-panel.active .design-element.el-3 {
+    animation-delay: 0.3s;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .design-element.el-1 {
@@ -797,6 +883,19 @@
     width: 80%;
     height: 20px;
     background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+    animation: scaleIn 0.4s ease forwards, pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(108, 92, 231, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(108, 92, 231, 0.6);
+    }
 }
 
 .design-element.el-2 {
@@ -886,6 +985,19 @@
 
 .console-header .status i {
     font-size: 0.5rem;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
 }
 
 .console-services {
@@ -903,6 +1015,42 @@
     gap: 10px;
     font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    animation: slideInUp 0.4s ease forwards;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.console-services .service:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.workspace-panel.active .console-services .service:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.workspace-panel.active .console-services .service:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.workspace-panel.active .console-services .service:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.workspace-panel.active .console-services .service:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .console-services .service i {
