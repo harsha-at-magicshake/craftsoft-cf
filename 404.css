@@ -24,9 +24,19 @@ body {
 /* Illustration & Code */
 .illustration-wrapper {
     position: relative;
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.illustration-wrapper dotlottie-player {
+    max-width: 380px;
+    width: 100%;
+    filter: drop-shadow(0 10px 30px rgba(108, 92, 231, 0.15));
+}
+
+/* Legacy icon style (kept for fallback) */
 .illustration-icon {
     font-size: 5rem;
     color: var(--primary-300);
@@ -34,19 +44,9 @@ body {
     animation: float 4s ease-in-out infinite;
 }
 
+/* Error code hidden (Lottie shows 404) */
 .error-code {
-    font-family: var(--font-primary);
-    font-size: clamp(6rem, 15vw, 10rem);
-    font-weight: 800;
-    line-height: 1;
-    margin-top: -20px;
-    margin-bottom: var(--spacing-md);
-
-    /* Gradient Text */
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    display: none;
 }
 
 /* Typography */
