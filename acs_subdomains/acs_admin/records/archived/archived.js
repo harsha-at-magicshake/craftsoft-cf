@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Initialize Sidebar
-    AdminSidebar.init('archived', '../../');
+    AdminSidebar.init('archived', '/');
 
     // Header
     const headerContainer = document.getElementById('header-container');

@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Initialize Sidebar
-    AdminSidebar.init('recently-deleted', '../../');
+    AdminSidebar.init('recently-deleted', '/');
 
     // Header
     const headerContainer = document.getElementById('header-container');
