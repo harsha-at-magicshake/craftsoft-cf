@@ -30,6 +30,13 @@
   path = "/*"
   function = "router"
 
+# Admin assets moved to acs_subdomains/acs_admin/assets/
+[[redirects]]
+  from = "/assets/admin/*"
+  to = "/acs_subdomains/acs_admin/assets/:splat"
+  status = 200
+
+
 # Legacy redirects for main site (Keep these as they are simple)
 [[redirects]]
   from = "/about.html"
