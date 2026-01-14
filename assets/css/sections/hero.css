@@ -72,10 +72,11 @@
 .hero-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-4xl);
+    gap: var(--spacing-3xl);
     align-items: center;
     position: relative;
     z-index: 1;
+    padding-bottom: var(--spacing-3xl);
 }
 
 .hero-badge {
@@ -510,10 +511,10 @@
         0 25px 80px rgba(0, 0, 0, 0.3),
         0 0 0 1px rgba(255, 255, 255, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    overflow: hidden;
+    overflow: visible;
     animation: fadeIn 0.8s ease 0.3s backwards;
-    max-width: 480px;
-    margin-left: auto;
+    max-width: 420px;
+    margin: 40px auto 40px auto;
 }
 
 .ide-header {
@@ -635,18 +636,19 @@
 }
 
 .hero-ide-mockup .card-1 {
-    top: -20px;
-    right: -30px;
+    top: -25px;
+    right: -60px;
 }
 
 .hero-ide-mockup .card-2 {
-    bottom: 60%;
-    left: -50px;
+    top: 30%;
+    left: -70px;
 }
 
 .hero-ide-mockup .card-3 {
-    bottom: -20px;
-    right: 20%;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* ============================================
@@ -658,7 +660,7 @@
     justify-content: center;
     gap: 2rem;
     padding: 1.25rem 2rem;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(20px);
     border-radius: 20px;
     box-shadow:
@@ -668,7 +670,6 @@
     max-width: 900px;
     position: relative;
     z-index: 10;
-    margin-top: -40px;
     animation: fadeInUp 0.6s ease 0.5s backwards;
 }
 
