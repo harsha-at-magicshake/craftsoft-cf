@@ -1,83 +1,152 @@
-/* Archived Records Styles */
+/* ============================================
+   Archived Records - Premium Styles
+   Matching Students Module Aesthetic
+   ============================================ */
 
+/* Tabs Navigation */
 .tabs-nav {
     display: flex;
     gap: 20px;
-    border-bottom: 2px solid var(--border-color);
-    margin-bottom: 20px;
-    padding-bottom: 0px;
+    border-bottom: 2px solid var(--admin-input-border, #e2e8f0);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0;
 }
 
 .tab-btn {
     background: none;
     border: none;
-    padding: 10px 15px;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-muted);
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--admin-text-muted, #94a3b8);
     cursor: pointer;
     border-bottom: 2px solid transparent;
     margin-bottom: -2px;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
 }
 
 .tab-btn.active {
-    color: var(--primary);
-    border-bottom-color: var(--primary);
+    color: var(--primary-500, #2896cd);
+    border-bottom-color: var(--primary-500, #2896cd);
 }
 
 .tab-btn:hover {
-    color: var(--text-dark);
+    color: var(--admin-text-primary, #0f172a);
 }
 
-/* Table specific styles */
+/* ============================================
+   Premium Data Table 
+   ============================================ */
+.table-container {
+    background: #fff;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.premium-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.premium-table thead tr {
+    background: var(--gray-50, #f8fafc);
+    border-bottom: 1.5px solid var(--admin-input-border, #e2e8f0);
+}
+
+.premium-table th {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--admin-text-secondary, #64748b);
+}
+
 .premium-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--gray-100, #f1f5f9);
     vertical-align: middle;
 }
 
-.table-user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.premium-table tr:last-child td {
+    border-bottom: none;
 }
 
-.table-user-avatar {
-    width: 32px;
-    height: 32px;
-    background: var(--primary-100);
-    color: var(--primary-600);
-    border-radius: 50%;
+.premium-table tr:hover {
+    background: rgba(40, 150, 205, 0.02);
+}
+
+/* ID Badge - Clickable Look */
+.badge-secondary {
+    display: inline-block;
+    font-family: 'Inter', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-500, #2896cd);
+    background: transparent;
+    border: none;
+    cursor: default;
+}
+
+/* Name Styling */
+.table-user-name {
+    font-weight: 600;
+    color: var(--admin-text-primary, #0f172a);
+    font-size: 0.95rem;
+}
+
+/* Glass Tags for Courses/Services */
+.badge-gray {
+    display: inline-block;
+    background: var(--primary-50, #edf6fb);
+    color: var(--primary-600, #1a7eb0);
+    padding: 0.25rem 0.625rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid var(--primary-100, #cfe7f5);
+    margin-right: 0.25rem;
+}
+
+/* Action Buttons - Premium Style */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.action-btn {
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.85rem;
-    font-weight: 600;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--admin-text-secondary, #64748b);
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.table-user-name {
-    font-weight: 500;
-    color: var(--text-dark);
+.action-btn:hover {
+    background: var(--gray-50, #f8fafc);
+    color: var(--admin-text-primary, #0f172a);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* Badge supplements */
-.badge-secondary {
-    background: var(--bg-body);
-    color: var(--text-muted);
-    border: 1px solid var(--border-color);
+.action-btn.success:hover {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    border-color: #10b981;
 }
 
-.badge-blue {
-    background: rgba(59, 130, 246, 0.1);
-    color: #2563eb;
-}
-
-.badge-gray {
-    background: var(--bg-body);
-    color: var(--text-muted);
-    border: 1px solid var(--border-color);
-}
-
-/* Search Box Fix */
+/* Search Box */
 .search-box {
     position: relative;
     display: flex;
@@ -88,7 +157,7 @@
 .search-box>i {
     position: absolute;
     left: 1rem;
-    color: var(--text-muted);
+    color: var(--admin-text-muted, #94a3b8);
     pointer-events: none;
     z-index: 10;
     top: 50%;
@@ -108,91 +177,212 @@
     padding-left: 2.5rem !important;
 }
 
-/* Hide the chevron when we have a custom icon */
 .search-box .searchable-select-trigger>i {
     display: none;
 }
 
-/* Bulk Bar */
+/* Bulk Actions Bar */
 .bulk-actions-container {
-    background: #eef2ff;
+    background: linear-gradient(135deg, #eef2ff 0%, rgba(99, 102, 241, 0.05) 100%);
     border: 1px solid #c7d2fe;
-    color: #3730a3;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
+    color: #4338ca;
+    padding: 0.875rem 1.25rem;
+    border-radius: 12px;
     margin-bottom: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
 }
 
 .bulk-info {
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
-/* Responsive Cards */
+.bulk-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Table Footer */
+.table-footer {
+    background: var(--gray-50, #f8fafc);
+    padding: 1rem 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--admin-text-secondary, #64748b);
+    border-top: 1px solid var(--admin-input-border, #e2e8f0);
+}
+
+.table-footer strong {
+    color: var(--primary-600, #1a7eb0);
+}
+
+/* ============================================
+   Mobile Cards (Premium)
+   ============================================ */
 .data-cards {
     display: none;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-bottom: 2rem;
 }
 
-/* Action buttons alignment */
-.action-buttons {
+.premium-card {
+    background: #fff;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease;
+}
+
+.card-header {
     display: flex;
-    gap: 8px;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
 }
 
-/* Tablet breakpoint - match other modules */
+.card-id-badge {
+    font-family: 'Inter', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-500, #2896cd);
+}
+
+.card-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--admin-text-primary, #0f172a);
+    margin: 0 0 0.75rem 0;
+}
+
+.card-body {
+    margin-bottom: 0;
+}
+
+.card-info-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.card-info-item {
+    font-size: 0.9rem;
+    color: var(--admin-text-secondary, #64748b);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.card-info-item i {
+    width: 16px;
+    color: var(--admin-text-muted, #94a3b8);
+}
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--gray-100, #f1f5f9);
+}
+
+.card-action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    background: #fff;
+    color: var(--admin-text-primary, #0f172a);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.card-action-btn:active {
+    background: var(--gray-50, #f8fafc);
+    transform: scale(0.98);
+}
+
+.card-action-btn.success {
+    color: #10b981;
+    border-color: #10b981;
+}
+
+.card-action-btn.success:hover {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+/* ============================================
+   Responsive Breakpoints
+   ============================================ */
 @media (max-width: 1024px) {
     .table-container {
         display: none;
     }
 
     .data-cards {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .premium-card {
-        background: white;
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    }
-
-    .card-header {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.75rem;
     }
 
-    .card-name {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
+    .premium-card:active {
+        box-shadow: 0 8px 24px rgba(40, 150, 205, 0.12);
     }
 
-    .card-info-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.9rem;
-        color: var(--text-muted);
-        margin-bottom: 0.25rem;
+    .section-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .tabs-nav {
+        gap: 0;
+        overflow-x: auto;
+    }
+
+    .tab-btn {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.875rem;
+        white-space: nowrap;
     }
 
     .card-actions {
-        display: flex;
-        gap: 0.5rem;
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid var(--border-color);
+        flex-direction: row;
+        gap: 0.3rem;
     }
 
-    .card-actions .btn {
-        flex: 1;
+    .card-action-btn {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.75rem;
+    }
+
+    .bulk-actions-container {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .bulk-actions {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }

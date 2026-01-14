@@ -204,19 +204,20 @@ function renderList(items) {
                     <span class="table-user-name">${name}</span>
                 </td>
                 <td>
-                    ${item.phone ? `<div class="text-sm"><i class="fa-solid fa-phone text-xs text-muted" style="margin-right:5px;"></i>${item.phone}</div>` : '<span class="text-muted">-</span>'}
+                    ${item.phone ? `<span class="cell-phone"><i class="fa-solid fa-phone" style="margin-right:6px; color: #10b981;"></i>${item.phone}</span>` : '<span class="text-muted">-</span>'}
                 </td>
-                 <td>${contextInfo}</td>
+                <td>${contextInfo}</td>
                 <td>
                     <div class="action-buttons">
-                        <button class="btn btn-sm btn-outline-success" onclick="restoreItem('${item.id}')" title="Restore to Active">
-                            <i class="fa-solid fa-rotate-left"></i> Activate
+                        <button class="action-btn success" onclick="restoreItem('${item.id}')" title="Restore to Active">
+                            <i class="fa-solid fa-rotate-left"></i>
                         </button>
                     </div>
                 </td>
             </tr>
         `;
     }).join('');
+
 
     // Mobile Cards
     if (cardsContainer) {
