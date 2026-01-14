@@ -36,17 +36,18 @@
   status = 404
   force = true
 
+# Admin assets moved to acs_subdomains/acs_admin/assets/ (MUST be before /assets/*)
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/assets/admin/*"
+  to = "/acs_subdomains/acs_admin/assets/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   host = "admin.craftsoft.co.in"
   from = "/assets/*"
   to = "/assets/:splat"
-  status = 200
-  force = true
-
-# Admin assets moved to acs_subdomains/acs_admin/assets/
-[[redirects]]
-  from = "/assets/admin/*"
-  to = "/acs_subdomains/acs_admin/assets/:splat"
   status = 200
   force = true
 
