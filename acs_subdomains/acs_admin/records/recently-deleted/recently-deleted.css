@@ -1,0 +1,128 @@
+/* Recently Deleted / Recovery Center Styles */
+
+.tabs-nav {
+    display: flex;
+    gap: 20px;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 20px;
+    padding-bottom: 0px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    color: var(--danger);
+    border-bottom-color: var(--danger);
+}
+
+.tab-btn:hover {
+    color: var(--text-dark);
+}
+
+.trash-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-left: 4px solid var(--danger);
+}
+
+.trash-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+}
+
+.trash-info p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.trash-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+.purge-tag {
+    color: var(--danger);
+    font-weight: 600;
+    background: rgba(239, 68, 68, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.action-group {
+    display: flex;
+    gap: 10px;
+}
+
+.restore-btn {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.restore-btn:hover {
+    background: #10b981;
+    color: white;
+}
+
+.delete-btn {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #ef4444;
+    color: white;
+}
+
+.info-banner {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    color: var(--info);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+#empty-trash-btn {
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+#empty-trash-btn:hover {
+    background: var(--danger);
+    color: white;
+}
