@@ -32,6 +32,8 @@ DROP POLICY IF EXISTS "Allow all for authenticated users" ON receipts;
 DROP POLICY IF EXISTS "Active admins can manage receipts" ON receipts;
 DROP POLICY IF EXISTS "Public can lookup receipts" ON receipts;
 DROP POLICY IF EXISTS "Public can read receipts for verification" ON receipts;
+DROP POLICY IF EXISTS "select_receipts" ON receipts;
+DROP POLICY IF EXISTS "admin_manage_receipts" ON receipts;
 
 -- POLICY: Global SELECT access for receipts
 CREATE POLICY "select_receipts" ON receipts

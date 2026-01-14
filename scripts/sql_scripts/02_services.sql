@@ -29,6 +29,8 @@ DROP POLICY IF EXISTS "Allow public read services" ON services;
 DROP POLICY IF EXISTS "Allow admin all services" ON services;
 DROP POLICY IF EXISTS "Active admins can manage services" ON services;
 DROP POLICY IF EXISTS "Public can read services" ON services;
+DROP POLICY IF EXISTS "select_services" ON services;
+DROP POLICY IF EXISTS "admin_manage_services" ON services;
 
 -- POLICY: Public read access for everyone (anon and authenticated)
 CREATE POLICY "select_services" ON services

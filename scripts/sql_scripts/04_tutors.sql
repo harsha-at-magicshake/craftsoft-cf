@@ -30,6 +30,8 @@ DROP POLICY IF EXISTS "Active admins can read tutors" ON tutors;
 DROP POLICY IF EXISTS "Active admins can insert tutors" ON tutors;
 DROP POLICY IF EXISTS "Active admins can update tutors" ON tutors;
 DROP POLICY IF EXISTS "Active admins can delete tutors" ON tutors;
+DROP POLICY IF EXISTS "Allow public read on tutors" ON tutors;
+DROP POLICY IF EXISTS "admin_manage_tutors" ON tutors;
 
 -- POLICY: Active admins can manage all tutor records
 CREATE POLICY "admin_manage_tutors" ON tutors

@@ -45,6 +45,9 @@ DROP POLICY IF EXISTS "Active admins can delete students" ON students;
 DROP POLICY IF EXISTS "Public can lookup students by id" ON students;
 DROP POLICY IF EXISTS "Public can read students for verification" ON students;
 DROP POLICY IF EXISTS "Admins can view all students" ON students;
+DROP POLICY IF EXISTS "Public lookup by ID" ON students;
+DROP POLICY IF EXISTS "select_students" ON students;
+DROP POLICY IF EXISTS "admin_manage_students" ON students;
 
 -- POLICY: Global SELECT access (Public and Admins)
 -- Note: Soft-deleted students are hidden by default from non-admins

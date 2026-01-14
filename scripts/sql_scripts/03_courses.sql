@@ -30,6 +30,8 @@ DROP POLICY IF EXISTS "Active admins can insert courses" ON courses;
 DROP POLICY IF EXISTS "Active admins can update courses" ON courses;
 DROP POLICY IF EXISTS "Allow anyone to read active courses" ON courses;
 DROP POLICY IF EXISTS "Public can read courses" ON courses;
+DROP POLICY IF EXISTS "select_courses" ON courses;
+DROP POLICY IF EXISTS "admin_manage_courses" ON courses;
 
 -- POLICY: Global read access (Public see ACTIVE, Admins see ALL)
 CREATE POLICY "select_courses" ON courses

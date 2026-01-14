@@ -35,6 +35,13 @@ DROP POLICY IF EXISTS "Allow update own record" ON admins;
 DROP POLICY IF EXISTS "admins_update" ON admins;
 DROP POLICY IF EXISTS "admins_insert_policy" ON admins;
 DROP POLICY IF EXISTS "Active admins can insert admins" ON admins;
+DROP POLICY IF EXISTS "anon_login_lookup" ON admins;
+DROP POLICY IF EXISTS "admin_read_own" ON admins;
+DROP POLICY IF EXISTS "admin_read_all" ON admins;
+DROP POLICY IF EXISTS "anon_select_admins" ON admins;
+DROP POLICY IF EXISTS "admin_select_admins" ON admins;
+DROP POLICY IF EXISTS "admin_insert" ON admins;
+DROP POLICY IF EXISTS "admin_update_own" ON admins;
 
 -- POLICY: Anonymous login lookup
 CREATE POLICY "anon_select_admins" ON admins

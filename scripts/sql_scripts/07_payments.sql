@@ -33,6 +33,10 @@ DROP POLICY IF EXISTS "Public can read payments for balance" ON payments;
 DROP POLICY IF EXISTS "Allow delete on payments" ON payments;
 DROP POLICY IF EXISTS "Allow insert on payments" ON payments;
 DROP POLICY IF EXISTS "Allow update on payments" ON payments;
+DROP POLICY IF EXISTS "Admin or Public Read for Payments" ON payments;
+DROP POLICY IF EXISTS "Allow read on payments" ON payments;
+DROP POLICY IF EXISTS "select_payments" ON payments;
+DROP POLICY IF EXISTS "admin_manage_payments" ON payments;
 
 -- POLICY: Global read access for payments
 CREATE POLICY "select_payments" ON payments

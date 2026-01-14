@@ -32,6 +32,8 @@ DROP POLICY IF EXISTS "Allow authenticated access" ON clients;
 DROP POLICY IF EXISTS "Active admins can manage clients" ON clients;
 DROP POLICY IF EXISTS "Public can lookup clients by id" ON clients;
 DROP POLICY IF EXISTS "Public can read clients for verification" ON clients;
+DROP POLICY IF EXISTS "select_clients" ON clients;
+DROP POLICY IF EXISTS "admin_manage_clients" ON clients;
 
 -- POLICY: Global SELECT access for clients
 CREATE POLICY "select_clients" ON clients

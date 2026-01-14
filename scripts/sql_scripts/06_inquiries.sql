@@ -47,6 +47,8 @@ DROP POLICY IF EXISTS "admin_select_inquiries" ON inquiries;
 DROP POLICY IF EXISTS "admin_insert_inquiries" ON inquiries;
 DROP POLICY IF EXISTS "admin_update_inquiries" ON inquiries;
 DROP POLICY IF EXISTS "admin_delete_inquiries" ON inquiries;
+DROP POLICY IF EXISTS "admin_manage_inquiries" ON inquiries;
+DROP POLICY IF EXISTS "anon_insert_inquiries" ON inquiries;
 
 -- POLICY: Anonymous users can INSERT inquiries (website form submissions)
 CREATE POLICY "anon_insert_inquiries" ON inquiries
