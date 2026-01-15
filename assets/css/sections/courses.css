@@ -45,7 +45,7 @@
     display: flex;
     align-items: flex-start;
     background: linear-gradient(135deg, #e8f4fc 0%, #dbeafe 50%, #e0f2fe 100%);
-    padding: 25px;
+    padding: var(--spacing-2xl);
     border-radius: 1.5rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
     border: 1px solid rgba(59, 130, 246, 0.12);

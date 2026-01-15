@@ -1281,7 +1281,7 @@
     background: rgba(40, 150, 205, 0.05);
     border-radius: var(--radius-2xl);
     padding: var(--spacing-3xl) 0;
-    margin-top: var(--spacing-4xl);
+    margin-top: var(--spacing-xl);
 }
 
 .courses-contact-wrapper {
