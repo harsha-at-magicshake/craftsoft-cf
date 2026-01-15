@@ -16,7 +16,7 @@
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
     <link rel="stylesheet" href="../assets/css/master.css?v=2.0">
     <link rel="stylesheet" href="../assets/css/utilities/skeleton.css?v=1.0">
-    <link rel="stylesheet" href="../assets/css/sections/courses.css?v=2.0">
+    <link rel="stylesheet" href="../assets/css/sections/courses.css?v=2.1">
     <!-- Logo Component Assets -->
     <link rel="stylesheet" href="../assets/components/logo-signature/logo-signature.css">
     <script src="../assets/components/logo-signature/logo-signature.js"></script>
@@ -86,444 +86,408 @@
         </div>
     </nav>
 
-    <!-- Courses Section -->
-    <section class="courses-page-section" style="padding: 80px 0;">
+    <!-- Courses Content -->
+    <section class="courses-page" style="padding: 60px 0;">
         <div class="container">
-            <div class="courses-list" id="courses-list">
-                <!-- Data & AI -->
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fa-solid fa-brain"></i></div>
-                    <div class="course-info">
-                        <h3>AI & Machine Learning (AI-ML)</h3>
-                        <p>Master the fundamentals of Artificial Intelligence and Machine Learning. Learn to build and
-                            deploy intelligent models.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 3-4 Months</span>
-                            <span><i class='fas fa-laptop-code'></i> Python & Scikit-Learn</span>
-                        </div>
-                    </div>
-                    <a href="ai-ml/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
+            <!-- Filter Tabs -->
+            <div class="course-filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Courses</button>
+                <button class="filter-tab" data-filter="design">Design</button>
+                <button class="filter-tab" data-filter="development">Development</button>
+                <button class="filter-tab" data-filter="cloud">Cloud & Security</button>
+                <button class="filter-tab" data-filter="enterprise">Enterprise</button>
+                <button class="filter-tab" data-filter="growth">Growth</button>
+            </div>
 
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fa-solid fa-database"></i></div>
-                    <div class="course-info">
-                        <h3>SQL (Structured Query Language)</h3>
-                        <p>Master databases with SQL. Learn complex queries, optimization, and database design for
-                            high-performance applications.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 4-6 Weeks</span>
-                            <span><i class='fas fa-server'></i> MySQL & PostgreSQL</span>
+            <!-- Design Category -->
+            <div class="course-category" data-category="design">
+                <h2 class="category-title"><i class="fas fa-palette"></i> Design Excellence</h2>
+                <div class="courses-list">
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fas fa-swatchbook"></i></div>
+                        <div class="course-info">
+                            <h3>Graphic Design</h3>
+                            <p>Master branding and the complete Adobe Creative Suite. Create stunning logos and visuals.
+                            </p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 2-3 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Industry Projects</span>
+                            </div>
                         </div>
+                        <a href="/c-graphic-design/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
-                    <a href="sql/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fa-brands fa-square-figma"></i></div>
+                        <div class="course-info">
+                            <h3>UI/UX Design</h3>
+                            <p>Master user-centric design with Figma. Create high-fidelity prototypes and portfolios.
+                            </p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 2-3 Months</span>
+                                <span><i class='fas fa-check-circle'></i> User Research</span>
+                            </div>
+                        </div>
+                        <a href="/c-ui-ux/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
+            </div>
 
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fab fa-salesforce"></i></div>
-                    <div class="course-info">
-                        <h3>Salesforce Developer</h3>
-                        <p>Master Apex, LWC, and integrations. Build powerful custom solutions on the world's #1 CRM
-                            platform.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2-3 Months</span>
-                            <span><i class='fas fa-code'></i> Apex & LWC</span>
+            <!-- Development Category -->
+            <div class="course-category" data-category="development">
+                <h2 class="category-title"><i class="fas fa-code"></i> Software Development</h2>
+                <div class="courses-list">
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fas fa-layer-group"></i></div>
+                        <div class="course-info">
+                            <h3>Full Stack MERN</h3>
+                            <p>Build production-ready web applications with MongoDB, Express, React, and Node.js.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 4-6 Months</span>
+                                <span><i class='fas fa-check-circle'></i> MERN Stack</span>
+                            </div>
                         </div>
+                        <a href="/c-full-stack/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
-                    <a href="salesforce-developer/" class="btn btn-primary">View Details <i
-                            class="fas fa-arrow-right"></i></a>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fab fa-python"></i></div>
+                        <div class="course-info">
+                            <h3>Python Full Stack</h3>
+                            <p>Master Python, Django, and modern web development with full stack capabilities.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 4-5 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Django & React</span>
+                            </div>
+                        </div>
+                        <a href="/c-python/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fab fa-java"></i></div>
+                        <div class="course-info">
+                            <h3>Java Full Stack</h3>
+                            <p>Build enterprise-level scalable applications with Java Spring Boot and Microservices.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 5-6 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Spring Boot</span>
+                            </div>
+                        </div>
+                        <a href="/c-java/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fab fa-react"></i></div>
+                        <div class="course-info">
+                            <h3>React Development</h3>
+                            <p>Master front-end development with React.js, Hooks, Redux, and modern architecture.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 2 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Hooks & Redux</span>
+                            </div>
+                        </div>
+                        <a href="/c-react/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fas fa-code-branch"></i></div>
+                        <div class="course-info">
+                            <h3>DSA Mastery</h3>
+                            <p>Master Algorithms and Data Structures for technical interviews at top-tier companies.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 3-4 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Problem Solving</span>
+                            </div>
+                        </div>
+                        <a href="/c-dsa/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fa-solid fa-database"></i></div>
+                        <div class="course-info">
+                            <h3>SQL Mastery</h3>
+                            <p>Master complex queries, optimization, and database design with SQL.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 4-6 Weeks</span>
+                                <span><i class='fas fa-check-circle'></i> MySQL/PostgreSQL</span>
+                            </div>
+                        </div>
+                        <a href="/c-sql/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
+            </div>
 
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fa-solid fa-bullhorn"></i></div>
-                    <div class="course-info">
-                        <h3>Salesforce Marketing Cloud</h3>
-                        <p>Learn to create personalized customer journeys and data-driven marketing campaigns using
-                            Salesforce tools.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2 Months</span>
-                            <span><i class='fas fa-envelope-open-text'></i> Journey Builder</span>
+            <!-- Cloud & Security -->
+            <div class="course-category" data-category="cloud">
+                <h2 class="category-title"><i class="fas fa-infinity"></i> Cloud & Security</h2>
+                <div class="courses-list">
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fas fa-infinity"></i></div>
+                        <div class="course-info">
+                            <h3>DevOps Engineering</h3>
+                            <p>Master CI/CD pipelines, Docker, Kubernetes, and infrastructure scaling.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 3-4 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Jenkins & K8s</span>
+                            </div>
                         </div>
+                        <a href="/c-devops/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
-                    <a href="salesforce-marketing-cloud/" class="btn btn-primary">View Details <i
-                            class="fas fa-arrow-right"></i></a>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fab fa-aws"></i></div>
+                        <div class="course-info">
+                            <h3>AWS Cloud</h3>
+                            <p>Master cloud infrastructure on Amazon Web Services and prepare for certification.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 2-3 Months</span>
+                                <span><i class='fas fa-check-circle'></i> AWS Certified</span>
+                            </div>
+                        </div>
+                        <a href="/c-aws/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fab fa-microsoft"></i></div>
+                        <div class="course-info">
+                            <h3>Microsoft Azure</h3>
+                            <p>Master cloud solutions and services with the Microsoft Azure platform.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 2-3 Months</span>
+                                <span><i class='fas fa-check-circle'></i> AZ-900/104</span>
+                            </div>
+                        </div>
+                        <a href="/c-azure/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="course-info">
+                            <h3>Cyber Security</h3>
+                            <p>Protect systems and data from cyber threats with ethical hacking and network security.
+                            </p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 3-4 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Ethical Hacking</span>
+                            </div>
+                        </div>
+                        <a href="/c-cyber-security/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="course-info">
+                            <h3>DevSecOps</h3>
+                            <p>Integrate robust security into your CI/CD pipelines and DevOps automation.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 2-3 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Pipeline Security</span>
+                            </div>
+                        </div>
+                        <a href="/c-devsecops/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
+            </div>
 
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fa-solid fa-cloud"></i></div>
-                    <div class="course-info">
-                        <h3>Oracle Fusion Cloud</h3>
-                        <p>Master Oracle Fusion Cloud ERP modules including SCM, HCM, and Financials for enterprise
-                            resource planning.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 3 Months</span>
-                            <span><i class='fas fa-briefcase'></i> ERP Excellence</span>
+            <!-- Enterprise Category -->
+            <div class="course-category" data-category="enterprise">
+                <h2 class="category-title"><i class="fab fa-salesforce"></i> Salesforce & Enterprise</h2>
+                <div class="courses-list">
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fab fa-salesforce"></i></div>
+                        <div class="course-info">
+                            <h3>Salesforce Admin</h3>
+                            <p>Master the world's #1 CRM platform, configuration, and automation basics.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 2 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Admin Certified</span>
+                            </div>
                         </div>
+                        <a href="/c-salesforce/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
-                    <a href="oracle-fusion-cloud/" class="btn btn-primary">View Details <i
-                            class="fas fa-arrow-right"></i></a>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fab fa-salesforce"></i></div>
+                        <div class="course-info">
+                            <h3>Salesforce Developer</h3>
+                            <p>Build custom applications and complex logic using Apex and LWC on Salesforce.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 2-3 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Apex & LWC</span>
+                            </div>
+                        </div>
+                        <a href="/c-salesforce-developer/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                        <div class="course-info">
+                            <h3>Marketing Cloud</h3>
+                            <p>Master data-driven personalized marketing journeys with Salesforce Marketing Cloud.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 2 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Email Specialist</span>
+                            </div>
+                        </div>
+                        <a href="/c-salesforce-marketing-cloud/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fa-solid fa-cloud"></i></div>
+                        <div class="course-info">
+                            <h3>Oracle Fusion</h3>
+                            <p>Learn global enterprise ERP solutions with Oracle Fusion Cloud SCM/HCM.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 3 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Fusion Admin</span>
+                            </div>
+                        </div>
+                        <a href="/c-oracle-fusion-cloud/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
+            </div>
 
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                    <div class="course-info">
-                        <h3>Cyber Security</h3>
-                        <p>Protect systems and networks from cyber threats. Learn ethical hacking, network security, and
-                            defensive strategies.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 3-4 Months</span>
-                            <span><i class='fas fa-user-secret'></i> Ethical Hacking</span>
+            <!-- Data & AI Category -->
+            <div class="course-category" data-category="growth">
+                <h2 class="category-title"><i class="fa-solid fa-brain"></i> Data & AI</h2>
+                <div class="courses-list">
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fa-solid fa-brain"></i></div>
+                        <div class="course-info">
+                            <h3>AI & ML</h3>
+                            <p>Build intelligent systems with machine learning algorithms and neural networks.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 3-4 Months</span>
+                                <span><i class='fas fa-check-circle'></i> ML Systems</span>
+                            </div>
                         </div>
+                        <a href="/c-ai-ml/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
-                    <a href="cyber-security/" class="btn btn-primary">View Details <i
-                            class="fas fa-arrow-right"></i></a>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fas fa-chart-area"></i></div>
+                        <div class="course-info">
+                            <h3>Data Analytics</h3>
+                            <p>Turn raw data into business insights using Python, SQL, Power BI, and Tableau.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 3-4 Months</span>
+                                <span><i class='fas fa-check-circle'></i> BI Tools</span>
+                            </div>
+                        </div>
+                        <a href="/c-data-analytics/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
+            </div>
 
-                <!-- Existing Courses -->
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fas fa-swatchbook"></i></div>
-                    <div class="course-info">
-                        <h3>Graphic Design</h3>
-                        <p>Master branding, layout and the complete Adobe Creative Suite. Learn to create stunning
-                            logos, social media graphics, and brochures.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2-3 Months</span><span><i class='fas fa-certificate'></i>
-                                Certificate Included</span>
+            <!-- Language & Growth Category -->
+            <div class="course-category" data-category="growth">
+                <h2 class="category-title"><i class="fas fa-user-ninja"></i> Language & Growth</h2>
+                <div class="courses-list">
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fas fa-user-ninja"></i></div>
+                        <div class="course-info">
+                            <h3>Spoken English</h3>
+                            <p>Enhance your communication, fluency, and public speaking confidence.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 2-3 Months</span>
+                                <span><i class='fas fa-check-circle'></i> Fluency Prep</span>
+                            </div>
                         </div>
+                        <a href="/c-spoken-english/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
-                    <a href="graphic-design/" class="btn btn-primary">View Details <i
-                            class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fa-brands fa-square-figma"></i></div>
-                    <div class="course-info">
-                        <h3>UI/UX Design</h3>
-                        <p>Learn user-centric design with Figma and master modern interfaces. Create stunning prototypes
-                            and build a professional portfolio.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2-3 Months</span><span><i class='fas fa-laptop-code'></i>
-                                Figma & XD</span>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fas fa-microphone-lines"></i></div>
+                        <div class="course-info">
+                            <h3>Soft Skills</h3>
+                            <p>Develop essential workplace skills like leadership, teamwork, and communication.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 4-6 Weeks</span>
+                                <span><i class='fas fa-check-circle'></i> Professionalism</span>
+                            </div>
                         </div>
+                        <a href="/c-soft-skills/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
-                    <a href="ui-ux/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fas fa-layer-group"></i></div>
-                    <div class="course-info">
-                        <h3>Full Stack Development (MERN)</h3>
-                        <p>Build real-world web applications from scratch using MongoDB, Express, React, and Node.js.
-                            Master front and back end.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 4-6 Months</span><span><i class='fas fa-code'></i> MERN
-                                Stack</span>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="far fa-file-lines"></i></div>
+                        <div class="course-info">
+                            <h3>Resume & Interview</h3>
+                            <p>Get job-ready with expert resume building and mock interview sessions.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 2-4 Weeks</span>
+                                <span><i class='fas fa-check-circle'></i> Placement Support</span>
+                            </div>
                         </div>
+                        <a href="/c-resume-interview/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
-                    <a href="full-stack/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fab fa-python"></i></div>
-                    <div class="course-info">
-                        <h3>Python Full Stack Development</h3>
-                        <p>Complete web development journey with Python, Django, and modern front-end tools. Build
-                            scalable, secure web apps.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 4-5 Months</span><span><i class='fab fa-python'></i>
-                                Django Framework</span>
+                    <div class="course-card-full">
+                        <div class="course-icon"><i class="fas fa-pen-nib"></i></div>
+                        <div class="course-info">
+                            <h3>Handwriting Improvement</h3>
+                            <p>Improve your penmanship consistency with personalized stroke mastery.</p>
+                            <div class="course-meta">
+                                <span><i class='fas fa-clock'></i> 4-6 Weeks</span>
+                                <span><i class='fas fa-check-circle'></i> Penmanship</span>
+                            </div>
                         </div>
+                        <a href="/c-handwriting/" class="btn btn-primary">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
-                    <a href="python/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fab fa-java"></i></div>
-                    <div class="course-info">
-                        <h3>Java Full Stack Development</h3>
-                        <p>Become a Java expert. Learn Spring Boot, Microservices, and full stack web architecture for
-                            enterprise-level projects.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 5-6 Months</span><span><i class='fab fa-java'></i> Spring
-                                Boot</span>
-                        </div>
-                    </div>
-                    <a href="java/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fab fa-react"></i></div>
-                    <div class="course-info">
-                        <h3>React Development</h3>
-                        <p>Master React.js for building modern, high-performance user interfaces. Learn hooks, context
-                            API, and state management.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2 Months</span><span><i class='fab fa-react'></i> Hooks &
-                                Redux</span>
-                        </div>
-                    </div>
-                    <a href="react/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fas fa-code-branch"></i></div>
-                    <div class="course-info">
-                        <h3>DSA Mastery (Data Structures & Algorithms)</h3>
-                        <p>Crack top-tier company interviews by mastering complex data structures and algorithms.
-                            Extensive practice included.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 3-4 Months</span><span><i class='fas fa-brain'></i>
-                                Problem Solving</span>
-                        </div>
-                    </div>
-                    <a href="dsa/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fas fa-chart-area"></i></div>
-                    <div class="course-info">
-                        <h3>Data Analytics</h3>
-                        <p>Transform data into insights. Master Excel, SQL, Tableau, and Power BI for effective business
-                            decision-making.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 3-4 Months</span><span><i class='fas fa-chart-pie'></i>
-                                BI Tools</span>
-                        </div>
-                    </div>
-                    <a href="data-analytics/" class="btn btn-primary">View Details <i
-                            class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fas fa-infinity"></i></div>
-                    <div class="course-info">
-                        <h3>DevOps Engineering</h3>
-                        <p>Master CI/CD, Docker, Kubernetes, and cloud automation. Streamline software delivery and
-                            infrastructure management.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 3-4 Months</span><span><i class='fas fa-terminal'></i>
-                                CI/CD Pipelines</span>
-                        </div>
-                    </div>
-                    <a href="devops/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fab fa-aws"></i></div>
-                    <div class="course-info">
-                        <h3>AWS Cloud Excellence</h3>
-                        <p>Master Amazon Web Services and prepare for certification. Learn cloud architecture, security,
-                            and scalability.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2-3 Months</span><span><i class='fab fa-aws'></i> AWS
-                                Certified</span>
-                        </div>
-                    </div>
-                    <a href="aws/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fab fa-microsoft"></i></div>
-                    <div class="course-info">
-                        <h3>Microsoft Azure</h3>
-                        <p>Learn Microsoft's cloud platform. Master Azure services, solutions, and architectural best
-                            practices.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2-3 Months</span><span><i class='fab fa-microsoft'></i>
-                                Azure Cloud</span>
-                        </div>
-                    </div>
-                    <a href="azure/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fas fa-shield-alt"></i></div>
-                    <div class="course-info">
-                        <h3>DevSecOps</h3>
-                        <p>Integrate security into your automation pipelines. Learn security best practices for DevOps
-                            teams.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2-3 Months</span><span><i class='fas fa-lock'></i>
-                                Security First</span>
-                        </div>
-                    </div>
-                    <a href="devsecops/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fab fa-salesforce"></i></div>
-                    <div class="course-info">
-                        <h3>Salesforce Administration</h3>
-                        <p>Master the world's leading CRM. Learn configuration, management, and automation to empower
-                            your business.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2 Months</span><span><i class='fab fa-salesforce'></i>
-                                Salesforce Admin</span>
-                        </div>
-                    </div>
-                    <a href="salesforce/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fab fa-python"></i></div>
-                    <div class="course-info">
-                        <h3>Python Programming</h3>
-                        <p>Learn the world's most popular language. Transition from basics to building complex,
-                            real-world scripts and apps.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 6-8 Weeks</span><span><i class='fab fa-python'></i> Core
-                                Python</span>
-                        </div>
-                    </div>
-                    <a href="python-programming/" class="btn btn-primary">View Details <i
-                            class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fas fa-robot"></i></div>
-                    <div class="course-info">
-                        <h3>Automation with Python</h3>
-                        <p>Learn to automate boring tasks, web scraping, and repetitive workflows using Python's
-                            powerful libraries.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 4-6 Weeks</span><span><i class='fas fa-cog'></i> Web
-                                Automation</span>
-                        </div>
-                    </div>
-                    <a href="automation-python/" class="btn btn-primary">View Details <i
-                            class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fab fa-github"></i></div>
-                    <div class="course-info">
-                        <h3>Git & GitHub Mastery</h3>
-                        <p>Learn version control and collaboration. Master branching, pull requests, and modern
-                            developer workflows.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2-3 Weeks</span><span><i class='fab fa-github'></i> Open
-                                Source</span>
-                        </div>
-                    </div>
-                    <a href="git-github/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fas fa-user-ninja"></i></div>
-                    <div class="course-info">
-                        <h3>Spoken English Mastery</h3>
-                        <p>Enhance your fluency, accent, and public speaking confidence. Perfect your professional
-                            communication skills.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2-3 Months</span><span><i
-                                    class='fas fa-microphone-lines'></i> Fluency Prep</span>
-                        </div>
-                    </div>
-                    <a href="spoken-english/" class="btn btn-primary">View Details <i
-                            class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fas fa-microphone-lines"></i></div>
-                    <div class="course-info">
-                        <h3>Soft Skills Training</h3>
-                        <p>Develop leadership, teamwork, and emotional intelligence. Essential skills for every
-                            corporate professional.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 4-6 Weeks</span><span><i class='fas fa-users'></i>
-                                Professionalism</span>
-                        </div>
-                    </div>
-                    <a href="soft-skills/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="far fa-file-lines"></i></div>
-                    <div class="course-info">
-                        <h3>Resume Writing & Interview Prep</h3>
-                        <p>Get ready for your dream job with expert resume building and mock interview sessions with
-                            industry professionals.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 2-4 Weeks</span><span><i class='fas fa-briefcase'></i>
-                                Placement Support</span>
-                        </div>
-                    </div>
-                    <a href="resume-interview/" class="btn btn-primary">View Details <i
-                            class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="course-card-full">
-                    <div class="course-icon"><i class="fas fa-pen-nib"></i></div>
-                    <div class="course-info">
-                        <h3>Handwriting Excellence</h3>
-                        <p>Improve your penmanship and writing flow with personalized stroke mastery sessions for
-                            children and adults.</p>
-                        <div class="course-meta">
-                            <span><i class='fas fa-clock'></i> 4-6 Weeks</span><span><i class='fas fa-pen-nib'></i>
-                                Stroke Mastery</span>
-                        </div>
-                    </div>
-                    <a href="handwriting/" class="btn btn-primary">View Details <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Join our community / Quick Inquiry -->
+    <!-- Inquiry Section -->
     <section class="inquiry-section" style="padding: 100px 0; background: var(--gray-50);">
         <div class="container">
             <div class="inquiry-wrapper"
-                style="max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.5fr; gap: 50px; background: var(--white); border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid var(--gray-100);">
+                style="max-width: 1000px; margin: 0 auto; display: flex; background: var(--white); border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid var(--gray-100);">
                 <div class="inquiry-content"
-                    style="padding: 50px; background: var(--primary); color: var(--white); display: flex; flex-direction: column; justify-content: center;">
+                    style="flex: 1; padding: 60px; background: var(--primary); color: var(--white); display: flex; flex-direction: column; justify-content: center;">
                     <span
-                        style="display: inline-block; padding: 6px 12px; background: rgba(255,255,255,0.2); border-radius: 50px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; margin-bottom: 20px; align-self: flex-start;">Admissions
+                        style="display: table; padding: 6px 12px; background: rgba(255,255,255,0.2); border-radius: 50px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; margin-bottom: 20px;">Admissions
                         Open</span>
-                    <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Master your <span
-                            style="color: rgba(255,255,255,0.8);">future</span></h2>
-                    <p style="opacity: 0.9; margin-bottom: 30px; font-size: 1.1rem;">Join 1000+ students already
-                        learning with us. Fill out this form and our career counselor will get back to you within 24
-                        hours.</p>
+                    <h2
+                        style="font-size: 2.8rem; margin-bottom: 20px; line-height: 1.1; font-family: 'Outfit', sans-serif;">
+                        Master your <br><span style="color: rgba(255,255,255,0.7);">Future</span></h2>
+                    <p style="opacity: 0.9; margin-bottom: 30px; font-size: 1.1rem; max-width: 400px;">Join 1,000+
+                        students already learning with us. Fill out this form and we'll reach out within 24 hours.</p>
                     <div class="benefits" style="display: flex; flex-direction: column; gap: 15px;">
                         <span style="display: flex; align-items: center; gap: 10px; font-size: 0.95rem;"><i
                                 class="fas fa-check-circle"></i> Industry Expert Mentors</span>
                         <span style="display: flex; align-items: center; gap: 10px; font-size: 0.95rem;"><i
                                 class="fas fa-check-circle"></i> 100% Placement Support</span>
-                        <span style="display: flex; align-items: center; gap: 10px; font-size: 0.95rem;"><i
-                                class="fas fa-check-circle"></i> Real-world Capstone Projects</span>
                     </div>
                 </div>
-                <div class="inquiry-form-container" style="padding: 50px;">
+                <div class="inquiry-form-container" style="flex: 1.2; padding: 60px;">
                     <form id="courses-inquiry-form" class="premium-form">
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                             <div class="form-group">
                                 <label
-                                    style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">Full
+                                    style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85rem; color: var(--gray-700);">Full
                                     Name</label>
                                 <input type="text" name="name" placeholder="John Doe" required
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid var(--gray-200); border-radius: 12px; outline: none; transition: 0.3s; background: var(--gray-50);">
+                                    style="width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-100); border-radius: 12px; outline: none; background: var(--gray-50); font-family: inherit;">
                             </div>
                             <div class="form-group">
                                 <label
-                                    style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">Phone
+                                    style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85rem; color: var(--gray-700);">Phone
                                     Number</label>
                                 <input type="tel" name="phone" placeholder="10-digit number" required maxlength="10"
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid var(--gray-200); border-radius: 12px; outline: none; transition: 0.3s; background: var(--gray-50);">
+                                    style="width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-100); border-radius: 12px; outline: none; background: var(--gray-50); font-family: inherit;">
                             </div>
                         </div>
                         <div class="form-group" style="margin-bottom: 20px;">
                             <label
-                                style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">Email
+                                style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85rem; color: var(--gray-700);">Email
                                 Address</label>
                             <input type="email" name="email" placeholder="john@example.com" required
-                                style="width: 100%; padding: 12px 15px; border: 1px solid var(--gray-200); border-radius: 12px; outline: none; transition: 0.3s; background: var(--gray-50);">
+                                style="width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-100); border-radius: 12px; outline: none; background: var(--gray-50); font-family: inherit;">
                         </div>
-                        <div class="form-group" style="margin-bottom: 25px;">
+                        <div class="form-group" style="margin-bottom: 30px;">
                             <label
-                                style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">Course
+                                style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85rem; color: var(--gray-700);">Course
                                 of Interest</label>
                             <select name="courses" required
-                                style="width: 100%; padding: 12px 15px; border: 1px solid var(--gray-200); border-radius: 12px; outline: none; transition: 0.3s; background: var(--gray-50); -webkit-appearance: none; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 0.65rem auto;">
+                                style="width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-100); border-radius: 12px; outline: none; background: var(--gray-50); appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 0.65rem auto;">
                                 <option value="" disabled selected>Select a Course</option>
                                 <optgroup label="Software Development">
                                     <option value="Full Stack Development (MERN)">Full Stack Development (MERN)</option>
@@ -531,13 +495,16 @@
                                     <option value="Java Full Stack Development">Java Full Stack Development</option>
                                     <option value="DSA Mastery">DSA Mastery</option>
                                     <option value="SQL Mastery">SQL Mastery</option>
+                                    <option value="React Development">React Development</option>
+                                    <option value="Git & GitHub Mastery">Git & GitHub Mastery</option>
+                                    <option value="Automation with Python">Automation with Python</option>
                                 </optgroup>
                                 <optgroup label="Cloud & Security">
                                     <option value="DevOps Engineering">DevOps Engineering</option>
                                     <option value="AWS Cloud Excellence">AWS Cloud Excellence</option>
+                                    <option value="Microsoft Azure">Microsoft Azure</option>
                                     <option value="Cyber Security">Cyber Security</option>
                                     <option value="DevSecOps">DevSecOps</option>
-                                    <option value="Microsoft Azure">Microsoft Azure</option>
                                 </optgroup>
                                 <optgroup label="Salesforce & Enterprise">
                                     <option value="Salesforce Administration">Salesforce Administration</option>
@@ -558,12 +525,13 @@
                                     <option value="Soft Skills Training">Soft Skills Training</option>
                                     <option value="Resume Writing & Interview Prep">Resume Writing & Interview Prep
                                     </option>
+                                    <option value="Handwriting Excellence">Handwriting Excellence</option>
                                 </optgroup>
                             </select>
                         </div>
                         <button type="submit"
-                            style="width: 100%; padding: 15px; background: var(--primary); color: var(--white); border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);">Schedule
-                            Free Career Counselling</button>
+                            style="width: 100%; padding: 16px; background: var(--primary); color: var(--white); border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);">Connect
+                            with Counselor</button>
                     </form>
                 </div>
             </div>
@@ -582,28 +550,29 @@
                 <div class="footer-links">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="../">Home</a></li>
-                        <li><a href="../about/">About Us</a></li>
-                        <li><a href="../courses/">All Courses</a></li>
-                        <li><a href="../services/">Our Services</a></li>
+                        <li><a href="../courses/">Courses</a></li>
+                        <li><a href="../services/">Services</a></li>
                         <li><a href="../contact/">Contact</a></li>
+                        <li><a href="../verify/">Verify Receipt</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
-                    <h4>Trending Courses</h4>
-                    <ul id="footer-trending-courses">
-                        <!-- Dynamic -->
-                    </ul>
+                    <h4>Courses</h4>
+                    <ul id="footer-trending-courses"></ul>
                 </div>
                 <div class="footer-links">
-                    <h4>Contact Info</h4>
+                    <h4>Services</h4>
+                    <ul id="footer-services"></ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
                     <ul>
-                        <li><a href="https://maps.app.goo.gl/T4YUX5GghCjK4eR8A" target="_blank"><i
-                                    class="fas fa-location-dot"></i> Ameerpet, Hyderabad</a></li>
-                        <li><a href="tel:+917842239090"><i class="fas fa-phone"></i> +91 78422 39090</a></li>
-                        <li><a href="mailto:info@craftsoft.co.in"><i class="fas fa-envelope"></i>
-                                info@craftsoft.co.in</a>
-                        </li>
+                        <li><i class="fas fa-map-marker-alt"></i><a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8"
+                                target="_blank">Plot No. 163, Vijayasree Colony,<br>Vanasthalipuram, Hyderabad
+                                500070</a></li>
+                        <li><i class="fas fa-phone"></i><a href="tel:+917842239090">+91 7842239090</a></li>
+                        <li><i class="fas fa-envelope"></i><a
+                                href="mailto:team.craftsoft@gmail.com">team.craftsoft@gmail.com</a></li>
                     </ul>
                 </div>
             </div>
@@ -623,7 +592,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../assets/js/supabase-website-config.js?v=1.0"></script>
     <script src="../assets/js/inquiry-sync.js?v=3.0"></script>
-    <script src="../assets/js/main.js?v=2.0"></script>
+    <script src="../assets/js/main.js?v=2.1"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

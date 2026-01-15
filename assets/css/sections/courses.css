@@ -1,17 +1,40 @@
 /* ============================================
-   COURSES PAGE STYLES (Clean List View)
+   COURSES PAGE STYLES (Clean Category View)
    ============================================ */
 
-.courses-page-section {
+.courses-page {
     background-color: var(--gray-50);
 }
 
+/* Category Sections */
+.course-category {
+    margin-bottom: 60px;
+    animation: fadeIn 0.5s ease;
+}
+
+.course-category.hidden {
+    display: none;
+}
+
+.category-title {
+    font-size: 1.75rem;
+    color: var(--gray-800);
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.category-title i {
+    color: var(--primary-500);
+}
+
+/* List Structure */
 .courses-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
 }
 
 .course-card-full {
@@ -22,12 +45,12 @@
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     border: 1px solid var(--gray-100);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     gap: 30px;
 }
 
 .course-card-full:hover {
-    transform: translateX(10px);
+    transform: translateX(8px);
     border-color: var(--primary-200);
     box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
 }
@@ -49,7 +72,7 @@
 .course-card-full:hover .course-icon {
     background: var(--primary-600);
     color: var(--white);
-    transform: rotate(-5deg);
+    transform: rotate(-3deg) scale(1.05);
 }
 
 .course-info {
@@ -67,13 +90,13 @@
     color: var(--gray-600);
     font-size: 1rem;
     line-height: 1.6;
-    margin-bottom: 15px;
-    max-width: 700px;
+    margin-bottom: 12px;
+    max-width: 750px;
 }
 
 .course-meta {
     display: flex;
-    gap: 20px;
+    gap: 25px;
 }
 
 .course-meta span {
@@ -81,7 +104,7 @@
     color: var(--gray-500);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     font-weight: 500;
 }
 
@@ -96,7 +119,26 @@
     white-space: nowrap;
 }
 
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Mobile Responsive */
+@media (max-width: 991px) {
+    .inquiry-wrapper {
+        flex-direction: column;
+    }
+}
+
 @media (max-width: 768px) {
     .course-card-full {
         flex-direction: column;
@@ -121,5 +163,9 @@
 
     .course-card-full .btn-primary {
         width: 100%;
+    }
+
+    .category-title {
+        justify-content: center;
     }
 }
