@@ -1,5 +1,5 @@
-ï»¿/* ============================================
-   Abhi's Craft Soft - Main JavaScript
+/* ============================================
+   Abhi's Craftsoft - Main JavaScript
    ============================================ */
 
 // Register Service Worker for Offline Support
@@ -747,7 +747,7 @@ function initShareCourse() {
 
                 case 'sms':
                     // SMS sharing - works on mobile
-                    const smsBody = `Check out this course at Abhi's Craft Soft: ${window.location.href}`;
+                    const smsBody = `Check out this course at Abhi's Craftsoft: ${window.location.href}`;
                     shareUrl = `sms:?body=${encodeURIComponent(smsBody)}`;
                     window.location.href = shareUrl;
                     break;
@@ -826,8 +826,8 @@ function initDynamicCopyright() {
     const currentYear = new Date().getFullYear();
 
     copyrightElements.forEach(el => {
-        if (el.textContent.includes('Â©')) {
-            el.textContent = el.textContent.replace(/Â© \d{4}/, `Â© ${currentYear}`);
+        if (el.textContent.includes('©')) {
+            el.textContent = el.textContent.replace(/© \d{4}/, `© ${currentYear}`);
         }
     });
 }
@@ -869,7 +869,7 @@ function initDynamicContent() {
         { name: 'DevOps Engineering', url: '/c-devops/', icon: 'fas fa-infinity', desc: 'Master CI/CD pipelines and infrastructure scaling.', features: ['Docker & K8s', 'Jenkins', 'Terraform'] },
         { name: 'AWS Cloud', url: '/c-aws/', icon: 'fab fa-aws', desc: 'Master cloud infrastructure on Amazon Web Services.', features: ['EC2 & S3', 'Lambda & IAM', 'Cloud Cert'] },
         { name: 'Microsoft Azure', url: '/c-azure/', icon: 'fab fa-microsoft', desc: 'Master cloud solutions with Microsoft Azure.', features: ['Azure AD', 'Cloud Apps', 'Cert Prep'] },
-        { name: 'Cyber Security', url: '/c-cyber-security/', icon: 'fa-solid fa-shield-halved', desc: 'Protect systems and data from cyber threats.', features: ['Network Security', 'Ethical Hacking', 'Defense'] },
+        { name: 'Cyber Security', url: '/c-cyber-security/', icon: 'fa-solid fa-user-shield', desc: 'Protect systems and data from cyber threats.', features: ['Network Security', 'Ethical Hacking', 'Defense'] },
         { name: 'DevSecOps', url: '/c-devsecops/', icon: 'fas fa-shield-alt', desc: 'Integrate security into your DevOps pipelines.', features: ['Security Audit', 'Automation', 'Vulnerability'] },
         { name: 'Salesforce Admin', url: '/c-salesforce/', icon: 'fab fa-salesforce', desc: 'Master the world#1 CRM platform and automation.', features: ['Sales Cloud', 'CRM Basics', 'Cert Prep'] },
         { name: 'Salesforce Developer', url: '/c-salesforce-developer/', icon: 'fab fa-salesforce', desc: 'Build custom apps and logic on Salesforce.', features: ['Apex', 'LWC', 'Integrations'] },
