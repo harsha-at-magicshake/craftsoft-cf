@@ -3,7 +3,8 @@
    ============================================ */
 
 .courses-page {
-    background-color: var(--gray-50);
+    padding: 1rem 0;
+    background: rgba(40, 150, 205, 0.05);
 }
 
 /* Category Sections */
@@ -19,15 +20,18 @@
 .category-title {
     font-size: 1.75rem;
     color: var(--gray-800);
-    margin-bottom: 25px;
+    margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--spacing-md);
     font-family: 'Outfit', sans-serif;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--primary-100);
 }
 
 .category-title i {
-    color: var(--primary-500);
+    color: var(--primary-600);
+    font-size: 1.5rem;
 }
 
 /* List Structure */
@@ -39,35 +43,35 @@
 
 .course-card-full {
     display: flex;
-    align-items: center;
-    background: linear-gradient(135deg, #e8f4fc 0%, #f1f7fe 100%);
-    padding: 30px;
-    border-radius: 20px;
+    align-items: flex-start;
+    background: linear-gradient(135deg, #e8f4fc 0%, #dbeafe 50%, #e0f2fe 100%);
+    padding: var(--spacing-2xl);
+    border-radius: 1.5rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-    border: 1px solid rgba(59, 130, 246, 0.1);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    gap: 30px;
+    border: 1px solid rgba(59, 130, 246, 0.12);
+    transition: var(--transition-base);
+    gap: var(--spacing-xl);
 }
 
 .course-card-full:hover {
-    transform: translateX(8px);
-    border-color: var(--primary-300);
-    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.08);
+    transform: translateY(-5px);
+    border-color: var(--primary-200);
+    box-shadow: var(--shadow-lg);
 }
 
 .course-icon {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
     background: var(--white);
     color: var(--primary-600);
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 2rem;
     flex-shrink: 0;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-md);
 }
 
 .course-card-full:hover .course-icon {
