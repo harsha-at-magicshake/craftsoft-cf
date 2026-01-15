@@ -873,15 +873,15 @@ function initDynamicContent() {
         { name: 'DevSecOps', url: '/c-devsecops/', icon: 'fas fa-shield-alt', desc: 'Integrate security into your DevOps pipelines.', features: ['Security Audit', 'Automation', 'Vulnerability'] },
         { name: 'Salesforce Admin', url: '/c-salesforce/', icon: 'fab fa-salesforce', desc: 'Master the world#1 CRM platform and automation.', features: ['Sales Cloud', 'CRM Basics', 'Cert Prep'] },
         { name: 'Salesforce Developer', url: '/c-salesforce-developer/', icon: 'fab fa-salesforce', desc: 'Build custom apps and logic on Salesforce.', features: ['Apex', 'LWC', 'Integrations'] },
-        { name: 'Salesforce Marketing', url: '/c-salesforce-marketing-cloud/', icon: 'fa-solid fa-bullhorn', desc: 'Master data-driven personalized marketing.', features: ['Journey Builder', 'Audience', 'Analytics'] },
-        { name: 'Oracle Fusion', url: '/c-oracle-fusion-cloud/', icon: 'fa-solid fa-cloud', desc: 'Learn enterprise ERP solutions with Oracle.', features: ['Supply Chain', 'HR Cloud', 'Fusion Admin'] },
+        { name: 'Salesforce Marketing Cloud', url: '/c-salesforce-marketing-cloud/', icon: 'fa-solid fa-bullhorn', desc: 'Master data-driven personalized marketing.', features: ['Journey Builder', 'Audience', 'Analytics'] },
+        { name: 'Oracle Fusion Cloud', url: '/c-oracle-fusion-cloud/', icon: 'fa-solid fa-cloud', desc: 'Learn enterprise ERP solutions with Oracle.', features: ['Supply Chain', 'HR Cloud', 'Fusion Admin'] },
         { name: 'Python Programming', url: '/c-python-programming/', icon: 'fab fa-python', desc: 'Learn the core principles of Python programming.', features: ['Logic & Flow', 'Data Structs', 'OOPs'] },
-        { name: 'Automation', url: '/c-automation-python/', icon: 'fas fa-robot', desc: 'Automate boring tasks with Python scripting.', features: ['Web Scraping', 'File Ops', 'Bots'] },
+        { name: 'Automation with Python', url: '/c-automation-python/', icon: 'fas fa-robot', desc: 'Automate boring tasks with Python scripting.', features: ['Web Scraping', 'File Ops', 'Bots'] },
         { name: 'Git & GitHub', url: '/c-git-github/', icon: 'fab fa-github', desc: 'Master version control and collaboration tools.', features: ['Branching', 'PR Workflows', 'Actions'] },
         { name: 'Spoken English', url: '/c-spoken-english/', icon: 'fas fa-user-ninja', desc: 'Enhance your communication and public confidence.', features: ['Fluency & Accent', 'Presentation', 'Vocabulary'] },
         { name: 'Soft Skills', url: '/c-soft-skills/', icon: 'fas fa-microphone-lines', desc: 'Develop essential workplace and leadership skills.', features: ['Communication', 'Teamwork', 'Leadership'] },
-        { name: 'Resume & Interview', url: '/c-resume-interview/', icon: 'far fa-file-lines', desc: 'Prepare for your dream career with mock sessions.', features: ['Resume Building', 'Mock Interviews', 'ATS Proofing'] },
-        { name: 'Handwriting', url: '/c-handwriting/', icon: 'fas fa-pen-nib', desc: 'Improve your handwriting and penmanship.', features: ['Strokes', 'Consistency', 'Practice'] }
+        { name: 'Resume & Interview Prep', url: '/c-resume-interview/', icon: 'far fa-file-lines', desc: 'Prepare for your dream career with mock sessions.', features: ['Resume Building', 'Mock Interviews', 'ATS Proofing'] },
+        { name: 'Handwriting Improvement', url: '/c-handwriting/', icon: 'fas fa-pen-nib', desc: 'Improve your handwriting and penmanship.', features: ['Strokes', 'Consistency', 'Practice'] }
     ];
 
     const allServices = [
@@ -889,7 +889,7 @@ function initDynamicContent() {
         { name: 'UI/UX Design', url: '/s-ui-ux-design/', icon: 'fa-brands fa-square-figma', desc: 'User-centered design solution for digital products.' },
         { name: 'Web Development', url: '/s-web-development/', icon: 'fas fa-globe', desc: 'Custom, responsive websites that drive results.' },
         { name: 'Brand Identity', url: '/s-branding/', icon: 'fas fa-bullseye', desc: 'Strategic branding to set you apart.' },
-        { name: 'Cloud & DevOps', url: '/s-cloud-devops/', icon: 'fas fa-infinity', desc: 'Scalable infrastructure and automation.' },
+        { name: 'Cloud Solutions', url: '/s-cloud-devops/', icon: 'fas fa-infinity', desc: 'Scalable infrastructure and automation.' },
         { name: 'Career Services', url: '/s-career-services/', icon: 'fas fa-users', desc: 'Expert guidance for your professional journey.' }
     ];
 

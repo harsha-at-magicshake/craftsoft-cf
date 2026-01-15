@@ -172,7 +172,7 @@
     background: linear-gradient(135deg, #e8f4fc 0%, #dbeafe 50%, #e0f2fe 100%);
     border: 1px solid rgba(59, 130, 246, 0.12);
     border-radius: 1.5rem;
-    padding: var(--spacing-2xl);
+    padding: 25px;
     transition: var(--transition-base);
 }
 
@@ -1280,9 +1280,8 @@
 .courses-contact-section {
     background: rgba(40, 150, 205, 0.05);
     border-radius: var(--radius-2xl);
-    padding: var(--spacing-2xl) 0;
-    /* Reduced from 3xl */
-    margin-top: var(--spacing-2xl);
+    padding: var(--spacing-3xl) 0;
+    margin-top: 0;
 }
 
 .courses-contact-wrapper {

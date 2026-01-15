@@ -6,24 +6,24 @@
 (function () {
     // All available courses for dynamic footer
     const allCourses = [
-        { name: 'Graphic design', url: 'pages/courses/graphic-design.html' },
-        { name: 'UI/UX design', url: 'pages/courses/ui-ux.html' },
-        { name: 'Full stack development', url: 'pages/courses/full-stack.html' },
-        { name: 'DevOps engineering', url: 'pages/courses/devops.html' },
-        { name: 'AWS cloud', url: 'pages/courses/aws.html' },
-        { name: 'Python programming', url: 'pages/courses/python.html' },
-        { name: 'Resume & interview', url: 'pages/courses/resume-interview.html' },
-        { name: 'Spoken English', url: 'pages/courses/spoken-english.html' }
+        { name: 'Python Full Stack', url: '/c-python/' },
+        { name: 'Full Stack MERN', url: '/c-full-stack/' },
+        { name: 'Graphic Design', url: '/c-graphic-design/' },
+        { name: 'UI/UX Design', url: '/c-ui-ux/' },
+        { name: 'Cloud & DevOps', url: '/c-devops/' },
+        { name: 'Cyber Security', url: '/c-cyber-security/' },
+        { name: 'Data Analytics', url: '/c-data-analytics/' },
+        { name: 'Salesforce Development', url: '/c-salesforce-developer/' }
     ];
 
     // All available services
     const allServices = [
-        { name: 'Graphic design', url: 'pages/services/graphic-design.html' },
-        { name: 'UI/UX design', url: 'pages/services/ui-ux-design.html' },
-        { name: 'Web development', url: 'pages/services/web-development.html' },
-        { name: 'Brand identity', url: 'pages/services/branding.html' },
-        { name: 'Cloud & DevOps', url: 'pages/services/cloud-devops.html' },
-        { name: 'Career services', url: 'pages/services/career-services.html' }
+        { name: 'Graphic Design', url: '/s-graphic-design/' },
+        { name: 'UI/UX Design', url: '/s-ui-ux-design/' },
+        { name: 'Web Development', url: '/s-web-development/' },
+        { name: 'Brand Identity', url: '/s-branding/' },
+        { name: 'Cloud Solutions', url: '/s-cloud-devops/' },
+        { name: 'Career Services', url: '/s-career-services/' }
     ];
 
     // Shuffle helper

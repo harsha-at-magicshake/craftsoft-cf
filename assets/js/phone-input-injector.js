@@ -46,60 +46,63 @@ const PhoneInputInjector = {
                 display: flex !important;
                 align-items: stretch !important;
                 gap: 0 !important;
-                border: 1px solid #e2e8f0 !important;
-                border-radius: 0.5rem !important;
+                border: 1.5px solid #f1f5f9 !important;
+                border-radius: 0.875rem !important;
                 overflow: hidden !important;
-                background: #fff !important;
+                background: #f8fafc !important;
                 transition: border-color 0.2s, box-shadow 0.2s !important;
             }
             .phone-input-injected:focus-within {
-                border-color: #2896cd !important;
-                box-shadow: 0 0 0 3px rgba(40, 150, 205, 0.15) !important;
+                border-color: #3b82f6 !important;
+                box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.05) !important;
+                background: white !important;
             }
             .phone-input-injected .country-code-input {
-                width: 70px !important;
-                min-width: 70px !important;
-                padding: 0.75rem 0.5rem !important;
+                width: 80px !important;
+                min-width: 80px !important;
+                padding: 0.875rem 0.5rem !important;
                 border: none !important;
-                border-right: 1px solid #e2e8f0 !important;
-                background: #f8fafc !important;
-                font-size: 0.9rem !important;
+                border-right: 1.5px solid #f1f5f9 !important;
+                background: rgba(40, 150, 205, 0.05) !important;
+                font-size: 0.95rem !important;
                 text-align: center !important;
                 outline: none !important;
                 font-family: inherit !important;
+                color: #0f172a !important;
             }
             .phone-input-injected .flag-display-btn {
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
-                gap: 0.25rem !important;
-                width: 70px !important;
-                min-width: 70px !important;
-                padding: 0.75rem 0.5rem !important;
+                gap: 0.5rem !important;
+                width: 80px !important;
+                min-width: 80px !important;
+                padding: 0.875rem 0.5rem !important;
                 border: none !important;
-                border-right: 1px solid #e2e8f0 !important;
-                background: #f8fafc !important;
+                border-right: 1.5px solid #f1f5f9 !important;
+                background: rgba(40, 150, 205, 0.05) !important;
                 cursor: pointer !important;
-                font-size: 0.85rem !important;
+                font-size: 0.95rem !important;
                 transition: background 0.2s !important;
             }
             .phone-input-injected .flag-display-btn:hover {
-                background: #e2e8f0 !important;
+                background: rgba(40, 150, 205, 0.1) !important;
             }
             .phone-input-injected .flag-display-btn .flag-emoji {
-                font-size: 1.1rem !important;
+                font-size: 1.25rem !important;
             }
             .phone-input-injected .flag-display-btn .code-text {
-                font-size: 0.75rem !important;
-                color: #64748b !important;
-                font-weight: 500 !important;
+                font-size: 0.85rem !important;
+                color: #0f172a !important;
+                font-weight: 700 !important;
             }
             .phone-input-injected .phone-number-input {
                 flex: 1 !important;
-                padding: 0.75rem !important;
+                padding: 0.875rem 1.25rem !important;
                 border: none !important;
                 background: transparent !important;
-                font-size: 0.95rem !important;
+                font-size: 1rem !important;
+                color: #0f172a !important;
                 outline: none !important;
                 font-family: inherit !important;
             }
