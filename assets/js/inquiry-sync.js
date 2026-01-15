@@ -20,13 +20,14 @@ const InquirySync = {
         'React JS': 'REACT',
         'DSA Mastery': 'DSA',
         'SQL Mastery': 'SQL',
+        'SQL (Structured Query Language)': 'SQL',
         'Data Analytics': 'DA',
-        'Salesforce Admin': 'SFA',
-        'Salesforce Developer': 'SFD',
+        'Salesforce Admin': 'SF',
+        'Salesforce Developer': 'SFDEV',
         'Marketing Cloud': 'SFMC',
         'Salesforce Marketing Cloud': 'SFMC',
-        'Oracle Fusion': 'OFC',
-        'Oracle Fusion Cloud': 'OFC',
+        'Oracle Fusion': 'ORACLE',
+        'Oracle Fusion Cloud': 'ORACLE',
         'DevOps Engineering': 'DEVOPS',
         'DevOps': 'DEVOPS',
         'AWS Cloud': 'AWS',
@@ -50,7 +51,7 @@ const InquirySync = {
         'GIT': 'GIT', 'DEVOPS': 'DEVOPS', 'AWS': 'AWS', 'DEVSEC': 'DEVSEC',
         'AZURE': 'AZURE', 'AUTOPY': 'AUTOPY', 'ENG': 'ENG', 'SOFT': 'SOFT',
         'RESUME': 'RESUME', 'HW': 'HW', 'SQL': 'SQL', 'CYBER': 'CYBER',
-        'SFA': 'SFA', 'SFD': 'SFD', 'SFMC': 'SFMC', 'OFC': 'OFC', 'AIML': 'AIML'
+        'SF': 'SF', 'SFDEV': 'SFDEV', 'SFMC': 'SFMC', 'ORACLE': 'ORACLE', 'AIML': 'AIML'
     },
 
     // Service codes (with S- prefix)
@@ -256,7 +257,7 @@ const InquirySync = {
                 phone: this.formatPhone(formData.phone, formData.phone_country_code || formData['contact-phone_country_code']),
                 courses: [courseCode],
                 notes: formData.message || formData.query || null,
-                source: 'Website',
+                source: formData.source || this.detectSource(),
                 status: 'New',
                 demo_required: false
             };
@@ -289,7 +290,7 @@ const InquirySync = {
                 phone: this.formatPhone(formData.phone, formData.phone_country_code || formData['contact-phone_country_code']),
                 courses: [serviceCode],
                 notes: formData.message || null,
-                source: 'Website',
+                source: formData.source || this.detectSource(),
                 status: 'New',
                 demo_required: false
             };
@@ -327,7 +328,7 @@ const InquirySync = {
                 phone: this.formatPhone(formData.phone, formData.phone_country_code || formData['contact-phone_country_code']),
                 courses: [code],
                 notes: formData.message || null,
-                source: 'Website',
+                source: formData.source || this.detectSource(),
                 status: 'New',
                 demo_required: false
             };
@@ -509,6 +510,33 @@ const InquirySync = {
             if (window.WhatsAppCleaner) window.WhatsAppCleaner.init();
         }, 50);
 
+    },
+
+    // Helper to detect lead source based on URL
+    detectSource() {
+        try {
+            const path = window.location.pathname;
+
+            // Format path for easier matching
+            const normalizedPath = path.endsWith('/') ? path : path + '/';
+
+            if (normalizedPath.includes('/courses/')) {
+                // Handle cases like /courses/sql/ or /courses/python/
+                const afterCourses = normalizedPath.split('/courses/')[1];
+                if (afterCourses) {
+                    const firstPart = afterCourses.split('/').filter(p => p !== '')[0];
+                    if (firstPart && !firstPart.includes('.html')) {
+                        return `Website - ${firstPart.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}`;
+                    }
+                }
+                return 'Website - Courses';
+            }
+            if (normalizedPath.includes('/acs_services/')) return 'Website - Services';
+            if (path === '/' || path.includes('index.html')) return 'Website - Home';
+            return 'Website';
+        } catch (e) {
+            return 'Website';
+        }
     }
 };
 
