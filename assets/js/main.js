@@ -860,16 +860,28 @@ function initDynamicContent() {
         { name: 'UI/UX Design', url: '/c-ui-ux/', icon: 'fa-brands fa-square-figma', desc: 'Create stunning user interfaces and experiences.', features: ['Figma & XD', 'User Research', 'Prototyping'] },
         { name: 'Full Stack MERN', url: '/c-full-stack/', icon: 'fas fa-layer-group', desc: 'Build production-ready web applications with MERN.', features: ['React & Node.js', 'MongoDB', 'Deployment'] },
         { name: 'Python Full Stack', url: '/c-python-full-stack/', icon: 'fab fa-python', desc: 'Master Python, Django, and modern web development.', features: ['Python & Django', 'REST APIs', 'Database Design'] },
+        { name: 'Java Full Stack', url: '/c-java-full-stack/', icon: 'fab fa-java', desc: 'Build scalable enterprise applications with Java Spring.', features: ['Spring Boot', 'Hibernate', 'Microservices'] },
+        { name: 'React Development', url: '/c-react/', icon: 'fab fa-react', desc: 'Master front-end development with the React library.', features: ['Hooks & Context', 'Redux', 'Architecture'] },
+        { name: 'DSA Mastery', url: '/c-dsa/', icon: 'fas fa-code-branch', desc: 'Master Algorithms and Data Structures for interviews.', features: ['Recursion', 'Graphs', 'Dynamic Prog'] },
+        { name: 'SQL Mastery', url: '/c-sql/', icon: 'fa-solid fa-database', desc: 'Master databases and advanced data querying.', features: ['Complex Joins', 'Optimization', 'Stored Procs'] },
         { name: 'AI & ML', url: '/c-ai-ml/', icon: 'fa-solid fa-brain', desc: 'Build intelligent systems with data and algorithms.', features: ['Machine Learning', 'Python for AI', 'Neural Networks'] },
         { name: 'Data Analytics', url: '/c-data-analytics/', icon: 'fas fa-chart-area', desc: 'Turn raw data into meaningful business insights.', features: ['Python & SQL', 'Power BI & Tableau', 'Statistics'] },
-        { name: 'Salesforce Admin', url: '/c-salesforce/', icon: 'fab fa-salesforce', desc: 'Master the world #1 CRM platform and automation.', features: ['Sales Cloud', 'CRM Basics', 'Cert Prep'] },
         { name: 'DevOps Engineering', url: '/c-devops/', icon: 'fas fa-infinity', desc: 'Master CI/CD pipelines and infrastructure scaling.', features: ['Docker & K8s', 'Jenkins', 'Terraform'] },
         { name: 'AWS Cloud', url: '/c-aws/', icon: 'fab fa-aws', desc: 'Master cloud infrastructure on Amazon Web Services.', features: ['EC2 & S3', 'Lambda & IAM', 'Cloud Cert'] },
+        { name: 'Microsoft Azure', url: '/c-azure/', icon: 'fab fa-microsoft', desc: 'Master cloud solutions with Microsoft Azure.', features: ['Azure AD', 'Cloud Apps', 'Cert Prep'] },
         { name: 'Cyber Security', url: '/c-cyber-security/', icon: 'fa-solid fa-shield-halved', desc: 'Protect systems and data from cyber threats.', features: ['Network Security', 'Ethical Hacking', 'Defense'] },
-        { name: 'SQL Mastery', url: '/c-sql/', icon: 'fa-solid fa-database', desc: 'Master databases and advanced data querying.', features: ['Complex Joins', 'Optimization', 'Stored Procs'] },
+        { name: 'DevSecOps', url: '/c-devsecops/', icon: 'fas fa-shield-alt', desc: 'Integrate security into your DevOps pipelines.', features: ['Security Audit', 'Automation', 'Vulnerability'] },
+        { name: 'Salesforce Admin', url: '/c-salesforce/', icon: 'fab fa-salesforce', desc: 'Master the world#1 CRM platform and automation.', features: ['Sales Cloud', 'CRM Basics', 'Cert Prep'] },
+        { name: 'Salesforce Developer', url: '/c-salesforce-developer/', icon: 'fab fa-salesforce', desc: 'Build custom apps and logic on Salesforce.', features: ['Apex', 'LWC', 'Integrations'] },
+        { name: 'Salesforce Marketing', url: '/c-salesforce-marketing-cloud/', icon: 'fa-solid fa-bullhorn', desc: 'Master data-driven personalized marketing.', features: ['Journey Builder', 'Audience', 'Analytics'] },
+        { name: 'Oracle Fusion', url: '/c-oracle-fusion-cloud/', icon: 'fa-solid fa-cloud', desc: 'Learn enterprise ERP solutions with Oracle.', features: ['Supply Chain', 'HR Cloud', 'Fusion Admin'] },
+        { name: 'Python Programming', url: '/c-python/', icon: 'fab fa-python', desc: 'Learn the core principles of Python programming.', features: ['Logic & Flow', 'Data Structs', 'OOPs'] },
+        { name: 'Automation', url: '/c-automation-python/', icon: 'fas fa-robot', desc: 'Automate boring tasks with Python scripting.', features: ['Web Scraping', 'File Ops', 'Bots'] },
+        { name: 'Git & GitHub', url: '/c-git-github/', icon: 'fab fa-github', desc: 'Master version control and collaboration tools.', features: ['Branching', 'PR Workflows', 'Actions'] },
         { name: 'Spoken English', url: '/c-spoken-english/', icon: 'fas fa-user-ninja', desc: 'Enhance your communication and public confidence.', features: ['Fluency & Accent', 'Presentation', 'Vocabulary'] },
         { name: 'Soft Skills', url: '/c-soft-skills/', icon: 'fas fa-microphone-lines', desc: 'Develop essential workplace and leadership skills.', features: ['Communication', 'Teamwork', 'Leadership'] },
-        { name: 'Resume & Interview', url: '/c-resume-interview/', icon: 'far fa-file-lines', desc: 'Prepare for your dream career with mock sessions.', features: ['Resume Building', 'Mock Interviews', 'ATS Proofing'] }
+        { name: 'Resume & Interview', url: '/c-resume-interview/', icon: 'far fa-file-lines', desc: 'Prepare for your dream career with mock sessions.', features: ['Resume Building', 'Mock Interviews', 'ATS Proofing'] },
+        { name: 'Handwriting', url: '/c-handwriting/', icon: 'fas fa-pen-nib', desc: 'Improve your handwriting and penmanship.', features: ['Strokes', 'Consistency', 'Practice'] }
     ];
 
     const allServices = [

@@ -153,101 +153,139 @@
 }
 
 /* ============================================
-   Card Layout Basic Styles
+   Grid View Styles (Premium)
    ============================================ */
-.data-cards {
-    display: none;
+.admin-courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.data-card {
+.admin-course-card {
     background: #fff;
+    border-radius: 20px;
     border: 1px solid var(--admin-input-border, #e2e8f0);
-    border-radius: 16px;
-    padding: 1.25rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-    margin-bottom: 1.25rem;
-}
-
-.data-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.data-card-code {
-    font-weight: 700;
-    color: var(--primary-600);
-}
-
-.data-card-body h4 {
-    margin: 0 0 1rem 0;
-    font-size: 1.1rem;
-    color: var(--admin-text-primary);
-}
-
-.card-pricing {
-    background: var(--gray-50, #f8fafc);
-    padding: 1rem;
-    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.pricing-item {
+.admin-course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: var(--primary-300, #7dd3fc);
+}
+
+.card-id-ribbon {
+    position: absolute;
+    top: 12px;
+    right: -35px;
+    background: var(--accent-gradient, linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%));
+    color: #fff;
+    padding: 2px 40px;
+    transform: rotate(45deg);
+    font-size: 0.7rem;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.admin-course-card .card-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-main-info {
+    margin-bottom: 1.5rem;
+}
+
+.course-code-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--primary-50, #f1f7fb);
+    color: var(--primary-700, #0369a1);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.card-main-info h4 {
+    margin: 0;
+    font-size: 1.15rem;
+    color: var(--admin-text-primary, #0f172a);
+    font-family: 'Outfit', sans-serif;
+    line-height: 1.4;
+    padding-right: 20px;
+    /* Space for ribbon */
+}
+
+.card-pricing-details {
+    background: var(--admin-input-bg, #f8fafc);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.price-row {
     display: flex;
     justify-content: space-between;
-    font-size: 0.9rem;
-    color: var(--admin-text-secondary);
+    font-size: 0.875rem;
+    color: var(--admin-text-secondary, #64748b);
 }
 
-.pricing-item.total {
+.price-row.total {
     margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px dashed var(--admin-input-border);
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--admin-input-border, #e2e8f0);
+    color: var(--admin-text-primary, #0f172a);
     font-weight: 700;
+    font-size: 1rem;
+}
+
+.price-row .value {
+    font-family: 'Inter', sans-serif;
     color: var(--admin-text-primary);
 }
 
-.data-card-actions {
-    margin-top: 1.25rem;
-    display: flex;
-    justify-content: flex-end;
+.admin-course-card .card-actions {
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-top: 1px solid var(--admin-input-border, #e2e8f0);
+}
+
+.admin-course-card .card-actions .btn {
+    width: 100%;
+}
+
+.admin-table-footer {
+    padding: 1.5rem;
+    background: var(--admin-input-bg, #f8fafc);
+    border-radius: 12px;
+    color: var(--admin-text-secondary);
+    font-size: 0.9rem;
+    text-align: center;
 }
 
 /* ============================================
    Mobile Responsive Overrides
    ============================================ */
-@media (max-width: 1250px) {
-    .data-table-wrapper {
-        display: none !important;
-    }
-
-    .data-cards {
-        display: flex;
-        flex-direction: column;
+@media (max-width: 640px) {
+    .admin-courses-grid {
+        grid-template-columns: 1fr;
     }
 
     .form-row {
         grid-template-columns: 1fr;
         gap: 1rem;
-    }
-
-    .inline-form-body {
-        padding: 1rem;
-    }
-
-    .inline-form-header,
-    .inline-form-footer {
-        padding: 1rem;
-    }
-
-    .inline-form-footer {
-        flex-direction: column;
-    }
-
-    .inline-form-footer .btn {
-        width: 100%;
     }
 }

@@ -161,28 +161,64 @@
                                 <label for="interest">I'm Interested In *</label>
                                 <select id="interest" name="courses" required onchange="updateContactWhatsApp(this)">
                                     <option value="" disabled selected>Select an option</option>
-                                    <optgroup label="â€” Courses â€”">
-                                        <option value="GD" data-type="course">Graphic Design</option>
-                                        <option value="UX" data-type="course">UI/UX Design</option>
-                                        <option value="MERN" data-type="course">Full Stack Development (MERN)</option>
-                                        <option value="AWS" data-type="course">AWS Cloud</option>
-                                        <option value="DEVOPS" data-type="course">DevOps Engineering</option>
-                                        <option value="PY" data-type="course">Python Programming</option>
-                                        <option value="DA" data-type="course">Data Analytics</option>
-                                        <option value="SF" data-type="course">Salesforce Administration</option>
-                                        <option value="REACT" data-type="course">React JS</option>
-                                        <option value="JAVA" data-type="course">Java Full Stack</option>
-                                        <option value="DSA" data-type="course">DSA Mastery</option>
-                                        <option value="AZURE" data-type="course">Microsoft Azure</option>
-                                        <option value="DEVSEC" data-type="course">DevSecOps</option>
-                                        <option value="GIT" data-type="course">Git & GitHub</option>
-                                        <option value="RESUME" data-type="course">Resume & Interview Prep</option>
-                                        <option value="ENG" data-type="course">Spoken English</option>
-                                        <option value="SOFT" data-type="course">Soft Skills</option>
-                                        <option value="HW" data-type="course">Handwriting Improvement</option>
+                                    <optgroup label="Software Development">
+                                        <option value="Full Stack Development (MERN)" data-type="course">Full Stack
+                                            Development (MERN)</option>
+                                        <option value="Python Full Stack Development" data-type="course">Python Full
+                                            Stack Development</option>
+                                        <option value="Java Full Stack Development" data-type="course">Java Full Stack
+                                            Development</option>
+                                        <option value="DSA Mastery" data-type="course">DSA Mastery</option>
+                                        <option value="SQL (Structured Query Language)" data-type="course">SQL
+                                            (Structured Query Language)</option>
+                                        <option value="Python Programming" data-type="course">Python Programming
+                                        </option>
+                                        <option value="React JS" data-type="course">React JS</option>
+                                        <option value="Git & GitHub" data-type="course">Git & GitHub</option>
+                                        <option value="Automation with Python" data-type="course">Automation with Python
+                                        </option>
                                     </optgroup>
-                                    <optgroup label="â€” Services â€”">
-                                        <option value="Website Development" data-type="service">Web Development</option>
+                                    <optgroup label="Cloud & Security">
+                                        <option value="DevOps Engineering" data-type="course">DevOps Engineering
+                                        </option>
+                                        <option value="AWS Cloud Excellence" data-type="course">AWS Cloud Excellence
+                                        </option>
+                                        <option value="Cyber Security" data-type="course">Cyber Security</option>
+                                        <option value="DevSecOps" data-type="course">DevSecOps</option>
+                                        <option value="Microsoft Azure" data-type="course">Microsoft Azure</option>
+                                    </optgroup>
+                                    <optgroup label="Salesforce & Enterprise">
+                                        <option value="Salesforce Administration" data-type="course">Salesforce
+                                            Administration</option>
+                                        <option value="Salesforce Developer" data-type="course">Salesforce Developer
+                                        </option>
+                                        <option value="Salesforce Marketing Cloud" data-type="course">Salesforce
+                                            Marketing Cloud</option>
+                                        <option value="Oracle Fusion Cloud" data-type="course">Oracle Fusion Cloud
+                                        </option>
+                                    </optgroup>
+                                    <optgroup label="Data & AI">
+                                        <option value="AI & Machine Learning (AI-ML)" data-type="course">AI & Machine
+                                            Learning (AI-ML)</option>
+                                        <option value="Data Analytics" data-type="course">Data Analytics</option>
+                                    </optgroup>
+                                    <optgroup label="Design Excellence">
+                                        <option value="Graphic Design" data-type="course">Graphic Design</option>
+                                        <option value="UI/UX Design" data-type="course">UI/UX Design</option>
+                                    </optgroup>
+                                    <optgroup label="Language & Growth">
+                                        <option value="Spoken English Mastery" data-type="course">Spoken English Mastery
+                                        </option>
+                                        <option value="Soft Skills Training" data-type="course">Soft Skills Training
+                                        </option>
+                                        <option value="Resume Writing & Interview Prep" data-type="course">Resume
+                                            Writing & Interview Prep</option>
+                                        <option value="Handwriting Improvement" data-type="course">Handwriting
+                                            Improvement</option>
+                                    </optgroup>
+                                    <optgroup label="Services">
+                                        <option value="Website Development" data-type="service">Website Development
+                                        </option>
                                         <option value="UI/UX Design Services" data-type="service">UI/UX Design Services
                                         </option>
                                         <option value="Graphic Design Services" data-type="service">Graphic Design
@@ -290,7 +326,7 @@
     <div class="chat-widget" id="chatWidget">
         <div class="chat-window">
             <div class="chat-header">
-                <h4>ðŸ‘‹ How can we help?</h4>
+                <h4>👋 How can we help?</h4>
                 <p>Choose how you'd like to connect with us</p>
             </div>
             <div class="chat-body">
@@ -342,7 +378,7 @@
             if (!btn) return;
 
             const selected = selectEl.options[selectEl.selectedIndex];
-            const type = selected.Dataset.type;
+            const type = selected.dataset.type;
             const value = selected.value;
 
             let text = "Hi! I'd like to chat about your courses and services.";
@@ -366,4 +402,3 @@
 </body>
 
 </html>
-

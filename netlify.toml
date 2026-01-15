@@ -203,6 +203,36 @@
   to = "/courses/resume-interview/"
   status = 200
 
+[[redirects]]
+  from = "/c-ai-ml/"
+  to = "/courses/ai-ml/"
+  status = 200
+
+[[redirects]]
+  from = "/c-sql/"
+  to = "/courses/sql/"
+  status = 200
+
+[[redirects]]
+  from = "/c-salesforce-developer/"
+  to = "/courses/salesforce-developer/"
+  status = 200
+
+[[redirects]]
+  from = "/c-salesforce-marketing-cloud/"
+  to = "/courses/salesforce-marketing-cloud/"
+  status = 200
+
+[[redirects]]
+  from = "/c-cyber-security/"
+  to = "/courses/cyber-security/"
+  status = 200
+
+[[redirects]]
+  from = "/c-oracle-fusion-cloud/"
+  to = "/courses/oracle-fusion-cloud/"
+  status = 200
+
 # Global 404 catch-all
 [[redirects]]
   from = "/*"

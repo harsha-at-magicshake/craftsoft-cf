@@ -120,58 +120,42 @@ function renderCoursesList(courses) {
     const paginatedCourses = courses.slice(start, start + itemsPerPage);
 
     content.innerHTML = `
-        <div class="data-table-wrapper">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID</th><th>Code</th><th>Name</th>
-                        <th>Base Fee</th><th>GST (${defaultGstRate}%)</th><th>Total Fee</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${paginatedCourses.map(c => `
-                        <tr>
-                            <td><span class="badge badge-primary">${c.course_id}</span></td>
-                            <td><strong>${c.course_code}</strong></td>
-                            <td>${c.course_name}</td>
-                            <td class="fee-cell text-muted"><i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(c.base_fee || c.fee || 0)}</td>
-                            <td class="fee-cell text-muted"><i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(c.gst_amount || 0)}</td>
-                            <td class="fee-cell highlight"><strong><i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(c.total_fee || c.fee || 0)}</strong></td>
-                            <td>
-                                <button class="btn-icon btn-edit-fee" data-id="${c.id}" data-code="${c.course_code}" data-name="${c.course_name}" 
-                                    data-base="${c.base_fee || c.fee || 0}" data-gst="${c.gst_amount || 0}" data-total="${c.total_fee || c.fee || 0}" title="Edit Pricing">
-                                    <i class="fa-solid fa-pen"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
-        </div>
-        <div class="data-cards">
+        <div class="admin-courses-grid">
             ${paginatedCourses.map(c => `
-                <div class="data-card">
-                    <div class="data-card-header">
-                        <span class="badge badge-primary">${c.course_id}</span>
-                        <span class="data-card-code">${c.course_code}</span>
-                    </div>
-                    <div class="data-card-body">
-                        <h4>${c.course_name}</h4>
-                        <div class="card-pricing">
-                            <div class="pricing-item"><span>Base:</span> <span>₹${formatNumber(c.base_fee || c.fee || 0)}</span></div>
-                            <div class="pricing-item"><span>GST (${defaultGstRate}%):</span> <span>₹${formatNumber(c.gst_amount || 0)}</span></div>
-                            <div class="pricing-item total"><span>Total:</span> <span>₹${formatNumber(c.total_fee || c.fee || 0)}</span></div>
+                <div class="admin-course-card">
+                    <div class="card-id-ribbon">${c.course_id}</div>
+                    <div class="card-body">
+                        <div class="card-main-info">
+                            <span class="course-code-tag">${c.course_code}</span>
+                            <h4>${c.course_name}</h4>
+                        </div>
+                        <div class="card-pricing-details">
+                            <div class="price-row">
+                                <span class="label">Base Fee</span>
+                                <span class="value">₹${formatNumber(c.base_fee || c.fee || 0)}</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="label">GST (${defaultGstRate}%)</span>
+                                <span class="value">₹${formatNumber(c.gst_amount || 0)}</span>
+                            </div>
+                            <div class="price-row total">
+                                <span class="label">Total Fee</span>
+                                <span class="value">₹${formatNumber(c.total_fee || c.fee || 0)}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="data-card-actions">
-                        <button class="btn btn-sm btn-outline btn-edit-fee" data-id="${c.id}" data-code="${c.course_code}" data-name="${c.course_name}" 
-                            data-base="${c.base_fee || c.fee || 0}" data-gst="${c.gst_amount || 0}" data-total="${c.total_fee || c.fee || 0}"><i class="fa-solid fa-pen"></i> Edit Pricing</button>
+                    <div class="card-actions">
+                        <button class="btn btn-primary btn-sm btn-edit-fee" data-id="${c.id}" data-code="${c.course_code}" data-name="${c.course_name}" 
+                            data-base="${c.base_fee || c.fee || 0}" data-gst="${c.gst_amount || 0}" data-total="${c.total_fee || c.fee || 0}">
+                            <i class="fa-solid fa-pen"></i> Edit Pricing
+                        </button>
                     </div>
                 </div>
             `).join('')}
         </div>
-        <div class="table-footer"><span>${courses.length} course${courses.length !== 1 ? 's' : ''} synced</span></div>
+        <div class="admin-table-footer">
+            <span>Showing ${start + 1}-${Math.min(start + itemsPerPage, courses.length)} of ${courses.length} courses</span>
+        </div>
     `;
 
     // Render pagination
@@ -199,18 +183,23 @@ async function syncCourses() {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Syncing...';
 
     try {
-        const { data: existing, error: fetchError } = await window.supabaseClient.from('courses').select('course_code, fee');
+        // 1. Fetch current database state
+        const { data: existing, error: fetchError } = await window.supabaseClient.from('courses').select('course_code, course_id');
         if (fetchError) throw fetchError;
-        const existingMap = new Map(existing?.map(c => [c.course_code, c.fee]) || []);
 
-        const { data: maxData } = await window.supabaseClient.from('courses').select('course_id').order('course_id', { ascending: false }).limit(1);
-        let nextNum = 1;
-        if (maxData?.length > 0) {
-            const m = maxData[0].course_id.match(/C-(\d+)/);
-            if (m) nextNum = parseInt(m[1]) + 1;
+        const existingCodes = new Set(existing?.map(c => c.course_code) || []);
+
+        // 2. Clear potential ID collisions by prefixing existing internal IDs
+        // This allows us to re-assign C-001, C-002 etc. in any order
+        if (existing && existing.length > 0) {
+            for (const course of existing) {
+                await window.supabaseClient.from('courses')
+                    .update({ course_id: 'TEMP-' + course.course_id })
+                    .eq('course_code', course.course_code);
+            }
         }
 
-        // Purge old Career Counselling records with wrong codes (if any)
+        // 3. Purge old Career Counselling records with wrong codes (legacy cleanup)
         await window.supabaseClient.from('courses').delete().eq('course_name', 'Career Counselling').neq('course_code', 'CAREER');
 
         let synced = 0;
@@ -218,32 +207,40 @@ async function syncCourses() {
             const c = websiteCourses[i];
             const cid = `C-${String(i + 1).padStart(3, '0')}`;
 
-            if (existingMap.has(c.code)) {
-                // Update everything including ID to ensure order is fixed
-                await window.supabaseClient.from('courses')
+            if (existingCodes.has(c.code)) {
+                // Update existing record with final ID and name
+                const { error: upErr } = await window.supabaseClient.from('courses')
                     .update({
                         course_id: cid,
                         course_name: c.name,
                         synced_at: new Date().toISOString()
                     })
                     .eq('course_code', c.code);
+                if (upErr) console.error(`Error updating ${c.code}:`, upErr);
             } else {
-                await window.supabaseClient.from('courses')
+                // Insert new course
+                const { error: insErr } = await window.supabaseClient.from('courses')
                     .insert({
                         course_id: cid,
                         course_code: c.code,
                         course_name: c.name,
                         fee: 0,
-                        status: 'ACTIVE'
+                        status: 'ACTIVE',
+                        synced_at: new Date().toISOString()
                     });
+                if (insErr) console.error(`Error inserting ${c.code}:`, insErr);
             }
             synced++;
         }
-        Toast.success('Sync Complete', `${synced} courses synced`);
+
+        // 4. Cleanup: If any leftover TEMP- IDs exist (courses removed from website), 
+        // they stay as TEMP- but valid. Optional: handle deletions.
+
+        Toast.success('Sync Complete', `${synced} courses processed from website`);
         await loadCourses();
     } catch (e) {
-        console.error(e);
-        Toast.error('Sync Failed', e.message);
+        console.error('Sync Error:', e);
+        Toast.error('Sync Failed', e.message || 'An unknown error occurred during synchronization');
     } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Sync from Website';
