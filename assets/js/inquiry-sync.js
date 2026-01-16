@@ -248,15 +248,25 @@ const InquirySync = {
 
     async createCourseInquiry(formData, form = null) {
         try {
-            const rawInterest = formData.courses || formData.interest || formData.course;
-            const courseCode = this.getCourseCode(rawInterest);
+            // Support multi-select if 'courses' is an array
+            let rawInterests = formData.courses || formData.interest || formData.course;
+            if (!Array.isArray(rawInterests)) rawInterests = [rawInterests];
+
+            const courseCodes = rawInterests.filter(i => i).map(i => this.getCourseCode(i));
+
+            // Combine notes with "Other" field if present
+            let finalNotes = formData.message || formData.query || null;
+            if (formData.other_interest) {
+                const otherLabel = "Other Interest: " + formData.other_interest;
+                finalNotes = finalNotes ? `${otherLabel}\n---\n${finalNotes}` : otherLabel;
+            }
 
             const payload = {
                 name: formData.name,
                 email: formData.email || null,
                 phone: this.formatPhone(formData.phone, formData.phone_country_code || formData['contact-phone_country_code']),
-                courses: [courseCode],
-                notes: formData.message || formData.query || null,
+                courses: courseCodes,
+                notes: finalNotes,
                 source: formData.source || this.detectSource(),
                 status: 'New',
                 demo_required: false
@@ -277,19 +287,27 @@ const InquirySync = {
 
     async createServiceInquiry(formData, form = null) {
         try {
-            const rawService = formData.courses || formData.interest;
-            let serviceCode = this.getServiceCode(rawService);
+            let rawServices = formData.courses || formData.interest;
+            if (!Array.isArray(rawServices)) rawServices = [rawServices];
 
-            if (!this.isServiceCode(serviceCode)) {
-                serviceCode = 'S-' + serviceCode;
+            const serviceCodes = rawServices.filter(s => s).map(s => {
+                let code = this.getServiceCode(s);
+                return this.isServiceCode(code) ? code : 'S-' + code;
+            });
+
+            // Combine notes with "Other" field if present
+            let finalNotes = formData.message || null;
+            if (formData.other_interest) {
+                const otherLabel = "Other Service: " + formData.other_interest;
+                finalNotes = finalNotes ? `${otherLabel}\n---\n${finalNotes}` : otherLabel;
             }
 
             const payload = {
                 name: formData.name,
                 email: formData.email || null,
                 phone: this.formatPhone(formData.phone, formData.phone_country_code || formData['contact-phone_country_code']),
-                courses: [serviceCode],
-                notes: formData.message || null,
+                courses: serviceCodes,
+                notes: finalNotes,
                 source: formData.source || this.detectSource(),
                 status: 'New',
                 demo_required: false
@@ -310,24 +328,31 @@ const InquirySync = {
 
     async createContactInquiry(formData, type = 'course', form = null) {
         try {
-            let code = formData.courses;
+            let rawSelection = formData.courses || formData.interest;
+            if (!Array.isArray(rawSelection)) rawSelection = [rawSelection];
 
-            // Map full names to codes if necessary
-            if (type === 'course') {
-                code = this.getCourseCode(code);
-            } else if (type === 'service') {
-                code = this.getServiceCode(code);
-                if (!this.isServiceCode(code)) {
-                    code = 'S-' + code;
+            const codes = rawSelection.filter(s => s).map(sel => {
+                if (type === 'course') {
+                    return this.getCourseCode(sel);
+                } else {
+                    let c = this.getServiceCode(sel);
+                    return this.isServiceCode(c) ? c : 'S-' + c;
                 }
+            });
+
+            // Combine notes with "Other" field if present
+            let finalNotes = formData.message || null;
+            if (formData.other_interest) {
+                const otherLabel = "Other Selection: " + formData.other_interest;
+                finalNotes = finalNotes ? `${otherLabel}\n---\n${finalNotes}` : otherLabel;
             }
 
             const payload = {
                 name: formData.name,
                 email: formData.email || null,
                 phone: this.formatPhone(formData.phone, formData.phone_country_code || formData['contact-phone_country_code']),
-                courses: [code],
-                notes: formData.message || null,
+                courses: codes,
+                notes: finalNotes,
                 source: formData.source || this.detectSource(),
                 status: 'New',
                 demo_required: false
@@ -349,9 +374,16 @@ const InquirySync = {
     extractFormData(form) {
         const formData = new FormData(form);
         const data = {};
-        formData.forEach((value, key) => {
-            data[key] = value;
-        });
+        for (let [key, value] of formData.entries()) {
+            if (data[key]) {
+                if (!Array.isArray(data[key])) {
+                    data[key] = [data[key]];
+                }
+                data[key].push(value);
+            } else {
+                data[key] = value;
+            }
+        }
         return data;
     },
 

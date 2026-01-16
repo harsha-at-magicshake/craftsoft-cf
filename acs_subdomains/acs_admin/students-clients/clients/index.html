@@ -332,6 +332,31 @@
         </div>
     </div>
 
+    <!-- Client Enrollment Confirmation Modal -->
+    <div class="modal-overlay" id="client-confirm-overlay">
+        <div class="modal-container modal-md animate-scale">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-clipboard-check"></i> Confirm Client Enrollment</h3>
+                <button class="modal-close" id="close-client-confirm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 1rem; color: var(--admin-text-muted);">Please review the client details before
+                    saving:</p>
+                <div class="enrollment-summary" id="client-summary">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-client-confirm">Go Back & Edit</button>
+                <button class="btn btn-success" id="confirm-client-btn">
+                    <i class="fa-solid fa-check"></i> Confirm & Save
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/assets/admin/js/supabase-config.js"></script>

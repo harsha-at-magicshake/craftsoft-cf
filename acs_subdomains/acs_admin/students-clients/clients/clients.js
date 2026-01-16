@@ -2,6 +2,7 @@
 let allClients = [];
 let allServicesForClients = [];
 let serviceFees = {}; // Store per-service fees { serviceCode: fee }
+let selectedServiceCodes = [];
 let selectedClientIds = new Set();
 let statusFilter = 'ALL';
 let deleteTargetId = null;
@@ -489,10 +490,70 @@ function bindTableActions() {
 function bindFormEvents() {
     document.getElementById('close-form-btn')?.addEventListener('click', closeForm);
     document.getElementById('cancel-form-btn')?.addEventListener('click', closeForm);
-    document.getElementById('save-client-btn')?.addEventListener('click', saveClient);
+    document.getElementById('save-client-btn')?.addEventListener('click', showClientConfirmation);
+
+    // Confirmation Modal Events
+    document.getElementById('close-client-confirm')?.addEventListener('click', hideClientConfirmation);
+    document.getElementById('cancel-client-confirm')?.addEventListener('click', hideClientConfirmation);
+    document.getElementById('confirm-client-btn')?.addEventListener('click', saveClient);
 
     // Phone input with flag transformation
     initPhoneInputComponent('client');
+}
+
+function showClientConfirmation() {
+    const { Toast } = window.AdminUtils;
+
+    // Gather data
+    const fname = document.getElementById('client-fname').value.trim();
+    const lname = document.getElementById('client-lname').value.trim();
+    const countryCode = document.getElementById('client-country-code').value.trim();
+    const phoneNumber = document.getElementById('client-phone').value.trim();
+    const services = selectedServiceCodes;
+
+    // Basic validation
+    if (!fname) { Toast.error('Required', 'First name required'); return; }
+    if (!phoneNumber || phoneNumber.length < 6) { Toast.error('Required', 'Valid phone number required'); return; }
+    if (services.length === 0) { Toast.error('Required', 'Select at least one service'); return; }
+
+    // Populate modal
+    const summary = document.getElementById('client-summary');
+    let total = 0;
+
+    summary.innerHTML = `
+        <div class="summary-section">
+            <div class="summary-label">Client Name</div>
+            <div class="summary-value">${fname} ${lname}</div>
+        </div>
+        <div class="summary-section">
+            <div class="summary-label">Contact</div>
+            <div class="summary-value">${countryCode} ${phoneNumber}</div>
+        </div>
+        <div class="summary-section">
+            <div class="summary-label">Selected Services</div>
+            ${services.map(code => {
+        const service = allServicesForClients.find(s => s.service_code === code);
+        const fee = serviceFees[code] ?? (service?.base_price || service?.fee || 0);
+        total += fee;
+        return `
+                    <div class="summary-course-item">
+                        <span><strong>${code}</strong> - ${service?.name || service?.service_name || code}</span>
+                        <span>₹${formatNumber(fee)}</span>
+                    </div>
+                `;
+    }).join('')}
+        </div>
+        <div class="summary-total">
+            <span>Total Quotation</span>
+            <span>₹${formatNumber(total)}</span>
+        </div>
+    `;
+
+    document.getElementById('client-confirm-overlay').classList.add('active');
+}
+
+function hideClientConfirmation() {
+    document.getElementById('client-confirm-overlay').classList.remove('active');
 }
 
 // Initialize phone input component with flag transformation
@@ -609,39 +670,125 @@ function closeForm() {
 
 function renderServicesCheckboxes(selected = [], fees = {}) {
     const container = document.getElementById('client-services-list');
+    serviceFees = fees;
+    selectedServiceCodes = [...selected];
 
     if (!allServicesForClients || allServicesForClients.length === 0) {
         container.innerHTML = `<p class="text-muted p-2">No services available.</p>`;
         return;
     }
 
-    container.innerHTML = allServicesForClients.map(svc => {
-        const code = svc.service_code;
-        const isChecked = selected.includes(code);
+    container.innerHTML = `
+        <div class="course-picker">
+            <div class="course-search-dropdown">
+                <div class="search-input-wrapper">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="service-search-input" placeholder="Search and select services..." autocomplete="off">
+                    <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                </div>
+                <div class="dropdown-list" id="service-dropdown-list">
+                    ${allServicesForClients.map(s => {
+        const code = s.service_code;
         return `
-            <label class="checkbox-item ${isChecked ? 'checked' : ''}">
-                <input type="checkbox" name="client-services" value="${code}" ${isChecked ? 'checked' : ''}>
-                <i class="fa-solid fa-check"></i>
-                <span>${code} - ${svc.name || svc.service_name || code}</span>
-            </label>
+                            <div class="dropdown-item ${selectedServiceCodes.includes(code) ? 'selected' : ''}" 
+                                 data-code="${code}" 
+                                 data-name="${s.name || s.service_name || code}"
+                                 data-search="${(s.name || s.service_name || '').toLowerCase()} ${code.toLowerCase()}">
+                                <span class="item-code">${code}</span>
+                                <span class="item-name">${s.name || s.service_name || code}</span>
+                                <i class="fa-solid fa-check check-icon"></i>
+                            </div>
+                        `;
+    }).join('')}
+                </div>
+            </div>
+            <div class="selected-pills" id="selected-services-pills">
+                ${renderServicePills()}
+            </div>
+        </div>
+    `;
+
+    bindServicePickerEvents();
+    updateFeeBreakdown();
+}
+
+function renderServicePills() {
+    if (selectedServiceCodes.length === 0) {
+        return '<span class="no-selection-hint">No services selected</span>';
+    }
+    return selectedServiceCodes.map(code => {
+        const service = allServicesForClients.find(s => s.service_code === code);
+        return `
+            <span class="course-pill" data-code="${code}">
+                <span class="pill-code">${code}</span>
+                <span class="pill-name">${service?.name || service?.service_name || code}</span>
+                <button type="button" class="pill-remove" data-code="${code}">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </span>
         `;
     }).join('');
+}
 
-    container.querySelectorAll('input').forEach(cb => {
-        cb.onchange = () => {
-            cb.closest('.checkbox-item').classList.toggle('checked', cb.checked);
-            updateFeeBreakdown();
-        };
+function bindServicePickerEvents() {
+    const searchInput = document.getElementById('service-search-input');
+    const wrapper = document.querySelector('.course-search-dropdown');
+
+    searchInput?.addEventListener('focus', () => wrapper.classList.add('open'));
+    document.addEventListener('click', (e) => {
+        if (!wrapper?.contains(e.target)) wrapper?.classList.remove('open');
     });
+
+    searchInput?.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        document.querySelectorAll('#service-dropdown-list .dropdown-item').forEach(item => {
+            const searchText = item.dataset.search || '';
+            item.style.display = searchText.includes(query) ? 'flex' : 'none';
+        });
+    });
+
+    document.querySelectorAll('#service-dropdown-list .dropdown-item').forEach(item => {
+        item.addEventListener('click', () => toggleServiceSelection(item.dataset.code));
+    });
+
+    document.querySelectorAll('.pill-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleServiceSelection(btn.dataset.code);
+        });
+    });
+}
+
+function toggleServiceSelection(code) {
+    const index = selectedServiceCodes.indexOf(code);
+    if (index > -1) {
+        selectedServiceCodes.splice(index, 1);
+        delete serviceFees[code];
+    } else {
+        selectedServiceCodes.push(code);
+    }
+
+    document.getElementById('selected-services-pills').innerHTML = renderServicePills();
+    document.querySelectorAll('#service-dropdown-list .dropdown-item').forEach(item => {
+        item.classList.toggle('selected', selectedServiceCodes.includes(item.dataset.code));
+    });
+
+    document.querySelectorAll('.pill-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleServiceSelection(btn.dataset.code);
+        });
+    });
+
+    updateFeeBreakdown();
 }
 
 function updateFeeBreakdown() {
     const breakdown = document.getElementById('fee-breakdown');
     const totalRow = document.getElementById('fee-total-row');
     const totalEl = document.getElementById('fee-total');
-    const selectedServices = Array.from(document.querySelectorAll('input[name="client-services"]:checked'));
 
-    if (selectedServices.length === 0) {
+    if (selectedServiceCodes.length === 0) {
         breakdown.innerHTML = `<p class="text-muted">Select services to see fee breakdown</p>`;
         totalRow.style.display = 'none';
         return;
@@ -650,8 +797,7 @@ function updateFeeBreakdown() {
     let html = '';
     let total = 0;
 
-    selectedServices.forEach(cb => {
-        const code = cb.value;
+    selectedServiceCodes.forEach(code => {
         const service = allServicesForClients.find(s => s.service_code === code);
         const baseFee = service?.base_price || service?.fee || 0;
         const customFee = serviceFees[code] ?? baseFee;
@@ -671,11 +817,9 @@ function updateFeeBreakdown() {
     totalRow.style.display = 'flex';
     totalEl.innerHTML = `<i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(total)}`;
 
-    // Bind fee input changes
     breakdown.querySelectorAll('.fee-input').forEach(input => {
         input.addEventListener('input', () => {
-            const code = input.dataset.code;
-            serviceFees[code] = parseInt(input.value) || 0;
+            serviceFees[input.dataset.code] = parseInt(input.value) || 0;
             recalculateTotal();
         });
     });
@@ -683,22 +827,18 @@ function updateFeeBreakdown() {
 
 function recalculateTotal() {
     const totalEl = document.getElementById('fee-total');
-    const selectedServices = Array.from(document.querySelectorAll('input[name="client-services"]:checked'));
-
     let total = 0;
-    selectedServices.forEach(cb => {
-        const code = cb.value;
+    selectedServiceCodes.forEach(code => {
         const service = allServicesForClients.find(s => s.service_code === code);
         const baseFee = service?.base_price || service?.fee || 0;
         total += serviceFees[code] ?? baseFee;
     });
-
     totalEl.innerHTML = `<i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(total)}`;
 }
 
 async function saveClient() {
     const { Toast } = window.AdminUtils;
-    const saveBtn = document.getElementById('save-client-btn');
+    const confirmBtn = document.getElementById('confirm-client-btn');
     const editId = document.getElementById('edit-client-id').value;
     const convertingInquiryId = document.getElementById('converting-inquiry-id').value;
     const isEdit = !!editId;
@@ -713,7 +853,7 @@ async function saveClient() {
     const email = document.getElementById('client-email').value.trim();
     const notes = document.getElementById('client-notes').value.trim();
 
-    const services = Array.from(document.querySelectorAll('input[name="client-services"]:checked')).map(cb => cb.value);
+    const services = selectedServiceCodes;
 
     // Calculate total
     let totalFee = 0;
@@ -723,18 +863,12 @@ async function saveClient() {
         totalFee += serviceFees[code] ?? baseFee;
     });
 
-    // Validation
+    // Formatting
     const { Validators } = window.AdminUtils;
-    if (!fname) { Toast.error('Required', 'First name required'); return; }
-    if (!phoneNumber || phoneNumber.length < 6) { Toast.error('Required', 'Valid phone number required'); return; }
-    if (services.length === 0) { Toast.error('Required', 'Select at least one service'); return; }
-
-    // Format phone for storage using country code from split input (e.g., "+91 - 9492020292")
     const formattedPhone = Validators.formatPhoneForStorage(phoneNumber, countryCode);
 
-
-    saveBtn.disabled = true;
-    saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
 
     try {
         const clientData = {
@@ -748,34 +882,28 @@ async function saveClient() {
             notes: notes || null
         };
 
-
         if (isEdit) {
             const { error } = await window.supabaseClient.from('clients').update(clientData).eq('id', editId);
             if (error) throw error;
             Toast.success('Updated', 'Client updated successfully');
         } else {
-            // Generate new client ID - Find first available gap in sequence
-            const { data: allClients } = await window.supabaseClient
+            // Generate new client ID
+            const { data: allClientsData } = await window.supabaseClient
                 .from('clients')
                 .select('client_id')
                 .order('client_id', { ascending: true });
 
-            // Extract all existing numbers
             const usedNumbers = new Set();
-            if (allClients?.length > 0) {
-                allClients.forEach(c => {
+            if (allClientsData?.length > 0) {
+                allClientsData.forEach(c => {
                     const m = c.client_id?.match(/CL-ACS-(\d+)/);
                     if (m) usedNumbers.add(parseInt(m[1]));
                 });
             }
 
-            // Find first available number (gap or next)
             let nextNum = 1;
-            while (usedNumbers.has(nextNum)) {
-                nextNum++;
-            }
+            while (usedNumbers.has(nextNum)) nextNum++;
             const newId = `CL-ACS-${String(nextNum).padStart(3, '0')}`;
-
 
             const { error } = await window.supabaseClient.from('clients').insert({
                 ...clientData,
@@ -786,23 +914,20 @@ async function saveClient() {
             if (error) throw error;
             Toast.success('Added', 'Client added successfully');
 
-            // Update inquiry status if converting
             if (convertingInquiryId) {
-                await window.supabaseClient
-                    .from('inquiries')
-                    .update({ status: 'Converted' })
-                    .eq('id', convertingInquiryId);
+                await window.supabaseClient.from('inquiries').update({ status: 'Converted' }).eq('id', convertingInquiryId);
             }
         }
 
+        hideClientConfirmation();
         closeForm();
         await loadClients();
     } catch (err) {
         console.error(err);
         Toast.error('Error', err.message);
     } finally {
-        saveBtn.disabled = false;
-        saveBtn.innerHTML = `<i class="fa-solid fa-check"></i> ${isEdit ? 'Update' : 'Save'} Client`;
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = '<i class="fa-solid fa-check"></i> Confirm & Save';
     }
 }
 
@@ -821,7 +946,6 @@ function checkPrefill() {
 
         // Open form and prefill
         openForm().then(() => {
-            // Split name into first/last
             const nameParts = name.trim().split(' ');
             document.getElementById('client-fname').value = nameParts[0] || '';
             document.getElementById('client-lname').value = nameParts.slice(1).join(' ') || '';
@@ -834,19 +958,44 @@ function checkPrefill() {
                 if (notesEl) notesEl.value = `Inquiry ID: ${readableId}`;
             }
 
-            // Check the services
-            services.forEach(code => {
-                const cb = document.querySelector(`input[name="client-services"][value="${code}"]`);
-                if (cb) {
-                    cb.checked = true;
-                    cb.closest('.checkbox-item')?.classList.add('checked');
-                }
-            });
+            // Set the services array directly
+            selectedServiceCodes = services;
 
+            // Re-render the picker UI
+            const container = document.getElementById('client-services-list');
+            container.innerHTML = `
+                <div class="course-picker">
+                    <div class="course-search-dropdown">
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="service-search-input" placeholder="Search and select services..." autocomplete="off">
+                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                        </div>
+                        <div class="dropdown-list" id="service-dropdown-list">
+                            ${allServicesForClients.map(s => {
+                const code = s.service_code;
+                return `
+                                    <div class="dropdown-item ${selectedServiceCodes.includes(code) ? 'selected' : ''}" 
+                                         data-code="${code}" 
+                                         data-name="${s.name || s.service_name || code}"
+                                         data-search="${(s.name || s.service_name || '').toLowerCase()} ${code.toLowerCase()}">
+                                        <span class="item-code">${code}</span>
+                                        <span class="item-name">${s.name || s.service_name || code}</span>
+                                        <i class="fa-solid fa-check check-icon"></i>
+                                    </div>
+                                `;
+            }).join('')}
+                        </div>
+                    </div>
+                    <div class="selected-pills" id="selected-services-pills">
+                        ${renderServicePills()}
+                    </div>
+                </div>
+            `;
+            bindServicePickerEvents();
             updateFeeBreakdown();
         });
 
-        // Clean URL
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 }

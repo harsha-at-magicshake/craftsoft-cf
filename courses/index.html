@@ -613,45 +613,90 @@
                                     maxlength="10" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="counseling-course">Interested Course</label>
-                                <select id="counseling-course" name="courses" required autocomplete="off">
-                                    <option value="" disabled selected>Choose a program...</option>
-                                    <optgroup label="Design">
-                                        <option value="Graphic Design">Graphic Design</option>
-                                        <option value="UI/UX Design">UI/UX Design</option>
-                                    </optgroup>
-                                    <optgroup label="Development">
-                                        <option value="Full Stack MERN">Full Stack MERN</option>
-                                        <option value="Python Full Stack">Python Full Stack</option>
-                                        <option value="Java Full Stack">Java Full Stack</option>
-                                        <option value="React Development">React Development</option>
-                                        <option value="DSA Mastery">DSA Mastery</option>
-                                        <option value="SQL Mastery">SQL Mastery</option>
-                                    </optgroup>
-                                    <optgroup label="Cloud & Security">
-                                        <option value="DevOps Engineering">DevOps Engineering</option>
-                                        <option value="AWS Cloud">AWS Cloud</option>
-                                        <option value="Microsoft Azure">Microsoft Azure</option>
-                                        <option value="Cyber Security">Cyber Security</option>
-                                        <option value="DevSecOps">DevSecOps</option>
-                                    </optgroup>
-                                    <optgroup label="Enterprise">
-                                        <option value="Salesforce Admin">Salesforce Admin</option>
-                                        <option value="Salesforce Developer">Salesforce Developer</option>
-                                        <option value="Marketing Cloud">Marketing Cloud</option>
-                                        <option value="Oracle Fusion Cloud">Oracle Fusion Cloud</option>
-                                    </optgroup>
-                                    <optgroup label="Data & AI">
-                                        <option value="Data Analytics">Data Analytics</option>
-                                        <option value="AI & ML">AI & ML</option>
-                                    </optgroup>
-                                    <optgroup label="Growth">
-                                        <option value="Spoken English">Spoken English</option>
-                                        <option value="Soft Skills">Soft Skills</option>
-                                        <option value="Resume & Interview">Resume & Interview</option>
-                                        <option value="Handwriting">Handwriting</option>
-                                    </optgroup>
-                                </select>
+                                <label>Interested Courses *</label>
+                                <div class="public-multi-select" id="courses-multi-select">
+                                    <div class="selected-items-display" id="selected-courses-display">
+                                        <span class="placeholder">Select courses...</span>
+                                    </div>
+                                    <div class="multi-select-dropdown">
+                                        <div class="dropdown-search">
+                                            <i class="fas fa-search"></i>
+                                            <input type="text" placeholder="Search courses..." id="course-search">
+                                        </div>
+                                        <div class="dropdown-options" id="course-options">
+                                            <div class="option-group">Design</div>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Graphic Design"> <span>Graphic Design</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="UI/UX Design"> <span>UI/UX Design</span></label>
+
+                                            <div class="option-group">Development</div>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Full Stack MERN"> <span>Full Stack MERN</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Python Full Stack"> <span>Python Full Stack</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Java Full Stack"> <span>Java Full Stack</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="React Development"> <span>React Development</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="DSA Mastery"> <span>DSA Mastery</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="SQL Mastery"> <span>SQL Mastery</span></label>
+
+                                            <div class="option-group">Cloud & Security</div>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="DevOps Engineering"> <span>DevOps Engineering</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="AWS Cloud"> <span>AWS Cloud</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Microsoft Azure"> <span>Microsoft Azure</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Cyber Security"> <span>Cyber Security</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="DevSecOps"> <span>DevSecOps</span></label>
+
+                                            <div class="option-group">Enterprise</div>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Salesforce Admin"> <span>Salesforce Admin</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Salesforce Developer"> <span>Salesforce
+                                                    Developer</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Marketing Cloud"> <span>Marketing Cloud</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Oracle Fusion Cloud"> <span>Oracle Fusion
+                                                    Cloud</span></label>
+
+                                            <div class="option-group">Data & AI</div>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Data Analytics"> <span>Data Analytics</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="AI & ML"> <span>AI & ML</span></label>
+
+                                            <div class="option-group">Growth</div>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Spoken English"> <span>Spoken English</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Soft Skills"> <span>Soft Skills</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Resume & Interview"> <span>Resume & Interview</span></label>
+                                            <label class="option-item"><input type="checkbox" name="courses"
+                                                    value="Handwriting"> <span>Handwriting</span></label>
+
+                                            <div class="option-divider"></div>
+                                            <label class="option-item special-option"><input type="checkbox"
+                                                    name="courses" value="Other" id="course-other-checkbox"> <span>Other
+                                                    Course...</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Conditional Other Field -->
+                            <div class="form-group" id="other-course-wrapper" style="display: none;">
+                                <label for="counseling-other">Please specify course(s) *</label>
+                                <textarea id="counseling-other" name="other_interest"
+                                    placeholder="Mention the courses you are looking for..." rows="2"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="counseling-message">Your Message</label>
@@ -772,8 +817,84 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Inquiry Sync
             if (window.InquirySync) {
                 window.InquirySync.initCourseForm('courses-inquiry-form');
+            }
+
+            // Public Multi-Select Logic
+            const multiSelect = document.getElementById('courses-multi-select');
+            const display = document.getElementById('selected-courses-display');
+            const searchInput = document.getElementById('course-search');
+            const optionsContainer = document.getElementById('course-options');
+            const otherWrapper = document.getElementById('other-course-wrapper');
+            const otherCheckbox = document.getElementById('course-other-checkbox');
+            const otherTextarea = document.getElementById('counseling-other');
+
+            if (multiSelect) {
+                // Toggle Dropdown
+                display.addEventListener('click', (e) => {
+                    multiSelect.classList.toggle('open');
+                    if (multiSelect.classList.contains('open')) searchInput.focus();
+                });
+
+                // Close on outside click
+                document.addEventListener('click', (e) => {
+                    if (!multiSelect.contains(e.target)) multiSelect.classList.remove('open');
+                });
+
+                // Search Filter
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    optionsContainer.querySelectorAll('.option-item').forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        item.style.display = text.includes(query) ? 'flex' : 'none';
+                    });
+                });
+
+                // Selection Change
+                const updateDisplay = () => {
+                    const checked = Array.from(optionsContainer.querySelectorAll('input:checked'));
+                    if (checked.length === 0) {
+                        display.innerHTML = '<span class="placeholder">Select courses...</span>';
+                    } else {
+                        display.innerHTML = checked.map(cb => `
+                            <span class="public-pill" data-value="${cb.value}">
+                                ${cb.value}
+                                <i class="fas fa-times pill-remove" data-value="${cb.value}"></i>
+                            </span>
+                        `).join('');
+
+                        // Rebind remove icons
+                        display.querySelectorAll('.pill-remove').forEach(remove => {
+                            remove.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                const val = remove.dataset.value;
+                                const cb = optionsContainer.querySelector(`input[value="${val}"]`);
+                                if (cb) {
+                                    cb.checked = false;
+                                    updateDisplay();
+                                    checkOther();
+                                }
+                            });
+                        });
+                    }
+                };
+
+                const checkOther = () => {
+                    if (otherCheckbox.checked) {
+                        otherWrapper.style.display = 'block';
+                        otherTextarea.required = true;
+                    } else {
+                        otherWrapper.style.display = 'none';
+                        otherTextarea.required = false;
+                    }
+                };
+
+                optionsContainer.addEventListener('change', (e) => {
+                    updateDisplay();
+                    if (e.target.id === 'course-other-checkbox') checkOther();
+                });
             }
         });
     </script>

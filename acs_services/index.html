@@ -319,20 +319,55 @@
                                             maxlength="10">
                                     </div>
                                     <div class="form-group">
-                                        <label for="service">Interested In *</label>
-                                        <select id="service" name="courses" required>
-                                            <option value="" disabled selected>Choose a service...</option>
-                                            <option value="Graphic Design Services" data-type="service">Graphic Design
-                                            </option>
-                                            <option value="UI/UX Design Services" data-type="service">UI/UX Design
-                                            </option>
-                                            <option value="Website Development" data-type="service">Website Development
-                                            </option>
-                                            <option value="Cloud & DevOps" data-type="service">Cloud & DevOps</option>
-                                            <option value="Branding & Marketing" data-type="service">Branding &
-                                                Marketing</option>
-                                            <option value="Career Services" data-type="service">Career Services</option>
-                                        </select>
+                                        <label>Services Required *</label>
+                                        <div class="public-multi-select" id="services-multi-select">
+                                            <div class="selected-items-display" id="selected-services-display">
+                                                <span class="placeholder">Select services...</span>
+                                            </div>
+                                            <div class="multi-select-dropdown">
+                                                <div class="dropdown-search">
+                                                    <i class="fas fa-search"></i>
+                                                    <input type="text" placeholder="Search services..."
+                                                        id="service-search">
+                                                </div>
+                                                <div class="dropdown-options" id="service-options">
+                                                    <div class="option-group">Design & Creative</div>
+                                                    <label class="option-item"><input type="checkbox" name="courses"
+                                                            value="Graphic Design Services"> <span>Graphic
+                                                            Design</span></label>
+                                                    <label class="option-item"><input type="checkbox" name="courses"
+                                                            value="UI/UX Design Services"> <span>UI/UX
+                                                            Design</span></label>
+
+                                                    <div class="option-group">Tech & Cloud</div>
+                                                    <label class="option-item"><input type="checkbox" name="courses"
+                                                            value="Website Development"> <span>Website
+                                                            Development</span></label>
+                                                    <label class="option-item"><input type="checkbox" name="courses"
+                                                            value="Cloud & DevOps"> <span>Cloud & DevOps</span></label>
+
+                                                    <div class="option-group">Branding & Career</div>
+                                                    <label class="option-item"><input type="checkbox" name="courses"
+                                                            value="Branding & Marketing"> <span>Branding &
+                                                            Marketing</span></label>
+                                                    <label class="option-item"><input type="checkbox" name="courses"
+                                                            value="Career Services"> <span>Career
+                                                            Services</span></label>
+
+                                                    <div class="option-divider"></div>
+                                                    <label class="option-item special-option"><input type="checkbox"
+                                                            name="courses" value="Other" id="service-other-checkbox">
+                                                        <span>Other Service...</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Conditional Other Field -->
+                                    <div class="form-group" id="other-service-wrapper" style="display: none;">
+                                        <label for="service-other">Please specify service(s) *</label>
+                                        <textarea id="service-other" name="other_interest"
+                                            placeholder="Mention the services you are looking for..."
+                                            rows="2"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="message">Message *</label>
@@ -461,6 +496,150 @@
 
     <script src="../assets/js/main.js?v=1.1"></script>
 
+    <style>
+        /* Reusing public multi-select styles if not in courses.css */
+        .public-multi-select {
+            position: relative;
+            user-select: none;
+        }
+
+        .selected-items-display {
+            min-height: 48px;
+            padding: 0.5rem 1rem;
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .selected-items-display:hover {
+            border-color: #2896cd;
+        }
+
+        .selected-items-display .placeholder {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .multi-select-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1.5px solid #2896cd;
+            border-radius: 0.75rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .public-multi-select.open .multi-select-dropdown {
+            display: block;
+        }
+
+        .dropdown-search {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .dropdown-search i {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-search input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            background: transparent;
+        }
+
+        .dropdown-options {
+            max-height: 250px;
+            overflow-y: auto;
+            padding: 0.5rem 0;
+        }
+
+        .option-group {
+            padding: 0.5rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            background: #f8fafc;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .option-item:hover {
+            background: #f0f9ff;
+        }
+
+        .option-item input {
+            width: 16px;
+            height: 16px;
+            accent-color: #2896cd;
+        }
+
+        .option-item span {
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .option-divider {
+            height: 1px;
+            background: #f1f5f9;
+            margin: 0.5rem 0;
+        }
+
+        .special-option {
+            font-weight: 600;
+            color: #2896cd;
+        }
+
+        .public-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            background: #e0f2fe;
+            color: #0369a1;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #bae6fd;
+        }
+
+        .public-pill .pill-remove {
+            cursor: pointer;
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .public-pill .pill-remove:hover {
+            opacity: 1;
+        }
+    </style>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             if (window.InquirySync) {
@@ -469,10 +648,78 @@
             if (window.PhoneInputInjector) {
                 window.PhoneInputInjector.init();
             }
+
+            // Public Multi-Select Logic for Services
+            const multiSelect = document.getElementById('services-multi-select');
+            const display = document.getElementById('selected-services-display');
+            const searchInput = document.getElementById('service-search');
+            const optionsContainer = document.getElementById('service-options');
+            const otherWrapper = document.getElementById('other-service-wrapper');
+            const otherCheckbox = document.getElementById('service-other-checkbox');
+            const otherTextarea = document.getElementById('service-other');
+
+            if (multiSelect) {
+                display.addEventListener('click', () => {
+                    multiSelect.classList.toggle('open');
+                    if (multiSelect.classList.contains('open')) searchInput.focus();
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!multiSelect.contains(e.target)) multiSelect.classList.remove('open');
+                });
+
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    optionsContainer.querySelectorAll('.option-item').forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        item.style.display = text.includes(query) ? 'flex' : 'none';
+                    });
+                });
+
+                const updateDisplay = () => {
+                    const checked = Array.from(optionsContainer.querySelectorAll('input:checked'));
+                    if (checked.length === 0) {
+                        display.innerHTML = '<span class="placeholder">Select services...</span>';
+                    } else {
+                        display.innerHTML = checked.map(cb => `
+                            <span class="public-pill" data-value="${cb.value}">
+                                ${cb.value}
+                                <i class="fas fa-times pill-remove" data-value="${cb.value}"></i>
+                            </span>
+                        `).join('');
+
+                        display.querySelectorAll('.pill-remove').forEach(remove => {
+                            remove.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                const val = remove.dataset.value;
+                                const cb = optionsContainer.querySelector(`input[value="${val}"]`);
+                                if (cb) {
+                                    cb.checked = false;
+                                    updateDisplay();
+                                    checkOther();
+                                }
+                            });
+                        });
+                    }
+                };
+
+                const checkOther = () => {
+                    if (otherCheckbox.checked) {
+                        otherWrapper.style.display = 'block';
+                        otherTextarea.required = true;
+                    } else {
+                        otherWrapper.style.display = 'none';
+                        otherTextarea.required = false;
+                    }
+                };
+
+                optionsContainer.addEventListener('change', (e) => {
+                    updateDisplay();
+                    if (e.target.id === 'service-other-checkbox') checkOther();
+                });
+            }
         });
     </script>
 </body>
 
 </html>
-
-
