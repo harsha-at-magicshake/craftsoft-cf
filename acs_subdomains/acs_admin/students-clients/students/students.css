@@ -1699,9 +1699,12 @@
 .course-search-dropdown.open .search-input-wrapper {
     border-color: var(--primary-500, #2896cd);
     background: #fff;
-    box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1001;
 }
 
 .search-input-wrapper i.fa-search {
@@ -1735,14 +1738,15 @@
 .dropdown-list {
     display: none;
     position: absolute;
-    top: calc(100% + 4px);
+    top: 100%;
     left: 0;
     right: 0;
     max-height: 350px;
     overflow-y: auto;
     background: #fff;
     border: 1.5px solid var(--primary-500, #2896cd);
-    border-radius: 12px;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
     z-index: 1000;
 }

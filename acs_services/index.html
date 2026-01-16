@@ -497,7 +497,7 @@
     <script src="../assets/js/main.js?v=1.1"></script>
 
     <style>
-        /* Reusing public multi-select styles if not in courses.css */
+        /* Improved public multi-select styles */
         .public-multi-select {
             position: relative;
             user-select: none;
@@ -538,10 +538,11 @@
             margin-top: 0.5rem;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
             z-index: 100;
+            flex-direction: column;
         }
 
         .public-multi-select.open .multi-select-dropdown {
-            display: block;
+            display: flex;
         }
 
         .dropdown-search {
@@ -550,6 +551,11 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 10;
+            border-radius: 0.75rem 0.75rem 0 0;
         }
 
         .dropdown-search i {
@@ -584,20 +590,23 @@
         .option-item {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.6rem 1rem;
+            gap: 12px;
+            padding: 10px 16px;
             cursor: pointer;
-            transition: all 0.1s ease;
+            transition: all 0.2s ease;
+            width: 100%;
         }
 
         .option-item:hover {
-            background: #f0f9ff;
+            background: #f8fafc;
         }
 
         .option-item input {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             accent-color: #2896cd;
+            cursor: pointer;
+            flex-shrink: 0;
         }
 
         .option-item span {
