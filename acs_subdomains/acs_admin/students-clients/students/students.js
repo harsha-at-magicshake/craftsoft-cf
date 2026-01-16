@@ -531,7 +531,7 @@ function showEnrollmentConfirmation() {
     const fname = document.getElementById('student-fname').value.trim();
     const lname = document.getElementById('student-lname').value.trim();
     const phone = document.getElementById('student-phone').value.trim();
-    const courses = Array.from(document.querySelectorAll('input[name="student-courses"]:checked')).map(c => c.value);
+    const courses = selectedCourseCodes;
 
     // Basic validation before showing confirmation
     if (!fname || !lname) { Toast.error('Required', 'Name required'); return; }
@@ -660,7 +660,7 @@ function getTutorsForCourse(courseCode) {
 
 // Render per-course tutor assignment
 function updateCourseTutorAssignment(currentCourseTutors = {}) {
-    const selectedCourses = Array.from(document.querySelectorAll('input[name="student-courses"]:checked')).map(c => c.value);
+    const selectedCourses = selectedCourseCodes;
     const section = document.getElementById('course-tutor-section');
     const list = document.getElementById('course-tutor-list');
 
@@ -697,51 +697,153 @@ function updateCourseTutorAssignment(currentCourseTutors = {}) {
         `;
     }).join('');
 }
+let selectedCourseCodes = [];
 
 function renderCoursesCheckboxes(selectedCourses = [], discounts = {}) {
     const list = document.getElementById('student-courses-list');
-    courseDiscounts = discounts; // Initialize
+    courseDiscounts = discounts;
+    selectedCourseCodes = [...selectedCourses];
 
-    // Add search input and course list
     list.innerHTML = `
-        <div class="course-search-wrapper">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" id="course-search-input" placeholder="Search courses by name..." autocomplete="off">
-        </div>
-        <div id="course-checkboxes-container">
-            ${allCoursesForStudents.map(c => `
-                <label class="checkbox-item" data-search="${c.course_name.toLowerCase()} ${c.course_code.toLowerCase()}">
-                    <input type="checkbox" name="student-courses" value="${c.course_code}" data-fee="${c.fee || 0}" ${selectedCourses.includes(c.course_code) ? 'checked' : ''}>
-                    <span><strong>${c.course_code}</strong> - ${c.course_name}</span>
-                </label>
-            `).join('')}
+        <div class="course-picker">
+            <div class="course-search-dropdown">
+                <div class="search-input-wrapper">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="course-search-input" placeholder="Search and select courses..." autocomplete="off">
+                    <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                </div>
+                <div class="dropdown-list" id="course-dropdown-list">
+                    ${allCoursesForStudents.map(c => `
+                        <div class="dropdown-item ${selectedCourseCodes.includes(c.course_code) ? 'selected' : ''}" 
+                             data-code="${c.course_code}" 
+                             data-name="${c.course_name}"
+                             data-fee="${c.fee || 0}"
+                             data-search="${c.course_name.toLowerCase()} ${c.course_code.toLowerCase()}">
+                            <span class="item-code">${c.course_code}</span>
+                            <span class="item-name">${c.course_name}</span>
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            <div class="selected-pills" id="selected-courses-pills">
+                ${renderCoursePills()}
+            </div>
         </div>
     `;
 
-    // Bind search filter
+    bindCoursePickerEvents();
+    updateCourseTutorAssignment({});
+    updateFeeBreakdown();
+}
+
+function renderCoursePills() {
+    if (selectedCourseCodes.length === 0) {
+        return '<span class="no-selection-hint">No courses selected</span>';
+    }
+    return selectedCourseCodes.map(code => {
+        const course = allCoursesForStudents.find(c => c.course_code === code);
+        return `
+            <span class="course-pill" data-code="${code}">
+                <span class="pill-code">${code}</span>
+                <span class="pill-name">${course?.course_name || code}</span>
+                <button type="button" class="pill-remove" data-code="${code}">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </span>
+        `;
+    }).join('');
+}
+
+function bindCoursePickerEvents() {
     const searchInput = document.getElementById('course-search-input');
+    const dropdownList = document.getElementById('course-dropdown-list');
+    const wrapper = document.querySelector('.course-search-dropdown');
+
+    // Toggle dropdown on input focus
+    searchInput?.addEventListener('focus', () => {
+        wrapper.classList.add('open');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!wrapper?.contains(e.target)) {
+            wrapper?.classList.remove('open');
+        }
+    });
+
+    // Filter dropdown items
     searchInput?.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
-        document.querySelectorAll('#course-checkboxes-container .checkbox-item').forEach(item => {
+        document.querySelectorAll('#course-dropdown-list .dropdown-item').forEach(item => {
             const searchText = item.dataset.search || '';
             item.style.display = searchText.includes(query) ? 'flex' : 'none';
         });
     });
 
-    // Bind course change events
-    document.querySelectorAll('input[name="student-courses"]').forEach(cb => {
-        cb.addEventListener('change', () => {
-            // Get current course-tutor assignments
-            const currentCourseTutors = {};
-            document.querySelectorAll('select[name="course-tutor"]').forEach(sel => {
-                if (sel.value) {
-                    currentCourseTutors[sel.dataset.course] = sel.value;
-                }
-            });
-            updateCourseTutorAssignment(currentCourseTutors);
-            updateFeeBreakdown();
+    // Select/deselect course from dropdown
+    document.querySelectorAll('#course-dropdown-list .dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const code = item.dataset.code;
+            toggleCourseSelection(code);
         });
     });
+
+    // Remove pill on X click
+    document.querySelectorAll('.pill-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const code = btn.dataset.code;
+            toggleCourseSelection(code);
+        });
+    });
+}
+
+function toggleCourseSelection(code) {
+    const index = selectedCourseCodes.indexOf(code);
+    if (index > -1) {
+        selectedCourseCodes.splice(index, 1);
+        delete courseDiscounts[code];
+    } else {
+        selectedCourseCodes.push(code);
+    }
+
+    // Update UI
+    const pillsContainer = document.getElementById('selected-courses-pills');
+    pillsContainer.innerHTML = renderCoursePills();
+
+    // Update dropdown item state
+    document.querySelectorAll('#course-dropdown-list .dropdown-item').forEach(item => {
+        if (selectedCourseCodes.includes(item.dataset.code)) {
+            item.classList.add('selected');
+        } else {
+            item.classList.remove('selected');
+        }
+    });
+
+    // Re-bind pill remove buttons
+    document.querySelectorAll('.pill-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleCourseSelection(btn.dataset.code);
+        });
+    });
+
+    // Get current course-tutor assignments before updating
+    const currentCourseTutors = {};
+    document.querySelectorAll('select[name="course-tutor"]').forEach(sel => {
+        if (sel.value) {
+            currentCourseTutors[sel.dataset.course] = sel.value;
+        }
+    });
+
+    updateCourseTutorAssignment(currentCourseTutors);
+    updateFeeBreakdown();
+}
+
+// Helper to get selected courses (used by saveStudent)
+function getSelectedCourses() {
+    return selectedCourseCodes;
 }
 
 function updateFeeBreakdown() {
@@ -749,17 +851,14 @@ function updateFeeBreakdown() {
     const totalRow = document.getElementById('fee-total-row');
     const totalEl = document.getElementById('fee-total');
 
-    const selectedCourses = Array.from(document.querySelectorAll('input[name="student-courses"]:checked'));
-
-    if (selectedCourses.length === 0) {
+    if (selectedCourseCodes.length === 0) {
         breakdown.innerHTML = '<p class="text-muted">Select courses to see fee breakdown</p>';
         totalRow.style.display = 'none';
         return;
     }
 
     let html = '';
-    selectedCourses.forEach(cb => {
-        const code = cb.value;
+    selectedCourseCodes.forEach(code => {
         const course = allCoursesForStudents.find(c => c.course_code === code);
         const fee = course?.fee || 0;
         const discount = courseDiscounts[code] || 0;
@@ -804,11 +903,9 @@ function updateFeeBreakdown() {
 
 function recalculateTotal() {
     const totalEl = document.getElementById('fee-total');
-    const selectedCourses = Array.from(document.querySelectorAll('input[name="student-courses"]:checked'));
 
     let total = 0;
-    selectedCourses.forEach(cb => {
-        const code = cb.value;
+    selectedCourseCodes.forEach(code => {
         const course = allCoursesForStudents.find(c => c.course_code === code);
         const fee = course?.fee || 0;
         const discount = courseDiscounts[code] || 0;
@@ -938,7 +1035,7 @@ async function saveStudent() {
     const phone = phoneNumber; // Raw number for validation
 
     const email = document.getElementById('student-email').value.trim();
-    const courses = Array.from(document.querySelectorAll('input[name="student-courses"]:checked')).map(c => c.value);
+    const courses = selectedCourseCodes;
 
 
     // Collect per-course tutor assignments

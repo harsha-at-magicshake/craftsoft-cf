@@ -1670,3 +1670,211 @@
 .modal-md {
     max-width: 520px;
 }
+
+/* ============================================
+   Course Picker - Search Dropdown + Pills
+   ============================================ */
+.course-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.course-search-dropdown {
+    position: relative;
+}
+
+.search-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background: var(--admin-input-bg, #f8fafc);
+    border: 1.5px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 12px;
+    cursor: text;
+    transition: all 0.2s ease;
+}
+
+.search-input-wrapper:hover {
+    border-color: var(--primary-300, #7ec0e1);
+}
+
+.course-search-dropdown.open .search-input-wrapper {
+    border-color: var(--primary-500, #2896cd);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.search-input-wrapper i.fa-search {
+    color: var(--admin-text-muted, #94a3b8);
+    font-size: 0.9rem;
+}
+
+.search-input-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.95rem;
+    color: var(--admin-text-primary, #0f172a);
+}
+
+.search-input-wrapper input::placeholder {
+    color: var(--admin-text-muted, #94a3b8);
+}
+
+.dropdown-arrow {
+    color: var(--admin-text-muted, #94a3b8);
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+.course-search-dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1.5px solid var(--primary-500, #2896cd);
+    border-top: none;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    z-index: 100;
+}
+
+.course-search-dropdown.open .dropdown-list {
+    display: block;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border-bottom: 1px solid var(--gray-100, #f1f5f9);
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: var(--primary-50, #f0f9ff);
+}
+
+.dropdown-item.selected {
+    background: var(--primary-100, #e0f2fe);
+}
+
+.dropdown-item .item-code {
+    background: var(--gray-100, #f1f5f9);
+    color: var(--admin-text-secondary, #64748b);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    min-width: 60px;
+    text-align: center;
+}
+
+.dropdown-item.selected .item-code {
+    background: var(--primary-500, #2896cd);
+    color: #fff;
+}
+
+.dropdown-item .item-name {
+    flex: 1;
+    font-size: 0.9rem;
+    color: var(--admin-text-primary, #0f172a);
+}
+
+.dropdown-item .check-icon {
+    color: var(--success, #10b981);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.dropdown-item.selected .check-icon {
+    opacity: 1;
+}
+
+/* Selected Pills */
+.selected-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 36px;
+    padding: 0.5rem;
+    background: var(--gray-50, #f8fafc);
+    border: 1px dashed var(--admin-input-border, #e2e8f0);
+    border-radius: 10px;
+}
+
+.no-selection-hint {
+    color: var(--admin-text-muted, #94a3b8);
+    font-size: 0.85rem;
+    font-style: italic;
+    padding: 0.25rem 0.5rem;
+}
+
+.course-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem 0.4rem 0.75rem;
+    background: linear-gradient(135deg, var(--primary-500, #2896cd), var(--primary-600, #1a7eb0));
+    border-radius: 20px;
+    animation: pillPop 0.2s ease;
+}
+
+@keyframes pillPop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.course-pill .pill-code {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.course-pill .pill-name {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.9);
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.course-pill .pill-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    color: #fff;
+    font-size: 0.7rem;
+}
+
+.course-pill .pill-remove:hover {
+    background: rgba(255,255,255,0.4);
+}
