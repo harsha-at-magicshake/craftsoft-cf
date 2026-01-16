@@ -75,7 +75,7 @@ async function loadServices() {
         renderServicesList(allServices);
     } catch (error) {
         console.error(error);
-        const container = document.getElementById('services-table-container');
+        const container = document.getElementById('services-grid-container');
         if (container) container.innerHTML = '<div class="error-state"><i class="fa-solid fa-exclamation-triangle"></i><p>Failed to load services.</p></div>';
     } finally {
         const spinners = document.querySelectorAll('.loading-spinner');
@@ -84,90 +84,56 @@ async function loadServices() {
 }
 
 function renderServicesList(services) {
-    const tableContainer = document.getElementById('services-table-container');
-    const cardsContainer = document.getElementById('services-cards');
+    const gridContainer = document.getElementById('services-grid-container');
 
     if (!services || services.length === 0) {
-        const emptyHTML = `
-                <div class="empty-state">
+        gridContainer.innerHTML = `
+                <div class="empty-state" style="grid-column: 1 / -1;">
                     <div class="empty-state-icon"><i class="fa-solid fa-wrench"></i></div>
                     <h3>No services yet</h3>
                     <p>Click "Sync from Website" to populate services</p>
                 </div>`;
-        if (tableContainer) tableContainer.innerHTML = emptyHTML;
-        if (cardsContainer) cardsContainer.innerHTML = '';
         return;
     }
 
     const start = (currentPage - 1) * itemsPerPage;
     const paginatedServices = services.slice(start, start + itemsPerPage);
 
-    // Render Table
-    if (tableContainer) {
-        tableContainer.innerHTML = `
-                <div class="data-table-wrapper">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Code</th><th>Name</th>
-                                <th>Base Fee</th><th>GST (${defaultGstRate}%)</th><th>Total Fee</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${paginatedServices.map(s => `
-                                <tr>
-                                    <td><span class="badge badge-primary">${s.service_code}</span></td>
-                                    <td>${s.name || '-'}</td>
-                                    <td class="fee-cell text-muted">₹${formatNumber(s.base_fee || 0)}</td>
-                                    <td class="fee-cell text-muted">₹${formatNumber(s.gst_amount || 0)}</td>
-                                    <td class="fee-cell highlight"><strong>₹${formatNumber(s.total_fee || 0)}</strong></td>
-                                    <td>
-                                        <button class="btn-icon btn-edit-fee" data-id="${s.id}" data-code="${s.service_code}" data-name="${s.name}" 
-                                            data-base="${s.base_fee || 0}" data-gst="${s.gst_amount || 0}" data-total="${s.total_fee || 0}" title="Edit Pricing">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-    }
-
-    // Render Cards
-    if (cardsContainer) {
-        cardsContainer.innerHTML = paginatedServices.map(s => `
-                <div class="premium-card">
-                    <div class="card-header">
-                        <span class="card-id-badge">${s.service_code}</span>
+    gridContainer.innerHTML = paginatedServices.map(s => `
+        <div class="premium-card">
+            <div class="card-header">
+                <span class="card-id-badge">${s.service_code}</span>
+                <button class="btn-icon btn-edit-fee" data-id="${s.id}" data-code="${s.service_code}" data-name="${s.name}" 
+                    data-base="${s.base_fee || 0}" data-gst="${s.gst_amount || 0}" data-total="${s.total_fee || 0}" title="Edit Pricing">
+                    <i class="fa-solid fa-pen"></i>
+                </button>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">${s.name || 'Unnamed Service'}</h3>
+                
+                <div class="card-pricing-list">
+                    <div class="pricing-item">
+                        <span class="label">Base Fee</span>
+                        <span class="value">₹${formatNumber(s.base_fee || 0)}</span>
                     </div>
-                    <div class="card-body">
-                        <div class="card-info-row">
-                            <span class="card-info-item"><i class="fa-solid fa-wrench"></i> ${s.name || '-'}</span>
-                        </div>
-                        <div class="card-pricing" style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
-                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted);">
-                                <span>Base:</span> <span>₹${formatNumber(s.base_fee || 0)}</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted);">
-                                <span>GST (${defaultGstRate}%):</span> <span>₹${formatNumber(s.gst_amount || 0)}</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; font-weight: 600; margin-top: 0.25rem;">
-                                <span>Total:</span> <span>₹${formatNumber(s.total_fee || 0)}</span>
-                            </div>
-                        </div>
+                    <div class="pricing-item">
+                        <span class="label">GST (${defaultGstRate}%)</span>
+                        <span class="value">₹${formatNumber(s.gst_amount || 0)}</span>
                     </div>
-                    <div class="card-actions" style="padding: 1rem; border-top: 1px solid var(--border-color);">
-                        <button class="btn btn-sm btn-outline btn-edit-fee" data-id="${s.id}" data-code="${s.service_code}" data-name="${s.name}" 
-                            data-base="${s.base_fee || 0}" data-gst="${s.gst_amount || 0}" data-total="${s.total_fee || 0}" style="width: 100%;">
-                            <i class="fa-solid fa-pen"></i> Edit Pricing
-                        </button>
+                    <div class="pricing-item total">
+                        <span class="label">Total Fee</span>
+                        <span class="value">₹${formatNumber(s.total_fee || 0)}</span>
                     </div>
                 </div>
-            `).join('');
-    }
+            </div>
+            <div class="card-actions">
+                <button class="btn btn-primary btn-edit-pricing btn-edit-fee" data-id="${s.id}" data-code="${s.service_code}" data-name="${s.name}" 
+                    data-base="${s.base_fee || 0}" data-gst="${s.gst_amount || 0}" data-total="${s.total_fee || 0}">
+                    <i class="fa-solid fa-indian-rupee-sign"></i> Edit Pricing
+                </button>
+            </div>
+        </div>
+    `).join('');
 
     document.querySelectorAll('.btn-edit-fee').forEach(btn => {
         btn.addEventListener('click', () => {

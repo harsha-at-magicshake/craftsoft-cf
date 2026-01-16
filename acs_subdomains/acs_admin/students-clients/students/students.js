@@ -1060,13 +1060,7 @@ async function openForm(studentId = null) {
     document.getElementById('student-lname').value = '';
     document.getElementById('student-phone').value = '';
     document.getElementById('student-email').value = '';
-    document.getElementById('student-demo-date').value = '';
-    document.getElementById('student-demo-time').value = '';
-    document.getElementById('student-joining-date').value = '';
-    document.getElementById('student-batch-time').value = '';
     document.getElementById('student-notes').value = '';
-    document.querySelector('input[name="demo-scheduled"][value="no"]').checked = true;
-    document.querySelector('.demo-fields').style.display = 'none';
     courseDiscounts = {};
 
     let student = null;

@@ -205,10 +205,110 @@
     border-top: 1px solid var(--border-color);
 }
 
-.data-cards {
-    display: none;
+/* =====================
+   Services Grid Layout
+   ===================== */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.premium-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
     flex-direction: column;
-    gap: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.premium-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(40, 150, 205, 0.1);
+    border-color: var(--primary-300, #90cdf4);
+}
+
+.card-header {
+    padding: 1.25rem;
+    background: linear-gradient(135deg, rgba(40, 150, 205, 0.05) 0%, rgba(108, 92, 231, 0.05) 100%);
+    border-bottom: 1px solid var(--admin-input-border, #e2e8f0);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-id-badge {
+    background: var(--primary-100, #e0f2fe);
+    color: var(--primary-700, #0369a1);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.card-body {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--admin-text-primary, #0f172a);
+    margin-bottom: 1rem;
+    font-family: 'Outfit', sans-serif;
+}
+
+.card-pricing-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.pricing-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.pricing-item .label {
+    color: var(--admin-text-secondary, #64748b);
+}
+
+.pricing-item .value {
+    font-weight: 500;
+    color: var(--admin-text-primary, #0f172a);
+}
+
+.pricing-item.total {
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1.5px dashed var(--admin-input-border, #e2e8f0);
+    font-size: 1.15rem;
+}
+
+.pricing-item.total .value {
+    color: var(--primary-600, #2896cd);
+    font-weight: 800;
+}
+
+.card-actions {
+    padding: 1.25rem;
+    background: var(--gray-50, #f8fafc);
+    border-top: 1px solid var(--admin-input-border, #e2e8f0);
+}
+
+.btn-edit-pricing {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 600;
 }
 
 /* Tablet & Mobile Visibility */
@@ -244,41 +344,15 @@
     .inline-form-footer .btn {
         width: 100%;
     }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-.premium-card {
-    background: var(--admin-card-bg, #ffffff);
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--admin-border, #eee);
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.75rem;
-}
-
-.card-id-badge {
-    background: rgba(40, 150, 205, 0.1);
-    color: #2896cd;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.card-info-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: var(--admin-text, #333);
-}
-
-.card-info-item i {
-    color: #2896cd;
-    width: 16px;
+@media (min-width: 1251px) {
+    .table-container {
+        display: none !important;
+        /* Force Grid by default as requested */
+    }
 }
