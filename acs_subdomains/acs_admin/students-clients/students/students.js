@@ -1188,14 +1188,12 @@ async function openStudentProfile(studentId) {
 
         if (studentError) throw studentError;
 
-        // Fetch payments for this student
+        // Fetch payments for this student - simplified query to be ultra-safe
         const { data: payments, error: paymentsError } = await window.supabaseClient
             .from('payments')
-            .select('*, course:course_id(course_code, course_name)')
+            .select('*')
             .eq('student_id', studentId)
-            .is('deleted_at', null)
-            .neq('status', 'INACTIVE')
-            .order('created_at', { ascending: false });
+            .order('payment_date', { ascending: false });
 
         if (paymentsError) console.warn('Error loading payments:', paymentsError);
 
@@ -1203,7 +1201,7 @@ async function openStudentProfile(studentId) {
         allProfilePayments = payments || [];
         currentProfileStudent = student;
         profileTotalPaid = allProfilePayments.reduce((sum, p) => sum + parseFloat(p.amount_paid || 0), 0);
-        profileBalanceDue = (student.final_fee || 0) - profileTotalPaid;
+        profileBalanceDue = (student.final_fee || student.fee || 0) - profileTotalPaid;
         profilePaymentsPage = 1;
 
         // Render profile content
@@ -1303,8 +1301,8 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                             </span>
                         </div>
                         <div class="profile-course-details">
-                            <span><i class="fa-solid fa-indian-rupee-sign"></i> Fee: ${formatCurrency(courseFee)}</span>
-                            ${discount > 0 ? `<span><i class="fa-solid fa-tag"></i> Discount: ${formatCurrency(discount)}</span>` : ''}
+                            <span>Fee: ${formatCurrency(courseFee)}</span>
+                            ${discount > 0 ? `<span>Discount: ${formatCurrency(discount)}</span>` : ''}
                         </div>
                     </div>
                 `;
