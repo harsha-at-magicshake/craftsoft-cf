@@ -199,72 +199,11 @@
                             </div>
                         </div>
 
-                        <!-- Course-Tutor Assignment -->
+                        <!-- Per-Course Metadata (Tutor, Batch, Demo) - Rendered by JS -->
                         <div class="form-group" id="course-tutor-section" style="display: none;">
-                            <label>Assign Tutors per Course <span class="required">*</span></label>
+                            <label>Course Details & Scheduling <span class="required">*</span></label>
                             <div class="course-tutor-list" id="course-tutor-list">
                                 <p class="text-muted">Select courses first</p>
-                            </div>
-                        </div>
-
-                        <!-- Scheduling Fields (side-by-side on desktop) -->
-                        <div class="scheduling-fields">
-                            <!-- Batch Info Section -->
-                            <div class="form-section batch-section">
-                                <div class="form-section-header">
-                                    <label>Batch Info</label>
-                                </div>
-                                <div class="form-row" style="margin-top: 0.75rem;">
-                                    <div class="form-group">
-                                        <label>Joining Date</label>
-                                        <div class="input-with-icon">
-                                            <i class="fa-solid fa-calendar-check input-icon"></i> <input type="date"
-                                                id="student-joining-date">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Batch Time</label>
-                                        <div class="input-with-icon">
-                                            <i class="fa-solid fa-clock input-icon"></i> <input type="time"
-                                                id="student-batch-time">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Demo Scheduled Section -->
-                            <div class="form-section demo-section">
-                                <div class="form-section-header">
-                                    <label>Demo Scheduled?</label>
-                                    <div class="toggle-group">
-                                        <label class="toggle-item">
-                                            <input type="radio" name="demo-scheduled" value="no" checked>
-                                            <span>No</span>
-                                        </label>
-                                        <label class="toggle-item">
-                                            <input type="radio" name="demo-scheduled" value="yes">
-                                            <span>Yes</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="demo-fields" style="display: none;">
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label>Demo Date</label>
-                                            <div class="input-with-icon">
-                                                <i class="fa-solid fa-calendar input-icon"></i> <input type="date"
-                                                    id="student-demo-date">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Demo Time</label>
-                                            <div class="input-with-icon">
-                                                <i class="fa-solid fa-clock input-icon"></i> <input type="time"
-                                                    id="student-demo-time">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -430,6 +369,59 @@
                 <button class="btn btn-outline" id="cancel-enrollment-confirm">Go Back & Edit</button>
                 <button class="btn btn-success" id="confirm-enrollment-btn">
                     <i class="fa-solid fa-check"></i> Confirm & Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Action Modal -->
+    <div class="modal-overlay" id="whatsapp-modal-overlay" style="display: none;">
+        <div class="modal-container modal-md animate-scale">
+            <div class="modal-header wa-modal-header">
+                <h3><i class="fa-brands fa-whatsapp"></i> WhatsApp Hub</h3>
+                <button class="modal-close" id="close-wa-modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="wa-student-info">
+                    Messaging: <strong id="wa-student-name"></strong>
+                    <span class="wa-phone-badge" id="wa-student-phone"></span>
+                </p>
+
+                <div class="wa-template-grid">
+                    <div class="wa-template-card" data-action="payment">
+                        <div class="wa-template-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="wa-template-content">
+                            <h4>Payment Confirmation</h4>
+                            <p>Send thank you message for payment received</p>
+                        </div>
+                    </div>
+                    <div class="wa-template-card" data-action="reminder">
+                        <div class="wa-template-icon"><i class="fa-solid fa-bell"></i></div>
+                        <div class="wa-template-content">
+                            <h4>Balance Reminder</h4>
+                            <p>Send friendly reminder for pending balance</p>
+                        </div>
+                    </div>
+                    <div class="wa-template-card" data-action="direct">
+                        <div class="wa-template-icon"><i class="fa-solid fa-message"></i></div>
+                        <div class="wa-template-content">
+                            <h4>Direct Chat</h4>
+                            <p>Open WhatsApp with custom message</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wa-message-preview" id="wa-message-section" style="display: none;">
+                    <label>Message (editable):</label>
+                    <textarea id="wa-message-textarea" rows="5" placeholder="Your message..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-wa-modal">Cancel</button>
+                <button class="btn btn-success" id="send-wa-btn" style="display: none;">
+                    <i class="fa-brands fa-whatsapp"></i> Open WhatsApp
                 </button>
             </div>
         </div>

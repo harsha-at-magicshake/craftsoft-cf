@@ -264,7 +264,15 @@ function renderStudentsList(students) {
                             <td class="text-right">
                                 <div class="cell-actions" style="justify-content: flex-end;">
                                     <button class="action-btn edit btn-edit-student" data-id="${s.id}" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                                    <a href="https://wa.me/${s.phone.replace(/\D/g, '')}" target="_blank" class="action-btn whatsapp" title="Chat"><i class="fa-brands fa-whatsapp"></i></a>
+                                    <button class="action-btn whatsapp btn-wa-trigger" 
+                                        data-id="${s.id}" 
+                                        data-name="${s.first_name} ${s.last_name}" 
+                                        data-phone="${s.phone}"
+                                        data-total="${s.final_fee || 0}"
+                                        data-courses="${(s.courses || []).join(', ')}"
+                                        title="WhatsApp Hub">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                    </button>
                                     ${s.status === 'INACTIVE'
             ? `<button class="action-btn success btn-reactivate-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Reactivate"><i class="fa-solid fa-rotate-left"></i></button>
                                            <button class="action-btn delete btn-perm-delete-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Permanently Delete"><i class="fa-solid fa-trash"></i></button>`
@@ -319,9 +327,14 @@ function renderStudentsList(students) {
                         <button class="card-action-btn edit btn-edit-student" data-id="${s.id}">
                             <i class="fa-solid fa-pen"></i> <span>Edit</span>
                         </button>
-                        <a href="https://wa.me/${s.phone.replace(/\D/g, '')}" target="_blank" class="card-action-btn whatsapp">
-                            <i class="fa-brands fa-whatsapp"></i> <span>Chat</span>
-                        </a>
+                        <button class="card-action-btn whatsapp btn-wa-trigger" 
+                            data-id="${s.id}" 
+                            data-name="${s.first_name} ${s.last_name}" 
+                            data-phone="${s.phone}"
+                            data-total="${s.final_fee || 0}"
+                            data-courses="${(s.courses || []).join(', ')}">
+                            <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp</span>
+                        </button>
                         ${s.status === 'INACTIVE'
                 ? `
                             <button class="card-action-btn success btn-reactivate-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}">
@@ -364,6 +377,15 @@ function renderStudentsList(students) {
         btn.addEventListener('click', () => reactivateStudent(btn.dataset.id, btn.dataset.name)));
     document.querySelectorAll('.btn-perm-delete-student').forEach(btn =>
         btn.addEventListener('click', () => showPermDeleteConfirm(btn.dataset.id, btn.dataset.name)));
+
+    // WhatsApp Hub trigger
+    document.querySelectorAll('.btn-wa-trigger').forEach(btn =>
+        btn.addEventListener('click', () => showWhatsAppModal(
+            btn.dataset.name,
+            btn.dataset.phone,
+            btn.dataset.total,
+            btn.dataset.courses
+        )));
 
     bindBulkActions();
 }
@@ -552,8 +574,6 @@ function showEnrollmentConfirmation() {
     // Build confirmation summary
     const summaryDiv = document.getElementById('enrollment-summary');
     const email = document.getElementById('student-email').value.trim();
-    const joiningDate = document.getElementById('student-joining-date').value;
-    const batchTime = document.getElementById('student-batch-time').value;
 
     let coursesList = '';
     let totalFee = 0;
@@ -563,12 +583,30 @@ function showEnrollmentConfirmation() {
         const discount = courseDiscounts[code] || 0;
         const netFee = (course?.fee || 0) - discount;
         totalFee += netFee;
+
+        // Get per-course metadata from dynamic form
+        const metaItem = document.querySelector(`.course-meta-item[data-course="${code}"]`);
+        const batch = metaItem?.querySelector('input[name="course-batch"]')?.value || '';
+        const joining = metaItem?.querySelector('input[name="course-joining"]')?.value || '';
+        const isDemo = metaItem?.querySelector('input[name="course-demo-check"]')?.checked || false;
+        const demoDate = metaItem?.querySelector('input[name="course-demo-date"]')?.value || '';
+        const demoTime = metaItem?.querySelector('input[name="course-demo-time"]')?.value || '';
+
         coursesList += `
-            <div class="summary-course-item">
-                <span class="course-badge">${code}</span>
-                <span class="course-name">${course?.course_name || code}</span>
-                <span class="course-tutor"><i class="fa-solid fa-chalkboard-user"></i> ${tutor?.full_name || 'Unknown'}</span>
-                <span class="course-fee">₹${formatNumber(netFee)}</span>
+            <div class="summary-course-item" style="flex-direction: column; align-items: stretch; gap: 0.5rem;">
+                <div class="summary-course-main" style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span class="course-badge">${code}</span>
+                    <span class="course-name">${course?.course_name || code}</span>
+                    <span class="course-tutor"><i class="fa-solid fa-chalkboard-user"></i> ${tutor?.full_name || 'Unknown'}</span>
+                    <span class="course-fee" style="margin-left: auto;">₹${formatNumber(netFee)}</span>
+                </div>
+                ${(batch || joining || isDemo) ? `
+                <div class="summary-course-meta" style="display: flex; gap: 1rem; font-size: 0.8rem; color: var(--admin-text-muted); padding-left: 0.5rem;">
+                    ${batch ? `<span><i class="fa-solid fa-clock" style="color: #6366f1;"></i> ${batch}</span>` : ''}
+                    ${joining ? `<span><i class="fa-solid fa-calendar-check" style="color: #10b981;"></i> ${joining}</span>` : ''}
+                    ${isDemo ? `<span><i class="fa-solid fa-play-circle" style="color: #f59e0b;"></i> Demo: ${demoDate}${demoTime ? ' at ' + demoTime : ''}</span>` : ''}
+                </div>
+                ` : ''}
             </div>
         `;
     });
@@ -583,8 +621,6 @@ function showEnrollmentConfirmation() {
             <div class="summary-value">${phone}</div>
         </div>
         ${email ? `<div class="summary-section"><div class="summary-label">Email</div><div class="summary-value">${email}</div></div>` : ''}
-        ${joiningDate ? `<div class="summary-section"><div class="summary-label">Joining Date</div><div class="summary-value">${joiningDate}</div></div>` : ''}
-        ${batchTime ? `<div class="summary-section"><div class="summary-label">Batch Time</div><div class="summary-value">${batchTime}</div></div>` : ''}
         <div class="summary-divider"></div>
         <div class="summary-section">
             <div class="summary-label">Enrolled Courses</div>
@@ -658,8 +694,8 @@ function getTutorsForCourse(courseCode) {
     return allTutorsForStudents.filter(t => t.courses && t.courses.includes(courseCode));
 }
 
-// Render per-course tutor assignment
-function updateCourseTutorAssignment(currentCourseTutors = {}) {
+// Render per-course tutor assignment with batch/demo metadata
+function updateCourseTutorAssignment(currentCourseTutors = {}, courseMetadata = {}) {
     const selectedCourses = selectedCourseCodes;
     const section = document.getElementById('course-tutor-section');
     const list = document.getElementById('course-tutor-list');
@@ -676,26 +712,62 @@ function updateCourseTutorAssignment(currentCourseTutors = {}) {
         const course = allCoursesForStudents.find(c => c.course_code === courseCode);
         const tutorsForCourse = getTutorsForCourse(courseCode);
         const selectedTutor = currentCourseTutors[courseCode] || '';
+        const meta = courseMetadata[courseCode] || {};
 
         return `
-            <div class="course-tutor-item">
-                <div class="course-tutor-course">
+            <div class="course-meta-item" data-course="${courseCode}">
+                <div class="course-meta-header">
                     <i class="fa-solid fa-book"></i>
                     <span>${courseCode} - ${course?.course_name || courseCode}</span>
                 </div>
-                <div class="course-tutor-select">
-                    <select name="course-tutor" data-course="${courseCode}">
-                        <option value="">Select Tutor</option>
-                        ${tutorsForCourse.map(t => `
-                            <option value="${t.tutor_id}" ${selectedTutor === t.tutor_id ? 'selected' : ''}>
-                                ${t.full_name} (${t.tutor_id})
-                            </option>
-                        `).join('')}
-                    </select>
+                <div class="course-meta-grid">
+                    <div class="meta-field">
+                        <label>Tutor <span class="required">*</span></label>
+                        <select name="course-tutor" data-course="${courseCode}">
+                            <option value="">Select Tutor</option>
+                            ${tutorsForCourse.map(t => `
+                                <option value="${t.tutor_id}" ${selectedTutor === t.tutor_id ? 'selected' : ''}>
+                                    ${t.full_name} (${t.tutor_id})
+                                </option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    <div class="meta-field">
+                        <label>Batch Time</label>
+                        <input type="time" name="course-batch" value="${meta.batch_time || ''}">
+                    </div>
+                    <div class="meta-field">
+                        <label>Joining Date</label>
+                        <input type="date" name="course-joining" value="${meta.joining_date || ''}">
+                    </div>
+                </div>
+                <div class="course-meta-demo">
+                    <label class="demo-toggle">
+                        <input type="checkbox" name="course-demo-check" ${meta.demo_scheduled ? 'checked' : ''}>
+                        <span>Demo Scheduled?</span>
+                    </label>
+                    <div class="course-demo-fields" style="display: ${meta.demo_scheduled ? 'flex' : 'none'};">
+                        <div class="meta-field">
+                            <label>Demo Date</label>
+                            <input type="date" name="course-demo-date" value="${meta.demo_date || ''}">
+                        </div>
+                        <div class="meta-field">
+                            <label>Demo Time</label>
+                            <input type="time" name="course-demo-time" value="${meta.demo_time || ''}">
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
     }).join('');
+
+    // Bind demo toggle events
+    list.querySelectorAll('input[name="course-demo-check"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const demoFields = this.closest('.course-meta-demo').querySelector('.course-demo-fields');
+            demoFields.style.display = this.checked ? 'flex' : 'none';
+        });
+    });
 }
 let selectedCourseCodes = [];
 
@@ -915,6 +987,73 @@ function recalculateTotal() {
     totalEl.innerHTML = `<i class="fa-solid fa-indian-rupee-sign"></i>${formatNumber(total)}`;
 }
 
+// =====================
+// WhatsApp Hub Modal
+// =====================
+let currentWaData = { name: '', phone: '', total: 0, courses: '' };
+let currentWaAction = '';
+
+function showWhatsAppModal(name, phone, total, courses) {
+    currentWaData = { name, phone, total, courses };
+    currentWaAction = '';
+
+    const overlay = document.getElementById('whatsapp-modal-overlay');
+    document.getElementById('wa-student-name').textContent = name;
+    document.getElementById('wa-student-phone').textContent = phone;
+    document.getElementById('wa-message-section').style.display = 'none';
+    document.getElementById('send-wa-btn').style.display = 'none';
+
+    // Reset template cards
+    document.querySelectorAll('.wa-template-card').forEach(card => card.classList.remove('active'));
+
+    // Bind template card clicks
+    document.querySelectorAll('.wa-template-card').forEach(card => {
+        card.onclick = () => selectWaTemplate(card.dataset.action);
+    });
+
+    // Bind modal close/cancel
+    document.getElementById('close-wa-modal').onclick = hideWaModal;
+    document.getElementById('cancel-wa-modal').onclick = hideWaModal;
+    document.getElementById('send-wa-btn').onclick = sendWaMessage;
+
+    overlay.style.display = 'flex';
+}
+
+function hideWaModal() {
+    document.getElementById('whatsapp-modal-overlay').style.display = 'none';
+}
+
+function selectWaTemplate(action) {
+    currentWaAction = action;
+    const { name, total, courses } = currentWaData;
+    let message = '';
+
+    // Highlight selected card
+    document.querySelectorAll('.wa-template-card').forEach(card => {
+        card.classList.toggle('active', card.dataset.action === action);
+    });
+
+    if (action === 'payment') {
+        message = `Hi ${name.split(' ')[0]},\n\nThank you for your payment of ₹${formatNumber(parseInt(total || 0))}! 🎉\n\nYour enrollment for ${courses} is confirmed. We're excited to have you onboard!\n\nBest regards,\nCraftSoft Academy`;
+    } else if (action === 'reminder') {
+        message = `Hi ${name.split(' ')[0]},\n\nThis is a friendly reminder regarding your pending balance of ₹${formatNumber(parseInt(total || 0))} for ${courses}.\n\nPlease clear the dues at your earliest convenience to continue enjoying uninterrupted sessions.\n\nBest regards,\nCraftSoft Academy`;
+    } else if (action === 'direct') {
+        message = `Hi ${name.split(' ')[0]}, `;
+    }
+
+    document.getElementById('wa-message-textarea').value = message;
+    document.getElementById('wa-message-section').style.display = 'block';
+    document.getElementById('send-wa-btn').style.display = 'flex';
+}
+
+function sendWaMessage() {
+    const message = document.getElementById('wa-message-textarea').value;
+    const cleanPhone = currentWaData.phone.replace(/\D/g, '');
+    const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, '_blank');
+    hideWaModal();
+}
+
 async function openForm(studentId = null) {
     const { Toast } = window.AdminUtils;
     const container = document.getElementById('student-form-container');
@@ -941,16 +1080,12 @@ async function openForm(studentId = null) {
     document.getElementById('student-lname').value = '';
     document.getElementById('student-phone').value = '';
     document.getElementById('student-email').value = '';
-    document.getElementById('student-demo-date').value = '';
-    document.getElementById('student-demo-time').value = '';
-    document.getElementById('student-joining-date').value = '';
-    document.getElementById('student-batch-time').value = '';
     document.getElementById('student-notes').value = '';
-    document.querySelector('input[name="demo-scheduled"][value="no"]').checked = true;
-    document.querySelector('.demo-fields').style.display = 'none';
     courseDiscounts = {};
 
     let student = null;
+    let courseMetadata = {};
+
     if (isEdit) {
         const { data, error } = await window.supabaseClient.from('students').select('*').eq('id', studentId).single();
         if (error || !data) {
@@ -979,19 +1114,27 @@ async function openForm(studentId = null) {
         flagBtn.style.display = 'flex';
 
         document.getElementById('student-email').value = student.email || '';
-        document.getElementById('student-demo-date').value = student.demo_date || '';
-        document.getElementById('student-demo-time').value = student.demo_time || '';
-        document.getElementById('student-joining-date').value = student.joining_date || '';
-        document.getElementById('student-batch-time').value = student.batch_time || '';
         document.getElementById('student-notes').value = student.notes || '';
-
-        if (student.demo_scheduled) {
-            document.querySelector('input[name="demo-scheduled"][value="yes"]').checked = true;
-            document.querySelector('.demo-fields').style.display = 'block';
-        }
 
         // Load course discounts from student data
         courseDiscounts = student.course_discounts || {};
+
+        // Smart Migration: Build courseMetadata from new JSONB or fallback to old global fields
+        if (student.course_metadata && Object.keys(student.course_metadata).length > 0) {
+            courseMetadata = student.course_metadata;
+        } else if (student.courses && student.courses.length > 0) {
+            // Migrate old data: apply global fields to all courses
+            student.courses.forEach(code => {
+                courseMetadata[code] = {
+                    tutor: student.course_tutors?.[code] || '',
+                    batch_time: student.batch_time || '',
+                    joining_date: student.joining_date || '',
+                    demo_scheduled: student.demo_scheduled || false,
+                    demo_date: student.demo_date || '',
+                    demo_time: student.demo_time || ''
+                };
+            });
+        }
     } else {
         // New student: reset phone fields to default
         document.getElementById('student-country-code').value = '+91';
@@ -1002,11 +1145,12 @@ async function openForm(studentId = null) {
     // Render courses checkboxes
     renderCoursesCheckboxes(student?.courses || [], courseDiscounts);
 
-    // Render per-course tutor assignment
-    updateCourseTutorAssignment(student?.course_tutors || {});
+    // Render per-course tutor/metadata assignment with Smart Migration data
+    updateCourseTutorAssignment(student?.course_tutors || {}, courseMetadata);
 
     // Update fee breakdown
     updateFeeBreakdown();
+
 
     formTitle.textContent = isEdit ? 'Edit Student' : 'Add Student';
     saveBtn.innerHTML = `<i class="fa-solid fa-check"></i> ${isEdit ? 'Update' : 'Save'} Student`;
@@ -1038,21 +1182,35 @@ async function saveStudent() {
     const courses = selectedCourseCodes;
 
 
-    // Collect per-course tutor assignments
+    // Collect per-course metadata (Tutor, Batch, Demo) from dynamic form
+    const course_metadata = {};
     const course_tutors = {};
-    const tutors = []; // Keeping array for backward compatibility
-    document.querySelectorAll('select[name="course-tutor"]').forEach(sel => {
-        if (sel.value) {
-            course_tutors[sel.dataset.course] = sel.value;
-            if (!tutors.includes(sel.value)) tutors.push(sel.value);
+    const tutors = [];
+
+    document.querySelectorAll('.course-meta-item').forEach(item => {
+        const code = item.dataset.course;
+        const tutorId = item.querySelector('select[name="course-tutor"]').value;
+        const batch = item.querySelector('input[name="course-batch"]').value;
+        const joining = item.querySelector('input[name="course-joining"]').value;
+        const isDemo = item.querySelector('input[name="course-demo-check"]').checked;
+        const dDate = item.querySelector('input[name="course-demo-date"]').value;
+        const dTime = item.querySelector('input[name="course-demo-time"]').value;
+
+        course_metadata[code] = {
+            tutor: tutorId,
+            batch_time: batch,
+            joining_date: joining,
+            demo_scheduled: isDemo,
+            demo_date: isDemo ? dDate : null,
+            demo_time: isDemo ? dTime : null
+        };
+
+        if (tutorId) {
+            course_tutors[code] = tutorId;
+            if (!tutors.includes(tutorId)) tutors.push(tutorId);
         }
     });
 
-    const demoScheduled = document.querySelector('input[name="demo-scheduled"]:checked')?.value === 'yes';
-    const demoDate = document.getElementById('student-demo-date').value || null;
-    const demoTime = document.getElementById('student-demo-time').value || null;
-    const joiningDate = document.getElementById('student-joining-date').value || null;
-    const batchTime = document.getElementById('student-batch-time').value || null;
     const notes = document.getElementById('student-notes').value.trim();
 
     // Calculate totals
@@ -1073,12 +1231,11 @@ async function saveStudent() {
     if (!phone || phone.length < 6) { Toast.error('Required', 'Valid phone number required'); return; }
     if (courses.length === 0) { Toast.error('Required', 'Select at least one course'); return; }
 
-    // Format phone for storage using the country code from split input (e.g., "+91 - 9492020292")
+    // Format phone for storage
     const formattedPhone = Validators.formatPhoneForStorage(phoneNumber, countryCode);
 
-
     // Ensure every selected course has a tutor assigned
-    const missingTutor = courses.some(code => !course_tutors[code]);
+    const missingTutor = courses.some(code => !course_metadata[code]?.tutor);
     if (missingTutor) {
         Toast.error('Required', 'Assign a tutor for all selected courses');
         return;
@@ -1096,13 +1253,8 @@ async function saveStudent() {
             courses,
             tutors,
             course_tutors,
+            course_metadata,
             course_discounts: courseDiscounts,
-            demo_scheduled: demoScheduled,
-            demo_date: demoDate,
-
-            demo_time: demoTime,
-            joining_date: joiningDate,
-            batch_time: batchTime,
             fee: totalFee,
             discount: totalDiscount,
             final_fee: finalFee,
@@ -1494,6 +1646,14 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
         const discount = student.course_discounts?.[code] || 0;
         const courseFee = course?.fee || 0;
 
+        // Get per-course metadata
+        const meta = student.course_metadata?.[code] || {};
+        const batchTime = meta.batch_time || student.batch_time || '';
+        const joiningDate = meta.joining_date || student.joining_date || '';
+        const demoScheduled = meta.demo_scheduled || false;
+        const demoDate = meta.demo_date || '';
+        const demoTime = meta.demo_time || '';
+
         return `
                     <div class="profile-course-card">
                         <div class="profile-course-header">
@@ -1506,6 +1666,17 @@ function renderProfileContent(student, payments, totalPaid, balanceDue) {
                             <span>Fee: ${formatCurrency(courseFee)}</span>
                             ${discount > 0 ? `<span>Discount: ${formatCurrency(discount)}</span>` : ''}
                         </div>
+                        ${(batchTime || joiningDate) ? `
+                        <div class="profile-course-meta-row">
+                            ${batchTime ? `<span class="profile-meta-info"><i class="fa-solid fa-clock"></i> ${batchTime}</span>` : ''}
+                            ${joiningDate ? `<span class="profile-meta-info"><i class="fa-solid fa-calendar-check"></i> ${joiningDate}</span>` : ''}
+                        </div>
+                        ` : ''}
+                        ${demoScheduled ? `
+                        <div class="profile-demo-tag">
+                            <i class="fa-solid fa-play-circle"></i> Demo: ${demoDate}${demoTime ? ' at ' + demoTime : ''}
+                        </div>
+                        ` : ''}
                     </div>
                 `;
     }).join('')}
