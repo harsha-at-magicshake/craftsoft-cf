@@ -264,7 +264,7 @@ function renderStudentsList(students) {
                             <td class="text-right">
                                 <div class="cell-actions" style="justify-content: flex-end;">
                                     <button class="action-btn edit btn-edit-student" data-id="${s.id}" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                                    <button class="action-btn whatsapp btn-wa-trigger" 
+                                    <button type="button" class="action-btn whatsapp btn-wa-trigger" 
                                         data-id="${s.id}" 
                                         data-name="${s.first_name} ${s.last_name}" 
                                         data-phone="${s.phone}"
@@ -327,7 +327,7 @@ function renderStudentsList(students) {
                         <button class="card-action-btn edit btn-edit-student" data-id="${s.id}">
                             <i class="fa-solid fa-pen"></i> <span>Edit</span>
                         </button>
-                        <button class="card-action-btn whatsapp btn-wa-trigger" 
+                        <button type="button" class="card-action-btn whatsapp btn-wa-trigger" 
                             data-id="${s.id}" 
                             data-name="${s.first_name} ${s.last_name}" 
                             data-phone="${s.phone}"
@@ -379,13 +379,19 @@ function renderStudentsList(students) {
         btn.addEventListener('click', () => showPermDeleteConfirm(btn.dataset.id, btn.dataset.name)));
 
     // WhatsApp Hub trigger
-    document.querySelectorAll('.btn-wa-trigger').forEach(btn =>
-        btn.addEventListener('click', () => showWhatsAppModal(
-            btn.dataset.name,
-            btn.dataset.phone,
-            btn.dataset.total,
-            btn.dataset.courses
-        )));
+    document.querySelectorAll('.btn-wa-trigger').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            showWhatsAppModal(
+                btn.dataset.name,
+                btn.dataset.phone,
+                btn.dataset.total,
+                btn.dataset.courses
+            );
+        });
+    });
+
 
     bindBulkActions();
 }
@@ -1016,11 +1022,12 @@ function showWhatsAppModal(name, phone, total, courses) {
     document.getElementById('cancel-wa-modal').onclick = hideWaModal;
     document.getElementById('send-wa-btn').onclick = sendWaMessage;
 
-    overlay.style.display = 'flex';
+    // Show modal using active class (matching modals.css pattern)
+    overlay.classList.add('active');
 }
 
 function hideWaModal() {
-    document.getElementById('whatsapp-modal-overlay').style.display = 'none';
+    document.getElementById('whatsapp-modal-overlay').classList.remove('active');
 }
 
 function selectWaTemplate(action) {
