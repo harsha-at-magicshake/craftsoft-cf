@@ -298,9 +298,9 @@ function renderClients(clients) {
                         <button class="action-btn edit-btn" data-id="${c.id}" title="Edit">
                             <i class="fa-solid fa-pen"></i>
                         </button>
-                        <a href="https://wa.me/${c.phone.replace(/\D/g, '')}" target="_blank" class="action-btn whatsapp" title="WhatsApp">
+                        <button type="button" class="action-btn whatsapp btn-wa-trigger" data-name="${fullName}" data-phone="${c.phone}" title="Send Message">
                             <i class="fa-brands fa-whatsapp"></i>
-                        </a>
+                        </button>
                         ${c.status === 'INACTIVE' ? `
                             <button class="action-btn success reactivate-btn" data-id="${c.id}" data-name="${fullName}" title="Reactivate">
                                 <i class="fa-solid fa-rotate-left"></i>
@@ -365,9 +365,9 @@ function renderClients(clients) {
                     <button class="card-action-btn edit edit-btn" data-id="${c.id}">
                         <i class="fa-solid fa-pen"></i> <span>Edit</span>
                     </button>
-                    <a href="https://wa.me/${c.phone.replace(/\D/g, '')}" target="_blank" class="card-action-btn whatsapp">
-                        <i class="fa-brands fa-whatsapp"></i> <span>Chat</span>
-                    </a>
+                    <button type="button" class="card-action-btn whatsapp btn-wa-trigger" data-name="${fullName}" data-phone="${c.phone}">
+                        <i class="fa-brands fa-whatsapp"></i> <span>Message</span>
+                    </button>
                     ${c.status === 'INACTIVE' ? `
                         <button class="card-action-btn success reactivate-btn" data-id="${c.id}" data-name="${fullName}">
                             <i class="fa-solid fa-rotate-left"></i> <span>Restore</span>
@@ -481,6 +481,17 @@ function bindTableActions() {
             }
             updateBulkActionsBar();
         };
+    });
+
+    // Send Message trigger
+    document.querySelectorAll('.btn-wa-trigger').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (window.AdminWaModal) {
+                window.AdminWaModal.show(btn.dataset.name, btn.dataset.phone);
+            }
+        });
     });
 }
 

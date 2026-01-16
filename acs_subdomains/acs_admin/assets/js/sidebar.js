@@ -333,7 +333,7 @@ const AdminFooter = {
                         Abhi's CraftSoft &copy; ${new Date().getFullYear()}
                     </div>
                     <div class="footer-right">
-                        <span class="version-badge">v2.0</span>
+                        <span class="version-badge">v3.0</span>
                     </div>
                 </div>
             </footer>

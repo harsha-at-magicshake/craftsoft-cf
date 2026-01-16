@@ -241,7 +241,7 @@ function renderInquiries(items) {
                             <td>
                                 <div class="action-btns">
                                     <button class="action-btn edit-btn" data-id="${inq.id}"><i class="fa-solid fa-pen"></i></button>
-                                    <button class="action-btn whatsapp" data-phone="${inq.phone}"><i class="fa-brands fa-whatsapp"></i></button>
+                                    <button class="action-btn whatsapp btn-wa-trigger" data-name="${inq.name}" data-phone="${inq.phone}"><i class="fa-brands fa-whatsapp"></i></button>
                                     <button class="action-btn convert" data-id="${inq.id}" title="${isSrv ? 'Convert to Client' : 'Convert to Student'}"><i class="fa-solid fa-${isSrv ? 'wrench' : 'user-graduate'}"></i></button>
                                     <button class="action-btn delete" data-id="${inq.id}" data-name="${inq.name}"><i class="fa-solid fa-trash"></i></button>
                                 </div>
@@ -280,7 +280,7 @@ function renderInquiries(items) {
                     </div>
                     <div class="inquiry-card-actions">
                         <button class="action-btn edit-btn" data-id="${inq.id}"><i class="fa-solid fa-pen"></i></button>
-                        <button class="action-btn whatsapp" data-phone="${inq.phone}"><i class="fa-brands fa-whatsapp"></i></button>
+                        <button class="action-btn whatsapp btn-wa-trigger" data-name="${inq.name}" data-phone="${inq.phone}"><i class="fa-brands fa-whatsapp"></i></button>
                         <button class="action-btn convert" data-id="${inq.id}" title="${isSrv ? 'Convert to Client' : 'Convert to Student'}"><i class="fa-solid fa-${isSrv ? 'wrench' : 'user-graduate'}"></i></button>
                         <button class="action-btn delete" data-id="${inq.id}" data-name="${inq.name}"><i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -418,12 +418,18 @@ function getStatusBadge(status) {
 
 function bindTableActions() {
     document.querySelectorAll('.edit-btn').forEach(b => b.onclick = () => openForm(true, b.dataset.id));
-    document.querySelectorAll('.whatsapp').forEach(b => b.onclick = () => {
-        const p = b.dataset.phone.replace(/\D/g, '');
-        // If already has country code (11+ digits), use as-is; otherwise prepend 91
-        const phoneNum = p.length >= 11 ? p : `91${p}`;
-        window.open(`https://wa.me/${phoneNum}`, '_blank');
+
+    // Send Message trigger
+    document.querySelectorAll('.btn-wa-trigger').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (window.AdminWaModal) {
+                window.AdminWaModal.show(btn.dataset.name, btn.dataset.phone);
+            }
+        });
     });
+
     document.querySelectorAll('.convert').forEach(b => b.onclick = () => convertToStudent(b.dataset.id));
     document.querySelectorAll('.delete').forEach(b => b.onclick = () => showDeleteConfirm(b.dataset.id, b.dataset.name));
 }

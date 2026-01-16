@@ -374,11 +374,11 @@
         </div>
     </div>
 
-    <!-- WhatsApp Action Modal -->
+    <!-- Send A Message Modal -->
     <div class="modal-overlay" id="whatsapp-modal-overlay">
         <div class="modal-container modal-md animate-scale">
             <div class="modal-header wa-modal-header">
-                <h3><i class="fa-brands fa-whatsapp"></i> WhatsApp Hub</h3>
+                <h3><i class="fa-brands fa-whatsapp"></i> Send A Message</h3>
                 <button class="modal-close" id="close-wa-modal">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -390,37 +390,23 @@
                 </p>
 
                 <div class="wa-template-grid">
-                    <div class="wa-template-card" data-action="payment">
-                        <div class="wa-template-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="wa-template-card active" data-action="direct">
+                        <div class="wa-template-icon"><i class="fa-brands fa-whatsapp"></i></div>
                         <div class="wa-template-content">
-                            <h4>Payment Confirmation</h4>
-                            <p>Send thank you message for payment received</p>
-                        </div>
-                    </div>
-                    <div class="wa-template-card" data-action="reminder">
-                        <div class="wa-template-icon"><i class="fa-solid fa-bell"></i></div>
-                        <div class="wa-template-content">
-                            <h4>Balance Reminder</h4>
-                            <p>Send friendly reminder for pending balance</p>
-                        </div>
-                    </div>
-                    <div class="wa-template-card" data-action="direct">
-                        <div class="wa-template-icon"><i class="fa-solid fa-message"></i></div>
-                        <div class="wa-template-content">
-                            <h4>Direct Chat</h4>
+                            <h4>Send a Message</h4>
                             <p>Open WhatsApp with custom message</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="wa-message-preview" id="wa-message-section" style="display: none;">
-                    <label>Message (editable):</label>
-                    <textarea id="wa-message-textarea" rows="5" placeholder="Your message..."></textarea>
+                <div class="wa-message-preview" id="wa-message-section">
+                    <label>MESSAGE (EDITABLE):</label>
+                    <textarea id="wa-message-textarea" rows="5" placeholder="Type your message here..."></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" id="cancel-wa-modal">Cancel</button>
-                <button class="btn btn-success" id="send-wa-btn" style="display: none;">
+                <button class="btn btn-success" id="send-wa-btn">
                     <i class="fa-brands fa-whatsapp"></i> Open WhatsApp
                 </button>
             </div>

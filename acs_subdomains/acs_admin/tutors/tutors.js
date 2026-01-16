@@ -133,7 +133,7 @@ function renderTutorsList(tutors) {
                             <td class="text-right">
                                 <div class="cell-actions">
                                     <button class="action-btn edit btn-edit-tutor" data-id="${t.id}" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                                    <a href="https://wa.me/${t.phone.replace(/\D/g, '')}" target="_blank" class="action-btn whatsapp" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                                    <button type="button" class="action-btn whatsapp btn-wa-trigger" data-name="${t.full_name}" data-phone="${t.phone}" title="Send Message"><i class="fa-brands fa-whatsapp"></i></button>
                                     <button class="action-btn delete btn-delete-tutor" data-id="${t.id}" data-name="${t.full_name}" title="Delete"><i class="fa-solid fa-trash"></i></button>
                                 </div>
                             </td>
@@ -162,9 +162,9 @@ function renderTutorsList(tutors) {
                         <button class="card-action-btn edit btn-edit-tutor" data-id="${t.id}">
                             <i class="fa-solid fa-pen"></i> <span>Edit</span>
                         </button>
-                        <a href="https://wa.me/${t.phone.replace(/\D/g, '')}" target="_blank" class="card-action-btn whatsapp">
-                            <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp</span>
-                        </a>
+                        <button type="button" class="card-action-btn whatsapp btn-wa-trigger" data-name="${t.full_name}" data-phone="${t.phone}">
+                            <i class="fa-brands fa-whatsapp"></i> <span>Message</span>
+                        </button>
                         <button class="card-action-btn delete btn-delete-tutor" data-id="${t.id}" data-name="${t.full_name}">
                             <i class="fa-solid fa-trash"></i> <span>Delete</span>
                         </button>
@@ -187,6 +187,17 @@ function renderTutorsList(tutors) {
         btn.addEventListener('click', () => openForm(btn.dataset.id)));
     document.querySelectorAll('.btn-delete-tutor').forEach(btn =>
         btn.addEventListener('click', () => showDeleteConfirm(btn.dataset.id, btn.dataset.name)));
+
+    // Send Message trigger
+    document.querySelectorAll('.btn-wa-trigger').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (window.AdminWaModal) {
+                window.AdminWaModal.show(btn.dataset.name, btn.dataset.phone);
+            }
+        });
+    });
 
     bindBulkActions();
 }

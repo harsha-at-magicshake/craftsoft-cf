@@ -227,13 +227,16 @@ function renderStudentsList(students) {
                         <th width="22%">NAME</th>
                         <th width="15%">PHONE</th>
                         <th width="20%">COURSE(S)</th>
-                        <th width="15%" class="text-right">DISCOUNTED FEE</th>
-                        <th width="12%" class="text-right">TOTAL</th>
+                        <th width="15%" class="text-right">FEE(S)</th>
+                        <th width="12%" class="text-right">DUE</th>
                         <th width="15%" class="text-right">ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${paginatedStudents.map(s => `
+                    ${paginatedStudents.map(s => {
+        const totalPaid = s.payments_total || 0;
+        const balanceDue = Math.max(0, (s.final_fee || 0) - totalPaid);
+        return `
                         <tr>
                             <td>
                                 <input type="checkbox" class="student-checkbox" data-id="${s.id}" ${selectedStudents.has(s.id) ? 'checked' : ''}>
@@ -244,49 +247,47 @@ function renderStudentsList(students) {
                             <td>
                                 <div class="cell-tags">
                                     ${(s.courses || []).map(code => {
-        const tutorId = s.course_tutors?.[code];
-        const tutor = allTutorsForStudents.find(t => t.tutor_id === tutorId);
-        return `<span class="glass-tag" title="${tutor ? `Tutor: ${tutor.full_name}` : 'No tutor assigned'}">${code}${tutor ? ` (${tutor.full_name.split(' ')[0]})` : ''}</span>`;
-    }).join('')}
+            const tutorId = s.course_tutors?.[code];
+            const tutor = allTutorsForStudents.find(t => t.tutor_id === tutorId);
+            return `<span class="glass-tag" title="${tutor ? `Tutor: ${tutor.full_name}` : 'No tutor assigned'}">${code}${tutor ? ` (${tutor.full_name.split(' ')[0]})` : ''}</span>`;
+        }).join('')}
                                 </div>
                             </td>
                             <td class="text-right">
                                 ${(s.courses || []).map(code => {
-        const course = allCoursesForStudents.find(c => c.course_code === code);
-        const netFee = (course?.fee || 0) - (s.course_discounts?.[code] || 0);
-        return `<div style="font-size: 0.8rem; color: var(--admin-text-muted);">${code}: ₹${formatNumber(netFee)}</div>`;
-    }).join('')}
+            const course = allCoursesForStudents.find(c => c.course_code === code);
+            const netFee = (course?.fee || 0) - (s.course_discounts?.[code] || 0);
+            return `<div style="font-size: 0.8rem; color: var(--admin-text-muted);">${code}: ₹${formatNumber(netFee)}</div>`;
+        }).join('')}
                             </td>
-                            <td class="text-right" style="font-weight: 700; color: var(--primary-color);">₹${formatNumber((s.courses || []).reduce((sum, code) => {
-        const course = allCoursesForStudents.find(c => c.course_code === code);
-        return sum + ((course?.fee || 0) - (s.course_discounts?.[code] || 0));
-    }, 0))}</td>
+                            <td class="text-right" style="font-weight: 700; color: ${balanceDue > 0 ? '#ef4444' : '#10b981'};">₹${formatNumber(balanceDue)}</td>
                             <td class="text-right">
                                 <div class="cell-actions" style="justify-content: flex-end;">
                                     <button class="action-btn edit btn-edit-student" data-id="${s.id}" title="Edit"><i class="fa-solid fa-pen"></i></button>
                                     <button type="button" class="action-btn whatsapp btn-wa-trigger" 
-                                        data-id="${s.id}" 
                                         data-name="${s.first_name} ${s.last_name}" 
                                         data-phone="${s.phone}"
-                                        data-total="${s.final_fee || 0}"
-                                        data-courses="${(s.courses || []).join(', ')}"
-                                        title="WhatsApp Hub">
+                                        title="Send Message">
                                         <i class="fa-brands fa-whatsapp"></i>
                                     </button>
                                     ${s.status === 'INACTIVE'
-            ? `<button class="action-btn success btn-reactivate-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Reactivate"><i class="fa-solid fa-rotate-left"></i></button>
+                ? `<button class="action-btn success btn-reactivate-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Reactivate"><i class="fa-solid fa-rotate-left"></i></button>
                                            <button class="action-btn delete btn-perm-delete-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Permanently Delete"><i class="fa-solid fa-trash"></i></button>`
-            : `<button class="action-btn delete btn-delete-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Deactivate"><i class="fa-solid fa-user-slash"></i></button>`
-        }
+                : `<button class="action-btn delete btn-delete-student" data-id="${s.id}" data-name="${s.first_name} ${s.last_name}" title="Deactivate"><i class="fa-solid fa-user-slash"></i></button>`
+            }
                                 </div>
                             </td>
                         </tr>
-                    `).join('')}
+                    `;
+    }).join('')}
                 </tbody>
             </table>
         </div>
         <div class="data-cards">
-            ${paginatedStudents.map(s => `
+            ${paginatedStudents.map(s => {
+        const totalPaid = s.payments_total || 0;
+        const balanceDue = Math.max(0, (s.final_fee || 0) - totalPaid);
+        return `
                 <div class="premium-card">
                     <div class="card-header">
                         <div class="card-header-left">
@@ -314,12 +315,9 @@ function renderStudentsList(students) {
                                     </div>
                                 `;
         }).join('')}
-                            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-weight: 700; color: var(--primary-color); font-size: 1rem;">
-                                <span>Total</span>
-                                <span>₹${formatNumber((s.courses || []).reduce((sum, code) => {
-            const course = allCoursesForStudents.find(c => c.course_code === code);
-            return sum + ((course?.fee || 0) - (s.course_discounts?.[code] || 0));
-        }, 0))}</span>
+                            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-weight: 700; color: ${balanceDue > 0 ? '#ef4444' : '#10b981'}; font-size: 1rem;">
+                                <span>Due</span>
+                                <span>₹${formatNumber(balanceDue)}</span>
                             </div>
                         </div>
                     </div>
@@ -330,10 +328,8 @@ function renderStudentsList(students) {
                         <button type="button" class="card-action-btn whatsapp btn-wa-trigger" 
                             data-id="${s.id}" 
                             data-name="${s.first_name} ${s.last_name}" 
-                            data-phone="${s.phone}"
-                            data-total="${s.final_fee || 0}"
-                            data-courses="${(s.courses || []).join(', ')}">
-                            <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp</span>
+                            data-phone="${s.phone}">
+                            <i class="fa-brands fa-whatsapp"></i> <span>Message</span>
                         </button>
                         ${s.status === 'INACTIVE'
                 ? `
@@ -352,7 +348,8 @@ function renderStudentsList(students) {
             }
                     </div>
                 </div>
-            `).join('')}
+            `;
+    }).join('')}
         </div>
         <div class="table-footer">
             <span>Total Students: <strong>${students.length}</strong></span>
@@ -378,17 +375,12 @@ function renderStudentsList(students) {
     document.querySelectorAll('.btn-perm-delete-student').forEach(btn =>
         btn.addEventListener('click', () => showPermDeleteConfirm(btn.dataset.id, btn.dataset.name)));
 
-    // WhatsApp Hub trigger
+    // Send Message trigger
     document.querySelectorAll('.btn-wa-trigger').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            showWhatsAppModal(
-                btn.dataset.name,
-                btn.dataset.phone,
-                btn.dataset.total,
-                btn.dataset.courses
-            );
+            showWhatsAppModal(btn.dataset.name, btn.dataset.phone);
         });
     });
 
@@ -994,63 +986,32 @@ function recalculateTotal() {
 }
 
 // =====================
-// WhatsApp Hub Modal
+// Send A Message Modal
 // =====================
-let currentWaData = { name: '', phone: '', total: 0, courses: '' };
-let currentWaAction = '';
+let currentWaData = { name: '', phone: '' };
 
-function showWhatsAppModal(name, phone, total, courses) {
-    currentWaData = { name, phone, total, courses };
-    currentWaAction = '';
+function showWhatsAppModal(name, phone) {
+    currentWaData = { name, phone };
 
     const overlay = document.getElementById('whatsapp-modal-overlay');
     document.getElementById('wa-student-name').textContent = name;
     document.getElementById('wa-student-phone').textContent = phone;
-    document.getElementById('wa-message-section').style.display = 'none';
-    document.getElementById('send-wa-btn').style.display = 'none';
 
-    // Reset template cards
-    document.querySelectorAll('.wa-template-card').forEach(card => card.classList.remove('active'));
-
-    // Bind template card clicks
-    document.querySelectorAll('.wa-template-card').forEach(card => {
-        card.onclick = () => selectWaTemplate(card.dataset.action);
-    });
+    // Pre-fill with greeting
+    const firstName = name.split(' ')[0];
+    document.getElementById('wa-message-textarea').value = `Hi ${firstName},\n\n`;
 
     // Bind modal close/cancel
     document.getElementById('close-wa-modal').onclick = hideWaModal;
     document.getElementById('cancel-wa-modal').onclick = hideWaModal;
     document.getElementById('send-wa-btn').onclick = sendWaMessage;
 
-    // Show modal using active class (matching modals.css pattern)
+    // Show modal
     overlay.classList.add('active');
 }
 
 function hideWaModal() {
     document.getElementById('whatsapp-modal-overlay').classList.remove('active');
-}
-
-function selectWaTemplate(action) {
-    currentWaAction = action;
-    const { name, total, courses } = currentWaData;
-    let message = '';
-
-    // Highlight selected card
-    document.querySelectorAll('.wa-template-card').forEach(card => {
-        card.classList.toggle('active', card.dataset.action === action);
-    });
-
-    if (action === 'payment') {
-        message = `Hi ${name.split(' ')[0]},\n\nThank you for your payment of ₹${formatNumber(parseInt(total || 0))}! 🎉\n\nYour enrollment for ${courses} is confirmed. We're excited to have you onboard!\n\nBest regards,\nCraftSoft Academy`;
-    } else if (action === 'reminder') {
-        message = `Hi ${name.split(' ')[0]},\n\nThis is a friendly reminder regarding your pending balance of ₹${formatNumber(parseInt(total || 0))} for ${courses}.\n\nPlease clear the dues at your earliest convenience to continue enjoying uninterrupted sessions.\n\nBest regards,\nCraftSoft Academy`;
-    } else if (action === 'direct') {
-        message = `Hi ${name.split(' ')[0]}, `;
-    }
-
-    document.getElementById('wa-message-textarea').value = message;
-    document.getElementById('wa-message-section').style.display = 'block';
-    document.getElementById('send-wa-btn').style.display = 'flex';
 }
 
 function sendWaMessage() {
