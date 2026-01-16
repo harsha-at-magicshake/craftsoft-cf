@@ -506,7 +506,12 @@ function bindFormEvents() {
 
     closeBtn?.addEventListener('click', closeForm);
     cancelBtn?.addEventListener('click', closeForm);
-    saveBtn?.addEventListener('click', saveStudent);
+    saveBtn?.addEventListener('click', showEnrollmentConfirmation);
+
+    // Confirmation modal events
+    document.getElementById('close-enrollment-confirm')?.addEventListener('click', hideEnrollmentConfirmation);
+    document.getElementById('cancel-enrollment-confirm')?.addEventListener('click', hideEnrollmentConfirmation);
+    document.getElementById('confirm-enrollment-btn')?.addEventListener('click', saveStudent);
 
     // Demo toggle
     document.querySelectorAll('input[name="demo-scheduled"]').forEach(r => {
@@ -517,6 +522,87 @@ function bindFormEvents() {
 
     // Phone input with flag transformation
     initPhoneInputComponent('student');
+}
+
+function showEnrollmentConfirmation() {
+    const { Toast } = window.AdminUtils;
+
+    // Gather form data for validation first
+    const fname = document.getElementById('student-fname').value.trim();
+    const lname = document.getElementById('student-lname').value.trim();
+    const phone = document.getElementById('student-phone').value.trim();
+    const courses = Array.from(document.querySelectorAll('input[name="student-courses"]:checked')).map(c => c.value);
+
+    // Basic validation before showing confirmation
+    if (!fname || !lname) { Toast.error('Required', 'Name required'); return; }
+    if (!phone || phone.length < 6) { Toast.error('Required', 'Valid phone number required'); return; }
+    if (courses.length === 0) { Toast.error('Required', 'Select at least one course'); return; }
+
+    // Check tutor assignments
+    const course_tutors = {};
+    document.querySelectorAll('select[name="course-tutor"]').forEach(sel => {
+        if (sel.value) course_tutors[sel.dataset.course] = sel.value;
+    });
+    const missingTutor = courses.some(code => !course_tutors[code]);
+    if (missingTutor) {
+        Toast.error('Required', 'Assign a tutor for all selected courses');
+        return;
+    }
+
+    // Build confirmation summary
+    const summaryDiv = document.getElementById('enrollment-summary');
+    const email = document.getElementById('student-email').value.trim();
+    const joiningDate = document.getElementById('student-joining-date').value;
+    const batchTime = document.getElementById('student-batch-time').value;
+
+    let coursesList = '';
+    let totalFee = 0;
+    courses.forEach(code => {
+        const course = allCoursesForStudents.find(c => c.course_code === code);
+        const tutor = allTutorsForStudents.find(t => t.tutor_id === course_tutors[code]);
+        const discount = courseDiscounts[code] || 0;
+        const netFee = (course?.fee || 0) - discount;
+        totalFee += netFee;
+        coursesList += `
+            <div class="summary-course-item">
+                <span class="course-badge">${code}</span>
+                <span class="course-name">${course?.course_name || code}</span>
+                <span class="course-tutor"><i class="fa-solid fa-chalkboard-user"></i> ${tutor?.full_name || 'Unknown'}</span>
+                <span class="course-fee">₹${formatNumber(netFee)}</span>
+            </div>
+        `;
+    });
+
+    summaryDiv.innerHTML = `
+        <div class="summary-section">
+            <div class="summary-label">Student</div>
+            <div class="summary-value">${fname} ${lname}</div>
+        </div>
+        <div class="summary-section">
+            <div class="summary-label">Phone</div>
+            <div class="summary-value">${phone}</div>
+        </div>
+        ${email ? `<div class="summary-section"><div class="summary-label">Email</div><div class="summary-value">${email}</div></div>` : ''}
+        ${joiningDate ? `<div class="summary-section"><div class="summary-label">Joining Date</div><div class="summary-value">${joiningDate}</div></div>` : ''}
+        ${batchTime ? `<div class="summary-section"><div class="summary-label">Batch Time</div><div class="summary-value">${batchTime}</div></div>` : ''}
+        <div class="summary-divider"></div>
+        <div class="summary-section">
+            <div class="summary-label">Enrolled Courses</div>
+        </div>
+        <div class="summary-courses">
+            ${coursesList}
+        </div>
+        <div class="summary-total">
+            <span>Total Fee</span>
+            <span class="total-amount">₹${formatNumber(totalFee)}</span>
+        </div>
+    `;
+
+    document.getElementById('enrollment-confirm-overlay').classList.add('active');
+}
+
+function hideEnrollmentConfirmation() {
+    document.getElementById('enrollment-confirm-overlay').classList.remove('active');
 }
 
 // Initialize phone input component with flag transformation
@@ -616,13 +702,31 @@ function renderCoursesCheckboxes(selectedCourses = [], discounts = {}) {
     const list = document.getElementById('student-courses-list');
     courseDiscounts = discounts; // Initialize
 
-    // Remove fee from display - just show course code and name
-    list.innerHTML = allCoursesForStudents.map(c => `
-        <label class="checkbox-item">
-            <input type="checkbox" name="student-courses" value="${c.course_code}" data-fee="${c.fee || 0}" ${selectedCourses.includes(c.course_code) ? 'checked' : ''}>
-            <span>${c.course_code} - ${c.course_name}</span>
-        </label>
-    `).join('');
+    // Add search input and course list
+    list.innerHTML = `
+        <div class="course-search-wrapper">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" id="course-search-input" placeholder="Search courses by name..." autocomplete="off">
+        </div>
+        <div id="course-checkboxes-container">
+            ${allCoursesForStudents.map(c => `
+                <label class="checkbox-item" data-search="${c.course_name.toLowerCase()} ${c.course_code.toLowerCase()}">
+                    <input type="checkbox" name="student-courses" value="${c.course_code}" data-fee="${c.fee || 0}" ${selectedCourses.includes(c.course_code) ? 'checked' : ''}>
+                    <span><strong>${c.course_code}</strong> - ${c.course_name}</span>
+                </label>
+            `).join('')}
+        </div>
+    `;
+
+    // Bind search filter
+    const searchInput = document.getElementById('course-search-input');
+    searchInput?.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        document.querySelectorAll('#course-checkboxes-container .checkbox-item').forEach(item => {
+            const searchText = item.dataset.search || '';
+            item.style.display = searchText.includes(query) ? 'flex' : 'none';
+        });
+    });
 
     // Bind course change events
     document.querySelectorAll('input[name="student-courses"]').forEach(cb => {
@@ -960,6 +1064,7 @@ async function saveStudent() {
                 sessionStorage.removeItem('converting_inquiry_id');
             }
         }
+        hideEnrollmentConfirmation();
         closeForm();
         await loadStudents();
     } catch (err) {

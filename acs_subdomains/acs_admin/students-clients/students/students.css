@@ -1516,3 +1516,157 @@
 .fee-section {
     margin-top: 1.5rem;
 }
+/* ============================================
+   Course Search Wrapper
+   ============================================ */
+.course-search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: #fff;
+    border: 1.5px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+}
+
+.course-search-wrapper i {
+    color: var(--admin-text-muted, #94a3b8);
+    font-size: 0.9rem;
+}
+
+.course-search-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 0.9rem;
+    background: transparent;
+    color: var(--admin-text-primary, #0f172a);
+}
+
+.course-search-wrapper input::placeholder {
+    color: var(--admin-text-muted, #94a3b8);
+}
+
+#course-checkboxes-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+#course-checkboxes-container .checkbox-item {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 200px;
+}
+
+/* ============================================
+   Enrollment Confirmation Modal
+   ============================================ */
+.enrollment-summary {
+    background: var(--gray-50, #f8fafc);
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 12px;
+    padding: 1.25rem;
+}
+
+.summary-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.summary-label {
+    font-size: 0.85rem;
+    color: var(--admin-text-muted, #64748b);
+    font-weight: 500;
+}
+
+.summary-value {
+    font-size: 0.95rem;
+    color: var(--admin-text-primary, #0f172a);
+    font-weight: 600;
+}
+
+.summary-divider {
+    height: 1px;
+    background: var(--admin-input-border, #e2e8f0);
+    margin: 0.75rem 0;
+}
+
+.summary-courses {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.summary-course-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #fff;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 8px;
+}
+
+.summary-course-item .course-badge {
+    background: var(--primary-100, #e0f2fe);
+    color: var(--primary-700, #0369a1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.summary-course-item .course-name {
+    font-size: 0.9rem;
+    color: var(--admin-text-primary, #0f172a);
+    font-weight: 500;
+}
+
+.summary-course-item .course-tutor {
+    font-size: 0.8rem;
+    color: var(--admin-text-muted, #64748b);
+}
+
+.summary-course-item .course-tutor i {
+    margin-right: 4px;
+    color: var(--primary-500, #2896cd);
+}
+
+.summary-course-item .course-fee {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--success, #10b981);
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-top: 0.75rem;
+    background: var(--primary-50, #f0f9ff);
+    border: 1.5px solid var(--primary-200, #bae6fd);
+    border-radius: 10px;
+}
+
+.summary-total span:first-child {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--admin-text-primary, #0f172a);
+}
+
+.summary-total .total-amount {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-600, #0284c7);
+}
+
+/* Modal Medium Size */
+.modal-md {
+    max-width: 520px;
+}
