@@ -207,66 +207,6 @@
                             </div>
                         </div>
 
-                        <!-- Scheduling Fields (side-by-side on desktop) -->
-                        <div class="scheduling-fields">
-                            <!-- Batch Info Section -->
-                            <div class="form-section batch-section">
-                                <div class="form-section-header">
-                                    <label>Batch Info</label>
-                                </div>
-                                <div class="form-row" style="margin-top: 0.75rem;">
-                                    <div class="form-group">
-                                        <label>Joining Date</label>
-                                        <div class="input-with-icon">
-                                            <i class="fa-solid fa-calendar-check input-icon"></i> <input type="date"
-                                                id="student-joining-date">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Batch Time</label>
-                                        <div class="input-with-icon">
-                                            <i class="fa-solid fa-clock input-icon"></i> <input type="time"
-                                                id="student-batch-time">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Demo Scheduled Section -->
-                            <div class="form-section demo-section">
-                                <div class="form-section-header">
-                                    <label>Demo Scheduled?</label>
-                                    <div class="toggle-group">
-                                        <label class="toggle-item">
-                                            <input type="radio" name="demo-scheduled" value="no" checked>
-                                            <span>No</span>
-                                        </label>
-                                        <label class="toggle-item">
-                                            <input type="radio" name="demo-scheduled" value="yes">
-                                            <span>Yes</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="demo-fields" style="display: none;">
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label>Demo Date</label>
-                                            <div class="input-with-icon">
-                                                <i class="fa-solid fa-calendar input-icon"></i> <input type="date"
-                                                    id="student-demo-date">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Demo Time</label>
-                                            <div class="input-with-icon">
-                                                <i class="fa-solid fa-clock input-icon"></i> <input type="time"
-                                                    id="student-demo-time">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Fee Breakdown Section -->
                         <div class="form-section fee-section">
@@ -430,6 +370,58 @@
                 <button class="btn btn-outline" id="cancel-enrollment-confirm">Go Back & Edit</button>
                 <button class="btn btn-success" id="confirm-enrollment-btn">
                     <i class="fa-solid fa-check"></i> Confirm & Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Action Modal -->
+    <div class="modal-overlay" id="whatsapp-action-overlay">
+        <div class="modal-container modal-md animate-scale">
+            <div class="modal-header">
+                <h3>
+                    <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i>
+                    WhatsApp Action
+                </h3>
+                <button class="modal-close" id="close-wa-modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="wa-student-info"
+                    style="font-weight: 600; margin-bottom: 1.25rem; font-size: 1.1rem; color: var(--admin-text-primary);">
+                </p>
+
+                <div class="wa-templates-grid">
+                    <label class="wa-template-card">
+                        <input type="radio" name="wa-template" value="confirmation" checked>
+                        <div class="wa-template-content">
+                            <span class="template-name">Payment Confirmation</span>
+                            <span class="template-preview" id="preview-confirmation">Loading message...</span>
+                        </div>
+                    </label>
+
+                    <label class="wa-template-card">
+                        <input type="radio" name="wa-template" value="reminder">
+                        <div class="wa-template-content">
+                            <span class="template-name">Balance Reminder</span>
+                            <span class="template-preview" id="preview-reminder">Loading message...</span>
+                        </div>
+                    </label>
+
+                    <label class="wa-template-card">
+                        <input type="radio" name="wa-template" value="direct">
+                        <div class="wa-template-content">
+                            <span class="template-name">Direct Chat</span>
+                            <span class="template-preview">Open a blank chat windows</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-wa-btn">Cancel</button>
+                <button class="btn btn-success" id="confirm-wa-btn" style="background: #25D366; border-color: #25D366;">
+                    <i class="fa-brands fa-whatsapp"></i> Send WhatsApp
                 </button>
             </div>
         </div>

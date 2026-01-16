@@ -19,6 +19,9 @@
     <!-- Logo Component Assets -->
     <link rel="stylesheet" href="../assets/components/logo-signature/logo-signature.css">
     <script src="../assets/components/logo-signature/logo-signature.js"></script>
+    <!-- Card & Section Styles -->
+    <link rel="stylesheet" href="../assets/css/components/unified-cards.css?v=1.0">
+    <link rel="stylesheet" href="../assets/css/sections/courses.css?v=2.1">
     <!-- FOUC Protection -->
     <style>
         .no-fouc {
@@ -98,146 +101,121 @@
             </div>
 
             <!-- Design & Creative Category -->
-            <div class="course-category" Data-category="design">
+            <div class="course-category" data-category="design">
                 <h2 class="category-title"><i class="fas fa-palette"></i> Design & Creative</h2>
-                <div class="courses-list">
+                <div class="unified-grid">
                     <!-- Graphic Design -->
-                    <div class="course-card-full">
-                        <div class="course-icon">
+                    <div class="unified-card">
+                        <div class="unified-card-icon">
                             <i class="fas fa-palette"></i>
                         </div>
-                        <div class="course-info">
-                            <h3>Graphic Design</h3>
-                            <p>Elevate your brand identity with professional logos, marketing materials, and high-impact
-                                social media assets. Our designers create visuals that captivate and convert.</p>
-                            <div class="course-meta">
-                                <span><i class="fas fa-long-arrow-alt-right"></i> Brand Identity</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> Social Graphics</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> Print Media</span>
-                            </div>
-                        </div>
-                        <div class="service-card-actions">
-                            <a href="/s-graphic-design/" class="btn btn-primary">View Details <i
-                                    class="fas fa-arrow-right"></i></a>
-                        </div>
+                        <h3>Graphic Design</h3>
+                        <p>Elevate your brand identity with professional logos, marketing materials, and high-impact
+                            social media assets.</p>
+                        <ul class="unified-card-features">
+                            <li>Brand Identity</li>
+                            <li>Social Graphics</li>
+                            <li>Print Media</li>
+                        </ul>
+                        <a href="/s-graphic-design/" class="unified-card-link">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
 
                     <!-- UI/UX Design -->
-                    <div class="course-card-full">
-                        <div class="course-icon">
+                    <div class="unified-card">
+                        <div class="unified-card-icon">
                             <i class="fas fa-window-maximize"></i>
                         </div>
-                        <div class="course-info">
-                            <h3>UI/UX Design</h3>
-                            <p>User-centered design solutions that enhance usability and create memorable digital
-                                experiences. We design interfaces that users love.</p>
-                            <div class="course-meta">
-                                <span><i class="fas fa-long-arrow-alt-right"></i> User Research</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> Wireframing</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> Prototypes</span>
-                            </div>
-                        </div>
-                        <div class="service-card-actions">
-                            <a href="/s-ui-ux-design/" class="btn btn-primary">View Details <i
-                                    class="fas fa-arrow-right"></i></a>
-                        </div>
+                        <h3>UI/UX Design</h3>
+                        <p>User-centered design solutions that enhance usability and create memorable digital
+                            experiences.</p>
+                        <ul class="unified-card-features">
+                            <li>User Research</li>
+                            <li>Wireframing</li>
+                            <li>Interactive Prototypes</li>
+                        </ul>
+                        <a href="/s-ui-ux-design/" class="unified-card-link">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
 
             <!-- Development & Technology Category -->
-            <div class="course-category" Data-category="development">
+            <div class="course-category" data-category="development">
                 <h2 class="category-title"><i class="fas fa-code"></i> Tech & Cloud</h2>
-                <div class="courses-list">
+                <div class="unified-grid">
                     <!-- Web Development -->
-                    <div class="course-card-full">
-                        <div class="course-icon">
+                    <div class="unified-card">
+                        <div class="unified-card-icon">
                             <i class="fas fa-globe"></i>
                         </div>
-                        <div class="course-info">
-                            <h3>Website Development</h3>
-                            <p>Custom, responsive websites that drive results. From stunning portfolios to powerful
-                                e-commerce platforms, we build websites that work.</p>
-                            <div class="course-meta">
-                                <span><i class="fas fa-long-arrow-alt-right"></i> Custom Web Apps</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> E-commerce</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> SEO Ready</span>
-                            </div>
-                        </div>
-                        <div class="service-card-actions">
-                            <a href="/s-web-development/" class="btn btn-primary">View Details <i
-                                    class="fas fa-arrow-right"></i></a>
-                        </div>
+                        <h3>Website Development</h3>
+                        <p>Custom, responsive websites that drive results. From portfolios to powerful e-commerce
+                            platforms.</p>
+                        <ul class="unified-card-features">
+                            <li>Custom Web Apps</li>
+                            <li>E-commerce Solutions</li>
+                            <li>SEO Optimization</li>
+                        </ul>
+                        <a href="/s-web-development/" class="unified-card-link">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
 
                     <!-- Cloud & DevOps -->
-                    <div class="course-card-full">
-                        <div class="course-icon">
+                    <div class="unified-card">
+                        <div class="unified-card-icon">
                             <i class="fas fa-cloud"></i>
                         </div>
-                        <div class="course-info">
-                            <h3>Cloud & DevOps</h3>
-                            <p>Streamline your infrastructure with automated pipelines, cloud migrations, and robust
-                                security protocols.</p>
-                            <div class="course-meta">
-                                <span><i class="fas fa-long-arrow-alt-right"></i> AWS/Azure</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> CI/CD Automation</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> Scalable Infra</span>
-                            </div>
-                        </div>
-                        <div class="service-card-actions">
-                            <a href="/s-cloud-devops/" class="btn btn-primary">View Details <i
-                                    class="fas fa-arrow-right"></i></a>
-                        </div>
+                        <h3>Cloud & DevOps</h3>
+                        <p>Streamline your infrastructure with automated pipelines, cloud migrations, and robust
+                            security.</p>
+                        <ul class="unified-card-features">
+                            <li>AWS/Azure Migration</li>
+                            <li>CI/CD Automation</li>
+                            <li>Scalable Infrastructure</li>
+                        </ul>
+                        <a href="/s-cloud-devops/" class="unified-card-link">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
 
             <!-- Branding & Career Category -->
-            <div class="course-category" Data-category="career">
+            <div class="course-category" data-category="career">
                 <h2 class="category-title"><i class="fas fa-rocket"></i> Career & Branding</h2>
-                <div class="courses-list">
+                <div class="unified-grid">
                     <!-- Branding -->
-                    <div class="course-card-full">
-                        <div class="course-icon">
+                    <div class="unified-card">
+                        <div class="unified-card-icon">
                             <i class="fas fa-bullhorn"></i>
                         </div>
-                        <div class="course-info">
-                            <h3>Branding & Identity</h3>
-                            <p>Build a memorable brand that resonates with your audience. We create comprehensive
-                                brand
-                                strategies that drive recognition and loyalty.</p>
-                            <div class="course-meta">
-                                <span><i class="fas fa-long-arrow-alt-right"></i> Brand Strategy</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> Visual Identity</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> Marketing Kit</span>
-                            </div>
-                        </div>
-                        <div class="service-card-actions">
-                            <a href="/s-branding/" class="btn btn-primary">View Details <i
-                                    class="fas fa-arrow-right"></i></a>
-                        </div>
+                        <h3>Branding & Identity</h3>
+                        <p>Build a memorable brand that resonates. We create strategies that drive recognition and
+                            loyalty.</p>
+                        <ul class="unified-card-features">
+                            <li>Brand Strategy</li>
+                            <li>Visual Identity</li>
+                            <li>Marketing Collaterals</li>
+                        </ul>
+                        <a href="/s-branding/" class="unified-card-link">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
 
                     <!-- Career Services -->
-                    <div class="course-card-full">
-                        <div class="course-icon">
+                    <div class="unified-card">
+                        <div class="unified-card-icon">
                             <i class="fas fa-file-invoice"></i>
                         </div>
-                        <div class="course-info">
-                            <h3>Career Services</h3>
-                            <p>Professional resume building and portfolio optimization to get you shortlisted by top
-                                companies.</p>
-                            <div class="course-meta">
-                                <span><i class="fas fa-long-arrow-alt-right"></i> ATS Resume</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> LinkedIn Mastery</span>
-                                <span><i class="fas fa-long-arrow-alt-right"></i> Portfolio Help</span>
-                            </div>
-                        </div>
-                        <div class="service-card-actions">
-                            <a href="/s-career-services/" class="btn btn-primary">View Details <i
-                                    class="fas fa-arrow-right"></i></a>
-                        </div>
+                        <h3>Career Services</h3>
+                        <p>Professional resume building and portfolio optimization to get you shortlisted by top
+                            companies.</p>
+                        <ul class="unified-card-features">
+                            <li>ATS-Friendly Resume</li>
+                            <li>LinkedIn Profile Optimization</li>
+                            <li>Portfolio Consulting</li>
+                        </ul>
+                        <a href="/s-career-services/" class="unified-card-link">View Details <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>

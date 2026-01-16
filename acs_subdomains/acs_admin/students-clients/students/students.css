@@ -1880,6 +1880,361 @@
     font-size: 0.7rem;
 }
 
+/* ============================================
+   WhatsApp Selection Modal Styles
+   ============================================ */
+.wa-templates-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.wa-template-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.wa-template-card:hover {
+    border-color: #25D366;
+    background: rgba(37, 211, 102, 0.05);
+}
+
+.wa-template-card input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 3px;
+    accent-color: #25D366;
+}
+
+.wa-template-card input:checked+.wa-template-content {
+    opacity: 1;
+}
+
+.wa-template-card:has(input:checked) {
+    border-color: #25D366;
+    background: rgba(37, 211, 102, 0.08);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.1);
+}
+
+.wa-template-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.template-name {
+    font-weight: 700;
+    color: var(--admin-text-primary);
+    font-size: 1rem;
+}
+
+.template-preview {
+    font-size: 0.85rem;
+    color: var(--admin-text-muted);
+    font-style: italic;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ============================================
+   Table Scrollbar Refinements
+   ============================================ */
+.table-container {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-200) transparent;
+}
+
+.table-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--primary-200);
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-400);
+}
+
+/* Fix for table not fitting screen */
+.premium-table {
+    min-width: 1000px;
+}
+
+/* Adjusting Cell Tags and info for cleanliness */
+.cell-course-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.course-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: rgba(40, 150, 205, 0.04);
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(40, 150, 205, 0.1);
+}
+
+.course-entry .course-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary-700);
+}
+
+.course-entry .course-fee-info {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--admin-text-secondary);
+}
+
+
 .course-pill .pill-remove:hover {
     background: rgba(255, 255, 255, 0.4);
+}
+
+/* ============================================
+   Per-Course Metadata (Form)
+   ============================================ */
+.course-meta-item {
+    background: #fff;
+    border: 1px solid var(--admin-input-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.course-meta-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px dashed var(--admin-input-border);
+    color: var(--primary-600);
+}
+
+.course-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.meta-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.meta-field label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--admin-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.meta-field select,
+.meta-field input {
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--admin-input-border) !important;
+    font-size: 0.9rem !important;
+    width: 100% !important;
+    height: auto !important;
+}
+
+.course-meta-demo {
+    background: #fff8eb;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #f59e0b;
+}
+
+.demo-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.demo-toggle input {
+    width: 18px;
+    height: 18px;
+    accent-color: #f59e0b;
+}
+
+.course-demo-fields {
+    margin-top: 0.75rem;
+    display: flex;
+    gap: 10px;
+}
+
+.course-demo-fields input {
+    flex: 1;
+    padding: 6px 10px !important;
+    font-size: 0.85rem !important;
+}
+
+/* Enrollment Summary Modal Styles */
+.summary-courses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.summary-course-item {
+    background: #f8fafc;
+    border: 1px solid var(--admin-input-border);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+}
+
+.summary-course-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.summary-course-main .course-badge {
+    background: var(--primary-100);
+    color: var(--primary-700);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.summary-course-main .course-name {
+    flex: 1;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--admin-text-primary);
+}
+
+.summary-course-main .course-fee {
+    font-weight: 700;
+    color: var(--primary-600);
+}
+
+.summary-course-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.75rem;
+    color: var(--admin-text-secondary);
+}
+
+.summary-course-details span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.summary-course-details .demo-tag {
+    color: #f59e0b;
+    font-weight: 600;
+}
+
+.total-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--admin-input-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-total {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-600);
+}
+
+/* Student Profile Course Meta */
+.profile-course-meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 0.75rem 0;
+    padding: 0.5rem 0.75rem;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.profile-meta-info {
+    font-size: 0.8rem;
+    color: var(--admin-text-secondary);
+}
+
+.profile-meta-info i {
+    color: var(--primary-500);
+    margin-right: 4px;
+}
+
+.profile-demo-tag {
+    margin-top: 10px;
+    background: #fff8eb;
+    color: #92400e;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid #fee2e2;
+}
+
+/* MOBILE RESPONSIVE ADAPTATIONS */
+@media (max-width: 768px) {
+    .course-meta-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .course-demo-fields {
+        flex-direction: column;
+    }
+
+    .profile-course-meta-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .summary-course-main {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .summary-course-main .course-fee {
+        align-self: flex-end;
+    }
+
+    .summary-total {
+        font-size: 1.25rem;
+    }
 }
