@@ -19,7 +19,7 @@ section {
     font-size: 0.875rem;
     font-weight: 600;
     margin-bottom: var(--spacing-md);
-    text-transform: uppercase;
+    text-transform: capitalize;
     letter-spacing: 0.5px;
 }
 
