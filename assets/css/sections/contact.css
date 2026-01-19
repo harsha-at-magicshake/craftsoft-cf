@@ -4,12 +4,9 @@
 /* Global Container for Contact Sections */
 .contact-section {
     padding: 1.5rem 0;
-    background: var(--page-bg);
-    /* Changed from #f8fafc to theme color */
+    background: rgba(40, 150, 205, 0.05);
     position: relative;
     overflow: hidden;
-    border-radius: 1.5rem;
-    margin: 1rem;
 }
 
 .counseling-wrapper {

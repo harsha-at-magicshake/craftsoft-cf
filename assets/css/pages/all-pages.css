@@ -364,7 +364,7 @@
     text-align: center;
     padding: 2rem 0;
     margin-bottom: 2rem;
-    background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 50%, var(--primary-50) 100%);
+    background: linear-gradient(135deg, var(--gray-50) 0%, rgba(40, 150, 205, 0.05) 50%, var(--primary-50) 100%);
     border-radius: var(--radius-2xl);
     border: 1px solid var(--gray-100);
 }
@@ -576,7 +576,7 @@
 /* Individual Course Page */
 .course-detail-page {
     padding: 1rem 0;
-    background: var(--primary-50);
+    background: rgba(40, 150, 205, 0.05);
 }
 
 .course-detail-header {
@@ -1681,13 +1681,13 @@
 /* Map Section Spacing */
 .map-section {
     padding: 4rem 0;
-    background: var(--white);
+    background: rgba(40, 150, 205, 0.05);
 }
 
 /* Contact Section Adjustments for Contact Page */
 .contact-section {
     padding: 4rem 0;
-    background: var(--white);
+    background: rgba(40, 150, 205, 0.05);
 }
 
 /* Mobile Responsiveness for Unified Contact */

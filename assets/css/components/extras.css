@@ -482,7 +482,7 @@
 
 .related-courses {
     padding: 2rem 0;
-    background: var(--section-bg);
+    background: rgba(40, 150, 205, 0.05);
 }
 
 .related-courses .section-header {
