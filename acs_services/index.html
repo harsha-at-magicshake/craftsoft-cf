@@ -242,53 +242,59 @@
                 </div>
             </div>
 
-            <!-- Contact Section -->
-            <section class="contact-section" id="contact">
+            <!-- Get A Quotation Section -->
+            <section class="unified-contact-section" id="contact">
                 <div class="container">
-                    <div class="contact-wrapper">
-                        <div class="contact-text-side">
-                            <span class="section-tag">Get in Touch</span>
-                            <h2>Let's <span style="color: #3b82f6;">Build Something</span></h2>
+                    <!-- Pill Header -->
+                    <div class="unified-contact-header">
+                        <span class="unified-contact-pill">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            Get A Quotation
+                        </span>
+                    </div>
+
+                    <div class="unified-contact-wrapper">
+                        <!-- Left Side - Contact Info -->
+                        <div class="unified-contact-info">
+                            <h2>Let's <span>Build Something</span></h2>
                             <p>
                                 Have a project in mind or need professional advice? Our team is ready to help you
                                 transform your vision into reality.
                             </p>
 
-                            <div class="contact-methods-grid">
-                                <!-- Row 1: Phone + Email -->
-                                <a href="tel:+917842239090" class="method-card">
+                            <div class="unified-methods-grid">
+                                <a href="tel:+917842239090" class="unified-method-card">
                                     <div class="method-card-header">
                                         <i class="fas fa-phone"></i>
                                         <h4>Phone / WhatsApp</h4>
                                     </div>
                                     <span>+91 7842239090</span>
                                 </a>
-                                <a href="mailto:team.craftsoft@gmail.com" class="method-card">
+                                <a href="mailto:team.craftsoft@gmail.com" class="unified-method-card">
                                     <div class="method-card-header">
                                         <i class="fas fa-envelope"></i>
                                         <h4>Email</h4>
                                     </div>
                                     <span>team.craftsoft@gmail.com</span>
                                 </a>
-                                <!-- Row 2: LinkedIn + Instagram -->
                                 <a href="https://www.linkedin.com/company/abhis-craftsoft" target="_blank"
-                                    class="method-card">
+                                    class="unified-method-card">
                                     <div class="method-card-header">
                                         <i class="fab fa-linkedin"></i>
                                         <h4>LinkedIn</h4>
                                     </div>
                                     <span>Abhi's Craftsoft</span>
                                 </a>
-                                <a href="https://www.instagram.com/craftsoft_" target="_blank" class="method-card">
+                                <a href="https://www.instagram.com/craftsoft_" target="_blank"
+                                    class="unified-method-card">
                                     <div class="method-card-header">
                                         <i class="fab fa-instagram"></i>
                                         <h4>Instagram</h4>
                                     </div>
                                     <span>@craftsoft_</span>
                                 </a>
-                                <!-- Row 3: Visit Us (full width) -->
-                                <a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8" target="_blank" class="method-card"
-                                    style="grid-column: 1 / -1;">
+                                <a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8" target="_blank"
+                                    class="unified-method-card full-width">
                                     <div class="method-card-header">
                                         <i class="fas fa-map-marker-alt"></i>
                                         <h4>Visit Us</h4>
@@ -298,102 +304,98 @@
                             </div>
                         </div>
 
-                        <div class="contact-form-side">
-                            <div class="contact-form-card">
-                                <span class="section-tag" style="display: table; margin: 0 auto 1.5rem;">Contact
-                                    Us</span>
+                        <!-- Right Side - Form -->
+                        <div class="unified-form-side">
+                            <div class="form-header">
+                                <span class="section-tag">Request Quote</span>
                                 <h3>Send us a Message</h3>
-                                <form id="service-contact-form">
-                                    <div class="form-group">
-                                        <label for="name">Full Name *</label>
-                                        <input type="text" id="name" name="name" placeholder="Enter your name" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Email Address *</label>
-                                        <input type="email" id="email" name="email" placeholder="Enter your email"
-                                            required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="phone">Phone Number</label>
-                                        <input type="tel" id="phone" name="phone" placeholder="10-digit number"
-                                            maxlength="10">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Services Required *</label>
-                                        <div class="public-multi-select" id="services-multi-select">
-                                            <div class="selected-items-display" id="selected-services-display">
-                                                <span class="placeholder">Select services...</span>
+                            </div>
+                            <form id="service-contact-form">
+                                <div class="form-group">
+                                    <label for="name">Full Name *</label>
+                                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="10-digit number"
+                                        maxlength="10">
+                                </div>
+                                <div class="form-group">
+                                    <label>Services Required *</label>
+                                    <div class="public-multi-select" id="services-multi-select">
+                                        <div class="selected-items-display" id="selected-services-display">
+                                            <span class="placeholder">Select services...</span>
+                                        </div>
+                                        <div class="multi-select-dropdown">
+                                            <div class="dropdown-search">
+                                                <i class="fas fa-search"></i>
+                                                <input type="text" placeholder="Search services..." id="service-search">
                                             </div>
-                                            <div class="multi-select-dropdown">
-                                                <div class="dropdown-search">
-                                                    <i class="fas fa-search"></i>
-                                                    <input type="text" placeholder="Search services..."
-                                                        id="service-search">
-                                                </div>
-                                                <div class="dropdown-options" id="service-options">
-                                                    <div class="option-group">Design & Creative</div>
-                                                    <label class="option-item"><input type="checkbox" name="courses"
-                                                            value="Graphic Design Services"> <span>Graphic
-                                                            Design</span></label>
-                                                    <label class="option-item"><input type="checkbox" name="courses"
-                                                            value="UI/UX Design Services"> <span>UI/UX
-                                                            Design</span></label>
+                                            <div class="dropdown-options" id="service-options">
+                                                <div class="option-group">Design & Creative</div>
+                                                <label class="option-item"><input type="checkbox" name="courses"
+                                                        value="Graphic Design Services"> <span>Graphic
+                                                        Design</span></label>
+                                                <label class="option-item"><input type="checkbox" name="courses"
+                                                        value="UI/UX Design Services"> <span>UI/UX Design</span></label>
 
-                                                    <div class="option-group">Tech & Cloud</div>
-                                                    <label class="option-item"><input type="checkbox" name="courses"
-                                                            value="Website Development"> <span>Website
-                                                            Development</span></label>
-                                                    <label class="option-item"><input type="checkbox" name="courses"
-                                                            value="Cloud & DevOps"> <span>Cloud & DevOps</span></label>
+                                                <div class="option-group">Tech & Cloud</div>
+                                                <label class="option-item"><input type="checkbox" name="courses"
+                                                        value="Website Development"> <span>Website
+                                                        Development</span></label>
+                                                <label class="option-item"><input type="checkbox" name="courses"
+                                                        value="Cloud & DevOps"> <span>Cloud & DevOps</span></label>
 
-                                                    <div class="option-group">Branding & Career</div>
-                                                    <label class="option-item"><input type="checkbox" name="courses"
-                                                            value="Branding & Marketing"> <span>Branding &
-                                                            Marketing</span></label>
-                                                    <label class="option-item"><input type="checkbox" name="courses"
-                                                            value="Career Services"> <span>Career
-                                                            Services</span></label>
+                                                <div class="option-group">Branding & Career</div>
+                                                <label class="option-item"><input type="checkbox" name="courses"
+                                                        value="Branding & Marketing"> <span>Branding &
+                                                        Marketing</span></label>
+                                                <label class="option-item"><input type="checkbox" name="courses"
+                                                        value="Career Services"> <span>Career Services</span></label>
 
-                                                    <div class="option-divider"></div>
-                                                    <label class="option-item special-option"><input type="checkbox"
-                                                            name="courses" value="Other" id="service-other-checkbox">
-                                                        <span>Other Service...</span></label>
-                                                </div>
+                                                <div class="option-divider"></div>
+                                                <label class="option-item special-option"><input type="checkbox"
+                                                        name="courses" value="Other" id="service-other-checkbox">
+                                                    <span>Other Service...</span></label>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Conditional Other Field -->
-                                    <div class="form-group" id="other-service-wrapper" style="display: none;">
-                                        <label for="service-other">Please specify service(s) *</label>
-                                        <textarea id="service-other" name="other_interest"
-                                            placeholder="Mention the services you are looking for..."
-                                            rows="2"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="message">Message *</label>
-                                        <textarea id="message" name="message"
-                                            placeholder="Briefly describe your project requirements..." rows="4"
-                                            required></textarea>
-                                    </div>
-                                    <div class="form-buttons">
-                                        <button type="submit" class="btn-form btn-blue">Send Message</button>
-                                        <span class="divider-or">or</span>
-                                        <a href="https://wa.me/917842239090?text=Hi! I am interested in inquiring about your professional IT services."
-                                            target="_blank" class="btn-form btn-green">
-                                            <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-                                        </a>
-                                    </div>
-                                    <p class="form-footer-legal">By submitting this form, you agree to our <a
-                                            href="../terms-of-service/">Terms of Service</a> and <a
-                                            href="../privacy-policy/">Privacy Policy</a>.</p>
-                                </form>
-                            </div>
+                                </div>
+                                <!-- Conditional Other Field -->
+                                <div class="form-group" id="other-service-wrapper" style="display: none;">
+                                    <label for="service-other">Please specify service(s) *</label>
+                                    <textarea id="service-other" name="other_interest"
+                                        placeholder="Mention the services you are looking for..." rows="2"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message">Message *</label>
+                                    <textarea id="message" name="message"
+                                        placeholder="Briefly describe your project requirements..." rows="4"
+                                        required></textarea>
+                                </div>
+                                <div class="form-buttons">
+                                    <button type="submit" class="btn-form btn-blue">Send Message</button>
+                                    <span class="divider-or">or</span>
+                                    <a href="https://wa.me/917842239090?text=Hi! I am interested in inquiring about your professional IT services."
+                                        target="_blank" class="btn-form btn-green">
+                                        <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                                    </a>
+                                </div>
+                                <p class="form-footer-legal">By submitting this form, you agree to our <a
+                                        href="../terms-of-service/">Terms of Service</a> and <a
+                                        href="../privacy-policy/">Privacy Policy</a>.</p>
+                            </form>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
     </section>
+
 
     <!-- Footer -->
     <footer class="footer">

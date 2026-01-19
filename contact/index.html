@@ -85,51 +85,57 @@
     </nav>
 
     <!-- Contact Section -->
-    <section class="contact-section">
+    <section class="unified-contact-section">
         <div class="container">
-            <div class="contact-wrapper">
-                <div class="contact-text-side">
-                    <span class="section-tag">Get in Touch</span>
-                    <h2>Let's <span style="color: #3b82f6;">Connect</span></h2>
+            <!-- Pill Header -->
+            <div class="unified-contact-header">
+                <span class="unified-contact-pill">
+                    <i class="fas fa-headset"></i>
+                    Get In Touch
+                </span>
+            </div>
+
+            <div class="unified-contact-wrapper">
+                <!-- Left Side - Contact Info -->
+                <div class="unified-contact-info">
+                    <h2>Let's <span>Connect</span></h2>
                     <p>
                         Whether you're interested in our courses, services, or just want to learn more about Abhi's
                         Craftsoft, we're here to help.
                     </p>
 
-                    <div class="contact-methods-grid">
-                        <!-- Row 1: Phone + Email -->
-                        <a href="tel:+917842239090" class="method-card">
+                    <div class="unified-methods-grid">
+                        <a href="tel:+917842239090" class="unified-method-card">
                             <div class="method-card-header">
                                 <i class="fas fa-phone"></i>
                                 <h4>Phone / WhatsApp</h4>
                             </div>
                             <span>+91 7842239090</span>
                         </a>
-                        <a href="mailto:team.craftsoft@gmail.com" class="method-card">
+                        <a href="mailto:team.craftsoft@gmail.com" class="unified-method-card">
                             <div class="method-card-header">
                                 <i class="fas fa-envelope"></i>
                                 <h4>Email</h4>
                             </div>
                             <span>team.craftsoft@gmail.com</span>
                         </a>
-                        <!-- Row 2: LinkedIn + Instagram -->
-                        <a href="https://www.linkedin.com/company/abhis-craftsoft" target="_blank" class="method-card">
+                        <a href="https://www.linkedin.com/company/abhis-craftsoft" target="_blank"
+                            class="unified-method-card">
                             <div class="method-card-header">
                                 <i class="fab fa-linkedin"></i>
                                 <h4>LinkedIn</h4>
                             </div>
                             <span>Abhi's Craftsoft</span>
                         </a>
-                        <a href="https://www.instagram.com/craftsoft_" target="_blank" class="method-card">
+                        <a href="https://www.instagram.com/craftsoft_" target="_blank" class="unified-method-card">
                             <div class="method-card-header">
                                 <i class="fab fa-instagram"></i>
                                 <h4>Instagram</h4>
                             </div>
                             <span>@craftsoft_</span>
                         </a>
-                        <!-- Row 3: Visit Us (full width) -->
-                        <a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8" target="_blank" class="method-card"
-                            style="grid-column: 1 / -1;">
+                        <a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8" target="_blank"
+                            class="unified-method-card full-width">
                             <div class="method-card-header">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <h4>Visit Us</h4>
@@ -139,120 +145,119 @@
                     </div>
                 </div>
 
-                <div class="contact-form-side">
-                    <div class="contact-form-card">
-                        <span class="section-tag" style="display: table; margin: 0 auto 1.5rem;">Contact Us</span>
+                <!-- Right Side - Form -->
+                <div class="unified-form-side">
+                    <div class="form-header">
+                        <span class="section-tag">Contact Us</span>
                         <h3>Send us a Message</h3>
-                        <form id="contactForm">
-                            <div class="form-group">
-                                <label for="name">Full Name *</label>
-                                <input type="text" id="name" name="name" placeholder="Enter your name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email Address *</label>
-                                <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="contact-phone" name="phone" placeholder="10-digit number"
-                                    maxlength="10">
-                            </div>
-                            <div class="form-group">
-                                <label for="interest">I'm Interested In *</label>
-                                <select id="interest" name="courses" required onchange="updateContactWhatsApp(this)">
-                                    <option value="" disabled selected>Select an option</option>
-                                    <optgroup label="Software Development">
-                                        <option value="Full Stack Development (MERN)" data-type="course">Full Stack
-                                            Development (MERN)</option>
-                                        <option value="Python Full Stack Development" data-type="course">Python Full
-                                            Stack Development</option>
-                                        <option value="Java Full Stack Development" data-type="course">Java Full Stack
-                                            Development</option>
-                                        <option value="DSA Mastery" data-type="course">DSA Mastery</option>
-                                        <option value="SQL (Structured Query Language)" data-type="course">SQL
-                                            (Structured Query Language)</option>
-                                        <option value="Python Programming" data-type="course">Python Programming
-                                        </option>
-                                        <option value="React JS" data-type="course">React JS</option>
-                                        <option value="Git & GitHub" data-type="course">Git & GitHub</option>
-                                        <option value="Automation with Python" data-type="course">Automation with Python
-                                        </option>
-                                    </optgroup>
-                                    <optgroup label="Cloud & Security">
-                                        <option value="DevOps Engineering" data-type="course">DevOps Engineering
-                                        </option>
-                                        <option value="AWS Cloud Excellence" data-type="course">AWS Cloud Excellence
-                                        </option>
-                                        <option value="Cyber Security" data-type="course">Cyber Security</option>
-                                        <option value="DevSecOps" data-type="course">DevSecOps</option>
-                                        <option value="Microsoft Azure" data-type="course">Microsoft Azure</option>
-                                    </optgroup>
-                                    <optgroup label="Salesforce & Enterprise">
-                                        <option value="Salesforce Administration" data-type="course">Salesforce
-                                            Administration</option>
-                                        <option value="Salesforce Developer" data-type="course">Salesforce Developer
-                                        </option>
-                                        <option value="Salesforce Marketing Cloud" data-type="course">Salesforce
-                                            Marketing Cloud</option>
-                                        <option value="Oracle Fusion Cloud" data-type="course">Oracle Fusion Cloud
-                                        </option>
-                                    </optgroup>
-                                    <optgroup label="Data & AI">
-                                        <option value="AI & Machine Learning (AI-ML)" data-type="course">AI & Machine
-                                            Learning (AI-ML)</option>
-                                        <option value="Data Analytics" data-type="course">Data Analytics</option>
-                                    </optgroup>
-                                    <optgroup label="Design Excellence">
-                                        <option value="Graphic Design" data-type="course">Graphic Design</option>
-                                        <option value="UI/UX Design" data-type="course">UI/UX Design</option>
-                                    </optgroup>
-                                    <optgroup label="Language & Growth">
-                                        <option value="Spoken English Mastery" data-type="course">Spoken English Mastery
-                                        </option>
-                                        <option value="Soft Skills Training" data-type="course">Soft Skills Training
-                                        </option>
-                                        <option value="Resume Writing & Interview Prep" data-type="course">Resume
-                                            Writing & Interview Prep</option>
-                                        <option value="Handwriting Improvement" data-type="course">Handwriting
-                                            Improvement</option>
-                                    </optgroup>
-                                    <optgroup label="Services">
-                                        <option value="Website Development" data-type="service">Website Development
-                                        </option>
-                                        <option value="UI/UX Design Services" data-type="service">UI/UX Design Services
-                                        </option>
-                                        <option value="Graphic Design Services" data-type="service">Graphic Design
-                                            Services</option>
-                                        <option value="Branding & Marketing" data-type="service">Branding & Marketing
-                                        </option>
-                                        <option value="Cloud & DevOps Solutions" data-type="service">Cloud & DevOps
-                                            Solutions</option>
-                                        <option value="Career & Placement Services" data-type="service">Career &
-                                            Placement Services</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Message *</label>
-                                <textarea id="message" name="message" rows="4" placeholder="How can we help you?"
-                                    required></textarea>
-                            </div>
-                            <div class="form-buttons">
-                                <button type="submit" class="btn-form btn-blue">Send Message</button>
-                                <span class="divider-or">or</span>
-                                <a href="https://wa.me/917842239090?text=Hi! I'd like to chat about your courses and services."
-                                    target="_blank" class="btn-form btn-green" id="contact-whatsapp-btn">
-                                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-                                </a>
-                            </div>
-                            <p class="form-footer-legal">By submitting this form, you agree to our <a
-                                    href="../terms-of-service/">Terms of Service</a> and <a
-                                    href="../privacy-policy/">Privacy Policy</a>.</p>
-                        </form>
                     </div>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="contact-phone" name="phone" placeholder="10-digit number"
+                                maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="interest">I'm Interested In *</label>
+                            <select id="interest" name="courses" required onchange="updateContactWhatsApp(this)">
+                                <option value="" disabled selected>Select an option</option>
+                                <optgroup label="Software Development">
+                                    <option value="Full Stack Development (MERN)" data-type="course">Full Stack
+                                        Development (MERN)</option>
+                                    <option value="Python Full Stack Development" data-type="course">Python Full Stack
+                                        Development</option>
+                                    <option value="Java Full Stack Development" data-type="course">Java Full Stack
+                                        Development</option>
+                                    <option value="DSA Mastery" data-type="course">DSA Mastery</option>
+                                    <option value="SQL (Structured Query Language)" data-type="course">SQL (Structured
+                                        Query Language)</option>
+                                    <option value="Python Programming" data-type="course">Python Programming</option>
+                                    <option value="React JS" data-type="course">React JS</option>
+                                    <option value="Git & GitHub" data-type="course">Git & GitHub</option>
+                                    <option value="Automation with Python" data-type="course">Automation with Python
+                                    </option>
+                                </optgroup>
+                                <optgroup label="Cloud & Security">
+                                    <option value="DevOps Engineering" data-type="course">DevOps Engineering</option>
+                                    <option value="AWS Cloud Excellence" data-type="course">AWS Cloud Excellence
+                                    </option>
+                                    <option value="Cyber Security" data-type="course">Cyber Security</option>
+                                    <option value="DevSecOps" data-type="course">DevSecOps</option>
+                                    <option value="Microsoft Azure" data-type="course">Microsoft Azure</option>
+                                </optgroup>
+                                <optgroup label="Salesforce & Enterprise">
+                                    <option value="Salesforce Administration" data-type="course">Salesforce
+                                        Administration</option>
+                                    <option value="Salesforce Developer" data-type="course">Salesforce Developer
+                                    </option>
+                                    <option value="Salesforce Marketing Cloud" data-type="course">Salesforce Marketing
+                                        Cloud</option>
+                                    <option value="Oracle Fusion Cloud" data-type="course">Oracle Fusion Cloud</option>
+                                </optgroup>
+                                <optgroup label="Data & AI">
+                                    <option value="AI & Machine Learning (AI-ML)" data-type="course">AI & Machine
+                                        Learning (AI-ML)</option>
+                                    <option value="Data Analytics" data-type="course">Data Analytics</option>
+                                </optgroup>
+                                <optgroup label="Design Excellence">
+                                    <option value="Graphic Design" data-type="course">Graphic Design</option>
+                                    <option value="UI/UX Design" data-type="course">UI/UX Design</option>
+                                </optgroup>
+                                <optgroup label="Language & Growth">
+                                    <option value="Spoken English Mastery" data-type="course">Spoken English Mastery
+                                    </option>
+                                    <option value="Soft Skills Training" data-type="course">Soft Skills Training
+                                    </option>
+                                    <option value="Resume Writing & Interview Prep" data-type="course">Resume Writing &
+                                        Interview Prep</option>
+                                    <option value="Handwriting Improvement" data-type="course">Handwriting Improvement
+                                    </option>
+                                </optgroup>
+                                <optgroup label="Services">
+                                    <option value="Website Development" data-type="service">Website Development</option>
+                                    <option value="UI/UX Design Services" data-type="service">UI/UX Design Services
+                                    </option>
+                                    <option value="Graphic Design Services" data-type="service">Graphic Design Services
+                                    </option>
+                                    <option value="Branding & Marketing" data-type="service">Branding & Marketing
+                                    </option>
+                                    <option value="Cloud & DevOps Solutions" data-type="service">Cloud & DevOps
+                                        Solutions</option>
+                                    <option value="Career & Placement Services" data-type="service">Career & Placement
+                                        Services</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="4" placeholder="How can we help you?"
+                                required></textarea>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn-form btn-blue">Send Message</button>
+                            <span class="divider-or">or</span>
+                            <a href="https://wa.me/917842239090?text=Hi! I'd like to chat about your courses and services."
+                                target="_blank" class="btn-form btn-green" id="contact-whatsapp-btn">
+                                <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                            </a>
+                        </div>
+                        <p class="form-footer-legal">By submitting this form, you agree to our <a
+                                href="../terms-of-service/">Terms of Service</a> and <a
+                                href="../privacy-policy/">Privacy Policy</a>.</p>
+                    </form>
                 </div>
             </div>
+        </div>
     </section>
+
 
     <!-- Map Section -->
     <section class="map-section" style="padding: var(--spacing-xl) 0;">

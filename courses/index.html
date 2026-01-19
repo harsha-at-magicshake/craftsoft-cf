@@ -538,50 +538,58 @@
         </div>
     </section>
 
-    <!-- Courses Contact Section -->
-    <div class="courses-contact-section" id="contact">
+    <!-- Career Counseling Section -->
+    <section class="unified-contact-section" id="contact">
         <div class="container">
-            <div class="courses-contact-wrapper">
-                <div class="courses-contact-left">
-                    <span class="section-tag">Direct Counseling</span>
-                    <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Master your <span
-                            style="color: #3b82f6;">Future</span></h2>
-                    <p style="margin-bottom: 2.5rem; color: #64748b; font-size: 1.1rem; line-height: 1.7;">
+            <!-- Pill Header -->
+            <div class="unified-contact-header">
+                <span class="unified-contact-pill">
+                    <i class="fas fa-graduation-cap"></i>
+                    Career Counseling
+                </span>
+            </div>
+
+            <div class="unified-contact-wrapper">
+                <!-- Left Side - Contact Info -->
+                <div class="unified-contact-info">
+                    <h2>Master your <span>Future</span></h2>
+                    <p>
                         Not sure which course is right for you? Our expert counselors are here to help you map out
                         your career path with industry-best training.
                     </p>
 
-                    <div class="contact-methods-grid">
-                        <a href="tel:+917842239090" class="method-card">
+                    <div class="unified-methods-grid">
+                        <a href="tel:+917842239090" class="unified-method-card">
                             <div class="method-card-header">
                                 <i class="fas fa-phone"></i>
                                 <h4>Phone / WhatsApp</h4>
                             </div>
                             <span>+91 7842239090</span>
                         </a>
-                        <a href="mailto:team.craftsoft@gmail.com" class="method-card">
+                        <a href="mailto:team.craftsoft@gmail.com" class="unified-method-card">
                             <div class="method-card-header">
                                 <i class="fas fa-envelope"></i>
                                 <h4>Email</h4>
                             </div>
                             <span>team.craftsoft@gmail.com</span>
                         </a>
-                        <a href="https://www.linkedin.com/company/abhis-craftsoft" target="_blank" class="method-card">
+                        <a href="https://www.linkedin.com/company/abhis-craftsoft" target="_blank"
+                            class="unified-method-card">
                             <div class="method-card-header">
                                 <i class="fab fa-linkedin"></i>
                                 <h4>LinkedIn</h4>
                             </div>
-                            <span>Abhis Craftsoft</span>
+                            <span>Abhi's Craftsoft</span>
                         </a>
-                        <a href="https://www.instagram.com/craftsoft_" target="_blank" class="method-card">
+                        <a href="https://www.instagram.com/craftsoft_" target="_blank" class="unified-method-card">
                             <div class="method-card-header">
                                 <i class="fab fa-instagram"></i>
                                 <h4>Instagram</h4>
                             </div>
                             <span>@craftsoft_</span>
                         </a>
-                        <a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8" target="_blank" class="method-card"
-                            style="grid-column: 1 / -1;">
+                        <a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8" target="_blank"
+                            class="unified-method-card full-width">
                             <div class="method-card-header">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <h4>Visit Us</h4>
@@ -591,133 +599,132 @@
                     </div>
                 </div>
 
-                <div class="contact-form-side">
-                    <div class="contact-form-card">
-                        <span class="section-tag" style="display: table; margin: 0 auto 1.5rem;">Quick
-                            Inquiry</span>
-                        <h3 style="text-align: center; margin-bottom: 2rem;">Get Free Counseling</h3>
-                        <form id="courses-inquiry-form" autocomplete="off">
-                            <div class="form-group">
-                                <label for="counseling-name">Full Name *</label>
-                                <input type="text" id="counseling-name" name="name" placeholder="Enter your name"
-                                    required autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label for="counseling-email">Email Address *</label>
-                                <input type="email" id="counseling-email" name="email" placeholder="Enter your email"
-                                    required autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label for="counseling-phone">Phone Number</label>
-                                <input type="tel" id="counseling-phone" name="phone" placeholder="10-digit number"
-                                    maxlength="10" autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label>Interested Courses *</label>
-                                <div class="public-multi-select" id="courses-multi-select">
-                                    <div class="selected-items-display" id="selected-courses-display">
-                                        <span class="placeholder">Select courses...</span>
+                <!-- Right Side - Form -->
+                <div class="unified-form-side">
+                    <div class="form-header">
+                        <span class="section-tag">Quick Inquiry</span>
+                        <h3>Get Free Counseling</h3>
+                    </div>
+                    <form id="courses-inquiry-form" autocomplete="off">
+                        <div class="form-group">
+                            <label for="counseling-name">Full Name *</label>
+                            <input type="text" id="counseling-name" name="name" placeholder="Enter your name" required
+                                autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="counseling-email">Email Address *</label>
+                            <input type="email" id="counseling-email" name="email" placeholder="Enter your email"
+                                required autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="counseling-phone">Phone Number</label>
+                            <input type="tel" id="counseling-phone" name="phone" placeholder="10-digit number"
+                                maxlength="10" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>Interested Courses *</label>
+                            <div class="public-multi-select" id="courses-multi-select">
+                                <div class="selected-items-display" id="selected-courses-display">
+                                    <span class="placeholder">Select courses...</span>
+                                </div>
+                                <div class="multi-select-dropdown">
+                                    <div class="dropdown-search">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" placeholder="Search courses..." id="course-search">
                                     </div>
-                                    <div class="multi-select-dropdown">
-                                        <div class="dropdown-search">
-                                            <i class="fas fa-search"></i>
-                                            <input type="text" placeholder="Search courses..." id="course-search">
-                                        </div>
-                                        <div class="dropdown-options" id="course-options">
-                                            <div class="option-group">Design</div>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Graphic Design"> <span>Graphic Design</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="UI/UX Design"> <span>UI/UX Design</span></label>
+                                    <div class="dropdown-options" id="course-options">
+                                        <div class="option-group">Design</div>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Graphic Design"> <span>Graphic Design</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="UI/UX Design"> <span>UI/UX Design</span></label>
 
-                                            <div class="option-group">Development</div>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Full Stack MERN"> <span>Full Stack MERN</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Python Full Stack"> <span>Python Full Stack</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Java Full Stack"> <span>Java Full Stack</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="React Development"> <span>React Development</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="DSA Mastery"> <span>DSA Mastery</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="SQL Mastery"> <span>SQL Mastery</span></label>
+                                        <div class="option-group">Development</div>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Full Stack MERN"> <span>Full Stack MERN</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Python Full Stack"> <span>Python Full Stack</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Java Full Stack"> <span>Java Full Stack</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="React Development"> <span>React Development</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="DSA Mastery"> <span>DSA Mastery</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="SQL Mastery"> <span>SQL Mastery</span></label>
 
-                                            <div class="option-group">Cloud & Security</div>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="DevOps Engineering"> <span>DevOps Engineering</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="AWS Cloud"> <span>AWS Cloud</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Microsoft Azure"> <span>Microsoft Azure</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Cyber Security"> <span>Cyber Security</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="DevSecOps"> <span>DevSecOps</span></label>
+                                        <div class="option-group">Cloud & Security</div>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="DevOps Engineering"> <span>DevOps Engineering</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="AWS Cloud"> <span>AWS Cloud</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Microsoft Azure"> <span>Microsoft Azure</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Cyber Security"> <span>Cyber Security</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="DevSecOps"> <span>DevSecOps</span></label>
 
-                                            <div class="option-group">Enterprise</div>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Salesforce Admin"> <span>Salesforce Admin</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Salesforce Developer"> <span>Salesforce
-                                                    Developer</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Marketing Cloud"> <span>Marketing Cloud</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Oracle Fusion Cloud"> <span>Oracle Fusion
-                                                    Cloud</span></label>
+                                        <div class="option-group">Enterprise</div>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Salesforce Admin"> <span>Salesforce Admin</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Salesforce Developer"> <span>Salesforce Developer</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Marketing Cloud"> <span>Marketing Cloud</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Oracle Fusion Cloud"> <span>Oracle Fusion Cloud</span></label>
 
-                                            <div class="option-group">Data & AI</div>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Data Analytics"> <span>Data Analytics</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="AI & ML"> <span>AI & ML</span></label>
+                                        <div class="option-group">Data & AI</div>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Data Analytics"> <span>Data Analytics</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="AI & ML"> <span>AI & ML</span></label>
 
-                                            <div class="option-group">Growth</div>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Spoken English"> <span>Spoken English</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Soft Skills"> <span>Soft Skills</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Resume & Interview"> <span>Resume & Interview</span></label>
-                                            <label class="option-item"><input type="checkbox" name="courses"
-                                                    value="Handwriting"> <span>Handwriting</span></label>
+                                        <div class="option-group">Growth</div>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Spoken English"> <span>Spoken English</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Soft Skills"> <span>Soft Skills</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Resume & Interview"> <span>Resume & Interview</span></label>
+                                        <label class="option-item"><input type="checkbox" name="courses"
+                                                value="Handwriting"> <span>Handwriting</span></label>
 
-                                            <div class="option-divider"></div>
-                                            <label class="option-item special-option"><input type="checkbox"
-                                                    name="courses" value="Other" id="course-other-checkbox"> <span>Other
-                                                    Course...</span></label>
-                                        </div>
+                                        <div class="option-divider"></div>
+                                        <label class="option-item special-option"><input type="checkbox" name="courses"
+                                                value="Other" id="course-other-checkbox"> <span>Other
+                                                Course...</span></label>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Conditional Other Field -->
-                            <div class="form-group" id="other-course-wrapper" style="display: none;">
-                                <label for="counseling-other">Please specify course(s) *</label>
-                                <textarea id="counseling-other" name="other_interest"
-                                    placeholder="Mention the courses you are looking for..." rows="2"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="counseling-message">Your Message</label>
-                                <textarea id="counseling-message" name="message"
-                                    placeholder="Tell us about your learning goals..." rows="3"></textarea>
-                            </div>
-                            <div class="form-buttons">
-                                <button type="submit" class="btn-form btn-blue" style="width: 100%;">Book Free
-                                    Counseling</button>
-                                <span class="divider-or">or</span>
-                                <a href="https://wa.me/917842239090?text=Hi! I am interested in inquiring about your courses."
-                                    target="_blank" class="btn-form btn-green">
-                                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-                                </a>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <!-- Conditional Other Field -->
+                        <div class="form-group" id="other-course-wrapper" style="display: none;">
+                            <label for="counseling-other">Please specify course(s) *</label>
+                            <textarea id="counseling-other" name="other_interest"
+                                placeholder="Mention the courses you are looking for..." rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="counseling-message">Your Message</label>
+                            <textarea id="counseling-message" name="message"
+                                placeholder="Tell us about your learning goals..." rows="3"></textarea>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn-form btn-blue" style="width: 100%;">Book Free
+                                Counseling</button>
+                            <span class="divider-or">or</span>
+                            <a href="https://wa.me/917842239090?text=Hi! I am interested in inquiring about your courses."
+                                target="_blank" class="btn-form btn-green">
+                                <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
