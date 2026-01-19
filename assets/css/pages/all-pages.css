@@ -264,7 +264,7 @@
 
 .services-page,
 .courses-page {
-    padding: 1rem 0 0rem 0;
+    padding: 1rem 0 5rem 0;
     background: rgba(40, 150, 205, 0.05);
 }
 
@@ -1424,8 +1424,8 @@
 
 .unified-contact-section {
     background: transparent;
-    padding: 2rem 0 6rem;
-    margin-top: 0;
+    padding: 6rem 0;
+    margin-top: 5rem;
     position: relative;
     overflow: hidden;
 }
