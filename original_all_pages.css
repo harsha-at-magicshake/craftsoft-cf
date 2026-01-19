@@ -1,11 +1,11 @@
-/* ============================================
+﻿/* ============================================
    Abhi's Craftsoft - Pages Stylesheet
    ============================================ */
 
-/* Page Header - Merged with Breadcrumbs */
+/* Page Header */
 .page-header {
     background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
-    padding: 100px 0 0;
+    padding: 100px 0 24px;
     position: relative;
     overflow: hidden;
 }
@@ -17,48 +17,21 @@
     right: -20%;
     width: 600px;
     height: 600px;
-    background: rgba(40, 150, 205, 0.15);
+    background: var(--primary-200);
     border-radius: 50%;
     filter: blur(100px);
-    opacity: 0.6;
-}
-
-.page-header::after {
-    content: '';
-    position: absolute;
-    bottom: -30%;
-    left: -10%;
-    width: 400px;
-    height: 400px;
-    background: rgba(40, 150, 205, 0.1);
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.5;
+    opacity: 0.4;
 }
 
 .page-header-content {
     text-align: center;
     position: relative;
     z-index: 1;
-    padding-bottom: var(--spacing-xl);
-}
-
-.page-header-content .section-tag {
-    background: var(--primary-100);
-    color: var(--primary-700);
 }
 
 .page-header-content h1 {
     font-size: clamp(2.5rem, 5vw, 3.5rem);
     margin-bottom: var(--spacing-md);
-    color: var(--gray-900);
-}
-
-.page-header-content h1 .gradient-text {
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 .page-header-content p {
@@ -69,10 +42,10 @@
 }
 
 
-/* Breadcrumbs Navigation - Merged with Hero */
+/* Breadcrumbs Navigation */
 .breadcrumbs {
-    background: var(--primary-100);
-    padding: 0.75rem 0 1.25rem;
+    background: transparent;
+    padding: 0.75rem 0;
     position: relative;
     z-index: 10;
     border: none;
@@ -1414,257 +1387,5 @@
 
     .counseling-benefits {
         margin-bottom: var(--spacing-lg);
-    }
-}
-
-/* ============================================
-   UNIFIED CONTACT SECTION STYLES
-   Career Counseling / Get A Quotation / Get In Touch
-   ============================================ */
-
-.unified-contact-section {
-    background: var(--section-bg);
-    padding: 5rem 0;
-    margin-top: 5rem;
-    position: relative;
-    overflow: hidden;
-    border-top: 1px solid var(--primary-100);
-}
-
-.unified-contact-section::before {
-    content: '';
-    position: absolute;
-    top: -30%;
-    right: -15%;
-    width: 500px;
-    height: 500px;
-    background: rgba(40, 150, 205, 0.12);
-    border-radius: 50%;
-    filter: blur(80px);
-}
-
-.unified-contact-section::after {
-    content: '';
-    position: absolute;
-    bottom: -20%;
-    left: -10%;
-    width: 400px;
-    height: 400px;
-    background: rgba(108, 92, 231, 0.08);
-    border-radius: 50%;
-    filter: blur(60px);
-}
-
-/* Pill Header */
-.unified-contact-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
-    position: relative;
-    z-index: 1;
-}
-
-.unified-contact-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 6px 16px;
-    background: var(--primary-100);
-    border: 1px solid var(--primary-200);
-    border-radius: var(--radius-full);
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--primary-700);
-    text-transform: capitalize;
-    letter-spacing: 0.5px;
-}
-
-.unified-contact-pill i {
-    font-size: 0.9rem;
-    color: var(--primary-600);
-}
-
-/* Unified Contact Wrapper */
-.unified-contact-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 3rem;
-    position: relative;
-    z-index: 1;
-}
-
-/* Left Side - Contact Info */
-.unified-contact-info {
-    color: var(--gray-700);
-}
-
-.unified-contact-info h2 {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    color: var(--gray-900);
-    margin-bottom: 1rem;
-    line-height: 1.2;
-}
-
-.unified-contact-info h2 span {
-    color: var(--primary-600);
-}
-
-.unified-contact-info>p {
-    color: var(--gray-600);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 2.5rem;
-}
-
-/* Contact Methods Grid */
-.unified-methods-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-}
-
-.unified-method-card {
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: 1rem;
-    padding: 1.25rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-}
-
-.unified-method-card:hover {
-    background: var(--white);
-    border-color: var(--primary-300);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(40, 150, 205, 0.1);
-}
-
-.unified-method-card .method-card-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.unified-method-card .method-card-header i {
-    width: 36px;
-    height: 36px;
-    background: var(--accent-gradient);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--white);
-    font-size: 0.95rem;
-}
-
-.unified-method-card .method-card-header h4 {
-    color: var(--gray-800);
-    font-size: 0.95rem;
-    font-weight: 600;
-}
-
-.unified-method-card>span {
-    color: var(--gray-600);
-    font-size: 0.85rem;
-    padding-left: 0;
-}
-
-.unified-method-card.full-width {
-    grid-column: 1 / -1;
-}
-
-/* Right Side - Form */
-.unified-form-side {
-    background: var(--white);
-    border-radius: 1.5rem;
-    padding: 2.5rem;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-}
-
-.unified-form-side .form-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.unified-form-side .form-header .section-tag {
-    background: rgba(40, 150, 205, 0.1);
-    color: var(--primary-600);
-}
-
-.unified-form-side .form-header h3 {
-    font-size: 1.5rem;
-    color: var(--gray-900);
-    margin-top: 1rem;
-}
-
-/* Uniform Section Spacing */
-.courses-page,
-.services-page {
-    padding-bottom: 0;
-}
-
-.courses-page .course-category:last-of-type,
-.services-page .course-category:last-of-type {
-    margin-bottom: 0;
-}
-
-/* Footer Spacing */
-.unified-contact-section+.footer {
-    margin-top: 0;
-}
-
-/* Map Section Spacing */
-.map-section {
-    padding: 4rem 0;
-    background: var(--white);
-}
-
-/* Contact Section Adjustments for Contact Page */
-.contact-section {
-    padding: 4rem 0;
-    background: var(--white);
-}
-
-/* Mobile Responsiveness for Unified Contact */
-@media (max-width: 992px) {
-    .unified-contact-wrapper {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .unified-contact-info {
-        text-align: center;
-    }
-
-    .unified-contact-info h2 {
-        font-size: 1.75rem;
-    }
-
-    .unified-methods-grid {
-        max-width: 500px;
-        margin: 0 auto;
-    }
-}
-
-@media (max-width: 576px) {
-    .unified-contact-section {
-        padding: 3rem 0;
-        margin-top: 3rem;
-    }
-
-    .unified-contact-pill {
-        font-size: 0.9rem;
-        padding: 0.6rem 1.5rem;
-    }
-
-    .unified-methods-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .unified-form-side {
-        padding: 1.5rem;
     }
 }
