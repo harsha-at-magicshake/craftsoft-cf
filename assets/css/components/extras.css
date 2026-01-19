@@ -143,7 +143,6 @@
 }
 
 .inline-quiz-question h3 {
-    color: white !important;
     font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: var(--spacing-lg);
@@ -179,9 +178,6 @@
 }
 
 .quiz-option {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: white !important;
     padding: var(--spacing-md) var(--spacing-lg);
     border-radius: var(--radius-lg);
     font-size: 1rem;
