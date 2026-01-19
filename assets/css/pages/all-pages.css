@@ -71,12 +71,11 @@
 
 /* Breadcrumbs Navigation - Merged with Hero */
 .breadcrumbs {
-    background: transparent;
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
     padding: 0.75rem 0 1.25rem;
     position: relative;
     z-index: 10;
     border: none;
-    margin-top: -20px;
 }
 
 .breadcrumb-list {
@@ -265,7 +264,7 @@
 
 .services-page,
 .courses-page {
-    padding: 1rem 0 2rem 0;
+    padding: 1rem 0 0rem 0;
     background: rgba(40, 150, 205, 0.05);
 }
 
@@ -1424,8 +1423,8 @@
    ============================================ */
 
 .unified-contact-section {
-    background: var(--section-bg);
-    padding: 6rem 0;
+    background: transparent;
+    padding: 2rem 0 6rem;
     margin-top: 0;
     position: relative;
     overflow: hidden;
