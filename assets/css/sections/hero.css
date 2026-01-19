@@ -1118,12 +1118,14 @@
 /* ============================================
    Button Shine Effect
    ============================================ */
-.hero-buttons .btn-primary {
+.hero-buttons .btn-primary,
+.hero-buttons .btn-secondary {
     position: relative;
     overflow: hidden;
 }
 
-.hero-buttons .btn-primary::after {
+.hero-buttons .btn-primary::after,
+.hero-buttons .btn-secondary::after {
     content: '';
     position: absolute;
     top: 0;
