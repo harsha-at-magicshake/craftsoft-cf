@@ -40,12 +40,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Auth Check
     const session = await window.supabaseConfig.getSession();
     if (!session) {
-        window.location.href = '../../login.html';
+        window.location.href = '../login.html';
         return;
     }
 
     // Init Sidebar & Header
-    AdminSidebar.init('version-history', '../../');
+    AdminSidebar.init('version-history', '../');
 
     const headerContainer = document.getElementById('header-container');
     if (headerContainer) {

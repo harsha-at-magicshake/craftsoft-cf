@@ -19,7 +19,8 @@
 
 .sidebar-header {
     display: flex;
-    padding: 1.5rem 1rem;
+    padding: 0.75rem 1rem;
+    /* Reduced from 1.5rem to fix top gap */
     align-items: center;
     justify-content: center;
 }

@@ -43,48 +43,7 @@ const AdminSidebar = {
         const isRecordsChild = ['archived', 'recently-deleted'].includes(this.currentPage);
 
         // Desktop sidebar (always expanded)
-        const sidebarHTML = `
-            <aside class="admin-sidebar" id="admin-sidebar">
-                <nav class="sidebar-nav">
-                    <div class="sidebar-header">
-                        <a href="${this.rootPath}dashboard/" class="logo-component">
-                            <div class="logo-text-wrapper">
-                                <span class="logo-sig">Abhi's</span>
-                                <span class="logo-accent">Craftsoft</span>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="sidebar-scroll-area">
-                        ${this.navItem('dashboard', 'Dashboard', 'fa-chart-pie')}
-                        ${this.navItem('inquiries', 'Inquiries', 'fa-solid fa-circle-question')}
-                        ${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user')}
-                        ${this.sectionLabel('Academics')}
-                        ${this.navItem('courses', 'Courses', 'fa-book-bookmark')}
-                        ${this.navItem('services', 'Services', 'fa-wrench')}
-                        ${this.sectionLabel('Management')}
-                        ${this.navItem('students', 'Students', 'fa-user-graduate')}
-                        ${this.navItem('clients', 'Clients', 'fa-user-tie')}
-                        ${this.sectionLabel('Payments')}
-                        ${this.navItem('record-payment', 'Record Payment', 'fa-indian-rupee-sign')}
-                        ${this.navItem('all-payments', 'All Payments', 'fa-money-bill-trend-up')}
-                        ${this.sectionLabel('Finance')}
-                        ${this.navItem('receipts', 'Receipts', 'fa-file-invoice')}
-                        ${this.sectionLabel('Data Recovery')}
-                        ${this.navItem('archived', 'Archived', 'fa-solid fa-box', 'records/archived')}
-                        ${this.navItem('recently-deleted', 'Trash', 'fa-solid fa-recycle', 'records/recently-deleted')}
-
-                        ${this.sectionLabel('System')}
-                        ${this.navItem('settings', 'Settings', 'fa-gear')}
-                        ${this.navItem('version-history', 'vHistory', 'fa-solid fa-clock-rotate-left', 'settings/version-history')}
-                        ${this.sectionLabel('Testing')}
-                        ${this.navItem('student-testing', 'Student Testing', 'fa-solid fa-microscope', 'testing')}
-                    </div>
-
-                    <div class="sidebar-spacer"></div>
-                </nav>
-            </aside>
-        `;
+        const sidebarHTML = `<aside class="admin-sidebar" id="admin-sidebar"><nav class="sidebar-nav"><div class="sidebar-header"><a href="${this.rootPath}dashboard/" class="logo-component"><div class="logo-text-wrapper desktop-logo"><span class="logo-sig">Abhi's</span><span class="logo-accent">Craftsoft</span></div><div class="logo-icon-wrapper mobile-logo" style="display:none;"><img src="/favicon.svg" alt="CS" style="width:32px;height:32px;"></div></a></div><div class="sidebar-scroll-area">${this.navItem('dashboard', 'Dashboard', 'fa-chart-pie')}${this.navItem('inquiries', 'Inquiries', 'fa-solid fa-circle-question')}${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user')}${this.sectionLabel('Academics')}${this.navItem('courses', 'Courses', 'fa-book-bookmark')}${this.navItem('services', 'Services', 'fa-wrench')}${this.sectionLabel('Management')}${this.navItem('students', 'Students', 'fa-user-graduate')}${this.navItem('clients', 'Clients', 'fa-user-tie')}${this.sectionLabel('Payments')}${this.navItem('record-payment', 'Record Payment', 'fa-indian-rupee-sign')}${this.navItem('all-payments', 'All Payments', 'fa-money-bill-trend-up')}${this.sectionLabel('Finance')}${this.navItem('receipts', 'Receipts', 'fa-file-invoice')}${this.sectionLabel('Data Recovery')}${this.navItem('archived', 'Archived', 'fa-solid fa-box', 'records/archived')}${this.navItem('recently-deleted', 'Trash', 'fa-solid fa-recycle', 'records/recently-deleted')}${this.sectionLabel('System')}${this.navItem('settings', 'Settings', 'fa-gear')}${this.navItem('version-history', 'vHistory', 'fa-solid fa-clock-rotate-left', 'vhistory')}${this.sectionLabel('Testing')}${this.navItem('student-testing', 'Student Testing', 'fa-solid fa-microscope', 'testing')}</div><div class="sidebar-spacer"></div></nav></aside>`;
 
         // Mobile nav bottom sheet (collapsible groups)
         const activeGroup = isCoursesServicesChild ? 'courses_services' :
@@ -184,7 +143,7 @@ const AdminSidebar = {
 
     // Section label for desktop
     sectionLabel(text) {
-        return `<div class="sidebar-section-label" style="margin-top: 5px; padding-top: 15px;">${text}</div>`;
+        return `<div class="sidebar-section-label desktop-only" style="margin-top: 5px; padding-top: 15px;">${text}</div>`;
     },
 
     // Child nav item for desktop (indented)

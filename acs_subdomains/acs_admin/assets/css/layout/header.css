@@ -205,6 +205,13 @@
         left: 0;
     }
 
+    /* Ensure content below doesn't hide */
+    .admin-main,
+    .page-content,
+    .dashboard-content {
+        padding-top: 80px !important;
+    }
+
     .mobile-menu-btn {
         display: flex !important;
         align-items: center;
