@@ -18,220 +18,126 @@
     <link rel="icon" type="image/svg+xml" href="https://craftsoft.co.in/favicon.svg">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="dashboard.css?v=8.0">
+    <link rel="stylesheet" href="dashboard.css?v=5.0">
+    <link rel="stylesheet" href="../assets/css/student-sidebar.css?v=5.0">
+
+    <!-- FOUC Protection -->
+    <style>
+        .no-fouc {
+            opacity: 0;
+        }
+
+        body {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+    <script>
+        document.documentElement.className += ' no-fouc';
+        document.addEventListener('DOMContentLoaded', () => document.documentElement.classList.remove('no-fouc'));
+    </script>
 </head>
 
-<body>
-    <div class="app-container">
+<div class="app-container">
+    <!-- Sidebar injected by StudentSidebar.js -->
 
-        <!-- Desktop Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Craftsoft</span>
+    <main class="main-content">
+        <!-- Header injected by StudentHeader via JS -->
+        <header class="top-bar" id="header-container"></header>
+
+        <div class="dashboard-grid">
+            <!-- Welcome Section -->
+            <section class="welcome-box">
+                <div class="welcome-text">
+                    <h2>Hello, <span id="first-name">Student</span>! 👋</h2>
+                    <p>Track your courses, view payments, and manage your learning journey effortlessly.</p>
                 </div>
-            </div>
-            <nav class="sidebar-nav">
-                <a href="./" class="nav-item active">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="../payments/" class="nav-item">
-                    <i class="fa-solid fa-indian-rupee-sign"></i>
-                    <span>Payments</span>
-                </a>
-                <a href="../courses/" class="nav-item">
-                    <i class="fa-solid fa-book-bookmark"></i>
-                    <span>My Courses</span>
-                </a>
-            </nav>
-        </aside>
+                <div class="welcome-img">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+            </section>
 
-        <!-- Mobile Nav Overlay -->
-        <div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
+            <!-- Stats Cards -->
+            <section class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fas fa-check-double"></i></div>
+                    <div class="stat-info">
+                        <span class="label">Total Paid</span>
+                        <span id="total-paid" class="value">₹0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red"><i class="fas fa-wallet"></i></div>
+                    <div class="stat-info">
+                        <span class="label">Balance Due</span>
+                        <span id="total-pending" class="value">₹0</span>
+                    </div>
+                    <div id="pending-alert" class="alert-icon" style="display:none;">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fas fa-calendar-check"></i></div>
+                    <div class="stat-info">
+                        <span class="label">Next Fee Due</span>
+                        <span id="next-due" class="value">Loading...</span>
+                    </div>
+                </div>
+            </section>
 
-        <!-- Mobile Nav Sheet (Slide-up like Admin) -->
-        <div id="mobile-nav-sheet" class="mobile-nav-sheet">
-            <div class="mobile-nav-header">
-                <span class="mobile-nav-title">Navigation</span>
-                <button id="mobile-nav-close" class="mobile-nav-close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <nav class="mobile-nav-list">
-                <a href="./" class="mobile-nav-item active">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="../payments/" class="mobile-nav-item">
-                    <i class="fa-solid fa-indian-rupee-sign"></i>
-                    <span>Payments</span>
-                </a>
-                <a href="../courses/" class="mobile-nav-item">
-                    <i class="fa-solid fa-book-bookmark"></i>
-                    <span>My Courses</span>
-                </a>
-            </nav>
-            <div class="mobile-nav-footer">
-                <button id="btn-logout-mobile" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout Account</span>
-                </button>
-            </div>
+            <!-- My Courses Section -->
+            <section class="courses-section">
+                <div class="section-header">
+                    <h3>Enrolled Courses</h3>
+                </div>
+                <div id="courses-list" class="courses-grid">
+                    <div class="loading-state">
+                        <i class="fas fa-circle-notch fa-spin"></i>
+                        <p>Fetching your enrollments...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Payments Preview -->
+            <section class="quick-payments">
+                <div class="section-header">
+                    <h3>Quick History</h3>
+                    <a href="../payments/" class="view-all"
+                        style="color: var(--primary); font-weight: 600; font-size: 13px; text-decoration: none;">See
+                        Full History</a>
+                </div>
+                <div class="recent-list" id="recent-payments">
+                    <div class="loading-state"><i class="fas fa-sync fa-spin"></i></div>
+                </div>
+            </section>
         </div>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header -->
-            <header class="top-bar">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <button id="mobile-menu-btn" class="mobile-menu-btn">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <div class="page-title">
-                        <h1>Dashboard</h1>
-                    </div>
-                </div>
+        <!-- Footer injected by JS -->
 
-                <!-- Account Backdrop (blur when dropdown open) -->
-                <div id="account-backdrop" class="account-backdrop"></div>
+    </main>
 
-                <!-- Account Panel (Gmail-Style with Dropdown) -->
-                <div class="account-panel">
-                    <div class="account-trigger">
-                        <div id="user-initials" class="account-avatar">?</div>
-                        <div class="account-info">
-                            <span id="user-name" class="account-name">Loading...</span>
-                            <span id="user-id" class="account-id">Loading...</span>
-                        </div>
-                        <i class="fas fa-chevron-down account-arrow"></i>
-                    </div>
-                    <!-- Account Dropdown -->
-                    <div id="account-dropdown" class="account-dropdown">
-                        <div class="account-dropdown-header">Signed in as</div>
-                        <div class="account-user-info">
-                            <div class="account-user-avatar" id="dropdown-initials">?</div>
-                            <div class="account-user-details">
-                                <span class="account-user-name" id="dropdown-name">Student</span>
-                                <span class="account-user-id" id="dropdown-id">ID</span>
-                            </div>
-                        </div>
-                        <div class="account-dropdown-actions">
-                            <button id="btn-logout-account" class="account-logout-btn">
-                                <i class="fa-solid fa-right-from-bracket"></i>
-                                <span>Logout</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </header>
+</div>
 
-            <div class="dashboard-grid">
-                <!-- Welcome Section -->
-                <section class="welcome-box">
-                    <div class="welcome-text">
-                        <h2>Hello, <span id="first-name">Student</span>! 👋</h2>
-                        <p>Track your courses, view payments, and manage your learning journey effortlessly.</p>
-                    </div>
-                    <div class="welcome-img">
-                        <i class="fas fa-user-graduate"></i>
-                    </div>
-                </section>
-
-                <!-- Stats Cards -->
-                <section class="stats-container">
-                    <div class="stat-card">
-                        <div class="stat-icon blue"><i class="fas fa-check-double"></i></div>
-                        <div class="stat-info">
-                            <span class="label">Total Paid</span>
-                            <span id="total-paid" class="value">₹0</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon red"><i class="fas fa-wallet"></i></div>
-                        <div class="stat-info">
-                            <span class="label">Balance Due</span>
-                            <span id="total-pending" class="value">₹0</span>
-                        </div>
-                        <div id="pending-alert" class="alert-icon" style="display:none;">
-                            <i class="fas fa-exclamation-circle"></i>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon green"><i class="fas fa-calendar-check"></i></div>
-                        <div class="stat-info">
-                            <span class="label">Next Fee Due</span>
-                            <span id="next-due" class="value">Loading...</span>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- My Courses Section -->
-                <section class="courses-section">
-                    <div class="section-header">
-                        <h3>Enrolled Courses</h3>
-                    </div>
-                    <div id="courses-list" class="courses-grid">
-                        <div class="loading-state">
-                            <i class="fas fa-circle-notch fa-spin"></i>
-                            <p>Fetching your enrollments...</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Recent Payments Preview -->
-                <section class="quick-payments">
-                    <div class="section-header">
-                        <h3>Quick History</h3>
-                        <a href="../payments/" class="view-all"
-                            style="color: var(--primary); font-weight: 600; font-size: 13px; text-decoration: none;">See
-                            Full History</a>
-                    </div>
-                    <div class="recent-list" id="recent-payments">
-                        <div class="loading-state"><i class="fas fa-sync fa-spin"></i></div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- Footer -->
-            <footer class="student-footer-strip">
-                <div class="footer-container">
-                    <div class="footer-left">
-                        Abhi's CraftSoft ©
-                        <script>document.write(new Date().getFullYear())</script>
-                    </div>
-                    <div class="footer-right">
-                        <span class="version-badge">v2.0</span>
-                    </div>
-                </div>
-            </footer>
-
-        </main>
-
-    </div>
-
-    <!-- Modal System -->
-    <div id="modal-overlay" class="modal-overlay">
-        <div id="modal-content" class="modal-content">
-            <div id="modal-icon" class="modal-icon warning"><i class="fas fa-exclamation-triangle"></i></div>
-            <h3 id="modal-title">Confirm Action</h3>
-            <p id="modal-message">Are you sure you want to proceed?</p>
-            <div id="modal-actions" class="modal-actions">
-                <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
-                <button id="modal-confirm" class="btn btn-primary">Confirm</button>
-            </div>
+<!-- Modal System -->
+<div id="modal-overlay" class="modal-overlay">
+    <div id="modal-content" class="modal-content">
+        <div id="modal-icon" class="modal-icon warning"><i class="fas fa-exclamation-triangle"></i></div>
+        <h3 id="modal-title">Confirm Action</h3>
+        <p id="modal-message">Are you sure you want to proceed?</p>
+        <div id="modal-actions" class="modal-actions">
+            <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
+            <button id="modal-confirm" class="btn btn-primary">Confirm</button>
         </div>
     </div>
+</div>
 
-    <!-- Toast -->
-    <div id="toast" class="toast"></div>
+<!-- Toast -->
+<div id="toast" class="toast"></div>
 
-    <!-- SDKs -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/assets/admin/js/supabase-config.js?v=5.0"></script>
-    <script src="dashboard.js?v=8.0"></script>
+<!-- SDKs -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/admin/js/supabase-config.js?v=5.0"></script>
+<script src="../assets/js/student-sidebar.js?v=5.0"></script>
+<script src="dashboard.js?v=5.0"></script>
 </body>
 
 </html>
-

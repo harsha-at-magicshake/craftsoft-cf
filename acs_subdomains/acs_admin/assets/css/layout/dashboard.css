@@ -131,11 +131,10 @@
 
 /* Admin Main Content */
 .admin-main {
-    margin-top: 64px;
-    margin-left: 240px;
+    margin-left: 260px;
     padding: 1.5rem;
     flex: 1;
-    min-height: calc(100vh - 64px);
+    min-height: 100vh;
 }
 
 /* Content Card - Glassmorphism */

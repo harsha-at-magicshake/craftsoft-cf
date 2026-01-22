@@ -7,28 +7,11 @@
     'use strict';
 
     // Dom Elements
-    const userNameEl = document.getElementById('user-name');
-    const userInitialsEl = document.getElementById('user-initials');
-    const userIdEl = document.getElementById('user-id');
-    const dropdownName = document.getElementById('dropdown-name');
-    const dropdownId = document.getElementById('dropdown-id');
-    const dropdownInitials = document.getElementById('dropdown-initials');
     const totalPaidEl = document.getElementById('total-paid');
     const totalPendingEl = document.getElementById('total-pending');
     const totalFeeEl = document.getElementById('total-fee');
     const paymentsList = document.getElementById('payments-list');
-
-    // Account Panel
-    const accountTrigger = document.querySelector('.account-trigger');
-    const accountDropdown = document.getElementById('account-dropdown');
-    const btnLogoutAccount = document.getElementById('btn-logout-account');
-    const btnLogoutMobile = document.getElementById('btn-logout-mobile');
-
-    // Mobile Nav Controls
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
-    const mobileNavSheet = document.getElementById('mobile-nav-sheet');
-    const mobileNavClose = document.getElementById('mobile-nav-close');
+    // Mobile Nav Managed by StudentSidebar
 
     let studentData = null;
 
@@ -99,15 +82,15 @@
     }
 
     async function initPage() {
-        const initials = studentData.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        if (window.StudentSidebar) {
+            window.StudentSidebar.init('payments');
+            window.StudentSidebar.renderAccountPanel(studentData);
+        }
 
-        userNameEl.textContent = studentData.name;
-        userIdEl.textContent = studentData.student_id;
-        userInitialsEl.textContent = initials;
-
-        if (dropdownName) dropdownName.textContent = studentData.name;
-        if (dropdownId) dropdownId.textContent = studentData.student_id;
-        if (dropdownInitials) dropdownInitials.textContent = initials;
+        const header = document.getElementById('header-container');
+        if (header && window.StudentHeader) {
+            header.innerHTML = window.StudentHeader.render('Payments History');
+        }
 
         await loadPaymentData();
     }
@@ -204,27 +187,14 @@
     }
 
 
-    // Mobile Nav Toggle
-    function openMobileNav() {
-        mobileNavOverlay.classList.add('open');
-        mobileNavSheet.classList.add('open');
-        document.body.classList.add('modal-open');
-    }
-
-    function closeMobileNav() {
-        mobileNavOverlay.classList.remove('open');
-        mobileNavSheet.classList.remove('open');
-        document.body.classList.remove('modal-open');
-    }
-
-    mobileMenuBtn.addEventListener('click', openMobileNav);
-    mobileNavClose.addEventListener('click', closeMobileNav);
-    mobileNavOverlay.addEventListener('click', closeMobileNav);
+    // Mobile Nav handled by StudentSidebar
 
     // Logout
-    function handleLogout() {
-        closeMobileNav();
-        if (accountDropdown) accountDropdown.classList.remove('open');
+    window.handleLogout = function () {
+        if (window.StudentSidebar && window.StudentSidebar.closeMobileNav) {
+            window.StudentSidebar.closeMobileNav();
+        }
+
         Modal.show({
             title: "Logout?",
             message: "Are you sure you want to end your session?",
@@ -235,11 +205,7 @@
                 window.location.href = '../';
             }
         });
-    }
-
-    if (btnLogoutAccount) btnLogoutAccount.addEventListener('click', handleLogout);
-    if (btnLogoutMobile) btnLogoutMobile.addEventListener('click', handleLogout);
+    };
 
     checkAuth();
-
 })();

@@ -18,180 +18,87 @@
     <link rel="icon" type="image/svg+xml" href="https://craftsoft.co.in/favicon.svg">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="../dashboard/dashboard.css?v=8.0">
-    <link rel="stylesheet" href="payments.css?v=3.0">
+    <link rel="stylesheet" href="../dashboard/dashboard.css?v=5.0">
+    <link rel="stylesheet" href="../assets/css/student-sidebar.css?v=5.0">
+    <link rel="stylesheet" href="payments.css?v=5.0">
+
+    <!-- FOUC Protection -->
+    <style>
+        .no-fouc {
+            opacity: 0;
+        }
+
+        body {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+    <script>
+        document.documentElement.className += ' no-fouc';
+        document.addEventListener('DOMContentLoaded', () => document.documentElement.classList.remove('no-fouc'));
+    </script>
 </head>
 
-<body>
-    <div class="app-container">
+<div class="app-container">
+    <!-- Sidebar injected by StudentSidebar.js -->
 
-        <!-- Desktop Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Craftsoft</span>
-                </div>
+    <main class="main-content">
+        <header class="top-bar" id="header-container"></header>
+
+        <!-- Summary Cards -->
+        <div class="payment-summary">
+            <div class="summary-card">
+                <span class="label">Total Paid</span>
+                <h3 id="total-paid">₹0</h3>
             </div>
-            <nav class="sidebar-nav">
-                <a href="../dashboard/" class="nav-item">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="./" class="nav-item active">
-                    <i class="fa-solid fa-indian-rupee-sign"></i>
-                    <span>Payments</span>
-                </a>
-                <a href="../courses/" class="nav-item">
-                    <i class="fa-solid fa-book-bookmark"></i>
-                    <span>My Courses</span>
-                </a>
-            </nav>
-        </aside>
-
-        <!-- Mobile Nav Overlay -->
-        <div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
-
-        <!-- Mobile Nav Sheet -->
-        <div id="mobile-nav-sheet" class="mobile-nav-sheet">
-            <div class="mobile-nav-header">
-                <span class="mobile-nav-title">Navigation</span>
-                <button id="mobile-nav-close" class="mobile-nav-close">
-                    <i class="fas fa-times"></i>
-                </button>
+            <div class="summary-card">
+                <span class="label">Balance Due</span>
+                <h3 id="total-pending" class="danger">₹0</h3>
             </div>
-            <nav class="mobile-nav-list">
-                <a href="../dashboard/" class="mobile-nav-item">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="./" class="mobile-nav-item active">
-                    <i class="fa-solid fa-indian-rupee-sign"></i>
-                    <span>Payments</span>
-                </a>
-                <a href="../courses/" class="mobile-nav-item">
-                    <i class="fa-solid fa-book-bookmark"></i>
-                    <span>My Courses</span>
-                </a>
-            </nav>
-            <div class="mobile-nav-footer">
-                <button id="btn-logout-mobile" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout Account</span>
-                </button>
+            <div class="summary-card">
+                <span class="label">Total Course Fee</span>
+                <h3 id="total-fee">₹0</h3>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="top-bar">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <button id="mobile-menu-btn" class="mobile-menu-btn">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <div class="page-title">
-                        <h1>Payment History</h1>
-                    </div>
-                </div>
-
-                <!-- Account Backdrop -->
-                <div id="account-backdrop" class="account-backdrop"></div>
-
-                <!-- Account Panel with Dropdown -->
-                <div class="account-panel">
-                    <div class="account-trigger">
-                        <div id="user-initials" class="account-avatar">?</div>
-                        <div class="account-info">
-                            <span id="user-name" class="account-name">Loading...</span>
-                            <span id="user-id" class="account-id">Loading...</span>
-                        </div>
-                        <i class="fas fa-chevron-down account-arrow"></i>
-                    </div>
-                    <div id="account-dropdown" class="account-dropdown">
-                        <div class="account-dropdown-header">Signed in as</div>
-                        <div class="account-user-info">
-                            <div class="account-user-avatar" id="dropdown-initials">?</div>
-                            <div class="account-user-details">
-                                <span class="account-user-name" id="dropdown-name">Student</span>
-                                <span class="account-user-id" id="dropdown-id">ID</span>
-                            </div>
-                        </div>
-                        <div class="account-dropdown-actions">
-                            <button id="btn-logout-account" class="account-logout-btn">
-                                <i class="fa-solid fa-right-from-bracket"></i>
-                                <span>Logout</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Summary Cards -->
-            <div class="payment-summary">
-                <div class="summary-card">
-                    <span class="label">Total Paid</span>
-                    <h3 id="total-paid">₹0</h3>
-                </div>
-                <div class="summary-card">
-                    <span class="label">Balance Due</span>
-                    <h3 id="total-pending" class="danger">₹0</h3>
-                </div>
-                <div class="summary-card">
-                    <span class="label">Total Course Fee</span>
-                    <h3 id="total-fee">₹0</h3>
+        <!-- Payments List -->
+        <section class="payments-container">
+            <div class="list-header">
+                <h3>Recent Transactions</h3>
+            </div>
+            <div id="payments-list" class="payments-list">
+                <div class="loading-state">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                    <p>Loading your history...</p>
                 </div>
             </div>
+        </section>
 
-            <!-- Payments List -->
-            <section class="payments-container">
-                <div class="list-header">
-                    <h3>Recent Transactions</h3>
-                </div>
-                <div id="payments-list" class="payments-list">
-                    <div class="loading-state">
-                        <i class="fas fa-circle-notch fa-spin"></i>
-                        <p>Loading your history...</p>
-                    </div>
-                </div>
-            </section>
+        <!-- Footer injected by JS -->
+    </main>
 
-            <!-- Footer -->
-            <footer class="student-footer-strip">
-                <div class="footer-container">
-                    <div class="footer-left">
-                        Abhi's CraftSoft ©
-                        <script>document.write(new Date().getFullYear())</script>
-                    </div>
-                    <div class="footer-right">
-                        <span class="version-badge">v2.0</span>
-                    </div>
-                </div>
-            </footer>
-        </main>
+</div>
 
-    </div>
-
-    <!-- Modal System -->
-    <div id="modal-overlay" class="modal-overlay">
-        <div id="modal-content" class="modal-content">
-            <div id="modal-icon" class="modal-icon warning"><i class="fas fa-exclamation-triangle"></i></div>
-            <h3 id="modal-title">Confirm</h3>
-            <p id="modal-message">Are you sure?</p>
-            <div class="modal-actions">
-                <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
-                <button id="modal-confirm" class="btn btn-primary">Confirm</button>
-            </div>
+<!-- Modal System -->
+<div id="modal-overlay" class="modal-overlay">
+    <div id="modal-content" class="modal-content">
+        <div id="modal-icon" class="modal-icon warning"><i class="fas fa-exclamation-triangle"></i></div>
+        <h3 id="modal-title">Confirm</h3>
+        <p id="modal-message">Are you sure?</p>
+        <div class="modal-actions">
+            <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
+            <button id="modal-confirm" class="btn btn-primary">Confirm</button>
         </div>
     </div>
+</div>
 
-    <!-- Toast -->
-    <div id="toast" class="toast"></div>
+<!-- Toast -->
+<div id="toast" class="toast"></div>
 
-    <!-- SDKs -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/assets/admin/js/supabase-config.js?v=5.0"></script>
-    <script src="payments.js?v=3.0"></script>
+<!-- SDKs -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/admin/js/supabase-config.js?v=5.0"></script>
+<script src="../assets/js/student-sidebar.js?v=5.0"></script>
+<script src="payments.js?v=5.0"></script>
 </body>
 
 </html>
-

@@ -570,7 +570,7 @@ function renderSecurityTab() {
             </div>
             <div class="settings-section-body">
                  <p class="settings-section-description">
-                    Bulk restore all recently deleted items by category.
+                    Bulk restore all items in the Trash by category.
                 </p>
                 <div style="display:flex; gap:10px; flex-wrap:wrap;">
                     <button class="btn btn-outline" onclick="recoverAll('students')">Recover Students</button>

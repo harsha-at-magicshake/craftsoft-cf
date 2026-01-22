@@ -20,6 +20,19 @@ const AdminSidebar = {
         if (window.Auth && typeof window.Auth.startSessionValidityCheck === 'function') {
             window.Auth.startSessionValidityCheck();
         }
+
+        // Inject logo styles
+        this.injectLogoStyles();
+    },
+
+    injectLogoStyles() {
+        if (!document.getElementById('logo-signature-css')) {
+            const link = document.createElement('link');
+            link.id = 'logo-signature-css';
+            link.rel = 'stylesheet';
+            link.href = '/assets/components/logo-signature/logo-signature.css';
+            document.head.appendChild(link);
+        }
     },
 
     render() {
@@ -33,30 +46,48 @@ const AdminSidebar = {
         const sidebarHTML = `
             <aside class="admin-sidebar" id="admin-sidebar">
                 <nav class="sidebar-nav">
-                    ${this.navItem('dashboard', 'Dashboard', 'fa-chart-pie')}
-                    ${this.navItem('inquiries', 'Inquiries', 'fa-solid fa-circle-question')}
-                    ${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user')}
-                    
-                    <!-- Courses & Services (flat on desktop) -->
-                    ${this.navItem('courses', 'Courses', 'fa-book-bookmark')}
-                    ${this.navItem('services', 'Services', 'fa-wrench')}
-                    
-                    <!-- Students & Clients (flat on desktop) -->
-                    ${this.navItem('students', 'Students', 'fa-user-graduate')}
-                    ${this.navItem('clients', 'Clients', 'fa-user-tie')}
-                    
-                    <!-- Payments Section (No parent label on desktop/tablet) -->
-                    ${this.navItem('record-payment', 'Record Payment', 'fa-indian-rupee-sign')}
-                    ${this.navItem('all-payments', 'All Payments', 'fa-money-bill-trend-up')}
-                    ${this.navItem('receipts', 'Receipts', 'fa-file-invoice')}
-                    
-                    <!-- Records Section -->
-                    ${this.navItem('archived', 'Archived', 'fa-solid fa-box', 'records/archived')}
-                    ${this.navItem('recently-deleted', 'Trash', 'fa-solid fa-recycle', 'records/recently-deleted')}
+                    <div class="sidebar-header">
+                        <a href="${this.rootPath}dashboard/" class="logo-component">
+                            <div class="logo-text-wrapper">
+                                <span class="logo-sig">Abhi's</span>
+                                <span class="logo-accent">Craftsoft</span>
+                            </div>
+                        </a>
+                    </div>
 
-                    <div class="sidebar-divider"></div>
-                    ${this.navItem('settings', 'Settings', 'fa-gear')}
-                    ${this.navItem('student-testing', 'Student Testing', 'fa-solid fa-microscope', 'testing')}
+                    <div class="sidebar-scroll-area">
+                        ${this.navItem('dashboard', 'Dashboard', 'fa-chart-pie')}
+                        ${this.navItem('inquiries', 'Inquiries', 'fa-solid fa-circle-question')}
+                        ${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user')}
+                        
+                        ${this.sectionLabel('Academics')}
+                        ${this.navItem('courses', 'Courses', 'fa-book-bookmark')}
+                        ${this.navItem('services', 'Services', 'fa-wrench')}
+                        
+                        ${this.sectionLabel('Management')}
+                        ${this.navItem('students', 'Students', 'fa-user-graduate')}
+                        ${this.navItem('clients', 'Clients', 'fa-user-tie')}
+                        
+                        ${this.sectionLabel('Payments')}
+                        ${this.navItem('record-payment', 'Record Payment', 'fa-indian-rupee-sign')}
+                        ${this.navItem('all-payments', 'All Payments', 'fa-money-bill-trend-up')}
+                        
+                        ${this.sectionLabel('Finance')}
+                        ${this.navItem('receipts', 'Receipts', 'fa-file-invoice')}
+                        
+                        ${this.sectionLabel('Data Recovery')}
+                        ${this.navItem('archived', 'Archived', 'fa-solid fa-box', 'records/archived')}
+                        ${this.navItem('recently-deleted', 'Trash', 'fa-solid fa-recycle', 'records/recently-deleted')}
+
+                        ${this.sectionLabel('System')}
+                        ${this.navItem('settings', 'Settings', 'fa-gear')}
+                        
+                        ${this.sectionLabel('Testing')}
+                        ${this.navItem('student-testing', 'Student Testing', 'fa-solid fa-microscope', 'testing')}
+                    </div>
+
+                    <div class="sidebar-spacer"></div>
+                    <div id="sidebar-account-container"></div>
                 </nav>
             </aside>
         `;
@@ -137,7 +168,7 @@ const AdminSidebar = {
                         <div class="mobile-nav-children">
                             <div style="min-height: 0;">
                                 ${this.mobileNavItemChild('archived', 'Archived', 'fa-solid fa-box', 'records/archived')}
-                                ${this.mobileNavItemChild('recently-deleted', 'Recently Deleted', 'fa-solid fa-recycle', 'records/recently-deleted')}
+                                ${this.mobileNavItemChild('recently-deleted', 'Trash', 'fa-solid fa-recycle', 'records/recently-deleted')}
                             </div>
                         </div>
                     </div>
@@ -155,6 +186,11 @@ const AdminSidebar = {
             layout.insertAdjacentHTML('afterbegin', sidebarHTML);
             document.body.insertAdjacentHTML('beforeend', mobileNavHTML);
         }
+    },
+
+    // Section label for desktop
+    sectionLabel(text) {
+        return `<div class="sidebar-section-label">${text}</div>`;
     },
 
     // Child nav item for desktop (indented)
@@ -294,7 +330,12 @@ const AdminSidebar = {
         }, true);
 
         AccountManager.storeSession?.(session.user.id, session);
+
+        // Render to header if exists
         AccountManager.renderAccountPanel?.('account-panel-container');
+
+        // Render to sidebar if exists
+        AccountManager.renderAccountPanel?.('sidebar-account-container');
     }
 };
 
@@ -304,10 +345,10 @@ const AdminHeader = {
         return `
             <header class="admin-header">
                 <div class="admin-header-left">
-                    <button class="mobile-menu-btn" aria-label="Menu">
+                    <button class="mobile-menu-btn" id="mobile-menu-btn" title="Open Menu">
                         <i class="fa-solid fa-bars"></i>
                     </button>
-                    <span class="header-logo">CraftSoft</span>
+                    <h1 class="page-title">${title}</h1>
                 </div>
                 <div class="header-actions">
                     ${showAddBtn ? `
@@ -316,7 +357,7 @@ const AdminHeader = {
                             <span>${addBtnText}</span>
                         </button>
                     ` : ''}
-                    <button class="spotlight-trigger" aria-label="Search" title="Search (Ctrl+K)">
+                    <button class="spotlight-trigger" id="global-search-btn" aria-label="Search" title="Search (Ctrl + K)">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                     <div id="account-panel-container"></div>
@@ -336,7 +377,7 @@ const AdminFooter = {
                         Abhi's CraftSoft &copy; ${new Date().getFullYear()}
                     </div>
                     <div class="footer-right">
-                        <span class="version-badge">v3.0</span>
+                        <span class="version-badge">v5.0</span>
                     </div>
                 </div>
             </footer>

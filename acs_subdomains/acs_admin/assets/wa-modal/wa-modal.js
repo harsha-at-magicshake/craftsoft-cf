@@ -19,7 +19,7 @@
             if (!document.querySelector('link[href*="wa-modal.css"]')) {
                 const link = document.createElement('link');
                 link.rel = 'stylesheet';
-                link.href = '/assets/admin/js/wa-modal/wa-modal.css';
+                link.href = '/assets/admin/wa-modal/wa-modal.css';
                 document.head.appendChild(link);
             }
         },

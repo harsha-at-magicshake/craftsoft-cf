@@ -4,17 +4,21 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Initialise Sidebar and Login Security
-    if (window.AdminHeader) {
-        window.AdminHeader.render('header-container');
+    const session = await window.supabaseConfig.getSession();
+    if (!session) {
+        window.location.href = '../login.html';
+        return;
     }
 
-    if (window.AdminSidebar) {
-        window.AdminSidebar.render();
+    AdminSidebar.init('student-testing');
+
+    const headerContainer = document.getElementById('header-container');
+    if (headerContainer) {
+        headerContainer.innerHTML = AdminHeader.render('Student Testing');
     }
 
-    // Protection
-    const isAuthed = await window.AdminUtils.requireAuth();
-    if (!isAuthed) return;
+    const admin = await window.Auth.getCurrentAdmin();
+    await AdminSidebar.renderAccountPanel(session, admin);
 
     // 2. Initialise Features
     initStudentSearch();
