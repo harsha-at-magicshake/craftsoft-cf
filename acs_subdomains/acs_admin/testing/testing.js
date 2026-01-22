@@ -95,6 +95,9 @@ async function performSearch(query) {
 
 async function loadPortalPreview(studentId, element) {
     const previewContainer = document.getElementById('preview-container');
+    const statFee = document.getElementById('stat-fee');
+    const statPaid = document.getElementById('stat-paid');
+    const statBalance = document.getElementById('stat-balance');
 
     // Update active state in list
     document.querySelectorAll('.student-search-item').forEach(el => el.classList.remove('active'));
@@ -102,10 +105,10 @@ async function loadPortalPreview(studentId, element) {
 
     // Loading overlay
     previewContainer.innerHTML = `
-        <div class="preview-placeholder">
+        <div class="analysis-placeholder">
             <div class="placeholder-content">
                 <i class="fa-solid fa-circle-notch fa-spin fa-2x text-primary"></i>
-                <h3>Synchronizing Data...</h3>
+                <h3>Synchronizing Live Data...</h3>
             </div>
         </div>
     `;
@@ -121,7 +124,7 @@ async function loadPortalPreview(studentId, element) {
         const student = studentRes.data;
         const payments = paymentsRes.data || [];
 
-        // Fetch courses using the standard 'courses' array (v5.0 standard)
+        // Fetch courses
         let courses = [];
         if (student.courses && student.courses.length > 0) {
             const { data: coursesData } = await window.supabaseClient
@@ -135,12 +138,12 @@ async function loadPortalPreview(studentId, element) {
         const finalFee = student.final_fee || (student.fee - student.discount) || 0;
         const feeDue = finalFee - totalPaid;
 
-        // Activity Log
-        if (window.AdminUtils && window.AdminUtils.Activity) {
-            window.AdminUtils.Activity.add('INVESTIGATE', `Investigated portal data for ${student.first_name} ${student.last_name}`, `/admin/testing/?id=${student.student_id}`);
-        }
+        // Populate Stats Bar
+        statFee.innerText = `â‚¹${finalFee.toLocaleString()}`;
+        statPaid.innerText = `â‚¹${totalPaid.toLocaleString()}`;
+        statBalance.innerText = `â‚¹${feeDue.toLocaleString()}`;
+        statBalance.style.color = feeDue > 0 ? '#ef4444' : '#10b981';
 
-        previewContainer.className = 'testing-preview-column';
         previewContainer.innerHTML = `
             <div class="portal-preview">
                 <div class="preview-header">
@@ -152,53 +155,56 @@ async function loadPortalPreview(studentId, element) {
                 </div>
 
                 <div class="preview-sections">
-                    <!-- Quick Stats -->
-                    <div class="section-card">
-                        <div class="section-label">
-                            <i class="fa-solid fa-chart-line"></i> Main Stats
+                    <!-- Profile Card -->
+                    <div class="analysis-card">
+                        <div class="card-label">
+                            <i class="fa-solid fa-user-shield"></i> Deployment Info
                         </div>
-                        <div class="stat-item">
-                            <small>Student ID</small>
-                            <strong>${student.student_id}</strong>
-                        </div>
-                        <div class="stat-item">
-                            <small>Course Fee</small>
-                            <strong>₹${finalFee.toLocaleString()}</strong>
-                        </div>
-                        <div class="stat-item">
-                            <small>Total Paid</small>
-                            <strong style="color: #10b981">₹${totalPaid.toLocaleString()}</strong>
-                        </div>
-                        <div class="stat-item">
-                            <small>Balance Left</small>
-                            <strong style="color: ${feeDue > 0 ? '#ef4444' : '#10b981'}">₹${feeDue.toLocaleString()}</strong>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <small>Registration ID</small>
+                                <span>ACS-${student.student_id}</span>
+                            </div>
+                            <div class="info-item">
+                                <small>Contact Email</small>
+                                <span>${student.email || 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <small>Mobile No.</small>
+                                <span>+91 ${student.phone}</span>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Courses -->
-                    <div class="section-card">
-                        <div class="section-label">
+                    <div class="analysis-card">
+                        <div class="card-label">
                             <i class="fa-solid fa-graduation-cap"></i> Enrolled Courses
                         </div>
-                        ${courses.length > 0 ? courses.map(c => `
-                            <div class="course-mini">
-                                <i class="${c.icon_class || 'fa-solid fa-book'}"></i>
-                                <strong>${c.course_name}</strong>
-                            </div>
-                        `).join('') : '<p class="text-secondary py-3">No courses enrolled</p>'}
+                        <div class="course-list-mini">
+                            ${courses.length > 0 ? courses.map(c => `
+                                <div class="course-tag">
+                                    <i class="fa-solid fa-book-bookmark"></i>
+                                    <span>${c.course_name}</span>
+                                </div>
+                            `).join('') : '<p class="text-secondary">No courses enrolled</p>'}
+                        </div>
                     </div>
 
                     <!-- Payments -->
-                    <div class="section-card">
-                        <div class="section-label">
-                            <i class="fa-solid fa-money-bill-transfer"></i> Last 5 Payments
+                    <div class="analysis-card">
+                        <div class="card-label">
+                            <i class="fa-solid fa-receipt"></i> Recent Transactions
                         </div>
-                        ${payments.length > 0 ? payments.map(p => `
-                            <div class="payment-row">
-                                <span class="date">${new Date(p.payment_date).toLocaleDateString()}</span>
-                                <span class="amount">₹${(p.amount_paid || 0).toLocaleString()}</span>
-                            </div>
-                        `).join('') : '<p class="text-secondary py-3">No payment records</p>'}
+                        <div class="payment-history-mini">
+                            ${payments.length > 0 ? payments.map(p => `
+                                <div class="payment-mini-row">
+                                    <span class="date">${new Date(p.payment_date).toLocaleDateString()}</span>
+                                    <span class="amount">â‚¹${(p.amount_paid || 0).toLocaleString()}</span>
+                                    <span class="mode">${p.payment_mode || 'ONLINE'}</span>
+                                </div>
+                            `).join('') : '<p class="text-secondary">No payment records</p>'}
+                        </div>
                     </div>
                 </div>
             </div>

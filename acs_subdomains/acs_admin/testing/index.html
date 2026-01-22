@@ -60,41 +60,75 @@
         <main class="admin-main">
             <div id="header-container"></div>
 
-            <div class="page-content">
+            <!-- Stats Bar (Populated by JS on selection) -->
+            <div id="stats-container" class="admin-stats-bar">
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(40, 150, 205, 0.1); color: #2896cd;">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">COURSE FEE</div>
+                            <div class="stat-value" id="stat-fee">â‚¹0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">AMOUNT PAID</div>
+                            <div class="stat-value" id="stat-paid">â‚¹0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">BALANCE DUE</div>
+                            <div class="stat-value" id="stat-balance">â‚¹0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testing-workspace animate-up">
                 <div class="section-header">
-                    <div class="header-titles">
-                        <h1>Student Testing</h1>
-                        <p>Search and investigate student portal data in real-time.</p>
+                    <div class="section-header-left">
+                        <div class="section-icon">
+                            <i class="fa-solid fa-microscope"></i>
+                        </div>
+                        <div class="section-info">
+                            <h2 class="section-title">Student Testing</h2>
+                            <p class="section-subtitle">Real-time Portal Synchronization & Analysis</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="testing-grid">
-                    <!-- Search Column -->
-                    <div class="testing-search-column">
-                        <div class="search-card">
-                            <div class="search-box-v2">
-                                <div class="search-input-wrapper">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                    <input type="text" id="student-search-input"
-                                        placeholder="Search by name, ID or email..." autofocus>
-                                </div>
-                            </div>
-                            <div id="search-results-list" class="results-list">
-                                <div class="empty-state">
-                                    <i class="fa-solid fa-microscope"></i>
-                                    <p>Ready to analyze. Enter a name to begin.</p>
-                                </div>
+                <div class="testing-content-grid">
+                    <!-- Search Side -->
+                    <div class="testing-left-col">
+                        <div class="search-box">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="student-search-input" placeholder="Search by name, ID or email..."
+                                autofocus>
+                        </div>
+                        <div id="search-results-list" class="results-list-container">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <p>Enter student details to begin analysis</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Preview Column -->
-                    <div class="testing-preview-column">
-                        <div id="preview-container" class="preview-placeholder">
+                    <!-- Analysis Side -->
+                    <div class="testing-right-col">
+                        <div id="preview-container" class="analysis-placeholder">
                             <div class="placeholder-content">
                                 <i class="fa-solid fa-id-card-clip"></i>
                                 <h3>No Student Selected</h3>
-                                <p>Select a student from the list to preview their portal data.</p>
+                                <p>Pick a student to sync their live portal data</p>
                             </div>
                         </div>
                     </div>
