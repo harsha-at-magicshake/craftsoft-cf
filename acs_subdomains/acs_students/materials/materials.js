@@ -68,13 +68,21 @@
             container.style.display = 'none';
             emptyState.style.display = 'none';
 
+            // DEBUG: Log the student ID since console.log is disabled
+            console.error('Fetching materials for Student UUID:', studentData.id);
+
             const { data, error } = await window.supabaseClient
                 .from('student_materials')
                 .select('*')
                 .eq('student_db_id', studentData.id)
                 .order('created_at', { ascending: false });
 
-            if (error) throw error;
+            if (error) {
+                console.error('Supabase Query Error:', error);
+                throw error;
+            }
+
+            console.error('Materials data received:', data?.length || 0, 'items');
 
             allMaterials = data || [];
             renderMaterials(allMaterials);
