@@ -94,11 +94,25 @@
         window.requestAnimationFrame(step);
     }
 
-    // Auth logic
+    // Auth logic with security protections
     async function checkAuth() {
+        // History protection - prevent back button access
+        history.pushState(null, '', location.href);
+        window.addEventListener('popstate', () => {
+            history.pushState(null, '', location.href);
+        });
+
+        // Re-validate on tab focus (prevents stale sessions)
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                const session = localStorage.getItem('acs_student_session');
+                if (!session) window.location.href = '../';
+            }
+        });
+
         const session = localStorage.getItem('acs_student_session');
         if (!session) {
-            window.location.href = '../';
+            window.location.replace('../'); // replace prevents back button
             return;
         }
 
@@ -108,7 +122,7 @@
 
         if ((now - loginTime) > 24 * 60 * 60 * 1000) {
             localStorage.removeItem('acs_student_session');
-            window.location.href = '../';
+            window.location.replace('../');
             return;
         }
 

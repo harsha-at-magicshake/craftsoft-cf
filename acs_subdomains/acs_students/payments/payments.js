@@ -70,11 +70,20 @@
         window.requestAnimationFrame(step);
     }
 
-    // Check Auth
+    // Check Auth with security protections
     async function checkAuth() {
+        // History protection
+        history.pushState(null, '', location.href);
+        window.addEventListener('popstate', () => history.pushState(null, '', location.href));
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && !localStorage.getItem('acs_student_session')) {
+                window.location.replace('../');
+            }
+        });
+
         const session = localStorage.getItem('acs_student_session');
         if (!session) {
-            window.location.href = '../';
+            window.location.replace('../');
             return;
         }
         studentData = JSON.parse(session);
