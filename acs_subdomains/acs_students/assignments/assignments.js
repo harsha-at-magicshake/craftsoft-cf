@@ -12,6 +12,7 @@
     let timers = {};
     let currentTaskToSubmit = null;
     let selectedFile = null;
+    let currentFilter = 'all';
 
     const container = document.getElementById('assignments-container');
     const loading = document.getElementById('assignments-loading');
@@ -27,8 +28,6 @@
         }
 
         if (!window.studentDbId) {
-            console.error("Session State Failure: studentDbId not found.");
-            // We don't redirect here to avoid loops, let the inline script handle it or show error
             loading.innerHTML = '<i class="fa-solid fa-circle-exclamation" style="color:#ef4444;"></i><p>Session verification failed. Please try logging in again.</p>';
             return;
         }
@@ -40,18 +39,18 @@
             header.innerHTML = StudentHeader.render('My Assignments', 'Academic Tasks & Deadlines', 'fa-file-signature');
         }
 
-        // Fetch Data
-        await fetchStudentEnrollments();
-        await loadAllData();
-        bindEvents();
-        initRealtime();
-
         const student = {
             name: window.studentName || localStorage.getItem('acs_student_name') || 'Student',
             student_id: window.studentId || 'ID-000',
             email: window.studentEmail || localStorage.getItem('acs_student_email') || ''
         };
         StudentSidebar.renderAccountPanel(student);
+
+        // Fetch Data
+        await fetchStudentEnrollments();
+        await loadAllData();
+        bindEvents();
+        initRealtime();
     }
 
     async function fetchStudentEnrollments() {
@@ -87,77 +86,125 @@
         }
     }
 
+    function getEffectiveDeadline(task) {
+        const ext = extensions.find(e => e.assignment_id === task.id && e.status === 'APPROVED');
+        return ext ? ext.requested_deadline : task.deadline;
+    }
+
+    function getTaskStatus(task) {
+        const submission = submissions.find(s => s.assignment_id === task.id);
+        if (submission) return 'submitted';
+
+        const effectiveDeadline = new Date(getEffectiveDeadline(task));
+        if (new Date() > effectiveDeadline) return 'missed';
+
+        return 'pending';
+    }
+
     function render() {
         loading.style.display = 'none';
 
-        if (assignments.length === 0) {
+        // Clear existing timers
+        Object.values(timers).forEach(t => clearInterval(t));
+        timers = {};
+
+        const filtered = assignments.filter(a => {
+            const status = getTaskStatus(a);
+            if (currentFilter === 'all') return true;
+            return status === currentFilter;
+        });
+
+        if (filtered.length === 0) {
             container.style.display = 'none';
             empty.style.display = 'block';
+            empty.querySelector('p').textContent = currentFilter === 'all'
+                ? "No active assignments found."
+                : `No assignments with status '${currentFilter}'.`;
             return;
         }
 
         container.style.display = 'grid';
         empty.style.display = 'none';
 
-        // Clear existing timers
-        Object.values(timers).forEach(t => clearInterval(t));
-        timers = {};
-
-        container.innerHTML = assignments.map(a => {
+        container.innerHTML = filtered.map(a => {
             const submission = submissions.find(s => s.assignment_id === a.id);
             const extension = extensions.find(e => e.assignment_id === a.id && e.status !== 'REJECTED');
-
             return renderAssignmentCard(a, submission, extension);
         }).join('');
 
-        // Start countdowns
-        assignments.forEach(a => {
-            const submission = submissions.find(s => s.assignment_id === a.id);
-            if (!submission) startCountdown(a);
+        // Start countdowns for non-submitted items
+        filtered.forEach(a => {
+            const status = getTaskStatus(a);
+            if (status !== 'submitted') startCountdown(a);
         });
     }
 
     function renderAssignmentCard(task, submission, extension) {
-        const status = submission ? 'submitted' : (new Date(task.deadline) < new Date() ? 'overdue' : 'pending');
-        const statusLabel = submission ? 'Submitted' : (status === 'overdue' ? 'Overdue' : 'Pending');
+        const effectiveDeadline = getEffectiveDeadline(task);
+        const status = getTaskStatus(task); // submitted, missed, pending
 
-        const deadlineDate = new Date(task.deadline);
-        const formattedDeadline = `${deadlineDate.getDate().toString().padStart(2, '0')}.${(deadlineDate.getMonth() + 1).toString().padStart(2, '0')}.${deadlineDate.getFullYear()}, ${deadlineDate.getHours().toString().padStart(2, '0')}:${deadlineDate.getMinutes().toString().padStart(2, '0')}`;
+        let statusLabel = 'Pending';
+        let statusClass = 'pending';
+
+        if (status === 'submitted') { statusLabel = 'Submitted'; statusClass = 'submitted'; }
+        else if (status === 'missed') { statusLabel = 'Not Submitted'; statusClass = 'missed'; }
+
+        // Format Date
+        const d = new Date(effectiveDeadline);
+        const fmtDate = `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1).toString().padStart(2, '0')}.${d.getFullYear()}, ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+
+        // Extension Label
+        let extBadge = '';
+        if (extension) {
+            if (extension.status === 'APPROVED') extBadge = `<span class="assign-status" style="background:#dbeafe; color:#1e40af;">Extended</span>`;
+            else if (extension.status === 'PENDING') extBadge = `<span class="assign-status" style="background:#fef9c3; color:#854d0e;">Ext. Pending</span>`;
+        }
 
         return `
             <div class="assign-card" id="task-${task.id}">
                 <div class="assign-header">
                     <div class="assign-badge-group">
                         <span class="assign-course">${task.course_code}</span>
-                        <span class="assign-status ${status}">${statusLabel}</span>
-                        ${extension ? `<span class="assign-status" style="background: rgba(40,150,205,0.1); color: #2896cd;">Ext: ${extension.status}</span>` : ''}
+                        <span class="assign-status ${statusClass}">${statusLabel}</span>
+                        ${extBadge}
                     </div>
                 </div>
                 <h3 class="assign-title">${task.title}</h3>
                 <p class="assign-desc">${task.description || 'No additional instructions provided.'}</p>
                 
-                ${submission ? `
+                ${status === 'submitted' ? `
                     <div class="countdown-box" style="border-style: solid; border-color: #10b981; background: #f0fdf4;">
                         <div class="countdown-timer" style="color: #059669; font-size: 1.1rem;">
                             <i class="fa-solid fa-circle-check"></i> Successfully Submitted
                         </div>
                         <div class="countdown-label">Verified Record</div>
                     </div>
+                ` : status === 'missed' ? `
+                     <div class="countdown-box" style="border-color: #ef4444; background: #fef2f2;">
+                        <div class="countdown-timer" style="color: #dc2626; font-size: 1.1rem;">
+                            <i class="fa-solid fa-circle-exclamation"></i> YOU MISSED THE DEADLINE
+                        </div>
+                        <div class="countdown-label">Submission Closed</div>
+                    </div>
+                    <p class="deadline-fallback">Deadline was: <strong>${fmtDate}</strong></p>
                 ` : `
                     <div class="countdown-box" id="countdown-${task.id}">
                         <div class="countdown-label">Time Remaining</div>
                         <div class="countdown-timer" id="timer-val-${task.id}">--:--:-- left</div>
                     </div>
-                    <p class="deadline-fallback">Submit by <strong>${formattedDeadline}</strong></p>
+                    <p class="deadline-fallback">Submit by <strong>${fmtDate}</strong></p>
                 `}
                 
                 <div class="assign-actions">
                     ${task.file_url ? `<a href="${task.file_url}" target="_blank" class="btn btn-outline" style="flex: 0.4;"><i class="fa-solid fa-download"></i> Paper</a>` : ''}
-                    ${submission ? `
+                    
+                    ${status === 'submitted' ? `
                         <button class="btn btn-secondary" onclick="window.viewSubmission('${submission.file_url}')"><i class="fa-solid fa-eye"></i> View</button>
+                    ` : status === 'missed' ? `
+                        <button class="btn btn-primary" disabled style="opacity:0.5; cursor:not-allowed;"><i class="fa-solid fa-lock"></i> Locked</button>
                     ` : `
                         <button class="btn btn-primary" onclick="window.openSubmitModal('${task.id}', '${task.title}')"><i class="fa-solid fa-upload"></i> Submit</button>
-                        <button class="btn btn-outline" id="ext-btn-${task.id}" onclick="window.openExtensionModal('${task.id}')" disabled title="Only available < 1h before deadline"><i class="fa-solid fa-clock-rotate-left"></i> Extension</button>
+                        ${!extension ? `<button class="btn btn-outline" id="ext-btn-${task.id}" onclick="window.openExtensionModal('${task.id}')" disabled title="Only available < 1h before deadline"><i class="fa-solid fa-clock-rotate-left"></i> Extension</button>` : ''}
                     `}
                 </div>
             </div>
@@ -165,22 +212,21 @@
     }
 
     function startCountdown(task) {
-        const deadline = new Date(task.deadline).getTime();
+        const deadline = new Date(getEffectiveDeadline(task)).getTime();
         const timerEl = document.getElementById(`timer-val-${task.id}`);
         const extBtn = document.getElementById(`ext-btn-${task.id}`);
+
+        // If element missing (e.g. filtered out or missed state), skip
+        if (!timerEl) return;
 
         const update = () => {
             const now = new Date().getTime();
             const diff = deadline - now;
 
             if (diff <= 0) {
-                if (timerEl) {
-                    timerEl.innerHTML = "00:00:00 left";
-                    timerEl.classList.add('urgent');
-                    timerEl.parentElement.style.borderColor = "#ef4444";
-                }
-                if (extBtn) extBtn.disabled = true;
+                // Time Over -> Trigger Re-render to show 'Missed' state
                 clearInterval(timers[task.id]);
+                render();
                 return;
             }
 
@@ -193,11 +239,13 @@
 
             if (timerEl) {
                 timerEl.innerHTML = display;
-                if (hours < 1) timerEl.classList.add('urgent');
-                if (hours < 1) timerEl.parentElement.style.borderColor = "#f87171";
+                if (hours < 1) {
+                    timerEl.classList.add('urgent');
+                    timerEl.parentElement.style.borderColor = "#f87171";
+                }
             }
 
-            // Extension Policy: Only if < 1h left
+            // Extension Policy: Only if < 1h left AND > 0
             if (extBtn) {
                 const canRequestExtension = diff > 0 && diff < (1 * 60 * 60 * 1000);
                 extBtn.disabled = !canRequestExtension;
@@ -223,6 +271,17 @@
     window.viewSubmission = (url) => window.open(url, '_blank');
 
     function bindEvents() {
+        // Filter Buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter = e.target.dataset.filter;
+                render();
+            });
+        });
+
+        // Dropzone & Modals
         const dropzone = document.getElementById('submission-dropzone');
         const fileInput = document.getElementById('submission-file-input');
         const confirmSubmit = document.getElementById('confirm-submit');
