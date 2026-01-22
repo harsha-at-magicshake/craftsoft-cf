@@ -31,8 +31,10 @@
                     window.location.replace('../login');
                     return;
                 }
-                window.studentDbId = data.student_db_id;
                 window.studentId = data.metadata?.student_id || 'ID-000';
+                window.studentName = data.metadata?.name || 'Student';
+                window.studentEmail = data.metadata?.email || '';
+                window.studentDbId = data.student_db_id;
                 document.documentElement.style.cssText = 'visibility:visible;opacity:1';
             } catch (e) {
                 console.error("Auth system network/logic error:", e);

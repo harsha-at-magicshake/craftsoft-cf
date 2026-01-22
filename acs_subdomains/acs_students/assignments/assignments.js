@@ -47,9 +47,9 @@
         initRealtime();
 
         const student = {
-            name: localStorage.getItem('acs_student_name') || 'Student',
+            name: window.studentName || localStorage.getItem('acs_student_name') || 'Student',
             student_id: window.studentId || 'ID-000',
-            email: localStorage.getItem('acs_student_email') || ''
+            email: window.studentEmail || localStorage.getItem('acs_student_email') || ''
         };
         StudentSidebar.renderAccountPanel(student);
     }
