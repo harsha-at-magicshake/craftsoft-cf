@@ -6,6 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard | Abhi's Craftsoft</title>
 
+    <!-- BANK-LEVEL SECURITY: Hide everything until auth verified -->
+    <style>html{visibility:hidden;opacity:0}</style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/assets/admin/js/supabase-config.js?v=5.0"></script>
+    <script>
+        (async()=>{
+            try {
+                const {data:{session}}=await window.supabaseClient.auth.getSession();
+                if(!session){window.location.replace('../');return;}
+                document.documentElement.style.cssText='visibility:visible;opacity:1';
+            } catch(e) {
+                window.location.replace('../');
+            }
+        })();
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,21 +36,6 @@
     <!-- Styles -->
     <link rel="stylesheet" href="dashboard.css?v=5.0">
     <link rel="stylesheet" href="../assets/css/student-sidebar.css?v=5.0">
-
-    <!-- FOUC Protection -->
-    <style>
-        .no-fouc {
-            opacity: 0;
-        }
-
-        body {
-            transition: opacity 0.3s ease;
-        }
-    </style>
-    <script>
-        document.documentElement.className += ' no-fouc';
-        document.addEventListener('DOMContentLoaded', () => document.documentElement.classList.remove('no-fouc'));
-    </script>
 </head>
 
 <div class="app-container">

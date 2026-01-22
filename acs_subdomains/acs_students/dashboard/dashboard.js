@@ -103,30 +103,30 @@
         });
 
         // Re-validate on tab focus (prevents stale sessions)
-        document.addEventListener('visibilitychange', () => {
+        document.addEventListener('visibilitychange', async () => {
             if (document.visibilityState === 'visible') {
-                const session = localStorage.getItem('acs_student_session');
-                if (!session) window.location.href = '../';
+                const { data: { session } } = await window.supabaseClient.auth.getSession();
+                if (!session) window.location.replace('../');
             }
         });
 
-        const session = localStorage.getItem('acs_student_session');
+        // Get Supabase session
+        const { data: { session } } = await window.supabaseClient.auth.getSession();
         if (!session) {
-            window.location.replace('../'); // replace prevents back button
-            return;
-        }
-
-        const data = JSON.parse(session);
-        const loginTime = new Date(data.loginTime);
-        const now = new Date();
-
-        if ((now - loginTime) > 24 * 60 * 60 * 1000) {
-            localStorage.removeItem('acs_student_session');
             window.location.replace('../');
             return;
         }
 
-        studentData = data;
+        // Get student data from user metadata
+        const metadata = session.user.user_metadata;
+        studentData = {
+            id: metadata.student_db_id,
+            name: metadata.name,
+            student_id: metadata.student_id,
+            email: metadata.email,
+            phone: metadata.phone
+        };
+
         initDashboard();
     }
 
@@ -311,9 +311,9 @@
             message: "Are you sure you want to exit your student portal?",
             type: "warning",
             confirmText: "Yes, Logout",
-            onConfirm: () => {
-                localStorage.removeItem('acs_student_session');
-                window.location.href = '../';
+            onConfirm: async () => {
+                await window.supabaseClient.auth.signOut();
+                window.location.replace('../');
             }
         });
     }

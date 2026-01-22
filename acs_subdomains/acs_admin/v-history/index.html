@@ -6,6 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Version History | CraftSoft Admin</title>
 
+    <!-- BANK-LEVEL SECURITY: Hide everything until auth verified -->
+    <style>
+        html {
+            visibility: hidden;
+            opacity: 0
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/assets/admin/js/supabase-config.js?v=5.0"></script>
+    <script>
+        (async () => {
+            try {
+                const { data: { session } } = await window.supabaseClient.auth.getSession();
+                if (!session) { window.location.replace('/login'); return; }
+                document.documentElement.style.cssText = 'visibility:visible;opacity:1';
+            } catch (e) {
+                window.location.replace('/login');
+            }
+        })();
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

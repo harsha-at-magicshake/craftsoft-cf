@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses | Abhi's Craftsoft</title>
+    <title>Materials | Abhi's Craftsoft</title>
 
     <!-- BANK-LEVEL SECURITY: Hide everything until auth verified -->
     <style>
@@ -41,37 +41,40 @@
     <!-- Styles -->
     <link rel="stylesheet" href="../dashboard/dashboard.css?v=5.0">
     <link rel="stylesheet" href="../assets/css/student-sidebar.css?v=5.0">
-    <link rel="stylesheet" href="courses.css?v=5.0">
+    <link rel="stylesheet" href="materials.css?v=5.0">
 </head>
 
 <div class="app-container">
     <!-- Sidebar injected by StudentSidebar.js -->
 
     <main class="main-content">
+        <!-- Header injected by StudentHeader via JS -->
         <header class="top-bar" id="header-container"></header>
 
-        <!-- Courses List -->
-        <section class="courses-container">
-            <div id="courses-list" class="courses-grid-full">
-                <div class="loading-state">
-                    <i class="fas fa-circle-notch fa-spin"></i>
-                    <p>Loading your courses...</p>
+        <div class="under-construction-container">
+            <div class="uc-card">
+                <div class="uc-icon">
+                    <i class="fa-solid fa-hammer"></i>
                 </div>
+                <h2>Under Construction</h2>
+                <p>We're building something amazing for you!</p>
+                <p class="uc-desc">Course materials, notes, and learning resources will be available here soon.</p>
+                <a href="../dashboard/" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
             </div>
-        </section>
-
-        <!-- Footer injected by JS -->
+        </div>
     </main>
-
 </div>
 
 <!-- Modal System -->
 <div id="modal-overlay" class="modal-overlay">
     <div id="modal-content" class="modal-content">
         <div id="modal-icon" class="modal-icon warning"><i class="fas fa-exclamation-triangle"></i></div>
-        <h3 id="modal-title">Confirm</h3>
-        <p id="modal-message">Are you sure?</p>
-        <div class="modal-actions">
+        <h3 id="modal-title">Confirm Action</h3>
+        <p id="modal-message">Are you sure you want to proceed?</p>
+        <div id="modal-actions" class="modal-actions">
             <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
             <button id="modal-confirm" class="btn btn-primary">Confirm</button>
         </div>
@@ -81,11 +84,9 @@
 <!-- Toast -->
 <div id="toast" class="toast"></div>
 
-<!-- SDKs -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/admin/js/supabase-config.js?v=5.0"></script>
+<!-- Scripts -->
 <script src="../assets/js/student-sidebar.js?v=5.0"></script>
-<script src="courses.js?v=5.0"></script>
+<script src="materials.js?v=5.0"></script>
 </body>
 
 </html>

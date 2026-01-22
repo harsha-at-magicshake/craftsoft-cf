@@ -226,20 +226,28 @@
                 return;
             }
 
-            // Mark OTP as used
+            // Sign in anonymously with Supabase Auth
+            const { data: authData, error: authError } = await window.supabaseClient.auth.signInAnonymously({
+                options: {
+                    data: {
+                        student_db_id: currentStudent.id,
+                        student_id: currentStudent.student_id,
+                        name: `${currentStudent.first_name} ${currentStudent.last_name}`,
+                        email: currentStudent.email,
+                        phone: currentStudent.phone
+                    }
+                }
+            });
+
+            if (authError) {
+                throw authError;
+            }
+
+            // Delete ALL OTPs for this student (cleanup)
             await window.supabaseClient
                 .from('student_otps')
-                .update({ is_used: true })
-                .eq('id', data.id);
-
-            // Create local session
-            localStorage.setItem('acs_student_session', JSON.stringify({
-                id: currentStudent.id,
-                name: `${currentStudent.first_name} ${currentStudent.last_name}`,
-                student_id: currentStudent.student_id,
-                email: currentStudent.email,
-                loginTime: new Date().toISOString()
-            }));
+                .delete()
+                .eq('student_id', currentStudent.id);
 
             showToast("Authentication Successful!", "success");
 

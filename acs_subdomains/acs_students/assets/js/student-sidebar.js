@@ -52,7 +52,8 @@ const StudentSidebar = {
                     <div class="sidebar-scroll-area">
                         ${this.navItem('dashboard', 'Dashboard', 'fa-chart-pie', 'dashboard')}
                         ${this.navItem('payments', 'Payments', 'fa-indian-rupee-sign', 'payments')}
-                        ${this.navItem('courses', 'My Courses', 'fa-book-bookmark', 'courses')}
+                        ${this.navItem('courses', 'Courses', 'fa-book-open', 'courses')}
+                        ${this.navItem('materials', 'Materials', 'fa-book-skull', 'materials')}
                     </div>
 
                     <div class="sidebar-spacer"></div>
@@ -74,7 +75,8 @@ const StudentSidebar = {
                 <nav class="mobile-nav-list">
                     ${this.mobileNavItem('dashboard', 'Dashboard', 'fa-chart-pie', 'dashboard')}
                     ${this.mobileNavItem('payments', 'Payments', 'fa-indian-rupee-sign', 'payments')}
-                    ${this.mobileNavItem('courses', 'My Courses', 'fa-book-bookmark', 'courses')}
+                    ${this.mobileNavItem('courses', 'Courses', 'fa-book-open', 'courses')}
+                    ${this.mobileNavItem('materials', 'Materials', 'fa-book-skull', 'materials')}
                 </nav>
                 <div class="mobile-nav-footer">
                     <button id="btn-logout-mobile" class="logout-link">
@@ -195,25 +197,82 @@ const StudentSidebar = {
     },
 
     renderAccountPanel(studentData) {
-        const container = document.getElementById('sidebar-account-container');
+        const container = document.getElementById('header-account-container');
         if (!container || !studentData) return;
 
-        const initials = studentData.name.split(' ').map(n => n[0]).join('').toUpperCase();
-
         container.innerHTML = `
-            <div class="account-card-mini">
-                <div class="account-avatar">${initials}</div>
-                <div class="account-details">
-                    <span class="account-name">${studentData.name}</span>
-                    <span class="account-id">ID: ${studentData.student_id}</span>
-                </div>
-                <button class="account-logout-trigger" id="sidebar-logout-btn" title="Logout">
-                    <i class="fa-solid fa-right-from-bracket"></i>
+            <div class="account-header-wrapper">
+                <button class="account-trigger" id="account-trigger">
+                    <div class="account-info">
+                        <span class="account-name-label">${studentData.name}</span>
+                        <i class="fa-solid fa-chevron-down account-arrow"></i>
+                    </div>
                 </button>
+                
+                <div class="account-dropdown" id="account-dropdown">
+                    <div class="account-dropdown-header">Account Details</div>
+                    <div class="account-details-list">
+                        <div class="account-detail-item">
+                            <i class="fa-solid fa-user"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Full Name</span>
+                                <span class="detail-value">${studentData.name}</span>
+                            </div>
+                        </div>
+                        <div class="account-detail-item">
+                            <i class="fa-solid fa-id-badge"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Student ID</span>
+                                <span class="detail-value">${studentData.student_id}</span>
+                            </div>
+                        </div>
+                        <div class="account-detail-item">
+                            <i class="fa-solid fa-envelope"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Email Address</span>
+                                <span class="detail-value">${studentData.email || 'N/A'}</span>
+                            </div>
+                        </div>
+                        <div class="account-detail-item">
+                            <i class="fa-solid fa-phone"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Phone Number</span>
+                                <span class="detail-value">${studentData.phone || 'N/A'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-dropdown-footer">
+                        <button class="account-logout-btn" id="header-logout-btn">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Sign Out</span>
+                        </button>
+                    </div>
+                </div>
             </div>
+            <div id="account-backdrop" class="account-backdrop"></div>
         `;
 
-        document.getElementById('sidebar-logout-btn')?.addEventListener('click', () => {
+        // Bind events
+        const trigger = document.getElementById('account-trigger');
+        const dropdown = document.getElementById('account-dropdown');
+        const backdrop = document.getElementById('account-backdrop');
+        const logoutBtn = document.getElementById('header-logout-btn');
+
+        if (trigger && dropdown) {
+            trigger.addEventListener('click', () => {
+                const isOpen = dropdown.classList.toggle('open');
+                trigger.classList.toggle('active');
+                if (backdrop) backdrop.classList.toggle('open', isOpen);
+            });
+
+            backdrop?.addEventListener('click', () => {
+                dropdown.classList.remove('open');
+                trigger.classList.remove('active');
+                backdrop.classList.remove('open');
+            });
+        }
+
+        logoutBtn?.addEventListener('click', () => {
             if (window.handleLogout) window.handleLogout();
         });
     }
@@ -222,7 +281,7 @@ const StudentSidebar = {
 const StudentHeader = {
     render(title) {
         return `
-            <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="header-left">
                 <button id="mobile-menu-btn" class="mobile-menu-btn">
                     <i class="fa-solid fa-bars-staggered"></i>
                 </button>
@@ -231,11 +290,12 @@ const StudentHeader = {
                 </div>
             </div>
             
-            <div class="header-actions">
-                <div class="header-student-badge">
+            <div class="header-right">
+                <div class="header-student-badge desktop-only">
                     <i class="fa-solid fa-user-graduate"></i>
                     <span>Student Portal</span>
                 </div>
+                <div id="header-account-container" class="header-account-container"></div>
             </div>
         `;
     }

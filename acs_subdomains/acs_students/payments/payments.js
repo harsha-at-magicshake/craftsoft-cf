@@ -75,18 +75,27 @@
         // History protection
         history.pushState(null, '', location.href);
         window.addEventListener('popstate', () => history.pushState(null, '', location.href));
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible' && !localStorage.getItem('acs_student_session')) {
-                window.location.replace('../');
+        document.addEventListener('visibilitychange', async () => {
+            if (document.visibilityState === 'visible') {
+                const { data: { session } } = await window.supabaseClient.auth.getSession();
+                if (!session) window.location.replace('../');
             }
         });
 
-        const session = localStorage.getItem('acs_student_session');
+        const { data: { session } } = await window.supabaseClient.auth.getSession();
         if (!session) {
             window.location.replace('../');
             return;
         }
-        studentData = JSON.parse(session);
+
+        const metadata = session.user.user_metadata;
+        studentData = {
+            id: metadata.student_db_id,
+            name: metadata.name,
+            student_id: metadata.student_id,
+            email: metadata.email,
+            phone: metadata.phone
+        };
         initPage();
     }
 
@@ -211,9 +220,9 @@
             message: "Are you sure you want to end your session?",
             type: "warning",
             confirmText: "Logout",
-            onConfirm: () => {
-                localStorage.removeItem('acs_student_session');
-                window.location.href = '../';
+            onConfirm: async () => {
+                await window.supabaseClient.auth.signOut();
+                window.location.replace('../');
             }
         });
     };
