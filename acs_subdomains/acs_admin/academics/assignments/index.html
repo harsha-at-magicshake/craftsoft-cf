@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignments | Admin - Abhi's Craftsoft</title>
+    <title>Manage Assignments | Admin - Abhi's Craftsoft</title>
     <link rel="icon" href="/favicon.svg" type="image/x-icon">
 
     <!-- BANK-LEVEL SECURITY: Hide everything until auth verified -->
@@ -49,6 +49,7 @@
     <link rel="stylesheet" href="/assets/admin/css/layout/dashboard.css">
     <!-- Admin Styles - Components -->
     <link rel="stylesheet" href="/assets/admin/css/components/buttons.css">
+    <link rel="stylesheet" href="/assets/admin/css/components/forms.css">
     <link rel="stylesheet" href="/assets/admin/css/components/cards.css">
     <link rel="stylesheet" href="/assets/admin/css/components/notifications.css">
     <link rel="stylesheet" href="/assets/admin/css/components/spotlight.css">
@@ -56,8 +57,9 @@
     <!-- Admin Styles - Responsive -->
     <link rel="stylesheet" href="/assets/admin/css/responsive/tablet.css">
     <link rel="stylesheet" href="/assets/admin/css/responsive/mobile.css">
-    <!-- Page Styles -->
+    <!-- Page Styles (Re-using Upload Styles) -->
     <link rel="stylesheet" href="../upload-materials/upload.css?v=1.2">
+    <link rel="stylesheet" href="assignments.css?v=1.0">
 </head>
 
 <body>
@@ -67,41 +69,132 @@
             <div id="header-container"></div>
 
             <div class="upload-workspace animate-up">
-                <!-- Page Header (Inside Workspace) -->
+                <!-- Page Header -->
                 <div class="workspace-header">
                     <div class="section-icon">
-                        <i class="fa-solid fa-explosion"></i>
+                        <i class="fa-solid fa-file-signature"></i>
                     </div>
                     <div class="section-info">
-                        <h2 class="workspace-title">Assignments</h2>
-                        <p class="workspace-subtitle">Manage student assignments and submissions</p>
+                        <h2 class="workspace-title">Manage Assignments</h2>
+                        <p class="workspace-subtitle">Broadcast tasks, track deadlines, and review submissions</p>
                     </div>
                 </div>
 
                 <div class="upload-cards">
-                    <section class="upload-section" style="padding: 5rem 2rem; text-align: center;">
-                        <div style="font-size: 5rem; color: var(--primary-500); margin-bottom: 2rem;">
-                            <i class="fa-solid fa-rocket"></i>
+                    <!-- Create Assignment Section -->
+                    <div class="assignment-grid">
+                        <section class="upload-section">
+                            <div class="card-header-mini">
+                                <i class="fa-solid fa-plus-circle"></i> Create New Assignment
+                            </div>
+                            <div class="section-body">
+                                <div class="form-group">
+                                    <label>Select Course <span class="required">*</span></label>
+                                    <select id="course-select" class="form-select">
+                                        <option value="">-- Select a Course --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Assignment Title <span class="required">*</span></label>
+                                    <input type="text" id="assign-title" class="form-control"
+                                        placeholder="e.g. React Final Project">
+                                </div>
+                                <div class="form-group">
+                                    <label>Description (Markdown supported)</label>
+                                    <textarea id="assign-desc" class="form-control" rows="4"
+                                        placeholder="Instructions, requirements, etc."></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Deadline Date <span class="required">*</span></label>
+                                        <input type="date" id="assign-date" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Deadline Time <span class="required">*</span></label>
+                                        <input type="time" id="assign-time" class="form-control" value="23:59">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="upload-section">
+                            <div class="card-header-mini">
+                                <i class="fa-solid fa-paperclip"></i> Reference Files
+                            </div>
+                            <div class="section-body">
+                                <div class="dropzone" id="dropzone">
+                                    <i class="fa-solid fa-cloud-arrow-up dropzone-icon"></i>
+                                    <p class="dropzone-text">Upload Question Paper / Docs</p>
+                                    <p class="dropzone-subtext">(Optional) Click to browse</p>
+                                    <input type="file" id="file-input" class="file-input"
+                                        accept=".pdf,.doc,.docx,.zip,.png,.jpg">
+                                </div>
+                                <div id="file-preview" class="file-preview-list"></div>
+
+                                <div class="upload-actions" style="margin-top: 2rem;">
+                                    <button id="publish-btn" class="btn btn-primary btn-lg btn-block" disabled>
+                                        <i class="fa-solid fa-bullhorn"></i>
+                                        <span>Publish Assignment</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- History & Requests Section -->
+                    <div class="tabs-container">
+                        <div class="tabs-header">
+                            <button class="tab-btn active" data-tab="active-assignments">
+                                <i class="fa-solid fa-clock"></i> Active Assignments
+                            </button>
+                            <button class="tab-btn" data-tab="extensions">
+                                <i class="fa-solid fa-hourglass-half"></i> Extension Requests
+                                <span class="tab-badge" id="extension-badge" style="display: none;">0</span>
+                            </button>
                         </div>
-                        <h2
-                            style="font-family: 'Outfit', sans-serif; font-size: 2.25rem; font-weight: 800; color: var(--admin-text-primary); margin-bottom: 1.5rem;">
-                            Module Under Construction
-                        </h2>
-                        <p
-                            style="color: var(--admin-text-muted); font-size: 1.15rem; line-height: 1.8; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-                            We're currently building a powerful assignment management system. Soon you'll be able to
-                            create tasks, set deadlines, and track student progress seamlessly.
-                        </p>
-                        <a href="../upload-materials/" class="btn btn-primary btn-lg"
-                            style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2.5rem; font-weight: 700;">
-                            <i class="fa-solid fa-upload"></i>
-                            <span>Upload Materials Instead</span>
-                        </a>
-                    </section>
+
+                        <div class="tab-content active" id="active-assignments">
+                            <section class="upload-section recent-uploads-section">
+                                <div class="card-header-mini">
+                                    <i class="fa-solid fa-list-check"></i> Assignment History
+                                </div>
+                                <div class="section-body" id="assignments-history">
+                                    <p class="text-muted">Loading assignments...</p>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="tab-content" id="extensions">
+                            <section class="upload-section">
+                                <div class="card-header-mini">
+                                    <i class="fa-solid fa-envelope-open-text"></i> Pending Extensions
+                                </div>
+                                <div class="section-body" id="extensions-content">
+                                    <p class="text-muted">No pending extension requests.</p>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="delete-confirm-overlay" id="delete-overlay" style="display: none;">
+        <div class="delete-confirm-box">
+            <div class="warning-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3 id="delete-title">Delete Assignment?</h3>
+            <p id="delete-message">Are you sure? All student submissions will also be deleted.</p>
+            <div class="delete-actions">
+                <button class="btn btn-outline btn-sm" id="cancel-delete-btn">Cancel</button>
+                <button class="btn btn-danger btn-sm" id="confirm-delete-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-container"></div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -111,30 +204,7 @@
     <script src="/assets/admin/js/sidebar.js"></script>
     <script src="/assets/admin/js/spotlight.js"></script>
     <script src="/assets/admin/js/notifications.js"></script>
-    <script>
-        (async function () {
-            // Auth check first
-            const session = await window.supabaseConfig.getSession();
-            if (!session) {
-                window.location.href = '../../login.html';
-                return;
-            }
-
-            // Render Header & Sidebar
-            const headerContainer = document.getElementById('header-container');
-            if (headerContainer && window.AdminHeader) {
-                headerContainer.innerHTML = window.AdminHeader.render('Assignments');
-            }
-
-            if (window.AdminSidebar) {
-                window.AdminSidebar.init('assignments', '../../');
-            }
-
-            // Render account panel
-            const admin = await window.Auth.getCurrentAdmin();
-            await AdminSidebar.renderAccountPanel(session, admin);
-        })();
-    </script>
+    <script src="assignments.js?v=1.0"></script>
 </body>
 
 </html>
