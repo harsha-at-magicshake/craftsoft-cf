@@ -121,17 +121,19 @@ async function loadPortalPreview(studentId, element) {
         const student = studentRes.data;
         const payments = paymentsRes.data || [];
 
-        // Catch courses
+        // Fetch courses using the standard 'courses' array (v5.0 standard)
         let courses = [];
-        if (student.course_ids && student.course_ids.length > 0) {
+        if (student.courses && student.courses.length > 0) {
             const { data: coursesData } = await window.supabaseClient
                 .from('courses')
-                .select('id, course_name, icon_class')
-                .in('id', student.course_ids);
+                .select('course_code, course_name')
+                .in('course_code', student.courses);
             courses = coursesData || [];
         }
 
-        const feeDue = (student.total_fee || 0) - (student.paid_fee || 0);
+        const totalPaid = payments.reduce((sum, p) => sum + (p.amount_paid || 0), 0);
+        const finalFee = student.final_fee || (student.fee - student.discount) || 0;
+        const feeDue = finalFee - totalPaid;
 
         // Activity Log
         if (window.AdminUtils && window.AdminUtils.Activity) {
@@ -161,7 +163,11 @@ async function loadPortalPreview(studentId, element) {
                         </div>
                         <div class="stat-item">
                             <small>Course Fee</small>
-                            <strong>₹${(student.total_fee || 0).toLocaleString()}</strong>
+                            <strong>₹${finalFee.toLocaleString()}</strong>
+                        </div>
+                        <div class="stat-item">
+                            <small>Total Paid</small>
+                            <strong style="color: #10b981">₹${totalPaid.toLocaleString()}</strong>
                         </div>
                         <div class="stat-item">
                             <small>Balance Left</small>

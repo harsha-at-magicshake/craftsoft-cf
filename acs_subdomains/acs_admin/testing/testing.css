@@ -29,9 +29,39 @@
 }
 
 .search-card .search-box-v2 {
-    padding: 1rem;
-    background: #f8fafc;
+    padding: 1.25rem;
+    background: #fff;
     border-bottom: 1px solid var(--sidebar-border);
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input-wrapper i {
+    position: absolute;
+    left: 1rem;
+    color: var(--gray-400);
+    font-size: 0.9rem;
+}
+
+.search-input-wrapper input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    border: 1.5px solid var(--sidebar-border);
+    border-radius: 12px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    background: #f8fafc;
+}
+
+.search-input-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
 }
 
 .results-list {
@@ -109,7 +139,11 @@
 .student-search-item .meta {
     display: block;
     font-size: 0.75rem;
-    opacity: 0.8;
+    color: var(--gray-500);
+}
+
+.student-search-item.active .meta {
+    color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .student-search-item.active .text-secondary {

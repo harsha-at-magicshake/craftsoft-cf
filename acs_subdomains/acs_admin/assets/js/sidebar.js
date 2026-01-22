@@ -81,6 +81,7 @@ const AdminSidebar = {
 
                         ${this.sectionLabel('System')}
                         ${this.navItem('settings', 'Settings', 'fa-gear')}
+                        ${this.navItem('version-history', 'Version History', 'fa-solid fa-clock-rotate-left', 'settings/version-history')}
                         
                         ${this.sectionLabel('Testing')}
                         ${this.navItem('student-testing', 'Student Testing', 'fa-solid fa-microscope', 'testing')}
