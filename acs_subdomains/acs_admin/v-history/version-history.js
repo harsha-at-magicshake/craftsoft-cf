@@ -4,35 +4,29 @@
 
 const versions = [
     {
-        v: "v5.0",
-        title: "CraftSoft OS",
-        date: "Current",
-        active: true,
-        milestone: "Portal Standardisation, Sidebar Engine, CSS Unification."
-    },
-    {
-        v: "v4.0",
-        title: "Scale & Security",
-        date: "Dec 2025",
-        milestone: "Multi-Account Switcher, Session Timeout, security locking."
-    },
-    {
-        v: "v3.0",
-        title: "Intelligence & UX",
-        date: "Oct 2025",
-        milestone: "Spotlight Search, In-App Notifications, analytics."
+        v: "v1.0",
+        focus: "The Foundation",
+        milestones: "Initial CRM launch. Basic management of Students, Clients, and Payments. Core Supabase integration."
     },
     {
         v: "v2.0",
-        title: "Portal Launch",
-        date: "Aug 2025",
-        milestone: "Student Portal launch, Payment History, course access."
+        focus: "Portal Launch",
+        milestones: "Introduction of the Student Portal. First iteration of Payment History and mobile-responsive dashboards."
     },
     {
-        v: "v1.0",
-        title: "CRM Foundation",
-        date: "May 2025",
-        milestone: "Core Supabase integration, Basic lead management, Account creation."
+        v: "v3.0",
+        focus: "Intelligence & UX",
+        milestones: "Introduction of Spotlight Search (Ctrl+K), real-time Desktop Notifications, and advanced analytics on the Admin dashboard."
+    },
+    {
+        v: "v4.0",
+        focus: "Scale & Security",
+        milestones: "Launch of the Gmail-style Account Manager (multi-login) and the Session Timeout / Inactivity Lock security system."
+    },
+    {
+        v: "v5.0",
+        focus: "\"CraftSoft OS\"",
+        milestones: "UI Standardisation. Modular Sidebar/Header JS engines across portals, relocation of Assets, and premium Logo Signature branding."
     }
 ];
 
@@ -45,38 +39,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Init Sidebar & Header
-    AdminSidebar.init('version-history', '../');
+    AdminSidebar.init('v-history', '../');
 
     const headerContainer = document.getElementById('header-container');
     if (headerContainer) {
-        headerContainer.innerHTML = AdminHeader.render('vHistory');
+        headerContainer.innerHTML = AdminHeader.render('v-History');
     }
 
     const admin = await window.Auth.getCurrentAdmin();
     await AdminSidebar.renderAccountPanel(session, admin);
 
-    renderTimeline();
+    renderTable();
 });
 
-function renderTimeline() {
-    const container = document.getElementById('version-timeline');
+function renderTable() {
+    const container = document.getElementById('v-history-body');
     if (!container) return;
 
     container.innerHTML = versions.map(ver => `
-        <div class="timeline-item ${ver.active ? 'active' : ''}">
-            <div class="version-dot"></div>
-            <div class="version-card-full">
-                <div class="version-header-row">
-                    <span class="version-tag">${ver.v}</span>
-                    <span class="version-date">${ver.date}</span>
-                </div>
-                <h3 class="version-title">${ver.title}</h3>
-                <div class="milestone-text">
-                    <p style="font-size: 0.95rem; color: var(--admin-text-secondary); line-height: 1.6;">
-                        ${ver.milestone}
-                    </p>
-                </div>
-            </div>
-        </div>
+        <tr>
+            <td><span class="v-badge">${ver.v}</span></td>
+            <td><span class="milestone-focus">${ver.focus}</span></td>
+            <td><div class="milestone-desc">${ver.milestones}</div></td>
+        </tr>
     `).join('');
 }

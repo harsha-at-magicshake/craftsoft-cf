@@ -18,17 +18,44 @@
     <link rel="icon" type="image/svg+xml" href="https://craftsoft.co.in/favicon.svg">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/assets/css/base/variables.css">
     <link rel="stylesheet" href="/assets/admin/css/base/variables.css">
+    <link rel="stylesheet" href="/assets/admin/css/base/reset.css">
+    <link rel="stylesheet" href="/assets/admin/css/base/typography.css">
     <link rel="stylesheet" href="/assets/admin/css/layout/dashboard.css">
     <link rel="stylesheet" href="/assets/admin/css/layout/header.css">
     <link rel="stylesheet" href="/assets/admin/css/layout/sidebar.css">
-    <link rel="stylesheet" href="version-history.css">
+    <link rel="stylesheet" href="/assets/admin/css/components/cards.css">
+    <link rel="stylesheet" href="/assets/admin/css/components/tables.css">
+    <style>
+        .table-container {
+            margin-top: 1rem;
+        }
+
+        .v-badge {
+            background: var(--table-header-bg);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--admin-input-focus);
+        }
+
+        .milestone-desc {
+            font-weight: 500;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .milestone-focus {
+            font-weight: 700;
+            color: var(--admin-text-primary);
+        }
+    </style>
 </head>
 
 <body>
     <div class="admin-layout">
-        <!-- Sidebar and Header will be injected by JS -->
+        <!-- Sidebar and Header injected by JS -->
         <div id="header-container"></div>
 
         <main class="admin-main">
@@ -40,13 +67,24 @@
                         </div>
                         <div class="section-info">
                             <h2 class="section-title">Version History</h2>
-                            <p class="section-subtitle">Tracking the evolution of CraftSoft Platform</p>
+                            <p class="section-subtitle">Evolution and Roadmap of the CraftSoft Platform</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="timeline-container" id="version-timeline">
-                    <!-- Timeline items will be injected by JS -->
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Version</th>
+                                <th style="width: 180px;">Focus</th>
+                                <th>Core Milestones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="v-history-body">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>
