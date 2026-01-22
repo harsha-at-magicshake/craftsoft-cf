@@ -340,13 +340,13 @@
                 const path = `submissions/${window.studentDbId}/${ts}_${selectedFile.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
 
                 const { error: uploadError } = await window.supabaseClient.storage
-                    .from('assignments')
+                    .from('submissions')
                     .upload(path, selectedFile);
 
                 if (uploadError) throw uploadError;
 
                 const { data: urlData } = window.supabaseClient.storage
-                    .from('assignments')
+                    .from('submissions')
                     .getPublicUrl(path);
 
                 // Insert submission
