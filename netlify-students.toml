@@ -1,6 +1,6 @@
 [build]
-  command = "npm run build && mkdir -p dist/assets && cp -r assets/* dist/assets/ && cp -r acs_subdomains/acs_students/* dist/"
-  publish = "dist"
+  command = "npm run build"
+  publish = "acs_subdomains/acs_students"
   functions = "netlify/functions"
 
 # Headers
@@ -13,42 +13,25 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Content-Security-Policy = "default-src 'self' https://*.craftsoft.co.in https://craftsoft.co.in; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.craftsoft.co.in https://craftsoft.co.in https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://*.craftsoft.co.in https://craftsoft.co.in https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co https://*.craftsoft.co.in https://craftsoft.co.in wss://*.supabase.co https://api.emailjs.com;"
 
-# Student portal assets - serve directly (MUST be before catch-all)
+# Shared components from main site (logo-signature, etc.)
 [[redirects]]
-  from = "/assets/*"
-  to = "/assets/:splat"
-  status = 200
-
-# Admin SDK config redirect (for shared supabase-config)
-[[redirects]]
-  from = "/assets/admin/js/*"
-  to = "https://admin.craftsoft.co.in/assets/admin/js/:splat"
+  from = "/assets/components/*"
+  to = "https://craftsoft.co.in/assets/components/:splat"
   status = 200
   force = true
 
-# Dashboard routes
+# Admin SDK config redirect (for shared supabase-config)
 [[redirects]]
-  from = "/dashboard/*"
-  to = "/dashboard/:splat"
+  from = "/assets/admin/*"
+  to = "https://admin.craftsoft.co.in/assets/admin/:splat"
   status = 200
+  force = true
 
-# Payments routes
-[[redirects]]
-  from = "/payments/*"
-  to = "/payments/:splat"
-  status = 200
-
-# Courses routes
-[[redirects]]
-  from = "/courses/*"
-  to = "/courses/:splat"
-  status = 200
-
-# Global 404 / SPA fallback (MUST be last)
+# 404 page
 [[redirects]]
   from = "/*"
-  to = "/index.html"
-  status = 200
+  to = "/404/index.html"
+  status = 404
 
 # Cache Policy
 [[headers]]
