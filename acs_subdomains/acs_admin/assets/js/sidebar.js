@@ -43,7 +43,52 @@ const AdminSidebar = {
         const isRecordsChild = ['archived', 'recently-deleted'].includes(this.currentPage);
 
         // Desktop sidebar (always expanded)
-        const sidebarHTML = `<aside class="admin-sidebar" id="admin-sidebar"><nav class="sidebar-nav"><div class="sidebar-header"><a href="${this.rootPath}dashboard/" class="logo-component"><div class="logo-text-wrapper desktop-logo"><span class="logo-sig-cursive">Abhi's</span> <span class="logo-accent-sans">Craftsoft</span> <span class="logo-mark-purple">CS</span></div><div class="logo-icon-wrapper mobile-logo"><img src="/assets/admin/CS.png" alt="CS" style="width:32px;height:auto;display:block;"></div></a></div><div class="sidebar-scroll-area">${this.navItem('dashboard', 'Dashboard', 'fa-chart-pie')}${this.navItem('inquiries', 'Inquiries', 'fa-solid fa-circle-question')}${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user')}${this.sectionLabel('Academics')}${this.navItem('courses', 'Courses', 'fa-book-bookmark')}${this.navItem('services', 'Services', 'fa-wrench')}${this.sectionLabel('Management')}${this.navItem('students', 'Students', 'fa-user-graduate')}${this.navItem('clients', 'Clients', 'fa-user-tie')}${this.sectionLabel('Payments')}${this.navItem('record-payment', 'Record Payment', 'fa-indian-rupee-sign')}${this.navItem('all-payments', 'All Payments', 'fa-money-bill-trend-up')}${this.sectionLabel('Finance')}${this.navItem('receipts', 'Receipts', 'fa-file-invoice')}${this.sectionLabel('Data Recovery')}${this.navItem('archived', 'Archived', 'fa-solid fa-box', 'records/archived')}${this.navItem('recently-deleted', 'Trash', 'fa-solid fa-recycle', 'records/recently-deleted')}${this.sectionLabel('System')}${this.navItem('settings', 'Settings', 'fa-gear')}${this.navItem('v-history', 'v-History', 'fa-solid fa-clock-rotate-left', 'v-history')}</div></nav></aside>`;
+        const sidebarHTML = `
+            <aside class="admin-sidebar" id="admin-sidebar">
+                <nav class="sidebar-nav">
+                    <div class="sidebar-header">
+                        <a href="${this.rootPath}dashboard/" class="logo-component">
+                            <div class="logo-text-wrapper desktop-logo">
+                                <span class="logo-sig-cursive">Abhi's</span>
+                                <span class="logo-accent-sans">Craftsoft</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="sidebar-scroll-area">
+                        ${this.navItem('dashboard', 'Dashboard', 'fa-chart-pie')}
+                        ${this.navItem('inquiries', 'Inquiries', 'fa-solid fa-circle-question')}
+                        ${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user')}
+                        
+                        ${this.sectionLabel('Academics')}
+                        ${this.navItem('courses', 'Courses', 'fa-book-bookmark')}
+                        <div class="desktop-only">
+                            ${this.navItem('upload-materials', 'Upload Materials', 'fa-solid fa-upload', 'upload-materials')}
+                            ${this.navItem('assignments', 'Assignments', 'fa-solid fa-explosion', 'assignments')}
+                        </div>
+                        ${this.navItem('services', 'Services', 'fa-wrench')}
+                        
+                        ${this.sectionLabel('Management')}
+                        ${this.navItem('students', 'Students', 'fa-user-graduate')}
+                        ${this.navItem('clients', 'Clients', 'fa-user-tie')}
+                        
+                        ${this.sectionLabel('Payments')}
+                        ${this.navItem('record-payment', 'Record Payment', 'fa-indian-rupee-sign')}
+                        ${this.navItem('all-payments', 'All Payments', 'fa-money-bill-trend-up')}
+                        
+                        ${this.sectionLabel('Finance')}
+                        ${this.navItem('receipts', 'Receipts', 'fa-file-invoice')}
+                        
+                        ${this.sectionLabel('Data Recovery')}
+                        ${this.navItem('archived', 'Archived', 'fa-solid fa-box', 'records/archived')}
+                        ${this.navItem('recently-deleted', 'Trash', 'fa-solid fa-recycle', 'records/recently-deleted')}
+                        
+                        ${this.sectionLabel('System')}
+                        ${this.navItem('settings', 'Settings', 'fa-gear')}
+                        ${this.navItem('v-history', 'v-History', 'fa-solid fa-clock-rotate-left', 'v-history')}
+                    </div>
+                </nav>
+            </aside>
+        `;
 
         // Mobile nav bottom sheet (collapsible groups)
         const activeGroup = isCoursesServicesChild ? 'courses_services' :
@@ -267,7 +312,32 @@ const AdminSidebar = {
 // Header helper
 const AdminHeader = {
     render(title, showAddBtn = false, addBtnText = 'Add', addBtnId = 'add-btn') {
-        return `<header class="admin-header"><div class="admin-header-left"><button class="mobile-menu-btn" id="mobile-menu-btn" title="Open Menu"><i class="fa-solid fa-bars"></i></button><a href="/" class="header-logo desktop-logo"><div class="logo-text-wrapper"><span class="logo-sig-cursive" style="font-size:1.1rem;">Abhi's</span> <span class="logo-accent-sans" style="font-size:1.1rem;">Craftsoft</span> <span class="logo-mark-purple" style="font-size:0.8rem;">CS</span></div></a><div class="header-titles"><h1 class="page-title" style="font-family:'Outfit',sans-serif;margin-left:15px;padding-left:15px;border-left:1px solid var(--header-border);">${title}</h1></div></div><div class="header-actions">${showAddBtn ? `<button class="btn btn-primary" id="${addBtnId}"><i class="fa-solid fa-plus"></i><span>${addBtnText}</span></button>` : ''}<button class="spotlight-trigger" id="global-search-btn" aria-label="Search" title="Search (Ctrl + K)"><i class="fa-solid fa-magnifying-glass"></i></button><div class="header-right-actions" id="account-panel-container"></div></div></header>`;
+        return `
+            <header class="admin-header">
+                <div class="admin-header-left">
+                    <button class="mobile-menu-btn" id="mobile-menu-btn" title="Open Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    
+                    <a href="/" class="header-logo">
+                        <img src="/assets/admin/CS.png" alt="CS Logo" style="height: 32px; width: auto; display: block;">
+                    </a>
+
+                    <div class="header-titles">
+                        <h1 class="page-title" style="font-family: 'Outfit', sans-serif; margin-left: 15px; padding-left: 15px; border-left: 1px solid var(--header-border);">
+                            ${title}
+                        </h1>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    ${showAddBtn ? `<button class="btn btn-primary" id="${addBtnId}"><i class="fa-solid fa-plus"></i><span>${addBtnText}</span></button>` : ''}
+                    <button class="spotlight-trigger" id="global-search-btn" aria-label="Search" title="Search (Ctrl + K)">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <div class="header-right-actions" id="account-panel-container"></div>
+                </div>
+            </header>
+        `;
     }
 };
 

@@ -224,6 +224,50 @@
   status = 200
   force = true
 
+# Upload Materials (NEW)
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/upload-materials/*"
+  to = "/acs_subdomains/acs_admin/academics/upload-materials/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/upload-materials"
+  to = "/acs_subdomains/acs_admin/academics/upload-materials/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/upload-materials/"
+  to = "/acs_subdomains/acs_admin/academics/upload-materials/index.html"
+  status = 200
+  force = true
+
+# Assignments (NEW)
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/assignments/*"
+  to = "/acs_subdomains/acs_admin/academics/assignments/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/assignments"
+  to = "/acs_subdomains/acs_admin/academics/assignments/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  host = "admin.craftsoft.co.in"
+  from = "/assignments/"
+  to = "/acs_subdomains/acs_admin/academics/assignments/index.html"
+  status = 200
+  force = true
+
 # Payments
 [[redirects]]
   host = "admin.craftsoft.co.in"
