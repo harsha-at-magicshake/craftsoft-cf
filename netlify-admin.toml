@@ -36,27 +36,23 @@
   status = 404
   force = true
 
-# Admin assets moved to acs_subdomains/acs_admin/assets/ (MUST be before /assets/*)
+# Admin assets - map /assets/admin/* to actual location
 [[redirects]]
-  host = "admin.craftsoft.co.in"
   from = "/assets/admin/*"
   to = "/acs_subdomains/acs_admin/assets/:splat"
   status = 200
   force = true
 
+# Shared root assets (fonts, images, etc.)
 [[redirects]]
-  host = "admin.craftsoft.co.in"
   from = "/assets/*"
   to = "/assets/:splat"
   status = 200
-  force = true
 
 [[redirects]]
-  host = "admin.craftsoft.co.in"
   from = "/shared/*"
   to = "/shared/:splat"
   status = 200
-  force = true
 
 [[redirects]]
   host = "admin.craftsoft.co.in"
