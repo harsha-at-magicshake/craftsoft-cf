@@ -30,6 +30,7 @@ const StudentSidebar = {
         if (path.includes('/payments/')) return '../';
         if (path.includes('/courses/')) return '../';
         if (path.includes('/materials/')) return '../';
+        if (path.includes('/profile/')) return '../';
         return './';
     },
 
@@ -62,6 +63,7 @@ const StudentSidebar = {
                         ${this.navItem('payments', 'Payments', 'fa-indian-rupee-sign', 'payments')}
                         ${this.navItem('courses', 'Courses', 'fa-book-open', 'courses')}
                         ${this.navItem('materials', 'Materials', 'fa-book-skull', 'materials')}
+                        ${this.navItem('profile', 'Profile', 'fa-id-badge', 'profile')}
                     </div>
 
                     <div class="sidebar-spacer"></div>
@@ -75,23 +77,16 @@ const StudentSidebar = {
             <div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
             <div id="mobile-nav-sheet" class="mobile-nav-sheet">
                 <div class="mobile-nav-header">
+                    <div class="mobile-nav-handle"></div>
                     <span class="mobile-nav-title">Navigation</span>
-                    <button id="mobile-nav-close" class="mobile-nav-close" title="Close">
-                        <i class="fas fa-times"></i>
-                    </button>
                 </div>
                 <nav class="mobile-nav-list">
                     ${this.mobileNavItem('dashboard', 'Dashboard', 'fa-chart-pie', 'dashboard')}
                     ${this.mobileNavItem('payments', 'Payments', 'fa-indian-rupee-sign', 'payments')}
                     ${this.mobileNavItem('courses', 'Courses', 'fa-book-open', 'courses')}
                     ${this.mobileNavItem('materials', 'Materials', 'fa-book-skull', 'materials')}
+                    ${this.mobileNavItem('profile', 'Profile', 'fa-id-badge', 'profile')}
                 </nav>
-                <div class="mobile-nav-footer">
-                    <button id="btn-logout-mobile" class="logout-link">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Logout Account</span>
-                    </button>
-                </div>
             </div>
         `;
 
@@ -140,7 +135,6 @@ const StudentSidebar = {
         const menuBtn = document.getElementById('mobile-menu-btn');
         const overlay = document.getElementById('mobile-nav-overlay');
         const sheet = document.getElementById('mobile-nav-sheet');
-        const closeBtn = document.getElementById('mobile-nav-close');
 
         if (menuBtn) {
             menuBtn.addEventListener('click', () => {
@@ -157,16 +151,6 @@ const StudentSidebar = {
         };
 
         if (overlay) overlay.addEventListener('click', close);
-        if (closeBtn) closeBtn.addEventListener('click', close);
-
-        // Logout bindings
-        const logoutMobile = document.getElementById('btn-logout-mobile');
-        if (logoutMobile) {
-            logoutMobile.addEventListener('click', () => {
-                close();
-                if (window.handleLogout) window.handleLogout();
-            });
-        }
     },
 
     // Separate method for mobile menu - called after header is rendered
@@ -225,39 +209,6 @@ const StudentSidebar = {
                 </button>
                 
                 <div class="account-dropdown" id="account-dropdown">
-                    <div class="account-dropdown-header">
-                        <span class="dropdown-header-title">Personal Info</span>
-                    </div>
-                    <div class="account-details-list">
-                        <div class="account-detail-item">
-                            <i class="fa-solid fa-user"></i>
-                            <div class="detail-content">
-                                <span class="detail-label">Full Name</span>
-                                <span class="detail-value">${studentData.name}</span>
-                            </div>
-                        </div>
-                        <div class="account-detail-item">
-                            <i class="fa-solid fa-id-badge"></i>
-                            <div class="detail-content">
-                                <span class="detail-label">Student ID</span>
-                                <span class="detail-value">${studentData.student_id}</span>
-                            </div>
-                        </div>
-                        <div class="account-detail-item">
-                            <i class="fa-solid fa-envelope"></i>
-                            <div class="detail-content">
-                                <span class="detail-label">Email Address</span>
-                                <span class="detail-value">${studentData.email || 'N/A'}</span>
-                            </div>
-                        </div>
-                        <div class="account-detail-item">
-                            <i class="fa-solid fa-phone"></i>
-                            <div class="detail-content">
-                                <span class="detail-label">Phone Number</span>
-                                <span class="detail-value">${studentData.phone || 'N/A'}</span>
-                            </div>
-                        </div>
-                    </div>
                     <div class="account-dropdown-footer">
                         <button class="account-logout-btn" id="header-logout-btn">
                             <i class="fa-solid fa-right-from-bracket"></i>

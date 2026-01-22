@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Abhi's Craftsoft</title>
+
+    <!-- BANK-LEVEL SECURITY -->
+    <style>
+        html {
+            visibility: hidden;
+            opacity: 0
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/assets/admin/js/supabase-config.js?v=5.0"></script>
+    <script>
+        (async () => {
+            try {
+                const token = localStorage.getItem('acs_student_token');
+                if (!token) { window.location.replace('../'); return; }
+                const { data, error } = await window.supabaseClient
+                    .from('student_sessions')
+                    .select('id')
+                    .eq('token', token)
+                    .gt('expires_at', new Date().toISOString())
+                    .single();
+                if (error || !data) { window.location.replace('../'); return; }
+                document.documentElement.style.cssText = 'visibility:visible;opacity:1';
+            } catch (e) {
+                window.location.replace('../');
+            }
+        })();
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="https://craftsoft.co.in/favicon.svg">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../dashboard/dashboard.css?v=5.0">
+    <link rel="stylesheet" href="../assets/css/student-sidebar.css?v=6.0">
+    <style>
+        .profile-workspace {
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .info-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(40, 150, 205, 0.15);
+        }
+
+        .info-icon {
+            width: 48px;
+            height: 48px;
+            background: #f0f7fb;
+            color: #2896cd;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .info-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 1.05rem;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .profile-header {
+            margin-bottom: 2rem;
+        }
+
+        .profile-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .profile-header p {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-workspace {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="app-container">
+    <main class="main-content">
+        <header class="top-bar" id="header-container"></header>
+
+        <div class="profile-workspace animate-up">
+            <div class="profile-header">
+                <h1>My Profile</h1>
+                <p>Your official details as recorded in our system.</p>
+            </div>
+
+            <div class="profile-grid">
+                <div class="info-card">
+                    <div class="info-icon"><i class="fa-solid fa-user"></i></div>
+                    <div class="info-content">
+                        <span class="info-label">Full Name</span>
+                        <span id="p-name" class="info-value">Loading...</span>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon"><i class="fa-solid fa-id-badge"></i></div>
+                    <div class="info-content">
+                        <span class="info-label">Student ID</span>
+                        <span id="p-id" class="info-value">Loading...</span>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <div class="info-content">
+                        <span class="info-label">Email Address</span>
+                        <span id="p-email" class="info-value">Loading...</span>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+                    <div class="info-content">
+                        <span class="info-label">Phone Number</span>
+                        <span id="p-phone" class="info-value">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal System -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div id="modal-content" class="modal-content">
+            <div id="modal-icon" class="modal-icon warning"><i class="fas fa-exclamation-triangle"></i></div>
+            <h3 id="modal-title">Confirm Action</h3>
+            <p id="modal-message">Are you sure you want to proceed?</p>
+            <div id="modal-actions" class="modal-actions">
+                <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
+                <button id="modal-confirm" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="../assets/js/student-sidebar.js?v=6.0"></script>
+    <script src="profile.js?v=6.0"></script>
+</body>
+
+</html>
