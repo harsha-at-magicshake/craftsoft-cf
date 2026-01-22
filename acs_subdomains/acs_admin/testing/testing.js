@@ -138,58 +138,61 @@ async function loadPortalPreview(studentId, element) {
         const finalFee = student.final_fee || (student.fee - student.discount) || 0;
         const feeDue = finalFee - totalPaid;
 
-        // Populate Admin Stats Bar
-        statFee.innerText = `₹${finalFee.toLocaleString()}`;
-        statPaid.innerText = `₹${totalPaid.toLocaleString()}`;
-        statBalance.innerText = `₹${feeDue.toLocaleString()}`;
-        statBalance.style.color = feeDue > 0 ? '#ef4444' : '#10b981';
-
-        // Mirror the Student Portal View
         previewContainer.innerHTML = `
             <div class="portal-mirror-view" style="animation: fadeIn 0.4s ease;">
-                <div class="mirror-header" style="background: var(--accent-gradient); padding: 1.5rem; border-radius: 16px; color: white; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <!-- Header -->
+                <div class="mirror-header" style="background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%); padding: 2rem; border-radius: 16px; color: white; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);">
                     <div>
-                        <h2 style="margin:0; font-size: 1.4rem;">Hello, ${student.first_name}! 👋</h2>
-                        <p style="margin: 5px 0 0; opacity: 0.9; font-size: 0.9rem;">This is how the student sees their dashboard.</p>
+                        <h2 style="margin:0; font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px;">Hello, ${student.first_name}! 👋</h2>
+                        <p style="margin: 8px 0 0; opacity: 0.9; font-size: 0.95rem; font-weight: 500;">This is how the student sees their dashboard.</p>
                     </div>
-                    <i class="fa-solid fa-user-graduate" style="font-size: 2.5rem; opacity: 0.3;"></i>
+                    <i class="fa-solid fa-graduation-cap" style="font-size: 3.5rem; opacity: 0.25;"></i>
                 </div>
 
-                <div class="mirror-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <!-- Student View Stats -->
-                    <div class="analysis-card" style="grid-column: span 2; display: flex; gap: 2rem; justify-content: space-around; text-align: center;">
-                        <div>
-                            <small style="color: var(--admin-text-muted); display: block; margin-bottom: 5px;">Total Paid</small>
-                            <span style="font-size: 1.2rem; font-weight: 700; color: #10b981;">₹${totalPaid.toLocaleString()}</span>
-                        </div>
-                        <div style="width: 1px; background: var(--admin-card-border);"></div>
-                        <div>
-                            <small style="color: var(--admin-text-muted); display: block; margin-bottom: 5px;">Balance Due</small>
-                            <span style="font-size: 1.2rem; font-weight: 700; color: ${feeDue > 0 ? '#ef4444' : '#10b981'};">₹${feeDue.toLocaleString()}</span>
-                        </div>
+                <!-- Split Stats Card -->
+                <div class="analysis-card" style="margin-bottom: 2rem; padding: 2.5rem; display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0; align-items: center; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border-radius: 16px;">
+                    <div style="text-align: center;">
+                        <small style="color: #64748b; font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">Total Paid</small>
+                        <span style="font-size: 1.8rem; font-weight: 700; color: #10b981; font-family: 'Outfit', sans-serif;">₹${totalPaid.toLocaleString()}</span>
                     </div>
+                    <div style="width: 1px; height: 100%; background: #e2e8f0;"></div>
+                    <div style="text-align: center;">
+                        <small style="color: #64748b; font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">Balance Due</small>
+                        <span style="font-size: 1.8rem; font-weight: 700; color: ${feeDue > 0 ? '#ef4444' : '#10b981'}; font-family: 'Outfit', sans-serif;">₹${feeDue.toLocaleString()}</span>
+                    </div>
+                </div>
 
+                <div class="mirror-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                     <!-- Course Mirror -->
-                    <div class="analysis-card">
-                        <div class="card-label"><i class="fa-solid fa-book"></i> Enrolled Courses</div>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div class="analysis-card" style="padding: 2rem; border-radius: 16px; border: 1px solid #e2e8f0; height: 100%;">
+                        <div class="card-label" style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; color: #3b82f6; font-weight: 700; font-size: 0.9rem;">
+                            <i class="fa-solid fa-book-open" style="background: rgba(59, 130, 246, 0.1); padding: 8px; border-radius: 8px;"></i> 
+                            ENROLLED COURSES
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
                             ${courses.length > 0 ? courses.map(c => `
-                                <div style="display: flex; align-items: center; gap: 10px; background: var(--admin-bg); padding: 10px; border-radius: 8px;">
-                                    <i class="fa-solid fa-bookmark" style="color: #2896cd;"></i>
-                                    <span style="font-weight: 600; font-size: 0.85rem;">${c.course_name}</span>
+                                <div style="display: flex; align-items: center; gap: 15px; background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px solid #f1f5f9; transition: transform 0.2s;">
+                                    <div style="width: 40px; height: 50px; background: #bfdbfe; border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="position: absolute; top: -5px; right: -5px; width: 0; height: 0; border-style: solid; border-width: 0 10px 10px 0; border-color: transparent #1e40af transparent transparent;"></div>
+                                        <i class="fa-solid fa-bookmark" style="color: white; font-size: 1.2rem;"></i>
+                                    </div>
+                                    <span style="font-weight: 700; font-size: 1rem; color: #334155; font-family: 'Outfit', sans-serif;">${c.course_name}</span>
                                 </div>
                             `).join('') : '<p style="color: var(--admin-text-muted);">No active enrollments</p>'}
                         </div>
                     </div>
 
                     <!-- Payment Mirror -->
-                    <div class="analysis-card">
-                        <div class="card-label"><i class="fa-solid fa-clock-rotate-left"></i> Quick History</div>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            ${payments.length > 0 ? payments.map(p => `
-                                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 5px 0; border-bottom: 1px dashed var(--admin-card-border);">
-                                    <span>${new Date(p.payment_date).toLocaleDateString()}</span>
-                                    <span style="font-weight: 700;">₹${(p.amount_paid || 0).toLocaleString()}</span>
+                    <div class="analysis-card" style="padding: 2rem; border-radius: 16px; border: 1px solid #e2e8f0; height: 100%;">
+                        <div class="card-label" style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; color: #3b82f6; font-weight: 700; font-size: 0.9rem;">
+                            <i class="fa-solid fa-clock-rotate-left" style="background: rgba(59, 130, 246, 0.1); padding: 8px; border-radius: 8px;"></i>
+                            QUICK HISTORY
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 0;">
+                            ${payments.length > 0 ? payments.map((p, index) => `
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: ${index < payments.length - 1 ? '1px dashed #e2e8f0' : 'none'};">
+                                    <span style="color: #64748b; font-size: 0.95rem;">${new Date(p.payment_date).toLocaleDateString()}</span>
+                                    <span style="font-weight: 700; color: #475569; font-size: 1rem;">₹${(p.amount_paid || 0).toLocaleString()}</span>
                                 </div>
                             `).join('') : '<p style="color: var(--admin-text-muted);">No payment history</p>'}
                         </div>

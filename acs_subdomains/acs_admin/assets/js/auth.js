@@ -200,6 +200,9 @@ const Auth = {
             sessionStorage.removeItem('sb-auth-token');
             sessionStorage.removeItem('tab_id');
 
+            // Clear Dashboard activity log on logout
+            localStorage.removeItem('admin_activity_log');
+
             // Redirect to login
             window.location.replace(window.location.pathname.includes('/admin/') ? '/admin/' : '/');
 
