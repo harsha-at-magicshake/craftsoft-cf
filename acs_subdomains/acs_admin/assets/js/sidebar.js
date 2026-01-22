@@ -275,17 +275,23 @@ const AdminSidebar = {
             parent?.classList.toggle('expanded');
         });
 
-        // Student Testing Trigger
-        document.querySelectorAll('[data-trigger="student-testing"]').forEach(el => {
-            el.addEventListener('click', (e) => {
+        // Student Testing Trigger (Using event delegation for reliability)
+        document.addEventListener('click', (e) => {
+            const trigger = e.target.closest('[data-trigger="student-testing"]');
+            if (trigger) {
                 e.preventDefault();
+                console.log('[StudentTesting] Trigger clicked');
                 this.closeMobileNav();
+
                 if (window.StudentTesting && typeof window.StudentTesting.open === 'function') {
                     window.StudentTesting.open();
+                } else if (window.AdminUtils && window.AdminUtils.StudentTesting) {
+                    window.AdminUtils.StudentTesting.open();
                 } else {
-                    console.error('StudentTesting module not found');
+                    console.error('[StudentTesting] Module not found in window or AdminUtils');
+                    alert('Student Testing module is still loading. Please wait a second and try again.');
                 }
-            });
+            }
         });
     },
 

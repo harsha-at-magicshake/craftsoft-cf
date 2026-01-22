@@ -2010,8 +2010,6 @@ const StudentTesting = {
     }
 };
 
-};
-
 window.StudentTesting = StudentTesting;
 
 // ============================================
@@ -2028,6 +2026,7 @@ window.AdminUtils = {
     NavigationSecurity,
     AccountManager,
     SessionTimeout,
+    StudentTesting,
     Skeleton,
     requireAuth,
     requireNoAuth,
