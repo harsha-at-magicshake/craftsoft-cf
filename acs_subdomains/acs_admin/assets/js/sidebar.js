@@ -87,7 +87,6 @@ const AdminSidebar = {
                     </div>
 
                     <div class="sidebar-spacer"></div>
-                    <div id="sidebar-account-container"></div>
                 </nav>
             </aside>
         `;
@@ -333,9 +332,6 @@ const AdminSidebar = {
 
         // Render to header if exists
         AccountManager.renderAccountPanel?.('account-panel-container');
-
-        // Render to sidebar if exists
-        AccountManager.renderAccountPanel?.('sidebar-account-container');
     }
 };
 
