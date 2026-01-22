@@ -226,14 +226,14 @@
             bulkCount.textContent = checkedCount;
         }
 
-        function showConfirm(title, message, name, onConfirm) {
+        function showConfirm(title, message, onConfirm) {
             const deleteOverlay = document.getElementById('delete-overlay');
             const deleteTitle = document.getElementById('delete-title');
             const deleteMessage = document.getElementById('delete-message');
-            const deleteName = document.getElementById('delete-name');
-            deleteTitle.textContent = title;
-            deleteMessage.innerHTML = message;
-            deleteName.textContent = name || '';
+
+            if (deleteTitle) deleteTitle.textContent = title;
+            if (deleteMessage) deleteMessage.innerHTML = message;
+
             deleteOverlay.style.display = 'flex';
             currentDeleteTask = onConfirm;
         }
@@ -248,7 +248,6 @@
                 showConfirm(
                     'Delete Material?',
                     `Are you sure you want to delete <strong>${fileName}</strong>?`,
-                    '',
                     async () => {
                         await deleteMaterial(id);
                     }
@@ -264,7 +263,6 @@
             showConfirm(
                 'Bulk Delete',
                 `Are you sure you want to delete ${ids.length} selected files?`,
-                '',
                 async () => {
                     await bulkDelete(ids);
                 }
