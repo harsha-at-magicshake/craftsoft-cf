@@ -61,14 +61,12 @@
 
 <body>
     <div class="admin-layout">
-        <!-- Sidebar injected by JS -->
-
         <main class="admin-main">
             <!-- Header injected by JS -->
             <div id="header-container"></div>
 
             <div class="upload-workspace animate-up">
-                <!-- Workspace Header -->
+                <!-- Page Header (Inside Workspace) -->
                 <div class="workspace-header">
                     <div class="section-icon">
                         <i class="fa-solid fa-upload"></i>
@@ -82,37 +80,38 @@
                 <div class="upload-cards">
                     <!-- Step 1: Select Course -->
                     <section class="upload-section">
-                        <div class="section-header">
-                            <div class="section-icon"><i class="fa-solid fa-book-bookmark"></i></div>
-                            <h2 class="section-title">Step 1: Select Course</h2>
+                        <div class="card-header-mini">
+                            <i class="fa-solid fa-book-bookmark"></i> Step 1: Select Course
                         </div>
                         <div class="section-body">
-                            <select id="course-select" class="form-select">
-                                <option value="">-- Select a Course --</option>
-                            </select>
+                            <div class="form-group">
+                                <select id="course-select" class="form-select">
+                                    <option value="">-- Select a Course --</option>
+                                </select>
+                            </div>
                         </div>
                     </section>
 
                     <!-- Step 2: Select Student -->
                     <section class="upload-section">
-                        <div class="section-header">
-                            <div class="section-icon"><i class="fa-solid fa-user-graduate"></i></div>
-                            <h2 class="section-title">Step 2: Select Student</h2>
+                        <div class="card-header-mini">
+                            <i class="fa-solid fa-user-graduate"></i> Step 2: Select Student
                         </div>
                         <div class="section-body">
-                            <select id="student-select" class="form-select" disabled>
-                                <option value="">-- Select a Course First --</option>
-                            </select>
-                            <p class="form-hint" id="student-hint">Students enrolled in the selected course will appear
-                                here.</p>
+                            <div class="form-group">
+                                <select id="student-select" class="form-select" disabled>
+                                    <option value="">-- Select a Course First --</option>
+                                </select>
+                                <p class="form-hint" id="student-hint">Students enrolled in the selected course will
+                                    appear here.</p>
+                            </div>
                         </div>
                     </section>
 
                     <!-- Step 3: Upload File -->
                     <section class="upload-section">
-                        <div class="section-header">
-                            <div class="section-icon"><i class="fa-solid fa-upload"></i></div>
-                            <h2 class="section-title">Step 3: Upload File</h2>
+                        <div class="card-header-mini">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Step 3: Upload File
                         </div>
                         <div class="section-body">
                             <div class="dropzone" id="dropzone">
@@ -136,9 +135,8 @@
 
                     <!-- Recent Uploads Table -->
                     <section class="upload-section recent-uploads-section">
-                        <div class="section-header">
-                            <div class="section-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                            <h2 class="section-title">Recent Uploads</h2>
+                        <div class="card-header-mini">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Recent Uploads
                         </div>
                         <div class="section-body">
                             <div id="recent-uploads-content">

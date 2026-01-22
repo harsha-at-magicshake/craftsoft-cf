@@ -54,18 +54,18 @@
     <!-- Admin Styles - Responsive -->
     <link rel="stylesheet" href="/assets/admin/css/responsive/tablet.css">
     <link rel="stylesheet" href="/assets/admin/css/responsive/mobile.css">
+    <!-- Page Styles -->
+    <link rel="stylesheet" href="../upload-materials/upload.css?v=1.2">
 </head>
 
 <body>
     <div class="admin-layout">
-        <!-- Sidebar injected by JS -->
-
         <main class="admin-main">
             <!-- Header injected by JS -->
             <div id="header-container"></div>
 
             <div class="upload-workspace animate-up">
-                <!-- Workspace Header -->
+                <!-- Page Header (Inside Workspace) -->
                 <div class="workspace-header">
                     <div class="section-icon">
                         <i class="fa-solid fa-explosion"></i>
@@ -76,9 +76,8 @@
                     </div>
                 </div>
 
-                <div class="page-content" style="padding-top: 2rem;">
-                    <div
-                        style="padding: 4rem 2rem; text-align: center; max-width: 800px; margin: 0 auto; background: #fff; border-radius: 20px; border: 1px solid var(--admin-input-border); box-shadow: 0 10px 30px rgba(0,0,0,0.04);">
+                <div class="upload-cards">
+                    <section class="upload-section" style="padding: 5rem 2rem; text-align: center;">
                         <div style="font-size: 5rem; color: var(--primary-500); margin-bottom: 2rem;">
                             <i class="fa-solid fa-rocket"></i>
                         </div>
@@ -96,7 +95,7 @@
                             <i class="fa-solid fa-upload"></i>
                             <span>Upload Materials Instead</span>
                         </a>
-                    </div>
+                    </section>
                 </div>
             </div>
         </main>
