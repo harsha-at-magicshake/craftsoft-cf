@@ -128,7 +128,7 @@
         try {
             const { data, error } = await window.supabaseClient
                 .from('student_materials')
-                .select('id, file_name, file_url, course_code, created_at, student_id, student_db_id, students(student_id, first_name, last_name)')
+                .select('id, file_name, file_url, course_code, created_at, student_db_id, students(student_id, first_name, last_name)')
                 .order('created_at', { ascending: false });
 
             if (error) throw error;

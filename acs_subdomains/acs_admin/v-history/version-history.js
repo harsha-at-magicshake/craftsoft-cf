@@ -27,6 +27,11 @@ const versions = [
         v: "v5.0",
         focus: "\"CraftSoft OS\"",
         milestones: "UI Standardisation. Modular Sidebar/Header JS engines across portals, relocation of Assets, and premium Logo Signature branding."
+    },
+    {
+        v: "v6.0",
+        focus: "Academic Suite",
+        milestones: "Paged Materials system with search capability. Bulk deletion and management for Admins. Premium custom confirmation modals."
     }
 ];
 
