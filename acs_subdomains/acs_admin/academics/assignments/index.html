@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments | Admin - Abhi's Craftsoft</title>
+
+    <!-- Security Gate -->
+    <style>
+        html {
+            visibility: hidden;
+            opacity: 0
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/assets/admin/js/supabase-config.js?v=5.0"></script>
+    <script src="/assets/admin/js/auth-guard.js?v=5.0"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="https://craftsoft.co.in/favicon.svg">
+
+    <!-- Admin Styles -->
+    <link rel="stylesheet" href="/assets/admin/css/base/variables.css?v=5.0">
+    <link rel="stylesheet" href="/assets/admin/css/base/reset.css?v=5.0">
+    <link rel="stylesheet" href="/assets/admin/css/base/typography.css?v=5.0">
+    <link rel="stylesheet" href="/assets/admin/css/layout/sidebar.css?v=5.0">
+    <link rel="stylesheet" href="/assets/admin/css/layout/header.css?v=5.0">
+    <link rel="stylesheet" href="/assets/admin/css/components/buttons.css?v=5.0">
+    <link rel="stylesheet" href="/assets/admin/css/components/cards.css?v=5.0">
+    <link rel="stylesheet" href="/assets/admin/css/components/notifications.css?v=5.0">
+    <link rel="stylesheet" href="/assets/admin/css/components/account-panel.css?v=5.0">
+    <link rel="stylesheet" href="/assets/admin/css/responsive/mobile-nav.css?v=5.0">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <main class="admin-main">
+            <div id="page-header"></div>
+
+            <div class="page-content">
+                <div style="padding: 3rem; text-align: center; max-width: 600px; margin: 0 auto;">
+                    <div style="font-size: 4rem; color: #2896cd; margin-bottom: 1.5rem;">
+                        <i class="fa-solid fa-explosion"></i>
+                    </div>
+                    <h2
+                        style="font-family: 'Outfit', sans-serif; font-size: 1.75rem; font-weight: 800; color: #1e293b; margin-bottom: 1rem;">
+                        Assignments Module
+                    </h2>
+                    <p style="color: #64748b; font-size: 1rem; line-height: 1.6; margin-bottom: 2rem;">
+                        This module is under development. Soon you'll be able to create assignments, set deadlines, and
+                        track student submissions here.
+                    </p>
+                    <a href="../upload-materials/"
+                        style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.5rem; background: #2896cd; color: #fff; border-radius: 12px; text-decoration: none; font-weight: 600; transition: all 0.2s;">
+                        <i class="fa-solid fa-upload"></i>
+                        <span>Upload Materials Instead</span>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/assets/admin/js/utils.js?v=5.0"></script>
+    <script src="/assets/admin/js/sidebar.js?v=5.0"></script>
+    <script>
+        (async function () {
+            // Render Header & Sidebar
+            const header = document.getElementById('page-header');
+            if (header && window.AdminHeader) {
+                header.innerHTML = window.AdminHeader.render('Assignments');
+            }
+
+            if (window.AdminSidebar) {
+                window.AdminSidebar.init('assignments', '../');
+            }
+
+            // Auth check
+            if (window.Auth) {
+                const result = await window.Auth.requireAuth();
+                if (result && result.session && result.admin) {
+                    window.AdminSidebar.renderAccountPanel(result.session, result.admin);
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>
