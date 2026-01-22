@@ -58,18 +58,29 @@
         <!-- Header injected by StudentHeader via JS -->
         <header class="top-bar" id="header-container"></header>
 
-        <div class="under-construction-container animate-up">
-            <div class="uc-card">
-                <div class="uc-icon">
-                    <i class="fa-solid fa-hammer"></i>
+        <div class="materials-content">
+            <div class="page-action-row animate-up">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="materials-search" placeholder="Search files or courses...">
                 </div>
-                <h2>Under Construction</h2>
-                <p>We're building something amazing for you!</p>
-                <p class="uc-desc">Course materials, notes, and learning resources will be available here soon.</p>
-                <a href="../dashboard/" class="btn-back">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    <span>Back to Dashboard</span>
-                </a>
+            </div>
+
+            <div id="materials-loading" class="loading-state">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <p>Fetching your materials...</p>
+            </div>
+
+            <div id="materials-container" class="materials-grid animate-up" style="display: none;">
+                <!-- Dynamically populated by JS -->
+            </div>
+
+            <div id="no-materials" class="empty-state animate-up" style="display: none;">
+                <div class="empty-icon">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h3>No Materials Found</h3>
+                <p>Files uploaded by your tutors will appear here once available.</p>
             </div>
         </div>
     </main>

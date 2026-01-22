@@ -1,102 +1,239 @@
-/* Materials Page Styles */
+/* ============================================
+   Materials Page Styling
+   Craft Soft - Student Module
+   ============================================ */
 
-.under-construction-container {
+.materials-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Action Row & Search */
+.page-action-row {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    min-height: 60vh;
-    padding: 2rem;
+    margin-bottom: 2rem;
 }
 
-.uc-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.95));
-    border-radius: 24px;
-    padding: 3rem 2.5rem;
-    text-align: center;
-    max-width: 480px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+.search-box {
+    position: relative;
+    max-width: 400px;
+    width: 100%;
 }
 
-.uc-icon {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    font-size: 2rem;
-    color: #fff;
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-.uc-card h2 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 0.5rem;
-}
-
-.uc-card p {
-    color: #64748b;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-}
-
-.uc-desc {
-    font-size: 0.9rem !important;
-    color: #94a3b8 !important;
-    margin-bottom: 2rem !important;
-}
-
-.btn-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--primary, #2896cd);
-    color: #fff;
-    padding: 0.875rem 1.5rem;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
+.search-box i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
     font-size: 0.9rem;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
+}
+
+/* Materials Grid */
+.materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.course-materials-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-header {
+    background: var(--primary-light);
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.course-badge {
+    background: var(--primary);
+    color: white;
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.file-count {
+    font-size: 0.8rem;
+    color: var(--primary-600);
+    font-weight: 600;
+}
+
+.files-list {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.file-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    transition: all 0.2s;
+    cursor: default;
+}
+
+.file-row:hover {
+    background: var(--primary-light);
+}
+
+.file-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.file-details {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.file-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.download-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
     transition: all 0.2s;
 }
 
-.btn-back:hover {
-    background: #1e7db1;
+.download-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(40, 150, 205, 0.3);
 }
 
-@media (max-width: 640px) {
-    .uc-card {
-        padding: 2rem 1.5rem;
-        margin: 1rem;
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 5rem 2rem;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--border);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: var(--border);
+    margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.empty-state p {
+    color: var(--text-muted);
+}
+
+/* Animation */
+.animate-up {
+    animation: slideUp 0.5s ease forwards;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
 
-    .uc-icon {
-        width: 64px;
-        height: 64px;
-        font-size: 1.5rem;
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading State */
+.loading-state {
+    text-align: center;
+    padding: 5rem 2rem;
+    color: var(--primary);
+}
+
+.loading-state i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .materials-grid {
+        grid-template-columns: 1fr;
     }
 
-    .uc-card h2 {
-        font-size: 1.5rem;
+    .page-action-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .search-box {
+        max-width: none;
     }
 }
