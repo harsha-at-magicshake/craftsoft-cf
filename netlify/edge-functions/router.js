@@ -34,7 +34,16 @@ export default async (request, context) => {
         return response;
     }
 
-    // Bypasses for direct file access (for main site and admin)
+    // Admin subdomain asset handling (MUST be before generic bypass)
+    if (hostname.includes("admin.craftsoft")) {
+        if (pathname.startsWith("/assets/admin/")) {
+            // Rewrite /assets/admin/* to /acs_subdomains/acs_admin/assets/*
+            const assetPath = pathname.replace("/assets/admin/", "/acs_subdomains/acs_admin/assets/");
+            return context.rewrite(assetPath);
+        }
+    }
+
+    // Bypasses for direct file access (for main site)
     if (pathname.startsWith("/assets/") || pathname.startsWith("/shared/") || pathname.startsWith("/acs_subdomains/")) {
         return; // Fall through to static files at root
     }
