@@ -4,7 +4,6 @@
     padding: 2.5rem;
     max-width: 1400px;
     margin: 0 auto;
-    margin: 0 auto;
     width: 100%;
 }
 
@@ -160,6 +159,11 @@
 .assign-status.submitted {
     background: rgba(16, 185, 129, 0.1);
     color: #059669;
+}
+
+.assign-status.missed {
+    background: rgba(107, 114, 128, 0.1);
+    color: #4b5563;
 }
 
 .assign-course {
@@ -417,14 +421,17 @@
 
 .toast.success {
     border-color: #10b981;
+    color: #064e3b;
 }
 
 .toast.error {
     border-color: #ef4444;
+    color: #7f1d1d;
 }
 
 .toast.warning {
     border-color: #f59e0b;
+    color: #78350f;
 }
 
 /* Animation Classes */
@@ -442,4 +449,49 @@
 
 .animate-pop {
     animation: pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 6rem 2rem;
+    background: #fff;
+    border-radius: 24px;
+    border: 1px dashed var(--border);
+    margin: 2rem auto;
+    max-width: 600px;
+    display: none;
+    /* Toggled by JS */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.empty-icon {
+    width: 100px;
+    height: 100px;
+    background: var(--primary-50);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    color: var(--primary-500);
+    font-size: 3rem;
+}
+
+.empty-state h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+.empty-state p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 400px;
+    line-height: 1.6;
 }

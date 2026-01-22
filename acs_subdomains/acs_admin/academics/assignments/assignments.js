@@ -247,9 +247,14 @@
                             <td><span class="badge badge-primary">${a.course_code}</span></td>
                             <td><span class="deadline-tag ${isUrgent(a.deadline) ? 'urgent' : ''}">${formatDeadline(a.deadline)}</span></td>
                             <td>
-                                <button class="delete-single-btn" onclick="window.confirmDeleteAssign('${a.id}')" title="Delete">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
+                                <div class="action-buttons">
+                                    <button class="icon-btn btn-outline-primary" onclick="window.openEditDeadlineModal('${a.id}', '${a.title}', '${a.deadline}')" title="Edit Deadline">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <button class="icon-btn btn-outline-danger" onclick="window.confirmDeleteAssign('${a.id}')" title="Delete">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     `).join('')}
@@ -406,6 +411,61 @@
                 await loadAssignments();
             } catch (err) {
                 showToast('error', 'Failed to delete');
+            }
+        });
+
+        // Edit Modal Handlers
+        let currentEditId = null;
+
+        window.openEditDeadlineModal = (id, title, deadlineISO) => {
+            currentEditId = id;
+            document.getElementById('edit-modal-subtitle').textContent = `Update deadline for: ${title}`;
+
+            const dateObj = new Date(deadlineISO);
+            document.getElementById('edit-new-date').value = dateObj.toISOString().split('T')[0];
+            document.getElementById('edit-new-time').value = dateObj.toTimeString().substring(0, 5);
+
+            document.getElementById('edit-modal-overlay').style.display = 'flex';
+        };
+
+        document.getElementById('cancel-edit-btn').addEventListener('click', () => {
+            document.getElementById('edit-modal-overlay').style.display = 'none';
+            currentEditId = null;
+        });
+
+        document.getElementById('confirm-edit-btn').addEventListener('click', async () => {
+            if (!currentEditId) return;
+
+            const date = document.getElementById('edit-new-date').value;
+            const time = document.getElementById('edit-new-time').value;
+
+            if (!date || !time) {
+                showToast('error', 'Please submit both date and time');
+                return;
+            }
+
+            const newDeadline = new Date(`${date}T${time}:00`).toISOString();
+            const btn = document.getElementById('confirm-edit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Updating...';
+
+            try {
+                const { error } = await window.supabaseClient
+                    .from('student_assignments')
+                    .update({ deadline: newDeadline })
+                    .eq('id', currentEditId);
+
+                if (error) throw error;
+
+                showToast('success', 'Deadline updated successfully');
+                document.getElementById('edit-modal-overlay').style.display = 'none';
+                await loadAssignments();
+            } catch (e) {
+                console.error(e);
+                showToast('error', 'Failed to update deadline');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Update Deadline';
             }
         });
     }

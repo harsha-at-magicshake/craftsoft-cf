@@ -216,6 +216,33 @@
         </div>
     </div>
 
+    <!-- Edit Deadline Modal -->
+    <div class="delete-confirm-overlay" id="edit-modal-overlay" style="display: none;">
+        <div class="delete-confirm-box" style="width: 450px;">
+            <div class="warning-icon" style="background: var(--primary-50); color: var(--primary);">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            <h3>Edit Deadline</h3>
+            <p id="edit-modal-subtitle" style="margin-bottom: 1.5rem;">Update the submission deadline for this task.</p>
+
+            <div class="form-row" style="text-align: left; width: 100%;">
+                <div class="form-group" style="flex:1;">
+                    <label>New Date</label>
+                    <input type="date" id="edit-new-date" class="form-control">
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label>New Time</label>
+                    <input type="time" id="edit-new-time" class="form-control">
+                </div>
+            </div>
+
+            <div class="delete-actions" style="margin-top: 2rem;">
+                <button class="btn btn-outline btn-sm" id="cancel-edit-btn">Cancel</button>
+                <button class="btn btn-primary btn-sm" id="confirm-edit-btn">Update Deadline</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toast-container"></div>
 
