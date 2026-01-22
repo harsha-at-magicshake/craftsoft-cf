@@ -252,6 +252,14 @@
     display: none !important;
 }
 
+/* Sidebar Items Divider */
+.sidebar-divider {
+    height: 1px;
+    background: var(--sidebar-border);
+    margin: 0.75rem 1rem;
+    opacity: 0.6;
+}
+
 /* ============================================
    Sidebar Section (Payments - no visible parent label)
    ============================================ */

@@ -55,7 +55,10 @@ const AdminSidebar = {
                     ${this.navItem('recently-deleted', 'Trash', 'fa-solid fa-recycle', 'records/recently-deleted')}
 
                     <div class="sidebar-divider"></div>
-                    ${this.navItem('student-testing', 'Student Testing', 'fa-solid fa-vial-circle-check', '#student-testing')}
+                    <a href="javascript:void(0)" class="sidebar-item" data-trigger="student-testing" title="Student Testing">
+                        <i class="fa-solid fa-vial-circle-check"></i>
+                        <span>Student Testing</span>
+                    </a>
                     ${this.navItem('settings', 'Settings', 'fa-gear')}
                 </nav>
             </aside>
@@ -142,7 +145,10 @@ const AdminSidebar = {
                         </div>
                     </div>
                     
-                    ${this.mobileNavItem('student-testing', 'Student Testing', 'fa-solid fa-vial-circle-check', '#student-testing')}
+                    <a href="javascript:void(0)" class="mobile-nav-item" data-trigger="student-testing">
+                        <i class="fa-solid fa-vial-circle-check"></i>
+                        <span>Student Testing</span>
+                    </a>
                     ${this.mobileNavItem('settings', 'Settings', 'fa-gear')}
                 </nav>
                 
@@ -270,7 +276,7 @@ const AdminSidebar = {
         });
 
         // Student Testing Trigger
-        document.querySelectorAll('[href="#student-testing"]').forEach(el => {
+        document.querySelectorAll('[data-trigger="student-testing"]').forEach(el => {
             el.addEventListener('click', (e) => {
                 e.preventDefault();
                 this.closeMobileNav();
