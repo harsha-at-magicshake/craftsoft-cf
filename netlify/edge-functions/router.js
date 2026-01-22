@@ -3,32 +3,9 @@ export default async (request, context) => {
     const hostname = url.hostname.toLowerCase();
     const pathname = url.pathname;
 
-    // Bypasses for direct file access (Shared across all domains)
-    if (pathname.startsWith("/assets/") || pathname.startsWith("/shared/") || pathname.startsWith("/acs_subdomains/")) {
-        return; // Fall through to static files at root
-    }
-
-    // 1. Signup Subdomain
-    if (hostname.includes("signup.craftsoft")) {
-        if (pathname === "/") {
-            return context.rewrite("/acs_subdomains/acs_signup/index.html");
-        }
-
-        if (!pathname.includes(".") && !pathname.endsWith("/")) {
-            return Response.redirect(`${request.url}/`, 301);
-        }
-
-        // Try to serve the file, fallback to 404
-        const response = await context.next();
-        if (response.status === 404) {
-            return context.rewrite("/acs_subdomains/acs_signup/404/index.html");
-        }
-        return context.rewrite(`/acs_subdomains/acs_signup${pathname}`);
-    }
-
-    // 2. Student Portal Subdomain
+    // 1. Student Portal Subdomain - MUST be checked FIRST before generic bypass
     if (hostname.includes("acs-student.craftsoft")) {
-        // Student assets need to be served from student folder, not root
+        // Student assets served from student folder
         if (pathname.startsWith("/assets/")) {
             return context.rewrite(`/acs_subdomains/acs_students${pathname}`);
         }
@@ -48,6 +25,29 @@ export default async (request, context) => {
             return context.rewrite("/acs_subdomains/acs_students/404/index.html");
         }
         return response;
+    }
+
+    // Bypasses for direct file access (for main site and admin)
+    if (pathname.startsWith("/assets/") || pathname.startsWith("/shared/") || pathname.startsWith("/acs_subdomains/")) {
+        return; // Fall through to static files at root
+    }
+
+    // 2. Signup Subdomain
+    if (hostname.includes("signup.craftsoft")) {
+        if (pathname === "/") {
+            return context.rewrite("/acs_subdomains/acs_signup/index.html");
+        }
+
+        if (!pathname.includes(".") && !pathname.endsWith("/")) {
+            return Response.redirect(`${request.url}/`, 301);
+        }
+
+        // Try to serve the file, fallback to 404
+        const response = await context.next();
+        if (response.status === 404) {
+            return context.rewrite("/acs_subdomains/acs_signup/404/index.html");
+        }
+        return context.rewrite(`/acs_subdomains/acs_signup${pathname}`);
     }
 
     // 3. Admin Subdomain
