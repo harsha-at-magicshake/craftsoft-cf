@@ -59,30 +59,24 @@ const AdminSidebar = {
                         ${this.navItem('dashboard', 'Dashboard', 'fa-chart-pie')}
                         ${this.navItem('inquiries', 'Inquiries', 'fa-solid fa-circle-question')}
                         ${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user')}
-                        
                         ${this.sectionLabel('Academics')}
                         ${this.navItem('courses', 'Courses', 'fa-book-bookmark')}
                         ${this.navItem('services', 'Services', 'fa-wrench')}
-                        
                         ${this.sectionLabel('Management')}
                         ${this.navItem('students', 'Students', 'fa-user-graduate')}
                         ${this.navItem('clients', 'Clients', 'fa-user-tie')}
-                        
                         ${this.sectionLabel('Payments')}
                         ${this.navItem('record-payment', 'Record Payment', 'fa-indian-rupee-sign')}
                         ${this.navItem('all-payments', 'All Payments', 'fa-money-bill-trend-up')}
-                        
                         ${this.sectionLabel('Finance')}
                         ${this.navItem('receipts', 'Receipts', 'fa-file-invoice')}
-                        
                         ${this.sectionLabel('Data Recovery')}
                         ${this.navItem('archived', 'Archived', 'fa-solid fa-box', 'records/archived')}
                         ${this.navItem('recently-deleted', 'Trash', 'fa-solid fa-recycle', 'records/recently-deleted')}
 
                         ${this.sectionLabel('System')}
                         ${this.navItem('settings', 'Settings', 'fa-gear')}
-                        ${this.navItem('version-history', 'Version History', 'fa-solid fa-clock-rotate-left', 'settings/version-history')}
-                        
+                        ${this.navItem('version-history', 'vHistory', 'fa-solid fa-clock-rotate-left', 'settings/version-history')}
                         ${this.sectionLabel('Testing')}
                         ${this.navItem('student-testing', 'Student Testing', 'fa-solid fa-microscope', 'testing')}
                     </div>
@@ -190,7 +184,7 @@ const AdminSidebar = {
 
     // Section label for desktop
     sectionLabel(text) {
-        return `<div class="sidebar-section-label">${text}</div>`;
+        return `<div class="sidebar-section-label" style="margin-top: 5px; padding-top: 15px;">${text}</div>`;
     },
 
     // Child nav item for desktop (indented)
