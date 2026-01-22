@@ -13,6 +13,36 @@
     }
 }
 
+/* Stats Strip */
+.stats-strip {
+    background: linear-gradient(135deg, var(--primary-50), #fff);
+    border: 1px solid var(--primary-100);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--admin-text-secondary);
+}
+
+.stat-item i {
+    color: var(--primary-500);
+    font-size: 1.1rem;
+}
+
+.stat-item strong {
+    color: var(--primary-600);
+    font-weight: 700;
+}
+
 /* Tabs System */
 .tabs-container {
     margin-top: 2rem;

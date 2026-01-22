@@ -1,0 +1,216 @@
+/* Submissions Module Styles */
+
+.filters-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filters-row .search-box {
+    flex: 1;
+    min-width: 280px;
+    position: relative;
+}
+
+.filters-row .search-box i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--admin-text-muted);
+}
+
+.filters-row .search-box input {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 2.75rem;
+    border: 1px solid var(--admin-input-border);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+.filters-row .search-box input:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(40, 150, 205, 0.1);
+}
+
+.filter-group {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.filter-group select {
+    min-width: 160px;
+}
+
+/* Stats Strip */
+.stats-strip {
+    background: linear-gradient(135deg, var(--primary-50), #fff);
+    border: 1px solid var(--primary-100);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--admin-text-secondary);
+}
+
+.stat-item i {
+    color: var(--primary-500);
+    font-size: 1.1rem;
+}
+
+.stat-item strong {
+    color: var(--primary-600);
+    font-weight: 700;
+}
+
+/* Bulk Actions Bar */
+.bulk-actions-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background: var(--primary-50);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--primary-200);
+}
+
+.bulk-actions-bar.active {
+    display: flex;
+}
+
+.bulk-count {
+    font-weight: 600;
+    color: var(--primary-600);
+}
+
+/* Table Styles */
+.submissions-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.submissions-table th,
+.submissions-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--admin-input-border);
+}
+
+.submissions-table th {
+    background: var(--gray-50);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--admin-text-secondary);
+}
+
+.submissions-table tr:hover {
+    background: var(--gray-50);
+}
+
+.submissions-table .student-name {
+    font-weight: 600;
+    color: var(--admin-text-primary);
+}
+
+.submissions-table .assignment-title {
+    color: var(--admin-text-secondary);
+}
+
+.submissions-table .date-cell {
+    font-size: 0.9rem;
+    color: var(--admin-text-muted);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.icon-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline-success {
+    color: #10b981;
+    border-color: #a7f3d0;
+}
+
+.btn-outline-success:hover {
+    background: #ecfdf5;
+    border-color: #10b981;
+}
+
+.btn-outline-danger {
+    color: #ef4444;
+    border-color: #fecaca;
+}
+
+.btn-outline-danger:hover {
+    background: #fef2f2;
+    border-color: #ef4444;
+}
+
+/* Pagination */
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem 0;
+}
+
+.page-info {
+    font-size: 0.9rem;
+    color: var(--admin-text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .filters-row {
+        flex-direction: column;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .filter-group select {
+        flex: 1;
+    }
+}

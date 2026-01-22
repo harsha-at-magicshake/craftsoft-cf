@@ -143,6 +143,9 @@
         const effectiveDeadline = getEffectiveDeadline(task);
         const status = getTaskStatus(task); // submitted, missed, pending
 
+        // Check if admin edited deadline (no extensions allowed)
+        const isEdited = task.is_deadline_edited === true;
+
         let statusLabel = 'Pending';
         let statusClass = 'pending';
 
@@ -159,9 +162,18 @@
             if (extension.status === 'APPROVED') extBadge = `<span class="assign-status" style="background:#dbeafe; color:#1e40af;">Extended</span>`;
             else if (extension.status === 'PENDING') extBadge = `<span class="assign-status" style="background:#fef9c3; color:#854d0e;">Ext. Pending</span>`;
         }
+        if (isEdited) {
+            extBadge = `<span class="assign-status" style="background:#e0e7ff; color:#3730a3;">Tutor Set</span>`;
+        }
+
+        // Calculate max extension date (3 months from original deadline)
+        const originalDeadline = new Date(task.deadline);
+        const maxExtDate = new Date(originalDeadline);
+        maxExtDate.setMonth(maxExtDate.getMonth() + 3);
+        const maxExtDateStr = maxExtDate.toISOString().split('T')[0];
 
         return `
-            <div class="assign-card" id="task-${task.id}">
+            <div class="assign-card" id="task-${task.id}" data-max-ext="${maxExtDateStr}" data-original="${task.deadline}">
                 <div class="assign-header">
                     <div class="assign-badge-group">
                         <span class="assign-course">${task.course_code}</span>
@@ -204,7 +216,7 @@
                         <button class="btn btn-primary" disabled style="opacity:0.5; cursor:not-allowed;"><i class="fa-solid fa-lock"></i> Locked</button>
                     ` : `
                         <button class="btn btn-primary" onclick="window.openSubmitModal('${task.id}', '${task.title}')"><i class="fa-solid fa-upload"></i> Submit</button>
-                        ${!extension ? `<button class="btn btn-outline" id="ext-btn-${task.id}" onclick="window.openExtensionModal('${task.id}')" disabled title="Only available < 1h before deadline"><i class="fa-solid fa-clock-rotate-left"></i> Extension</button>` : ''}
+                        ${!isEdited && !extension ? `<button class="btn btn-outline" id="ext-btn-${task.id}" onclick="window.openExtensionModal('${task.id}', '${maxExtDateStr}')" disabled title="Only available < 1h before deadline"><i class="fa-solid fa-clock-rotate-left"></i> Extension</button>` : ''}
                     `}
                 </div>
             </div>
@@ -263,8 +275,13 @@
         document.getElementById('submit-modal').classList.add('active');
     };
 
-    window.openExtensionModal = (id) => {
+    window.openExtensionModal = (id, maxDate) => {
         currentTaskToSubmit = id;
+        // Set max date on the input
+        const dateInput = document.getElementById('extension-date');
+        if (dateInput && maxDate) {
+            dateInput.max = maxDate;
+        }
         document.getElementById('extension-modal').classList.add('active');
     };
 

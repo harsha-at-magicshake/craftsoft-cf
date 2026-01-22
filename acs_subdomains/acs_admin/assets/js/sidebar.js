@@ -61,6 +61,7 @@ const AdminSidebar = {
                         ${this.sectionLabel('Academics')}
                         ${this.navItem('upload-materials', 'Upload Materials', 'fa-solid fa-upload', 'academics/upload-materials')}
                         ${this.navItem('assignments', 'Assignments', 'fa-solid fa-book-open', 'academics/assignments')}
+                        ${this.navItem('submissions', 'Submissions', 'fa-solid fa-book-atlas', 'academics/submissions')}
                         
                         ${this.sectionLabel('Talent')}
                         ${this.navItem('tutors', 'Tutors', 'fa-chalkboard-user', 'tutors')}

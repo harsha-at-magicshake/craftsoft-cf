@@ -12,6 +12,8 @@
     let selectedFile = null;
     let currentDeleteId = null;
     let currentAdmin = null;
+    let currentPage = 1;
+    const perPage = 3;
 
     let courseSearchableSelect = null;
     let studentSearchableSelect = null;
@@ -227,7 +229,17 @@
             return;
         }
 
+        const totalPages = Math.ceil(allAssignments.length / perPage);
+        const start = (currentPage - 1) * perPage;
+        const pageData = allAssignments.slice(start, start + perPage);
+
         historyContent.innerHTML = `
+            <div class="stats-strip">
+                <div class="stat-item">
+                    <i class="fa-solid fa-file-signature"></i>
+                    <span>Total Assignments: <strong>${allAssignments.length}</strong></span>
+                </div>
+            </div>
             <div class="bulk-actions-bar" id="bulk-bar">
                 <span class="bulk-count"><span id="selected-count">0</span> selected</span>
                 <div>
@@ -247,7 +259,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    ${allAssignments.map(a => `
+                    ${pageData.map(a => `
                         <tr>
                             <td><input type="checkbox" class="assign-checkbox" data-id="${a.id}" onchange="window.updateBulkBar()"></td>
                             <td>
@@ -255,7 +267,10 @@
                                 ${a.file_url ? `<br><a href="${a.file_url}" target="_blank" class="file-link small"><i class="fa-solid fa-paperclip"></i> Reference</a>` : ''}
                             </td>
                             <td><span class="badge badge-primary">${a.course_code}</span></td>
-                            <td><span class="deadline-tag ${isUrgent(a.deadline) ? 'urgent' : ''}">${formatDeadline(a.deadline)}</span></td>
+                            <td>
+                                <span class="deadline-tag ${isUrgent(a.deadline) ? 'urgent' : ''}">${formatDeadline(a.deadline)}</span>
+                                ${a.is_deadline_edited ? '<br><small class="text-muted">✏️ Edited</small>' : ''}
+                            </td>
                             <td>
                                 <div class="action-buttons">
                                     <button class="icon-btn btn-outline-primary" onclick="window.openEditDeadlineModal('${a.id}', '${a.title}', '${a.deadline}')" title="Edit Deadline">
@@ -270,7 +285,24 @@
                     `).join('')}
                 </tbody>
             </table>
+            <div class="pagination-controls" style="display:flex; align-items:center; justify-content:center; gap:1rem; margin-top:1.5rem;">
+                <button class="btn btn-outline btn-sm" id="assign-prev" ${currentPage <= 1 ? 'disabled' : ''}>
+                    <i class="fa-solid fa-chevron-left"></i> Prev
+                </button>
+                <span class="page-info">Page ${currentPage} of ${totalPages}</span>
+                <button class="btn btn-outline btn-sm" id="assign-next" ${currentPage >= totalPages ? 'disabled' : ''}>
+                    Next <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
         `;
+
+        // Bind pagination
+        document.getElementById('assign-prev')?.addEventListener('click', () => {
+            if (currentPage > 1) { currentPage--; renderAssignments(); }
+        });
+        document.getElementById('assign-next')?.addEventListener('click', () => {
+            if (currentPage < totalPages) { currentPage++; renderAssignments(); }
+        });
     }
 
     async function loadExtensions() {
@@ -501,7 +533,7 @@
             try {
                 const { error } = await window.supabaseClient
                     .from('student_assignments')
-                    .update({ deadline: newDeadline })
+                    .update({ deadline: newDeadline, is_deadline_edited: true })
                     .eq('id', currentEditId);
 
                 if (error) throw error;
