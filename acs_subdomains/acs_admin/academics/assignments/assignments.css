@@ -152,3 +152,74 @@
     background: rgba(239, 68, 68, 0.1);
     color: #ef4444;
 }
+
+/* Action Buttons (Matching Students Table) */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.icon-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline-primary {
+    color: var(--primary-500);
+    border-color: var(--primary-200);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-500);
+}
+
+.btn-outline-danger {
+    color: #ef4444;
+    border-color: #fecaca;
+}
+
+.btn-outline-danger:hover {
+    background: #fef2f2;
+    border-color: #ef4444;
+}
+
+/* Bulk Actions Bar */
+.bulk-actions-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background: var(--primary-50);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--primary-200);
+}
+
+.bulk-actions-bar.active {
+    display: flex;
+}
+
+.bulk-count {
+    font-weight: 600;
+    color: var(--primary-600);
+}
+
+.bulk-actions-bar .btn {
+    margin-left: 0.5rem;
+}

@@ -228,18 +228,28 @@
         }
 
         historyContent.innerHTML = `
+            <div class="bulk-actions-bar" id="bulk-bar">
+                <span class="bulk-count"><span id="selected-count">0</span> selected</span>
+                <div>
+                    <button class="btn btn-danger btn-sm" onclick="window.bulkDeleteAssignments()">
+                        <i class="fa-solid fa-trash"></i> Delete Selected
+                    </button>
+                </div>
+            </div>
             <table class="recent-table">
                 <thead>
                     <tr>
+                        <th width="40"><input type="checkbox" id="select-all" onchange="window.toggleSelectAll(this.checked)"></th>
                         <th>Title</th>
                         <th>Course</th>
                         <th>Deadline</th>
-                        <th width="100">Action</th>
+                        <th width="120">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     ${allAssignments.map(a => `
                         <tr>
+                            <td><input type="checkbox" class="assign-checkbox" data-id="${a.id}" onchange="window.updateBulkBar()"></td>
                             <td>
                                 <strong>${a.title}</strong>
                                 ${a.file_url ? `<br><a href="${a.file_url}" target="_blank" class="file-link small"><i class="fa-solid fa-paperclip"></i> Reference</a>` : ''}
@@ -327,6 +337,45 @@
     window.confirmDeleteAssign = (id) => {
         currentDeleteId = id;
         document.getElementById('delete-overlay').style.display = 'flex';
+    };
+
+    window.toggleSelectAll = (checked) => {
+        document.querySelectorAll('.assign-checkbox').forEach(cb => cb.checked = checked);
+        window.updateBulkBar();
+    };
+
+    window.updateBulkBar = () => {
+        const selected = document.querySelectorAll('.assign-checkbox:checked');
+        const bar = document.getElementById('bulk-bar');
+        const count = document.getElementById('selected-count');
+
+        if (selected.length > 0) {
+            bar.classList.add('active');
+            count.textContent = selected.length;
+        } else {
+            bar.classList.remove('active');
+        }
+    };
+
+    window.bulkDeleteAssignments = async () => {
+        const selected = document.querySelectorAll('.assign-checkbox:checked');
+        if (selected.length === 0) return;
+
+        if (!confirm(`Are you sure you want to delete ${selected.length} assignment(s)?`)) return;
+
+        try {
+            const ids = Array.from(selected).map(cb => cb.dataset.id);
+            const { error } = await window.supabaseClient
+                .from('student_assignments')
+                .delete()
+                .in('id', ids);
+
+            if (error) throw error;
+            showToast('success', `${ids.length} assignment(s) deleted`);
+            await loadAssignments();
+        } catch (e) {
+            showToast('error', 'Failed to delete assignments');
+        }
     };
 
     // ============================================

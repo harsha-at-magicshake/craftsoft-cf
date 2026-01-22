@@ -359,6 +359,7 @@
         document.getElementById('confirm-extension').onclick = async () => {
             const reason = document.getElementById('extension-reason').value.trim();
             const date = document.getElementById('extension-date').value;
+            const time = document.getElementById('extension-time')?.value || '23:59';
 
             if (!reason || !date) {
                 showToast('Warning', 'Please provide a reason and new date.', 'warning');
@@ -372,7 +373,7 @@
                         assignment_id: currentTaskToSubmit,
                         student_db_id: window.studentDbId,
                         reason: reason,
-                        requested_deadline: new Date(date).toISOString()
+                        requested_deadline: new Date(`${date}T${time}:00`).toISOString()
                     });
                 if (error) throw error;
                 showToast('Sent!', 'Extension request sent to Tutor.', 'success');
