@@ -1043,22 +1043,23 @@ async function confirmDelete() {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
     try {
-        // DEACTIVATE: Move to Archived (set status to INACTIVE, NOT deleted_at)
+        // SOFT DELETE: Move to Recently Deleted (set deleted_at AND status to INACTIVE)
         const { error } = await window.supabaseClient
             .from('clients')
             .update({
-                status: 'INACTIVE'
+                status: 'INACTIVE',
+                deleted_at: new Date().toISOString()
             })
             .eq('id', deleteTargetId);
 
         if (error) throw error;
 
-        Toast.success('Deactivated', 'Client moved to Archived');
+        Toast.success('Deleted', 'Client moved to Recovery Center');
         hideDeleteConfirm();
         await loadClients();
     } catch (e) {
-        console.error('Deactivate failed:', e);
-        Toast.error('Error', 'Failed to deactivate client');
+        console.error('Delete failed:', e);
+        Toast.error('Error', 'Failed to delete client');
     } finally {
         btn.disabled = false;
         btn.innerHTML = 'Delete';
@@ -1157,24 +1158,27 @@ async function bulkDeleteClients() {
     const count = selectedClientIds.size;
 
     Modal.confirm(
-        'Deactivate Clients',
-        `Are you sure you want to deactivate ${count} selected clients? They will be moved to the inactive list.`,
+        'Delete Clients',
+        `Are you sure you want to delete ${count} selected clients? They will be moved to the Recovery Center.`,
         async () => {
             try {
                 const ids = Array.from(selectedClientIds);
                 const { error } = await window.supabaseClient
                     .from('clients')
-                    .update({ status: 'INACTIVE' })
+                    .update({
+                        status: 'INACTIVE',
+                        deleted_at: new Date().toISOString()
+                    })
                     .in('id', ids);
 
                 if (error) throw error;
 
                 selectedClientIds.clear();
-                Toast.success('Deactivated', `${count} clients moved to inactive list.`);
+                Toast.success('Deleted', `${count} clients moved to Recovery Center.`);
                 await loadClients();
             } catch (e) {
                 console.error(e);
-                Toast.error('Error', 'Bulk deactivation failed');
+                Toast.error('Error', 'Bulk deletion failed');
             }
         }
     );

@@ -459,15 +459,13 @@ function bindBulkActions() {
                 async () => {
                     try {
                         const ids = Array.from(selectedStudents);
-
-                        // Cascade delete child records
-                        await window.supabaseClient.from('receipts').delete().in('student_id', ids);
-                        await window.supabaseClient.from('payments').delete().in('student_id', ids);
-
-                        const { error } = await window.supabaseClient.from('students').delete().in('id', ids);
+                        // Soft delete: set deleted_at instead of hard delete
+                        const { error } = await window.supabaseClient.from('students').update({
+                            deleted_at: new Date().toISOString()
+                        }).in('id', ids);
                         if (error) throw error;
 
-                        window.AdminUtils.Toast.success('Deleted', `${ids.length} students removed`);
+                        window.AdminUtils.Toast.success('Deleted', `${ids.length} students moved to Recovery Center`);
                         selectedStudents.clear();
                         updateBulkBar();
                         await loadStudents();
@@ -1338,20 +1336,21 @@ async function confirmDelete() {
     try {
         console.log('Deactivating student with id:', deleteTargetId);
 
-        // DEACTIVATE: Move to Archived (set status to INACTIVE, NOT deleted_at)
+        // SOFT DELETE: Move to Recently Deleted (set deleted_at AND status to INACTIVE)
         const { error: studentError } = await window.supabaseClient
             .from('students')
             .update({
-                status: 'INACTIVE'
+                status: 'INACTIVE',
+                deleted_at: new Date().toISOString()
             })
             .eq('id', deleteTargetId);
 
         if (studentError) {
-            console.error('Student deactivation error:', studentError);
+            console.error('Student deletion error:', studentError);
             throw studentError;
         }
 
-        Toast.success('Deactivated', 'Student moved to Archived.');
+        Toast.success('Deleted', 'Student moved to Recovery Center.');
         hideDeleteConfirm();
         await loadStudents();
     } catch (e) {
