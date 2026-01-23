@@ -13,7 +13,8 @@
         { name: 'Cloud & DevOps', url: '/c-devops/' },
         { name: 'Cyber Security', url: '/c-cyber-security/' },
         { name: 'Data Analytics', url: '/c-data-analytics/' },
-        { name: 'Salesforce Development', url: '/c-salesforce-developer/' }
+        { name: 'Salesforce Development', url: '/c-salesforce-developer/' },
+        { name: 'ServiceNow Administration', url: '/c-service-now/' }
     ];
 
     // All available services

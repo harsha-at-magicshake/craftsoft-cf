@@ -25,10 +25,18 @@
 }
 
 .filters-row .search-box i {
-    display: none !important;
+    position: absolute;
+    left: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--admin-text-muted);
+    font-size: 0.95rem;
+    pointer-events: none;
+    display: block !important;
 }
 
 .filters-row .search-box input {
+    padding-left: 3rem !important;
     width: 100%;
     padding: 0.85rem 1rem;
     border: 1px solid var(--admin-input-border);
@@ -46,11 +54,22 @@
 
 .filter-group {
     display: flex;
-    gap: 0.75rem;
+    gap: 1rem;
+    flex: 2;
+    min-width: 400px;
 }
 
-.filter-group select {
-    min-width: 160px;
+.filter-group .input-with-icon {
+    flex: 1;
+    position: relative;
+    min-width: 200px;
+}
+
+@media (max-width: 1200px) {
+    .filter-group {
+        flex: 1;
+        width: 100%;
+    }
 }
 
 /* Stats Strip */

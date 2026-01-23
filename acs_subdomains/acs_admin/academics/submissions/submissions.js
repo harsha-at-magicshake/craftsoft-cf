@@ -12,6 +12,8 @@
     let assignments = [];
     let currentPage = 1;
     const perPage = 5;
+    let courseSearchableSelect = null;
+    let assignmentSearchableSelect = null;
 
     // DOM Elements
     const content = document.getElementById('submissions-content');
@@ -56,17 +58,36 @@
 
         courses = courseData || [];
         filterCourse.innerHTML = '<option value="">All Courses</option>' +
-            courses.map(c => `<option value="${c.course_code}">${c.course_code}</option>`).join('');
+            courses.map(c => `<option value="${c.course_code}">${c.course_code} - ${c.course_name}</option>`).join('');
 
         // Load assignments
         const { data: assignData } = await window.supabaseClient
             .from('student_assignments')
-            .select('id, title')
+            .select('id, title, course_code')
             .order('created_at', { ascending: false });
 
         assignments = assignData || [];
         filterAssignment.innerHTML = '<option value="">All Assignments</option>' +
-            assignments.map(a => `<option value="${a.id}">${a.title}</option>`).join('');
+            assignments.map(a => `<option value="${a.id}">${a.title} (${a.course_code})</option>`).join('');
+
+        // Initialize/Sync SearchableSelects
+        if (window.AdminUtils?.SearchableSelect) {
+            if (!courseSearchableSelect) {
+                courseSearchableSelect = new window.AdminUtils.SearchableSelect('filter-course', {
+                    placeholder: 'Search Course...'
+                });
+            } else {
+                courseSearchableSelect.syncWithOptions();
+            }
+
+            if (!assignmentSearchableSelect) {
+                assignmentSearchableSelect = new window.AdminUtils.SearchableSelect('filter-assignment', {
+                    placeholder: 'Search Assignment...'
+                });
+            } else {
+                assignmentSearchableSelect.syncWithOptions();
+            }
+        }
     }
 
     async function loadSubmissions() {
