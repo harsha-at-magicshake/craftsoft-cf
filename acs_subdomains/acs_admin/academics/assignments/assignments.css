@@ -527,3 +527,7 @@
         flex: 1;
     }
 }
+/* MODAL FIX: Ensuring delete/edit modals are above everything */
+.delete-confirm-overlay {
+    z-index: 10001 !important;
+}
