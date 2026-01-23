@@ -1,5 +1,15 @@
 /* Submissions Module Styles */
 
+.admin-main {
+    padding-top: 100px !important;
+}
+
+@media (max-width: 768px) {
+    .admin-main {
+        padding-top: 85px !important;
+    }
+}
+
 .filters-row {
     display: flex;
     gap: 1.5rem;

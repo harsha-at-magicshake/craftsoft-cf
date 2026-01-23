@@ -1,96 +1,143 @@
-/* Assignments Module Specific Styles */
+/* ============================================
+   Assignments - Admin Workspace
+   ============================================ */
 
-.assignment-grid {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+/* FIX: Forces content below fixed header */
+.admin-main {
+    padding-top: 100px !important;
 }
 
-@media (max-width: 1100px) {
-    .assignment-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 768px) {
+    .admin-main {
+        padding-top: 85px !important;
     }
 }
 
-/* Simple Clean Form Styling (Mirroring upload-materials) */
-.upload-section {
-    padding: 2.5rem;
-    background: #fff;
-    border: 1px solid var(--admin-input-border);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-}
-
-.card-header-mini {
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--primary-500);
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    opacity: 0.8;
-}
-
-.card-header-mini i {
-    font-size: 1.1rem;
-}
-
-/* Fix Icon Alignment - Icons INSIDE input */
-.input-with-icon {
-    position: relative;
+.upload-workspace {
+    padding: 0;
     width: 100%;
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
+/* Page Header */
+.workspace-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.workspace-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--admin-text-primary);
+    margin: 0;
+}
+
+.workspace-subtitle {
+    font-size: 1rem;
+    color: var(--admin-text-muted);
+    margin: 0.25rem 0 0;
 }
 
 /* ============================================
-   Section Headers (Blue Box Icon)
+   Premium Form Section (Matching Reference)
    ============================================ */
-.form-section-title {
-    display: flex !important;
-    align-items: center;
-    gap: 0.875rem;
-    font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--admin-text-primary);
-    margin: 2.5rem 0 1.5rem;
-    padding: 0;
-    border: none;
-    text-transform: none;
-    letter-spacing: normal;
+.upload-section {
+    background: #fff;
+    border: 1px solid var(--admin-input-border, #e2e8f0);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    margin-bottom: 2rem;
+    width: 100%;
 }
 
-.form-section-title i {
-    width: 38px;
-    height: 38px;
+/* Blue Box Icon Styling */
+.form-section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.form-section-icon {
+    width: 42px;
+    height: 42px;
     background: var(--accent-gradient);
-    border-radius: 10px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
     font-size: 1.1rem;
-    box-shadow: 0 4px 10px rgba(40, 150, 205, 0.2);
+    box-shadow: 0 4px 12px rgba(40, 150, 205, 0.2);
     flex-shrink: 0;
 }
 
-/* ============================================
-   Input Style Adjustments (Remove Icons)
-   ============================================ */
+.form-section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--admin-text-primary);
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center;
+}
+
+.form-group {
+    margin-bottom: 1.75rem;
+}
+
+.form-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--admin-text-primary);
+    margin-bottom: 0.625rem;
+    display: block;
+}
+
+/* Premium Inputs - No Icons Inside, Light Bg */
+.form-control,
+.form-select,
+.searchable-select-trigger {
+    width: 100% !important;
+    padding: 0.875rem 1.25rem !important;
+    background: #f8fafc !important;
+    /* Extremely light blue-gray */
+    border: 1.5px solid var(--admin-input-border, #e2e8f0) !important;
+    border-radius: 12px !important;
+    font-size: 0.95rem !important;
+    color: var(--admin-text-primary) !important;
+    transition: all 0.2s ease !important;
+}
+
+.form-control:focus,
+.form-select:focus,
+.searchable-select-trigger:focus-within {
+    background: #fff !important;
+    border-color: var(--primary-500) !important;
+    box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1) !important;
+    outline: none !important;
+}
+
+/* Remove internal icons if they exist in wrapper classes */
 .input-with-icon .input-icon {
     display: none !important;
 }
 
-.input-with-icon .form-control,
-.input-with-icon .form-select {
-    padding-left: 1.25rem !important;
+/* Grids for complex sections */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 576px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .deadline-row {

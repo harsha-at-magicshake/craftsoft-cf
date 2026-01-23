@@ -2,12 +2,23 @@
    Upload Materials - Admin Workspace
    ============================================ */
 
+/* FIX: Forces content below fixed header */
+.admin-main {
+    padding-top: 100px !important;
+}
+
+@media (max-width: 768px) {
+    .admin-main {
+        padding-top: 85px !important;
+    }
+}
+
 .upload-workspace {
     padding: 0;
     width: 100%;
 }
 
-/* Page Header (Match Record Payment) */
+/* Page Header */
 .workspace-header {
     display: flex;
     align-items: center;
@@ -38,42 +49,39 @@
 
 .upload-section {
     background: #fff;
-    border: 1px solid var(--admin-input-border);
+    border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 20px;
     padding: 2.5rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 2rem;
     width: 100%;
 }
 
-.upload-section:hover {
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
-}
-
+/* Section Title with Blue Box Icon */
 .card-header-mini {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    text-transform: none;
-    letter-spacing: normal;
     color: var(--admin-text-primary);
     margin-bottom: 2rem;
     display: flex;
     align-items: center;
-    gap: 0.875rem;
+    gap: 1rem;
     opacity: 1;
+    text-transform: none;
+    letter-spacing: normal;
 }
 
 .card-header-mini i {
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
     background: var(--accent-gradient);
-    border-radius: 8px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     box-shadow: 0 4px 10px rgba(40, 150, 205, 0.15);
     flex-shrink: 0;
 }
@@ -419,7 +427,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2000;
+    z-index: 10001 !important;
     backdrop-filter: blur(4px);
 }
 
