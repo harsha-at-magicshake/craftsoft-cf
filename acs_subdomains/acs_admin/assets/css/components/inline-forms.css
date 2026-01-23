@@ -1,6 +1,6 @@
 /* Inline Form Container - For editing items directly in the card */
 .inline-form-container {
-    background: #ffffff;
+    background: var(--admin-bg, #edf6fb)fff;
     border: 1.5px solid var(--admin-primary-light);
     border-radius: 20px;
     padding: 2rem;

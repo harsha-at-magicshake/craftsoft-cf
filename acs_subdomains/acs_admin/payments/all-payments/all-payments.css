@@ -198,7 +198,7 @@
     }
 
     .premium-card {
-        background: #fff;
+        background: var(--admin-bg, #edf6fb);
         border: 1px solid var(--admin-card-border);
         border-radius: 16px;
         overflow: hidden;

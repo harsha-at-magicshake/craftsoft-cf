@@ -68,7 +68,7 @@
     border: 1.5px solid var(--admin-input-border);
     border-radius: 12px;
     font-size: 0.9rem;
-    background: #fff !important;
+    background: var(--admin-bg, #edf6fb) !important;
     color: var(--admin-text-primary);
     cursor: pointer;
     -webkit-appearance: none !important;
@@ -94,7 +94,7 @@
     border: 1.5px solid var(--admin-input-border);
     border-radius: 12px;
     font-size: 0.9rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     transition: all 0.2s ease;
 }
 
@@ -237,7 +237,7 @@
     height: 36px;
     border-radius: 10px;
     border: 1px solid #e2e8f0;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -321,7 +321,7 @@
 }
 
 .premium-card {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     padding: 1.25rem;
@@ -399,7 +399,7 @@
     cursor: pointer;
     transition: all 0.2s;
     border: 1px solid var(--admin-input-border);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
 }
 
 .card-action-btn:active {

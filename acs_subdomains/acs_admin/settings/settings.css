@@ -32,7 +32,7 @@
     justify-content: center;
     gap: 0.75rem;
     padding: 1.25rem 1rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     color: var(--admin-text-secondary, #64748b);
@@ -50,7 +50,7 @@
 }
 
 .settings-tab-btn:hover {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-color: var(--primary-300, #7dd3fc);
     color: var(--primary-600, #1a7eb0);
     transform: translateY(-2px);
@@ -90,7 +90,7 @@
    Settings Section
    ============================================ */
 .settings-section {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     overflow: hidden;
@@ -271,7 +271,7 @@
     border-radius: 10px;
     font-size: 0.9rem;
     color: var(--admin-text-primary, #0f172a);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     transition: all 0.2s;
 }
 
@@ -412,7 +412,7 @@
 }
 
 .session-item:hover {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-color: var(--primary-300, #7dd3fc);
 }
 

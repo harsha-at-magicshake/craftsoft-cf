@@ -7,7 +7,7 @@
    Premium Data Table (Desktop)
    ============================================ */
 .table-container {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     overflow: hidden;
@@ -128,7 +128,7 @@
     justify-content: center;
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 10px;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     color: var(--admin-text-secondary, #64748b);
     cursor: pointer;
     transition: all 0.2s;
@@ -184,7 +184,7 @@
 }
 
 .premium-card {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     padding: 1.25rem;
@@ -351,7 +351,7 @@
 
 /* Simple Receipt Skeleton */
 .receipt-simple {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     font-family: 'Tahoma', sans-serif;
 }
 

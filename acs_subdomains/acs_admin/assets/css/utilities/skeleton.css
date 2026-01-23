@@ -104,7 +104,7 @@
 
 /* Skeleton Card */
 .skeleton-card {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     padding: 1rem;

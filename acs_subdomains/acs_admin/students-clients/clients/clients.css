@@ -64,7 +64,7 @@
 .inline-form-body textarea:focus,
 .inline-form-body select:focus {
     border-color: var(--primary-color, #2896cd);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
 }
 
@@ -113,7 +113,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 0.75rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--gray-200, #e2e8f0);
     border-radius: 8px;
     cursor: pointer;
@@ -166,7 +166,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem 1rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-radius: 10px;
     border: 1px solid var(--gray-200, #e2e8f0);
     margin-bottom: 0.5rem;
@@ -177,7 +177,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-radius: 10px;
     border: 2px solid var(--primary-color);
 }
@@ -194,7 +194,7 @@
 
 /* Inline Form Container */
 .inline-form-container {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     margin: 1.5rem 0;
@@ -296,7 +296,7 @@
 }
 
 .delete-confirm-box {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-radius: 20px;
     padding: 2.5rem 2rem;
     text-align: center;
@@ -319,7 +319,7 @@
 }
 
 .bulk-actions-bar {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1.5px solid #ef444433;
     border-radius: 12px;
     padding: 0.75rem 1.25rem;
@@ -345,7 +345,7 @@
 
 /* Premium Card (Mobile View) */
 .premium-card {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 20px;
     padding: 1.25rem;
@@ -505,7 +505,7 @@
 
 .course-search-dropdown.open .search-input-wrapper {
     border-color: var(--primary-500, #2896cd);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
@@ -550,7 +550,7 @@
     right: 0;
     max-height: 350px;
     overflow-y: auto;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1.5px solid var(--primary-500, #2896cd);
     border-top: none;
     border-radius: 0 0 12px 12px;

@@ -1,4 +1,4 @@
-﻿/* Students Module - Inline Form Styles */
+/* Students Module - Inline Form Styles */
 
 /* ============================================
    Form Input Styling (Premium)
@@ -67,7 +67,7 @@
 .inline-form-body textarea:focus,
 .inline-form-body select:focus {
     border-color: var(--primary-500, #2896cd);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
 }
 
@@ -104,7 +104,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 0.75rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--gray-200, #e2e8f0);
     border-radius: 8px;
     cursor: pointer;
@@ -194,7 +194,7 @@
 }
 
 .toggle-item input:checked+span {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     color: var(--primary-600, #2896cd);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
@@ -255,7 +255,7 @@
     gap: 1rem;
     align-items: center;
     padding: 0.75rem 1rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-radius: 10px;
     border: 1px solid var(--gray-200, #e2e8f0);
 }
@@ -300,7 +300,7 @@
     align-items: center;
     padding: 1rem;
     margin-top: 0.75rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-radius: 10px;
     border: 2px solid var(--primary-400, #53abd7);
 }
@@ -344,7 +344,7 @@
 
 .course-tutor-item:hover {
     border-color: var(--primary-300, #7dd3fc);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
@@ -374,7 +374,7 @@
     border-radius: 8px;
     font-size: 0.875rem;
     font-family: inherit;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     color: var(--admin-text-primary, #0f172a);
     outline: none;
     transition: all 0.2s;
@@ -512,7 +512,7 @@
    Inline Form Container
    ============================================ */
 .inline-form-container {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     margin: 1.5rem 0;
@@ -563,7 +563,7 @@
 
 .inline-form-body {
     padding: 1.5rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
 }
 
 .inline-form-footer {
@@ -590,7 +590,7 @@
 }
 
 .delete-confirm-box {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     padding: 2rem;
@@ -649,7 +649,7 @@
     Premium Data Table (Web)
    ============================================ */
 .table-container {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     overflow: hidden;
@@ -772,7 +772,7 @@
     justify-content: center;
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 10px;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     color: var(--admin-text-secondary, #64748b);
     cursor: pointer;
     transition: all 0.2s;
@@ -820,7 +820,7 @@
 }
 
 .premium-card {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     padding: 1.25rem;
@@ -885,7 +885,7 @@
     height: 44px;
     border-radius: 10px;
     border: 1px solid var(--admin-input-border, #e2e8f0);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     color: var(--admin-text-primary, #0f172a);
     font-weight: 600;
     font-size: 0.85rem;
@@ -1052,7 +1052,7 @@
     width: 100%;
     max-width: 550px;
     height: 100%;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
@@ -1240,7 +1240,7 @@
 
 /* Course Cards in Profile */
 .profile-course-card {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid #e2e8f0;
     border-radius: 10px;
     padding: 1rem;
@@ -1299,7 +1299,7 @@
 .profile-fee-item {
     text-align: center;
     padding: 1rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-radius: 10px;
     border: 1px solid #e2e8f0;
 }
@@ -1401,7 +1401,7 @@
 
 /* Notes Section */
 .profile-notes {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     padding: 0.875rem;
@@ -1500,7 +1500,7 @@
     height: 36px;
     border-radius: 8px;
     border: 1px solid var(--admin-input-border, #e2e8f0);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     color: var(--admin-text-secondary, #64748b);
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1539,7 +1539,7 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem 1rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1.5px solid var(--admin-input-border, #e2e8f0);
     border-radius: 10px;
     margin-bottom: 0.75rem;
@@ -1622,7 +1622,7 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 8px;
 }
@@ -1717,7 +1717,7 @@
 
 .course-search-dropdown.open .search-input-wrapper {
     border-color: var(--primary-500, #2896cd);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -1762,7 +1762,7 @@
     right: 0;
     max-height: 350px;
     overflow-y: auto;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1.5px solid var(--primary-500, #2896cd);
     border-top: none;
     border-radius: 0 0 12px 12px;
@@ -1981,7 +1981,7 @@
     font-size: 0.875rem;
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 8px;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     color: var(--admin-text-primary, #0f172a);
     transition: all 0.2s;
 }
@@ -2053,7 +2053,7 @@
 
 .profile-demo-tag {
     margin-top: 10px;
-    background: #fff8eb;
+    background: var(--admin-bg, #edf6fb)8eb;
     color: #92400e;
     padding: 6px 12px;
     border-radius: 6px;

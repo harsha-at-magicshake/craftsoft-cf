@@ -302,7 +302,7 @@
     justify-content: center;
     gap: 0.5rem;
     padding: 0.625rem 0.75rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1.5px solid var(--admin-input-border);
     border-radius: 8px;
     color: var(--admin-text-secondary);

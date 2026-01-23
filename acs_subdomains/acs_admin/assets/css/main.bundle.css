@@ -1,4 +1,4 @@
-﻿/* Craft Soft - Bundled CSS */
+/* Craft Soft - Bundled CSS */
 
 /* Start of base/variables.css */
 /* ============================================
@@ -765,7 +765,7 @@ section {
 
 .quiz-cta-section {
     padding: 60px 0;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
 }
 
 .quiz-cta-card {
@@ -820,7 +820,7 @@ section {
 }
 
 .quiz-cta-btn {
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     color: #6c5ce7;
     font-weight: 700;
     padding: 15px 35px;
@@ -920,7 +920,7 @@ section {
 
 .quiz-progress-fill {
     height: 100%;
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     border-radius: 3px;
     transition: width 0.3s ease;
 }
@@ -957,7 +957,7 @@ section {
 }
 
 .quiz-option.selected {
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     color: var(--primary-500);
     font-weight: 600;
 }
@@ -979,7 +979,7 @@ section {
 }
 
 .result-recommendation {
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     color: var(--gray-900);
     padding: var(--spacing-lg);
     border-radius: var(--radius-lg);
@@ -1001,7 +1001,7 @@ section {
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-sm);
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     color: var(--primary-500);
     padding: var(--spacing-md) var(--spacing-xl);
     border-radius: var(--radius-lg);
@@ -1104,7 +1104,7 @@ section {
 
 .skeleton-card {
     padding: 20px;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
@@ -1318,7 +1318,7 @@ section {
     right: 0;
     width: 350px;
     max-height: 500px;
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     overflow: hidden;
@@ -2124,7 +2124,7 @@ section {
 }
 
 .service-card ul li::before {
-    content: 'â†’';
+    content: '→';
     position: absolute;
     left: 0;
     color: var(--primary-500);
@@ -3278,7 +3278,7 @@ section {
 }
 
 .module-content ul li::before {
-    content: 'â†’';
+    content: '→';
     color: var(--primary-500);
     margin-right: var(--spacing-sm);
 }
@@ -3403,7 +3403,7 @@ section {
 }
 
 .level-outcomes ul li::before {
-    content: 'âœ“';
+    content: '✓';
     color: #00D9A0;
     font-weight: bold;
 }
@@ -4280,5 +4280,6 @@ section {
     }
 }
 /* End of utilities/responsive.css */
+
 
 

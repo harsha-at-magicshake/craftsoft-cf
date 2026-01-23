@@ -16,7 +16,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1.25rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-bottom: 1px solid var(--admin-input-border, #e2e8f0);
 }
 
@@ -36,7 +36,7 @@
 
 .inline-form-footer {
     padding: 1rem 1.25rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-top: 1px solid var(--admin-input-border, #e2e8f0);
     display: flex;
     justify-content: flex-end;
@@ -69,7 +69,7 @@
     font-size: 0.9rem;
     border: 1.5px solid var(--admin-input-border, #e2e8f0);
     border-radius: 10px;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     color: var(--admin-text-primary, #0f172a);
     transition: all 0.2s;
 }
@@ -81,7 +81,7 @@
     font-family: inherit;
     border: 1.5px solid var(--admin-input-border, #e2e8f0);
     border-radius: 10px;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     color: var(--admin-text-primary, #0f172a);
     transition: all 0.2s;
     cursor: pointer;
@@ -104,7 +104,7 @@
 
 /* Form Section */
 .form-section {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 10px;
     padding: 1rem;
@@ -164,7 +164,7 @@
     flex-wrap: wrap;
     gap: 0.5rem;
     padding: 0.5rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border);
     border-radius: 10px;
     min-height: 3rem;
@@ -448,7 +448,7 @@
 }
 
 .delete-confirm-box {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border-radius: 16px;
     padding: 2rem;
     text-align: center;
@@ -520,7 +520,7 @@
 }
 
 .inquiry-card {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border);
     border-radius: 12px;
     padding: 1rem;

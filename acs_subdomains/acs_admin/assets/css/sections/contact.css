@@ -1,4 +1,4 @@
-﻿/* ============================================
+/* ============================================
    CONTACT Section - Premium Image-Matched Styles
    ============================================ */
 /* Global Container for Contact Sections */
@@ -234,7 +234,7 @@
 .form-group textarea:focus {
     outline: none;
     border-color: #3b82f6;
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.05);
 }
 
@@ -321,7 +321,7 @@
 }
 
 .counseling-item {
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     padding: 1.25rem;
     border-radius: 1rem;
     display: flex;

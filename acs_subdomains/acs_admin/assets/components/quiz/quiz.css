@@ -65,7 +65,7 @@
 }
 
 .quiz-cta-btn {
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     color: #667eea;
     border: none;
     padding: 16px 32px;
@@ -177,7 +177,7 @@
     padding: 16px 20px;
     border: 2px solid #e2e8f0;
     border-radius: 12px;
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     cursor: pointer;
     text-align: left;
     font-size: 0.95rem;
@@ -253,7 +253,7 @@
 }
 
 .inline-quiz-result .btn-primary {
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     color: #667eea;
     padding: 14px 28px;
     border-radius: 30px;
@@ -280,7 +280,7 @@
 }
 
 .inline-quiz-result .btn-secondary:hover {
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     color: #667eea;
 }
 
@@ -339,7 +339,7 @@
 }
 
 .quiz-modal-content {
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     width: 90%;
     max-width: 500px;
     padding: 40px;

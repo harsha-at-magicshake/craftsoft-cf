@@ -236,7 +236,7 @@
 }
 
 .hero-buttons .btn-outline:hover {
-    background: white;
+    background: var(--admin-bg, #edf6fb);
     border-color: var(--primary-400);
     color: var(--primary-600);
     transform: translateY(-2px);

@@ -53,7 +53,7 @@
 .inline-form-body textarea:focus,
 .inline-form-body select:focus {
     border-color: var(--primary-500, #2896cd);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
 }
 
@@ -95,7 +95,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 0.75rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--gray-200, #e2e8f0);
     border-radius: 8px;
     cursor: pointer;
@@ -200,7 +200,7 @@
    Inline Form Container
    ============================================ */
 .inline-form-container {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     margin: 1.5rem 0;
@@ -251,7 +251,7 @@
 
 .inline-form-body {
     padding: 1.5rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
 }
 
 .inline-form-footer {
@@ -278,7 +278,7 @@
 }
 
 .delete-confirm-box {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     padding: 2rem;
@@ -337,7 +337,7 @@
    Premium Data Table (Web)
    ============================================ */
 .table-container {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     overflow: hidden;
@@ -436,7 +436,7 @@
     justify-content: center;
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 10px;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     color: var(--admin-text-secondary, #64748b);
     cursor: pointer;
     transition: all 0.2s;
@@ -483,7 +483,7 @@
 }
 
 .premium-card {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     padding: 1.25rem;
@@ -547,7 +547,7 @@
     height: 44px;
     border-radius: 10px;
     border: 1px solid var(--admin-input-border, #e2e8f0);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     color: var(--admin-text-primary, #0f172a);
     font-weight: 600;
     font-size: 0.85rem;

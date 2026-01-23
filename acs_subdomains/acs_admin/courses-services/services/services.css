@@ -46,7 +46,7 @@
 
 .inline-form-body input:focus {
     border-color: var(--primary-500, #2896cd);
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     box-shadow: 0 0 0 4px rgba(40, 150, 205, 0.1);
 }
 
@@ -89,7 +89,7 @@
    Inline Form Container
    ============================================ */
 .inline-form-container {
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 16px;
     margin: 1.5rem 0;
@@ -140,7 +140,7 @@
 
 .inline-form-body {
     padding: 1.5rem;
-    background: #fff;
+    background: var(--admin-bg, #edf6fb);
 }
 
 .inline-form-footer {
