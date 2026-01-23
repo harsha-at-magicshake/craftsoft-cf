@@ -20,6 +20,7 @@
     { code: 'AZURE', name: 'Microsoft Azure' },
     { code: 'CYBER', name: 'Cyber Security' },
     { code: 'ORACLE', name: 'Oracle Fusion Cloud' },
+    { code: 'SNOW', name: 'ServiceNow Administration & Development' },
     { code: 'AUTOPY', name: 'Automation with Python' },
     { code: 'ENG', name: 'Spoken English Mastery' },
     { code: 'SOFT', name: 'Soft Skills Training' },

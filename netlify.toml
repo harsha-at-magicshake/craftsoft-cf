@@ -233,6 +233,11 @@
   to = "/courses/oracle-fusion-cloud/"
   status = 200
 
+[[redirects]]
+  from = "/c-service-now/"
+  to = "/courses/service-now/"
+  status = 200
+
 # Global 404 catch-all
 [[redirects]]
   from = "/*"
