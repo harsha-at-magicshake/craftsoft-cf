@@ -76,42 +76,34 @@
                 </div>
 
                 <div class="upload-cards">
-                    <!-- Step 1: Select Course -->
+                    <!-- Step 1 & 2: Course & Student -->
                     <section class="upload-section">
-                        <div class="form-section-header">
-                            <div class="form-section-icon"><i class="fa-solid fa-book-bookmark"></i></div>
-                            <h3 class="form-section-title">Step 1: Select Course</h3>
-                        </div>
-                        <div class="section-body">
-                            <div class="form-group">
-                                <label>Target Course <span class="required">*</span></label>
-                                <div class="input-with-icon">
-                                    <i class="fa-solid fa-graduation-cap input-icon"></i>
-                                    <select id="course-select" class="form-select">
-                                        <option value="">-- Choose a Course --</option>
-                                    </select>
-                                </div>
+                        <div class="form-section-group" data-step="1">
+                            <div class="form-section-header">
+                                <div class="form-section-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <h3 class="form-section-title">Target Audience</h3>
                             </div>
-                        </div>
-                    </section>
-
-                    <!-- Step 2: Select Student -->
-                    <section class="upload-section">
-                        <div class="form-section-header">
-                            <div class="form-section-icon"><i class="fa-solid fa-user-graduate"></i></div>
-                            <h3 class="form-section-title">Step 2: Select Student</h3>
-                        </div>
-                        <div class="section-body">
-                            <div class="form-group">
-                                <label>Target Student <span class="required">*</span></label>
-                                <div class="input-with-icon">
-                                    <i class="fa-solid fa-user input-icon"></i>
-                                    <select id="student-select" class="form-select" disabled>
-                                        <option value="">-- Select a Course First --</option>
-                                    </select>
+                            <div class="section-body">
+                                <div class="form-group">
+                                    <label>Select Course <span class="required">*</span></label>
+                                    <div class="input-with-icon">
+                                        <i class="fa-solid fa-book-bookmark input-icon"></i>
+                                        <select id="course-select" class="form-select">
+                                            <option value="">-- Choose a Course --</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <p class="form-hint" id="student-hint">Students enrolled in the selected course will
-                                    appear here.</p>
+                                <div class="form-group" style="margin-top: 2rem;">
+                                    <label>Select Student <span class="required">*</span></label>
+                                    <div class="input-with-icon">
+                                        <i class="fa-solid fa-user-graduate input-icon"></i>
+                                        <select id="student-select" class="form-select" disabled>
+                                            <option value="">-- Select a Course First --</option>
+                                        </select>
+                                    </div>
+                                    <p class="form-hint" id="student-hint">Showing students enrolled in the selected
+                                        course.</p>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -120,7 +112,7 @@
                     <section class="upload-section">
                         <div class="form-section-header">
                             <div class="form-section-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-                            <h3 class="form-section-title">Step 3: Upload File</h3>
+                            <h3 class="form-section-title">Material Upload</h3>
                         </div>
                         <div class="section-body">
                             <div class="dropzone" id="dropzone">

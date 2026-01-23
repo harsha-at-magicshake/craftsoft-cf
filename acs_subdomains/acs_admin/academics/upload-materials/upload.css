@@ -35,7 +35,8 @@
 
 .input-with-icon .form-control,
 .input-with-icon .form-input,
-.input-with-icon .form-select {
+.input-with-icon .form-select,
+.input-with-icon .searchable-select-trigger {
     padding-left: 3rem !important;
 }
 
@@ -51,6 +52,20 @@
     margin-bottom: 2rem;
     padding-bottom: 0.75rem;
     border-bottom: 1px solid var(--admin-input-border);
+}
+
+.form-section-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--accent-gradient);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 12px rgba(40, 150, 205, 0.2);
+    flex-shrink: 0;
 }
 
 .form-section-title {
