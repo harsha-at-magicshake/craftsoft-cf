@@ -85,7 +85,8 @@
 
 /* Top Header Card for page title */
 .upload-workspace>.section-header {
-    background: #fff;
+    background: #edf6fb;
+    /* Matched to Why Us tint */
     border: 1px solid var(--admin-input-border);
     border-radius: 16px;
     padding: 1.5rem 2rem;

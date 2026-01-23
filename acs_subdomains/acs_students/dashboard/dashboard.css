@@ -2,8 +2,8 @@
     /* Primary Colors - Matched to Admin Portal */
     --primary: #2896cd;
     --primary-dark: #1a7eb0;
-    --primary-light: #f0f7fb;
-    --primary-50: #f0f7fb;
+    --primary-light: #edf6fb;
+    --primary-50: #edf6fb;
     --primary-100: #e5f3fa;
     --primary-300: #7cc4e4;
     --primary-500: #2896cd;
@@ -11,8 +11,8 @@
     --accent-gradient: linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%);
 
     /* Layout */
-    --sidebar-bg: linear-gradient(180deg, #ffffff 0%, #f0f7fb 100%);
-    --main-bg: #f0f7fb;
+    --sidebar-bg: linear-gradient(180deg, #ffffff 0%, #edf6fb 100%);
+    --main-bg: #edf6fb;
     --text-main: #0f172a;
     --text-muted: #64748b;
     --border: rgba(40, 150, 205, 0.15);

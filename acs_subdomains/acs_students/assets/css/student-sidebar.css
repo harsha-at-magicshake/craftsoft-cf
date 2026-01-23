@@ -1,6 +1,6 @@
 :root {
     --primary: #2896cd;
-    --primary-light: #f0f7fb;
+    --primary-light: #edf6fb;
     --primary-rgb: 40, 150, 205;
     --sidebar-bg: rgba(255, 255, 255, 0.95);
     --sidebar-border: rgba(40, 150, 205, 0.08);
@@ -531,7 +531,7 @@
     justify-content: center;
     width: 44px;
     height: 44px;
-    background: var(--primary-light, #f0f7fb);
+    background: var(--primary-light, #edf6fb);
     border: none;
     border-radius: 12px;
     color: var(--primary, #2896cd);

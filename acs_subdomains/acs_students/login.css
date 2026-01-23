@@ -22,7 +22,7 @@
 }
 
 body {
-    background: #f0f7fb;
+    background: #edf6fb;
     min-height: 100vh;
     overflow: hidden;
     position: relative;
@@ -90,7 +90,7 @@ body {
     /* Center vertically */
     align-items: center;
     /* Center horizontally */
-    background: linear-gradient(rgba(240, 247, 251, 0.7), rgba(240, 247, 251, 0.7)), url('/assets/images/student-login-bg.png');
+    background: linear-gradient(rgba(237, 246, 251, 0.7), rgba(237, 246, 251, 0.7)), url('/assets/images/student-login-bg.png');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -181,7 +181,7 @@ body {
 /* Right Section: Hero */
 .login-hero-v2 {
     flex: 1.2;
-    background: #f0f7fb;
+    background: #edf6fb;
     display: flex;
     align-items: center;
     padding: 100px;

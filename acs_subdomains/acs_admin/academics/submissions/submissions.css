@@ -12,7 +12,8 @@
 
 /* Submissions Workspace Container */
 .submissions-workspace {
-    background: #fff;
+    background: #edf6fb;
+    /* Matched to Why Us tint */
     border: 1px solid var(--admin-input-border);
     border-radius: 16px;
     padding: 2rem;
@@ -26,7 +27,8 @@
     gap: 1.25rem;
     margin-bottom: 2rem;
     align-items: center;
-    background: #fff;
+    background: #edf6fb;
+    /* Matched to Why Us tint */
     padding: 1.25rem;
     border-radius: 16px;
     border: 1px solid var(--admin-input-border);
@@ -42,7 +44,7 @@
 
 .section-actions .search-box {
     flex: 1;
-    min-width: 200px;
+    min-width: 240px;
     position: relative;
 }
 
@@ -61,20 +63,21 @@
 /* Select styling with left icon space and right chevron */
 .section-actions .search-box select {
     width: 100%;
-    padding: 0.75rem 2.5rem 0.75rem 2.75rem;
+    padding: 0.75rem 2.5rem 0.75rem 3.5rem !important;
+    /* Increased left padding to 3.5rem */
     border: 1.5px solid var(--admin-input-border);
     border-radius: 12px;
     font-size: 0.9rem;
-    background: #fff;
+    background: #fff !important;
     color: var(--admin-text-primary);
     cursor: pointer;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%232896cd' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 1.25rem;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%232896cd' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 1.25rem !important;
     transition: all 0.2s ease;
 }
 
@@ -87,7 +90,7 @@
 /* Input styling */
 .section-actions .search-box input {
     width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    padding: 0.75rem 1rem 0.75rem 3.25rem;
     border: 1.5px solid var(--admin-input-border);
     border-radius: 12px;
     font-size: 0.9rem;

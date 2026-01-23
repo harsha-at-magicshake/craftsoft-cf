@@ -3,19 +3,19 @@
    Matched to Website Theme (craftsoft.co.in)
    ============================================ */
 :root {
-    /* Page & Background */
-    --admin-bg: #f0f7fb;
-    --admin-bg-gradient: linear-gradient(135deg, #f0f7fb 0%, #e5f3fa 100%);
+    /* Page & Background (matched to Why Us section) */
+    --admin-bg: #edf6fb;
+    --admin-bg-gradient: linear-gradient(135deg, #edf6fb 0%, #e5f3fa 100%);
 
-    /* Cards */
-    --admin-card-bg: rgba(255, 255, 255, 0.85);
-    --admin-card-bg-solid: #ffffff;
+    /* Cards (Matched to Why Us section tint) */
+    --admin-card-bg: rgba(237, 246, 251, 0.85);
+    --admin-card-bg-solid: #edf6fb;
     --admin-card-border: rgba(40, 150, 205, 0.12);
     --admin-card-shadow: 0 4px 20px rgba(40, 150, 205, 0.08);
     --admin-card-hover-shadow: 0 8px 30px rgba(40, 150, 205, 0.15);
 
     /* Sidebar (Light Theme) */
-    --sidebar-bg: linear-gradient(180deg, #ffffff 0%, #f0f7fb 100%);
+    --sidebar-bg: linear-gradient(180deg, #ffffff 0%, #edf6fb 100%);
     --sidebar-border: rgba(40, 150, 205, 0.15);
     --sidebar-text: #0f172a;
     --sidebar-text-muted: #64748b;
@@ -24,7 +24,7 @@
     --sidebar-item-active-text: #ffffff;
 
     /* Header */
-    --header-bg: rgba(255, 255, 255, 0.9);
+    --header-bg: rgba(237, 246, 251, 0.9);
     --header-border: rgba(40, 150, 205, 0.1);
 
     /* Inputs */
