@@ -13,8 +13,8 @@
 }
 
 @media (max-width: 1024px) {
-    .admin-sidebar {
-        width: 200px;
+    .admin-header {
+        left: 200px;
     }
 
     .admin-main {
@@ -164,11 +164,15 @@
 
     .admin-main {
         margin-left: 72px;
+        padding-top: 64px;
     }
 
-    .admin-sidebar.expanded+.sidebar-overlay {
-        opacity: 1;
-        visibility: visible;
+    .admin-sidebar.expanded~.admin-main {
+        margin-left: 240px;
+    }
+
+    .admin-sidebar.expanded+.sidebar-overlay+.admin-main {
+        margin-left: 240px;
     }
 
     /* Content Card - Tablet */

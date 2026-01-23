@@ -240,11 +240,6 @@
 }
 
 @media (max-width: 1024px) {
-    .admin-main {
-        margin-left: 0 !important;
-        padding-top: 80px !important;
-    }
-
     .desktop-only {
         display: none !important;
     }
