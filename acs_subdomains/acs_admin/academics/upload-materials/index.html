@@ -76,24 +76,27 @@
                 </div>
 
                 <div class="upload-cards">
-                    <!-- Step 1 & 2: Course & Student -->
                     <section class="upload-section">
-                        <div class="form-section-group" data-step="1">
-                            <div class="form-section-header">
-                                <div class="form-section-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                                <h3 class="form-section-title">Target Audience</h3>
-                            </div>
-                            <div class="section-body">
+                        <div class="card-header-mini">
+                            <i class="fa-solid fa-folder-plus"></i> Upload New Materials
+                        </div>
+                        <div class="section-body">
+                            <!-- Section: Target Audience -->
+                            <div class="form-section-group" data-step="1">
+                                <div class="form-section-header">
+                                    <div class="form-section-icon"><i class="fa-solid fa-bullseye"></i></div>
+                                    <h3 class="form-section-title">Target Audience</h3>
+                                </div>
                                 <div class="form-group">
                                     <label>Select Course <span class="required">*</span></label>
                                     <div class="input-with-icon">
-                                        <i class="fa-solid fa-book-bookmark input-icon"></i>
+                                        <i class="fa-solid fa-graduation-cap input-icon"></i>
                                         <select id="course-select" class="form-select">
                                             <option value="">-- Choose a Course --</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group" style="margin-top: 2rem;">
+                                <div class="form-group" style="margin-top: 1.5rem;">
                                     <label>Select Student <span class="required">*</span></label>
                                     <div class="input-with-icon">
                                         <i class="fa-solid fa-user-graduate input-icon"></i>
@@ -105,34 +108,32 @@
                                         course.</p>
                                 </div>
                             </div>
-                        </div>
-                    </section>
 
-                    <!-- Step 3: Upload File -->
-                    <section class="upload-section">
-                        <div class="form-section-header">
-                            <div class="form-section-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-                            <h3 class="form-section-title">Material Upload</h3>
-                        </div>
-                        <div class="section-body">
-                            <div class="dropzone" id="dropzone">
-                                <i class="fa-solid fa-folder-open dropzone-icon"></i>
-                                <p class="dropzone-text">Drag & Drop files here</p>
-                                <p class="dropzone-subtext">or click to browse (PDF, DOC, ZIP, Images)</p>
-                                <input type="file" id="file-input" class="file-input" multiple
-                                    accept=".pdf,.doc,.docx,.zip,.rar,.png,.jpg,.jpeg,.gif,.ppt,.pptx,.xls,.xlsx">
+                            <!-- Section: Material Upload -->
+                            <div class="form-section-group" data-step="2" style="margin-top: 3rem;">
+                                <div class="form-section-header">
+                                    <div class="form-section-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                                    <h3 class="form-section-title">Material Upload</h3>
+                                </div>
+                                <div class="dropzone" id="dropzone">
+                                    <i class="fa-solid fa-folder-open dropzone-icon"></i>
+                                    <p class="dropzone-text">Drag & Drop files here</p>
+                                    <p class="dropzone-subtext">or click to browse (PDF, DOC, ZIP, Images)</p>
+                                    <input type="file" id="file-input" class="file-input" multiple
+                                        accept=".pdf,.doc,.docx,.zip,.rar,.png,.jpg,.jpeg,.gif,.ppt,.pptx,.xls,.xlsx">
+                                </div>
+                                <div id="file-preview" class="file-preview-list"></div>
                             </div>
-                            <div id="file-preview" class="file-preview-list"></div>
+
+                            <!-- Upload Action -->
+                            <div class="upload-actions" style="margin-top: 2rem;">
+                                <button id="upload-btn" class="btn btn-primary btn-lg btn-block" disabled>
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    <span>Upload Materials</span>
+                                </button>
+                            </div>
                         </div>
                     </section>
-
-                    <!-- Upload Action -->
-                    <div class="upload-actions">
-                        <button id="upload-btn" class="btn btn-primary btn-lg btn-block" disabled>
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <span>Upload Materials</span>
-                        </button>
-                    </div>
 
                     <!-- Recent Uploads Table -->
                     <section class="upload-section recent-uploads-section">
