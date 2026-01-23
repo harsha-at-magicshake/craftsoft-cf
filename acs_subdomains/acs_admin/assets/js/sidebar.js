@@ -311,7 +311,7 @@ const AdminHeader = {
                     </button>
                     
                     <a href="/" class="header-logo">
-                        <img src="/assets/CS.png" alt="CS Logo" style="height: 32px; width: auto; display: block;">
+                        <img src="/assets/admin/CS.png" alt="CS Logo" style="height: 32px; width: auto; display: block;">
                     </a>
 
                     <div class="header-titles">
@@ -361,4 +361,3 @@ const AdminFooter = {
 window.AdminSidebar = AdminSidebar;
 window.AdminHeader = AdminHeader;
 window.AdminFooter = AdminFooter;
-

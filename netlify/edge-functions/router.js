@@ -6,7 +6,7 @@ export default async (request, context) => {
     // 1. Student Portal Subdomain - MUST be checked FIRST before generic bypass
     if (hostname.includes("acs-student.craftsoft")) {
         // Shared assets from root (admin SDK, shared components, images)
-        if (pathname.startsWith("/assets/") ||
+        if (pathname.startsWith("/assets/admin/") ||
             pathname.startsWith("/assets/components/") ||
             pathname.startsWith("/assets/images/")) {
             return; // Fall through to root assets
@@ -36,9 +36,9 @@ export default async (request, context) => {
 
     // Admin subdomain asset handling (MUST be before generic bypass)
     if (hostname.includes("admin.craftsoft")) {
-        if (pathname.startsWith("/assets/")) {
-            // Rewrite /assets/* to /acs_subdomains/acs_admin/assets/*
-            const assetPath = pathname.replace("/assets/", "/acs_subdomains/acs_admin/assets/");
+        if (pathname.startsWith("/assets/admin/")) {
+            // Rewrite /assets/admin/* to /acs_subdomains/acs_admin/assets/*
+            const assetPath = pathname.replace("/assets/admin/", "/acs_subdomains/acs_admin/assets/");
             return context.rewrite(assetPath);
         }
     }
@@ -141,4 +141,3 @@ export default async (request, context) => {
 };
 
 export const config = { path: "/*" };
-
