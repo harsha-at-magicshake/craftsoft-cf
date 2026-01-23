@@ -43,6 +43,62 @@
 .section-actions .search-box {
     flex: 1;
     min-width: 200px;
+    position: relative;
+}
+
+/* Icon positioning for filter selects */
+.section-actions .search-box>i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-400);
+    font-size: 0.95rem;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Select styling with left icon space and right chevron */
+.section-actions .search-box select {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 2.75rem;
+    border: 1.5px solid var(--admin-input-border);
+    border-radius: 12px;
+    font-size: 0.9rem;
+    background: #fff;
+    color: var(--admin-text-primary);
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%232896cd' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.25rem;
+    transition: all 0.2s ease;
+}
+
+.section-actions .search-box select:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(40, 150, 205, 0.1);
+}
+
+/* Input styling */
+.section-actions .search-box input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    border: 1.5px solid var(--admin-input-border);
+    border-radius: 12px;
+    font-size: 0.9rem;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+.section-actions .search-box input:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(40, 150, 205, 0.1);
 }
 
 @media (max-width: 1100px) {
