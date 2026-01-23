@@ -185,7 +185,7 @@
     top: 12px;
     right: -35px;
     background: var(--accent-gradient, linear-gradient(135deg, #2896cd 0%, #6C5CE7 100%));
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     padding: 2px 40px;
     transform: rotate(45deg);
     font-size: 0.7rem;
@@ -289,4 +289,5 @@
         gap: 1rem;
     }
 }
+
 

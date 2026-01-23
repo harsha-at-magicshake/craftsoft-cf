@@ -60,7 +60,7 @@
     border-radius: 8px;
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     box-shadow: var(--btn-primary-shadow);
 }
 
@@ -96,7 +96,7 @@
 
 .dashboard-placeholder-icon i {
     font-size: 2rem;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 .dashboard-placeholder h2 {
@@ -178,7 +178,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     font-size: 1.25rem;
     box-shadow: var(--btn-primary-shadow);
 }
@@ -236,7 +236,7 @@
 
 .maintenance-icon i {
     font-size: 2rem;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 .maintenance-title {
@@ -318,3 +318,4 @@
     display: block;
     color: var(--primary-500);
 }
+

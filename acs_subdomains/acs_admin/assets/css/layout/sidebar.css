@@ -39,7 +39,7 @@
     background: var(--btn-primary-bg);
     border: none;
     border-radius: 12px;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.2s;
@@ -373,3 +373,4 @@
     font-weight: 600;
     letter-spacing: 0.5px;
 }
+

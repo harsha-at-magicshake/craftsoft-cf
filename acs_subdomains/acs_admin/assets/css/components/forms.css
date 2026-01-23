@@ -305,7 +305,7 @@
 
 .toggle-item input:checked+span {
     background: var(--btn-primary-bg);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     box-shadow: var(--btn-primary-shadow);
 }
 
@@ -435,7 +435,7 @@
 
 .searchable-option.selected {
     background: var(--primary-500);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 .no-results {
@@ -551,5 +551,6 @@
 .phone-number-input::placeholder {
     color: var(--admin-text-muted);
 }
+
 
 

@@ -23,7 +23,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--admin-bg, #edf6fb)fff;
+    color: #fffffffff;
     font-size: 1.35rem;
     box-shadow: 0 4px 15px rgba(40, 150, 205, 0.3);
 }
@@ -84,3 +84,4 @@
         font-size: 1.1rem;
     }
 }
+

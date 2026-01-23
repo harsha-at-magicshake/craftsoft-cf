@@ -15,31 +15,31 @@
 
 .badge-primary {
     background: var(--badge-primary);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     box-shadow: 0 2px 8px rgba(40, 150, 205, 0.25);
 }
 
 .badge-success {
     background: var(--badge-success);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
 }
 
 .badge-warning {
     background: var(--badge-warning);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
 }
 
 .badge-danger {
     background: var(--badge-danger);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
 }
 
 .badge-info {
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
 }
 
@@ -110,3 +110,4 @@
     background: rgba(245, 158, 11, 0.1);
     color: #D97706;
 }
+

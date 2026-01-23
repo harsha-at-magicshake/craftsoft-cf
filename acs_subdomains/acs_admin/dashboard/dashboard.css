@@ -251,7 +251,7 @@
     width: 18px;
     height: 18px;
     background: #ef4444;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     font-size: 0.7rem;
     font-weight: 600;
     border-radius: 50%;
@@ -731,4 +731,5 @@
         max-height: calc(100vh - 80px);
     }
 }
+
 

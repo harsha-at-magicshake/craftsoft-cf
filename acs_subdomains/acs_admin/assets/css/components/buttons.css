@@ -19,7 +19,7 @@
 
 .btn-primary {
     background: var(--btn-primary-bg);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     box-shadow: var(--btn-primary-shadow);
 }
 
@@ -82,7 +82,7 @@
     width: 20px;
     height: 20px;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: var(--admin-bg, #edf6fb);
+    border-top-color: #ffffff;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
 }
@@ -103,7 +103,7 @@
 /* Danger Button */
 .btn-danger {
     background: var(--badge-danger);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     border: none;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
 }
@@ -128,7 +128,7 @@
 /* Success Button */
 .btn-success {
     background: var(--badge-success);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
 }
 
@@ -194,3 +194,4 @@
     display: flex;
     gap: 0.5rem;
 }
+

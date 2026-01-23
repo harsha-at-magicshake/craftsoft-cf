@@ -1075,7 +1075,7 @@
     justify-content: space-between;
     padding: 1.25rem 1.5rem;
     background: linear-gradient(135deg, #2896cd 0%, #1a7eb0 100%);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 .profile-header h2 {
@@ -1090,7 +1090,7 @@
 .profile-close-btn {
     background: rgba(255, 255, 255, 0.2);
     border: none;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -1260,7 +1260,7 @@
 
 .profile-course-code {
     background: linear-gradient(135deg, #2896cd 0%, #1a7eb0 100%);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     padding: 0.25rem 0.75rem;
     border-radius: 6px;
     font-size: 0.8rem;
@@ -1809,7 +1809,7 @@
 
 .dropdown-item.selected .item-code {
     background: var(--primary-500, #2896cd);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 .dropdown-item .item-name {
@@ -1872,7 +1872,7 @@
 .course-pill .pill-code {
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 .course-pill .pill-name {
@@ -1895,7 +1895,7 @@
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.15s ease;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     font-size: 0.7rem;
 }
 
@@ -2077,4 +2077,5 @@
         gap: 0.5rem;
     }
 }
+
 

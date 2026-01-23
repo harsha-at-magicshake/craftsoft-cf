@@ -210,7 +210,7 @@
     border-radius: 6px;
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 .card-id-badge.clickable {
@@ -222,3 +222,4 @@
     opacity: 0.9;
     transform: scale(1.02);
 }
+

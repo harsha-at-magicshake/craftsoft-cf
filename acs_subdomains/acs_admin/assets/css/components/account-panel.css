@@ -36,7 +36,7 @@
     justify-content: center;
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     flex-shrink: 0;
 }
 
@@ -174,7 +174,7 @@
     justify-content: center;
     font-size: 0.9rem;
     font-weight: 600;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     flex-shrink: 0;
 }
 
@@ -217,7 +217,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     font-size: 0.7rem;
     flex-shrink: 0;
 }
@@ -337,5 +337,6 @@
 .add-account-modal {
     max-width: 420px;
 }
+
 
 

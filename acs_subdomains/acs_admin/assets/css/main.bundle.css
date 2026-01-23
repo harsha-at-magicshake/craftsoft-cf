@@ -808,7 +808,7 @@ section {
 }
 
 .quiz-cta-title span {
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
@@ -1038,7 +1038,7 @@ section {
     height: 20px;
     border: 3px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    border-top-color: var(--admin-bg, #edf6fb);
+    border-top-color: #ffffff;
     animation: spin 0.8s ease-in-out infinite;
 }
 
@@ -1070,7 +1070,7 @@ section {
     margin-top: -10px;
     border: 3px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    border-top-color: var(--admin-bg, #edf6fb);
+    border-top-color: #ffffff;
     animation: spin 0.8s ease-in-out infinite;
 }
 
@@ -4280,6 +4280,7 @@ section {
     }
 }
 /* End of utilities/responsive.css */
+
 
 
 

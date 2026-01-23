@@ -137,7 +137,7 @@
     justify-content: center;
     background: var(--accent-gradient);
     border-radius: 8px;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     font-size: 0.85rem;
 }
 
@@ -465,7 +465,7 @@
     display: inline-block;
     padding: 0.2rem 0.5rem;
     background: var(--primary-500, #2896cd);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     border-radius: 4px;
     font-size: 0.65rem;
     font-weight: 600;
@@ -581,7 +581,7 @@
 .timeout-option.selected {
     background: var(--accent-gradient);
     border-color: transparent;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     font-weight: 600;
 }
 
@@ -683,4 +683,5 @@
         font-size: 0.85rem;
     }
 }
+
 

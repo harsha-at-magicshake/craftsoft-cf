@@ -63,7 +63,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     font-size: 1.1rem;
     box-shadow: 0 4px 12px rgba(40, 150, 205, 0.2);
     flex-shrink: 0;
@@ -157,7 +157,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     font-size: 1.1rem;
     box-shadow: 0 4px 10px rgba(40, 150, 205, 0.15);
     flex-shrink: 0;
@@ -311,7 +311,7 @@
 
 .file-preview-remove:hover {
     background: #ef4444;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 /* Upload Actions */
@@ -701,4 +701,5 @@
     color: #ef4444;
     border-color: #fee2e2;
 }
+
 

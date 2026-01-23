@@ -597,7 +597,7 @@
 
 .dropdown-item.selected .item-code {
     background: var(--primary-500, #2896cd);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 .dropdown-item .item-name {
@@ -660,7 +660,7 @@
 .course-pill .pill-code {
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 .course-pill .pill-name {
@@ -683,7 +683,7 @@
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.15s ease;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
     font-size: 0.7rem;
 }
 
@@ -754,4 +754,5 @@
 .modal-overlay.active {
     display: flex;
 }
+
 

@@ -101,7 +101,7 @@
 .summary-card.glow-card {
     background: var(--accent-gradient);
     border: none;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 .summary-card.glow-card .card-header-mini {
@@ -332,4 +332,5 @@
         height: 56px;
     }
 }
+
 

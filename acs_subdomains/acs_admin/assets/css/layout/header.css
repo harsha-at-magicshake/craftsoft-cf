@@ -93,7 +93,7 @@
 
 .btn-logout:hover {
     background: #EF4444;
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 /* Logout Dropdown */
@@ -239,3 +239,4 @@
         display: none !important;
     }
 }
+

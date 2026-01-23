@@ -40,7 +40,7 @@
 .pagination-btn.active {
     background: var(--primary-600, #156691);
     border-color: var(--primary-600, #156691);
-    color: var(--admin-bg, #edf6fb);
+    color: #ffffff;
 }
 
 .pagination-btn[disabled] {
@@ -88,4 +88,5 @@
         opacity: 1;
     }
 }
+
 
