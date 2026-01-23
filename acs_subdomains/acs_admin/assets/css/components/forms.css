@@ -316,6 +316,7 @@
 }
 
 .searchable-select-trigger {
+    padding-left: 3.25rem !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -333,6 +334,7 @@
 }
 
 .searchable-select-container.open .searchable-select-trigger {
+    padding-left: 3.25rem !important;
     border-color: var(--primary-500);
     box-shadow: 0 0 0 3px rgba(40, 150, 205, 0.1);
 }
@@ -547,3 +549,4 @@
 .phone-number-input::placeholder {
     color: var(--admin-text-muted);
 }
+
