@@ -1,3 +1,5 @@
+.admin-main { padding-top: 100px !important; }
+@media (max-width: 768px) { .admin-main { padding-top: 85px !important; } }
 /* Premium Clients Module Styles */
 
 /* ============================================
@@ -39,7 +41,7 @@
     padding: 0.875rem 1rem;
     font-size: 0.95rem;
     font-family: 'Inter', sans-serif;
-    background: var(--admin-input-bg, #f8fafc);
+    background: var(--admin-input-bg, var(--admin-bg, #edf6fb));
     border: 1.5px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     color: var(--admin-text-primary, #0f172a);
@@ -103,7 +105,7 @@
     flex-wrap: wrap;
     gap: 0.75rem;
     padding: 1rem;
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border: 1.5px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
 }
@@ -138,7 +140,7 @@
 
 /* Fee Section */
 .form-section {
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border: 1.5px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     padding: 1.25rem;
@@ -227,7 +229,7 @@
     justify-content: flex-end;
     gap: 0.75rem;
     padding: 1.25rem 1.5rem;
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border-top: 1px solid var(--admin-input-border, #e2e8f0);
 }
 
@@ -492,7 +494,7 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.875rem 1rem;
-    background: var(--admin-input-bg, #f8fafc);
+    background: var(--admin-input-bg, var(--admin-bg, #edf6fb));
     border: 1.5px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     cursor: text;
@@ -597,7 +599,7 @@
 
 .dropdown-item.selected .item-code {
     background: var(--primary-500, #2896cd);
-    color: #ffffff;
+    color: var(--admin-bg, #edf6fb);
 }
 
 .dropdown-item .item-name {
@@ -623,7 +625,7 @@
     gap: 0.5rem;
     min-height: 36px;
     padding: 0.5rem;
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border: 1px dashed var(--admin-input-border, #e2e8f0);
     border-radius: 10px;
 }
@@ -660,7 +662,7 @@
 .course-pill .pill-code {
     font-size: 0.75rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--admin-bg, #edf6fb);
 }
 
 .course-pill .pill-name {
@@ -683,7 +685,7 @@
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.15s ease;
-    color: #ffffff;
+    color: var(--admin-bg, #edf6fb);
     font-size: 0.7rem;
 }
 
@@ -693,7 +695,7 @@
 
 /* Enrollment Summary */
 .enrollment-summary {
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border-radius: 15px;
     padding: 1.25rem;
     border: 1px solid var(--admin-input-border, #e2e8f0);
@@ -754,5 +756,6 @@
 .modal-overlay.active {
     display: flex;
 }
+
 
 

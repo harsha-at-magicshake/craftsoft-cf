@@ -1,3 +1,5 @@
+.admin-main { padding-top: 100px !important; }
+@media (max-width: 768px) { .admin-main { padding-top: 85px !important; } }
 /* Students Module - Inline Form Styles */
 
 /* ============================================
@@ -55,7 +57,7 @@
     padding: 0.875rem 1rem;
     font-size: 0.95rem;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--admin-input-bg, #f8fafc);
+    background: var(--admin-input-bg, var(--admin-bg, #edf6fb));
     border: 1.5px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     color: var(--admin-text-primary, #0f172a);
@@ -79,7 +81,7 @@
 /* Disabled/Locked Inputs */
 .inline-form-body input:disabled,
 .inline-form-body input.input-locked {
-    background: var(--gray-100, #f1f5f9);
+    background: var(--gray-100, var(--admin-bg, #edf6fb));
     color: var(--admin-text-secondary, #64748b);
     cursor: not-allowed;
     border-color: var(--gray-200, #e2e8f0);
@@ -135,7 +137,7 @@
    Form Sections (Demo, Fee)
    ============================================ */
 .form-section {
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border: 1.5px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     padding: 1.25rem;
@@ -167,7 +169,7 @@
 /* Toggle Group (Yes/No) - matches forms.css */
 .toggle-group {
     display: inline-flex;
-    background: var(--admin-input-bg, #f1f5f9);
+    background: var(--admin-input-bg, var(--admin-bg, #edf6fb));
     padding: 4px;
     border-radius: 10px;
     gap: 4px;
@@ -335,7 +337,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0.75rem 1rem;
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     gap: 1rem;
@@ -571,7 +573,7 @@
     justify-content: flex-end;
     gap: 0.75rem;
     padding: 1.25rem 1.5rem;
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border-top: 1px solid var(--admin-input-border, #e2e8f0);
 }
 
@@ -663,7 +665,7 @@
 }
 
 .premium-table thead tr {
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border-bottom: 1.5px solid var(--admin-input-border, #e2e8f0);
 }
 
@@ -679,7 +681,7 @@
 
 .premium-table td {
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--gray-100, #f1f5f9);
+    border-bottom: 1px solid var(--gray-100, var(--admin-bg, #edf6fb));
     vertical-align: middle;
 }
 
@@ -779,7 +781,7 @@
 }
 
 .action-btn:hover {
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     color: var(--admin-text-primary, #0f172a);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -836,7 +838,7 @@
     font-family: monospace;
     font-size: 0.75rem;
     color: var(--admin-text-muted, #94a3b8);
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
 }
@@ -873,7 +875,7 @@
     justify-content: space-between;
     gap: 0.5rem;
     padding-top: 1.25rem;
-    border-top: 1px solid var(--gray-100, #f1f5f9);
+    border-top: 1px solid var(--gray-100, var(--admin-bg, #edf6fb));
 }
 
 .card-action-btn {
@@ -894,7 +896,7 @@
 }
 
 .card-action-btn:active {
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     transform: scale(0.98);
 }
 
@@ -1024,15 +1026,7 @@
    Student Profile Panel
    ============================================ */
 
-.profile-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
+.profile-overlay { z-index: 10001 !important;
     display: flex;
     justify-content: flex-end;
     animation: fadeIn 0.2s ease;
@@ -1075,7 +1069,7 @@
     justify-content: space-between;
     padding: 1.25rem 1.5rem;
     background: linear-gradient(135deg, #2896cd 0%, #1a7eb0 100%);
-    color: #ffffff;
+    color: var(--admin-bg, #edf6fb);
 }
 
 .profile-header h2 {
@@ -1090,7 +1084,7 @@
 .profile-close-btn {
     background: rgba(255, 255, 255, 0.2);
     border: none;
-    color: #ffffff;
+    color: var(--admin-bg, #edf6fb);
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -1114,7 +1108,7 @@
 
 .profile-footer {
     padding: 1rem 1.5rem;
-    background: #f8fafc;
+    background: var(--admin-bg, #edf6fb);
     border-top: 1px solid #e2e8f0;
     display: flex;
     gap: 1rem;
@@ -1126,7 +1120,7 @@
 
 /* Profile Sections */
 .profile-section {
-    background: #f8fafc;
+    background: var(--admin-bg, #edf6fb);
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 1.25rem;
@@ -1260,7 +1254,7 @@
 
 .profile-course-code {
     background: linear-gradient(135deg, #2896cd 0%, #1a7eb0 100%);
-    color: #ffffff;
+    color: var(--admin-bg, #edf6fb);
     padding: 0.25rem 0.75rem;
     border-radius: 6px;
     font-size: 0.8rem;
@@ -1361,7 +1355,7 @@
 
 .profile-payments-table td {
     padding: 0.75rem 0.5rem;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid var(--admin-bg, #edf6fb);
     color: #0f172a;
 }
 
@@ -1578,7 +1572,7 @@
    Enrollment Confirmation Modal
    ============================================ */
 .enrollment-summary {
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     padding: 1.25rem;
@@ -1704,7 +1698,7 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.875rem 1rem;
-    background: var(--admin-input-bg, #f8fafc);
+    background: var(--admin-input-bg, var(--admin-bg, #edf6fb));
     border: 1.5px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     cursor: text;
@@ -1781,7 +1775,7 @@
     padding: 0.75rem 1rem;
     cursor: pointer;
     transition: all 0.15s ease;
-    border-bottom: 1px solid var(--gray-100, #f1f5f9);
+    border-bottom: 1px solid var(--gray-100, var(--admin-bg, #edf6fb));
 }
 
 .dropdown-item:last-child {
@@ -1797,7 +1791,7 @@
 }
 
 .dropdown-item .item-code {
-    background: var(--gray-100, #f1f5f9);
+    background: var(--gray-100, var(--admin-bg, #edf6fb));
     color: var(--admin-text-secondary, #64748b);
     padding: 0.25rem 0.5rem;
     border-radius: 6px;
@@ -1809,7 +1803,7 @@
 
 .dropdown-item.selected .item-code {
     background: var(--primary-500, #2896cd);
-    color: #ffffff;
+    color: var(--admin-bg, #edf6fb);
 }
 
 .dropdown-item .item-name {
@@ -1835,7 +1829,7 @@
     gap: 0.5rem;
     min-height: 36px;
     padding: 0.5rem;
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border: 1px dashed var(--admin-input-border, #e2e8f0);
     border-radius: 10px;
 }
@@ -1872,7 +1866,7 @@
 .course-pill .pill-code {
     font-size: 0.75rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--admin-bg, #edf6fb);
 }
 
 .course-pill .pill-name {
@@ -1895,7 +1889,7 @@
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.15s ease;
-    color: #ffffff;
+    color: var(--admin-bg, #edf6fb);
     font-size: 0.7rem;
 }
 
@@ -1938,7 +1932,7 @@
    Per-Course Metadata Form Fields
    ============================================ */
 .course-meta-item {
-    background: var(--gray-50, #f8fafc);
+    background: var(--gray-50, var(--admin-bg, #edf6fb));
     border: 1px solid var(--admin-input-border, #e2e8f0);
     border-radius: 12px;
     padding: 1rem;
@@ -2037,7 +2031,7 @@
     gap: 0.5rem;
     margin-top: 0.75rem;
     padding: 0.5rem 0.75rem;
-    background: #f8fafc;
+    background: var(--admin-bg, #edf6fb);
     border-radius: 8px;
 }
 
@@ -2053,7 +2047,7 @@
 
 .profile-demo-tag {
     margin-top: 10px;
-    background: var(--admin-bg, #edf6fb)8eb;
+    background: var(--admin-bg, #fde68a;
     color: #92400e;
     padding: 6px 12px;
     border-radius: 6px;
@@ -2077,5 +2071,6 @@
         gap: 0.5rem;
     }
 }
+
 
 
