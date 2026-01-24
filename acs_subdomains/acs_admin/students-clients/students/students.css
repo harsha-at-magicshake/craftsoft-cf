@@ -2070,27 +2070,29 @@
 
 .profile-demo-tag {
     margin-top: 10px;
-    background: var(--admin-bg, #fde68a;
-            color: #92400e;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border: 1px solid #fde68a;
+    background: #fef3c7;
+    /* Soft yellow for demo */
+    color: #92400e;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid #fde68a;
+    display: inline-block;
+}
+
+/* MOBILE RESPONSIVE ADAPTATIONS */
+@media (max-width: 768px) {
+    .course-meta-grid {
+        grid-template-columns: 1fr;
     }
 
-    /* MOBILE RESPONSIVE ADAPTATIONS */
-    @media (max-width: 768px) {
-        .course-meta-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .course-demo-fields {
-            flex-direction: column;
-        }
-
-        .profile-course-meta-row {
-            grid-template-columns: 1fr;
-            gap: 0.5rem;
-        }
+    .course-demo-fields {
+        flex-direction: column;
     }
+
+    .profile-course-meta-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+}

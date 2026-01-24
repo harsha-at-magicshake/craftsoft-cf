@@ -16,6 +16,14 @@
     --admin-radius-xl: 18px;
     --admin-hover-tint: rgba(40, 150, 205, 0.15);
 
+    /* Brand Colors */
+    --primary-300: #7ec0e1;
+    --primary-400: #4ea8d5;
+    --primary-500: #2896cd;
+    --primary-600: #1a7eb0;
+    --primary-700: #156691;
+    --primary-50: #edf6fb;
+
     /* Sidebar (Light Theme) */
     --sidebar-bg: linear-gradient(180deg, #edf6fb 0%, #e5f3fa 100%);
     --sidebar-border: rgba(40, 150, 205, 0.15);

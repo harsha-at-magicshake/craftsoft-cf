@@ -274,39 +274,50 @@
     color: var(--admin-text-primary);
 }
 
-/* Toggle Group (Pill Style) */
-.toggle-group {
+/* Toggle Group (Pill Style) - Used in Payment & Assignments */
+.toggle-group,
+.radio-toggle-group {
     display: inline-flex;
-    background: var(--admin-input-bg);
+    background: var(--admin-input-bg, rgba(40, 150, 205, 0.04));
     padding: 4px;
-    border-radius: 10px;
+    border-radius: 12px;
+    /* Slightly more rounded */
     gap: 4px;
-    border: 1.5px solid var(--admin-input-border);
+    border: 1.5px solid var(--admin-input-border, rgba(40, 150, 205, 0.15));
+    width: fit-content;
 }
 
-.toggle-item {
+.toggle-item,
+.radio-label {
     cursor: pointer;
-}
-
-.toggle-item input {
-    display: none;
-}
-
-.toggle-item span {
     display: block;
-    padding: 8px 16px;
-    border-radius: 7px;
+    margin: 0 !important;
+}
+
+.toggle-item input,
+.radio-label input {
+    display: none !important;
+    /* Hide raw radio */
+}
+
+.toggle-item span,
+.radio-label span {
+    display: block;
+    padding: 8px 18px;
+    border-radius: 9px;
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--admin-text-secondary);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
+    text-align: center;
 }
 
-.toggle-item input:checked+span {
-    background: var(--btn-primary-bg);
-    color: #ffffff;
-    box-shadow: var(--btn-primary-shadow);
+.toggle-item input:checked+span,
+.radio-label input:checked+span {
+    background: var(--primary-500, #2896cd);
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(40, 150, 205, 0.25);
 }
 
 /* Searchable Select Premium Dropdown */
@@ -433,9 +444,15 @@
 }
 
 .searchable-option.selected {
-    background: var(--primary-500) !important;
+    background: var(--primary-500, #2896cd) !important;
     color: #ffffff !important;
     font-weight: 600;
+}
+
+/* Ensure no white-on-white when partially selected or focused */
+.searchable-option.selected:hover {
+    background: var(--primary-600, #1a7eb0) !important;
+    color: #ffffff !important;
 }
 
 .no-results {
