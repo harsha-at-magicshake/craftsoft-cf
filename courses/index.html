@@ -9,50 +9,39 @@
     <title>All Courses - Abhi's Craftsoft | IT Training in Hyderabad</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link <!DOCTYPE html>
-    <html lang="en">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Italianno&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../assets/css/master.css?v=2.0">
+    <link rel="stylesheet" href="../assets/css/utilities/skeleton.css?v=1.0">
+    <link rel="stylesheet" href="../assets/css/sections/courses.css?v=2.2">
+    <link rel="stylesheet" href="../assets/css/components/search-bar.css?v=1.0">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description"
-            content="Explore our comprehensive range of IT training courses - Graphic Design, UI/UX, Full Stack Development, DevOps, AWS, and more at Abhi's Craftsoft, Hyderabad.">
-        <title>All Courses - Abhi's Craftsoft | IT Training in Hyderabad</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Italianno&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
-            rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-        <link rel="stylesheet" href="../assets/css/master.css?v=2.0">
-        <link rel="stylesheet" href="../assets/css/utilities/skeleton.css?v=1.0">
-        <link rel="stylesheet" href="../assets/css/sections/courses.css?v=2.2">
-        <link rel="stylesheet" href="../assets/css/components/search-bar.css?v=1.0">
+    <!-- Logo Component Assets -->
+    <link rel="stylesheet" href="../assets/components/logo-signature/logo-signature.css">
+    <script src="../assets/components/logo-signature/logo-signature.js"></script>
+    <!-- FOUC Protection -->
+    <style>
+        .no-fouc {
+            opacity: 0;
+        }
 
-        <!-- Logo Component Assets -->
-        <link rel="stylesheet" href="../assets/components/logo-signature/logo-signature.css">
-        <script src="../assets/components/logo-signature/logo-signature.js"></script>
-        <!-- FOUC Protection -->
-        <style>
-            .no-fouc {
-                opacity: 0;
-            }
-
-            body {
-                transition: opacity 0.3s ease;
-            }
-        </style>
-        <script>
-            document.documentElement.className += ' no-fouc';
-            document.addEventListener('DOMContentLoaded', function () {
-                document.documentElement.classList.remove('no-fouc');
-            });
-            window.addEventListener('load', function () {
-                document.documentElement.classList.remove('no-fouc');
-            });
-        </script>
-    </head>
+        body {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+    <script>
+        document.documentElement.className += ' no-fouc';
+        document.addEventListener('DOMContentLoaded', function () {
+            document.documentElement.classList.remove('no-fouc');
+        });
+        window.addEventListener('load', function () {
+            document.documentElement.classList.remove('no-fouc');
+        });
+    </script>
+</head>
 
 <body>
     <!-- Navbar -->
@@ -791,6 +780,138 @@
     <script src="../assets/js/main.js?v=2.1"></script>
     <script src="../assets/js/search-bar.js?v=1.0"></script>
 
+    <style>
+        /* Improved public multi-select styles */
+        .public-multi-select {
+            position: relative;
+            user-select: none;
+        }
+
+        .selected-items-display {
+            min-height: 48px;
+            padding: 0.5rem 1rem;
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .selected-items-display:hover {
+            border-color: #2896cd;
+        }
+
+        .selected-items-display .placeholder {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .multi-select-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1.5px solid #2896cd;
+            border-radius: 0.75rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            flex-direction: column;
+        }
+
+        .public-multi-select.open .multi-select-dropdown {
+            display: flex;
+        }
+
+        .dropdown-search {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 10;
+            border-radius: 0.75rem 0.75rem 0 0;
+        }
+
+        .dropdown-search i {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-search input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            background: transparent;
+        }
+
+        .dropdown-options {
+            max-height: 320px;
+            /* Increased for better course scrolling */
+            overflow-y: auto;
+            padding: 0.5rem 0;
+        }
+
+        .option-group {
+            padding: 0.5rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            background: #f8fafc;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .option-item:hover {
+            background: #f8fafc;
+        }
+
+        .option-divider {
+            height: 1px;
+            background: #f1f5f9;
+            margin: 0.5rem 0;
+        }
+
+        .special-option {
+            font-weight: 600;
+            color: #2896cd;
+        }
+
+        .selected-text {
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Highlight selected option in dropdown */
+        .option-item.selected {
+            background: rgba(40, 150, 205, 0.1);
+            color: #2896cd;
+            font-weight: 600;
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Initialize Inquiry Sync
