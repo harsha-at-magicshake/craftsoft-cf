@@ -665,6 +665,7 @@
                                 <div class="selected-items-display" id="selected-courses-display">
                                     <span class="placeholder">Select courses...</span>
                                 </div>
+                                <input type="hidden" name="other_interest" id="course-other-hidden">
                                 <div class="multi-select-dropdown">
                                     <div class="dropdown-search">
                                         <i class="fas fa-search"></i>
@@ -824,6 +825,7 @@
             const searchInput = document.getElementById('course-search');
             const optionsContainer = document.getElementById('course-options');
             const messageBox = document.getElementById('counseling-message');
+            const otherHidden = document.getElementById('course-other-hidden');
             const originalPlaceholder = "Tell us about your learning goals...";
 
             if (multiSelect) {
@@ -842,6 +844,11 @@
                 searchInput.addEventListener('input', (e) => {
                     const query = e.target.value.toLowerCase();
                     optionsContainer.querySelectorAll('.option-item').forEach(item => {
+                        const isOther = item.classList.contains('special-option');
+                        if (isOther) {
+                            item.style.display = 'flex'; // Always show Other
+                            return;
+                        }
                         const text = item.textContent.toLowerCase();
                         item.style.display = text.includes(query) ? 'flex' : 'none';
                     });
@@ -853,14 +860,17 @@
                     if (!checked) {
                         display.innerHTML = '<span class="placeholder">Select courses...</span>';
                         messageBox.placeholder = originalPlaceholder;
+                        otherHidden.value = "";
                     } else {
                         display.innerHTML = `<span class="selected-text">${checked.value}</span>`;
 
                         if (checked.value === 'Other') {
                             messageBox.placeholder = "Please specify the course(s) you are looking for...";
                             messageBox.focus();
+                            otherHidden.value = "Selected (Detail in message)";
                         } else {
                             messageBox.placeholder = originalPlaceholder;
+                            otherHidden.value = "";
                         }
 
                         // Close dropdown after selection

@@ -329,6 +329,7 @@
                                 <div class="selected-items-display" id="selected-services-display">
                                     <span class="placeholder">Select services...</span>
                                 </div>
+                                <input type="hidden" name="other_interest" id="service-other-hidden">
                                 <div class="multi-select-dropdown">
                                     <div class="dropdown-search">
                                         <i class="fas fa-search"></i>
@@ -336,177 +337,31 @@
                                     </div>
                                     <div class="dropdown-options" id="service-options">
                                         <div class="option-group">Design & Creative</div>
-                                        <label class="option-item"><input type="radio" name="services"
+                                        <label class="option-item"><input type="radio" name="courses"
                                                 value="Graphic Design Services"> <span>Graphic
                                                 Design</span></label>
-                                        <label class="option-item"><input type="radio" name="services"
+                                        <label class="option-item"><input type="radio" name="courses"
                                                 value="UI/UX Design Services"> <span>UI/UX Design</span></label>
 
                                         <div class="option-group">Tech & Cloud</div>
-                                        <label class="option-item"><input type="radio" name="services"
+                                        <label class="option-item"><input type="radio" name="courses"
                                                 value="Website Development"> <span>Website
                                                 Development</span></label>
-                                        <label class="option-item"><input type="radio" name="services"
+                                        <label class="option-item"><input type="radio" name="courses"
                                                 value="Cloud & DevOps"> <span>Cloud & DevOps</span></label>
 
                                         <div class="option-group">Branding & Career</div>
-                                        <label class="option-item"><input type="radio" name="services"
+                                        <label class="option-item"><input type="radio" name="courses"
                                                 value="Branding & Marketing"> <span>Branding &
                                                 Marketing</span></label>
-                                        <label class="option-item"><input type="radio" name="services"
+                                        <label class="option-item"><input type="radio" name="courses"
                                                 value="Career Services"> <span>Career Services</span></label>
 
                                         <div class="option-divider"></div>
-                                        <label class="option-item special-option"><input type="radio" name="services"
+                                        <label class="option-item special-option"><input type="radio" name="courses"
                                                 value="Other" id="service-other-checkbox">
                                             <span>Other Service...</span></label>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="message">Message *</label>
-                            <textarea id="message" name="message"
-                                placeholder="Briefly describe your project requirements..." rows="4"
-                                required></textarea>
-                        </div>
-                        <div class="form-buttons">
-                            <button type="submit" class="btn-form btn-blue">Send Message</button>
-                            <span class="divider-or">or</span>
-                            <a href="https://wa.me/917842239090?text=Hi! I am interested in inquiring about your professional IT services."
-                                target="_blank" class="btn-form btn-green">
-                                <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-                            </a>
-                        </div>
-                        <p class="form-footer-legal">By submitting this form, you agree to our <a
-                                href="../terms-of-service/">Terms of Service</a> and <a
-                                href="../privacy-policy/">Privacy Policy</a>.</p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Get A Quotation Section -->
-    <section class="unified-contact-section" id="contact">
-        <div class="container">
-            <!-- Pill Header -->
-            <div class="unified-contact-header">
-                <span class="unified-contact-pill">
-                    Get A Quotation
-                </span>
-            </div>
-
-            <div class="unified-contact-wrapper">
-                <!-- Left Side - Contact Info -->
-                <div class="unified-contact-info">
-                    <h2>Let's <span>Build Something</span></h2>
-                    <p>
-                        Have a project in mind or need professional advice? Our team is ready to help you
-                        transform your vision into reality.
-                    </p>
-
-                    <div class="unified-methods-grid">
-                        <a href="tel:+917842239090" class="unified-method-card unified-card">
-                            <div class="method-card-header">
-                                <i class="fas fa-phone"></i>
-                                <h4>Phone / WhatsApp</h4>
-                            </div>
-                            <span>+91 7842239090</span>
-                        </a>
-                        <a href="mailto:team.craftsoft@gmail.com" class="unified-method-card unified-card">
-                            <div class="method-card-header">
-                                <i class="fas fa-envelope"></i>
-                                <h4>Email</h4>
-                            </div>
-                            <span>team.craftsoft@gmail.com</span>
-                        </a>
-                        <a href="https://www.linkedin.com/company/abhis-craftsoft" target="_blank"
-                            class="unified-method-card unified-card">
-                            <div class="method-card-header">
-                                <i class="fab fa-linkedin"></i>
-                                <h4>LinkedIn</h4>
-                            </div>
-                            <span>Abhi's Craftsoft</span>
-                        </a>
-                        <a href="https://www.instagram.com/craftsoft_" target="_blank"
-                            class="unified-method-card unified-card">
-                            <div class="method-card-header">
-                                <i class="fab fa-instagram"></i>
-                                <h4>Instagram</h4>
-                            </div>
-                            <span>@craftsoft_</span>
-                        </a>
-                        <a href="https://maps.app.goo.gl/uiTwuixvPKM8oJ9b8" target="_blank"
-                            class="unified-method-card full-width unified-card">
-                            <div class="method-card-header">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <h4>Visit Us</h4>
-                            </div>
-                            <span>Plot no. 163, Vijayasree Colony, Vanasthalipuram, Hyderabad 500070</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Right Side - Form -->
-                <div class="unified-form-side unified-card">
-                    <div class="form-header">
-                        <span class="section-tag">Request Quote</span>
-                        <h3>Send us a Message</h3>
-                    </div>
-                    <form id="service-contact-form">
-                        <div class="form-group">
-                            <label for="name">Full Name *</label>
-                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" placeholder="10-digit number" maxlength="10">
-                        </div>
-                        <div class="form-group">
-                            <label>Services Required *</label>
-                            <div class="public-multi-select" id="services-multi-select">
-                                <div class="selected-items-display" id="selected-services-display">
-                                    <span class="placeholder">Select services...</span>
-                                </div>
-                                <div class="multi-select-dropdown">
-                                    <div class="dropdown-search">
-                                        <i class="fas fa-search"></i>
-                                        <input type="text" placeholder="Search services..." id="service-search">
-                                    </div>
-                                    <div class="dropdown-options" id="service-options">
-                                        <div class="option-group">Design & Creative</div>
-                                        <label class="option-item"><input type="radio" name="services"
-                                                value="Graphic Design Services"> <span>Graphic
-                                                Design</span></label>
-                                        <label class="option-item"><input type="radio" name="services"
-                                                value="UI/UX Design Services"> <span>UI/UX Design</span></label>
-
-                                        <div class="option-group">Tech & Cloud</div>
-                                        <label class="option-item"><input type="radio" name="services"
-                                                value="Website Development"> <span>Website
-                                                Development</span></label>
-                                        <label class="option-item"><input type="radio" name="services"
-                                                value="Cloud & DevOps"> <span>Cloud & DevOps</span></label>
-
-                                        <div class="option-group">Branding & Career</div>
-                                        <label class="option-item"><input type="radio" name="services"
-                                                value="Branding & Marketing"> <span>Branding &
-                                                Marketing</span></label>
-                                        <label class="option-item"><input type="radio" name="services"
-                                                value="Career Services"> <span>Career Services</span></label>
-
-                                        <div class="option-divider"></div>
-                                        <label class="option-item special-option"><input type="radio" name="services"
-                                                value="Other" id="service-other-checkbox">
-                                            <span>Other Service...</span></label>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -717,27 +572,10 @@
             color: #2896cd;
         }
 
-        .public-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            padding: 0.25rem 0.6rem;
-            background: #e0f2fe;
-            color: #0369a1;
-            border-radius: 6px;
-            font-size: 0.85rem;
+        .selected-text {
+            color: #1e293b;
             font-weight: 600;
-            border: 1px solid #bae6fd;
-        }
-
-        .public-pill .pill-remove {
-            cursor: pointer;
-            font-size: 0.75rem;
-            opacity: 0.7;
-        }
-
-        .public-pill .pill-remove:hover {
-            opacity: 1;
+            font-size: 0.95rem;
         }
     </style>
 
@@ -756,6 +594,7 @@
             const searchInput = document.getElementById('service-search');
             const optionsContainer = document.getElementById('service-options');
             const messageBox = document.getElementById('message');
+            const otherHidden = document.getElementById('service-other-hidden');
             const originalPlaceholder = "Briefly describe your project requirements...";
 
             if (multiSelect) {
@@ -771,6 +610,11 @@
                 searchInput.addEventListener('input', (e) => {
                     const query = e.target.value.toLowerCase();
                     optionsContainer.querySelectorAll('.option-item').forEach(item => {
+                        const isOther = item.classList.contains('special-option');
+                        if (isOther) {
+                            item.style.display = 'flex'; // Always show Other
+                            return;
+                        }
                         const text = item.textContent.toLowerCase();
                         item.style.display = text.includes(query) ? 'flex' : 'none';
                     });
@@ -781,14 +625,17 @@
                     if (!checked) {
                         display.innerHTML = '<span class="placeholder">Select services...</span>';
                         messageBox.placeholder = originalPlaceholder;
+                        otherHidden.value = "";
                     } else {
                         display.innerHTML = `<span class="selected-text">${checked.value}</span>`;
 
                         if (checked.value === 'Other') {
                             messageBox.placeholder = "Please specify the service(s) you are looking for...";
                             messageBox.focus();
+                            otherHidden.value = "Selected (Detail in message)";
                         } else {
                             messageBox.placeholder = originalPlaceholder;
+                            otherHidden.value = "";
                         }
 
                         // Close dropdown after selection
