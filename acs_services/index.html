@@ -329,6 +329,7 @@
                                 <div class="selected-items-display" id="selected-services-display">
                                     <span class="placeholder">Select services...</span>
                                 </div>
+                                <input type="hidden" name="services" id="services-hidden-input">
                                 <input type="hidden" name="other_interest" id="service-other-hidden">
                                 <div class="multi-select-dropdown">
                                     <div class="dropdown-search">
@@ -337,30 +338,23 @@
                                     </div>
                                     <div class="dropdown-options" id="service-options">
                                         <div class="option-group">Design & Creative</div>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Graphic Design Services"> <span>Graphic
-                                                Design</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="UI/UX Design Services"> <span>UI/UX Design</span></label>
+                                        <div class="option-item" data-value="Graphic Design Services">Graphic Design
+                                        </div>
+                                        <div class="option-item" data-value="UI/UX Design Services">UI/UX Design</div>
 
                                         <div class="option-group">Tech & Cloud</div>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Website Development"> <span>Website
-                                                Development</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Cloud & DevOps"> <span>Cloud & DevOps</span></label>
+                                        <div class="option-item" data-value="Website Development">Website Development
+                                        </div>
+                                        <div class="option-item" data-value="Cloud & DevOps">Cloud & DevOps</div>
 
                                         <div class="option-group">Branding & Career</div>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Branding & Marketing"> <span>Branding &
-                                                Marketing</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Career Services"> <span>Career Services</span></label>
+                                        <div class="option-item" data-value="Branding & Marketing">Branding & Marketing
+                                        </div>
+                                        <div class="option-item" data-value="Career Services">Career Services</div>
 
                                         <div class="option-divider"></div>
-                                        <label class="option-item special-option"><input type="radio" name="courses"
-                                                value="Other" id="service-other-checkbox">
-                                            <span>Other Service...</span></label>
+                                        <div class="option-item special-option" data-value="Other">Other Service...
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -542,24 +536,15 @@
             cursor: pointer;
             transition: all 0.2s ease;
             width: 100%;
+            font-size: 0.95rem;
+            color: #334155;
         }
 
         .option-item:hover {
             background: #f8fafc;
         }
 
-        .option-item input {
-            width: 18px;
-            height: 18px;
-            accent-color: #2896cd;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .option-item span {
-            font-size: 0.95rem;
-            color: #334155;
-        }
+        /* Removed input styling as inputs are removed */
 
         .option-divider {
             height: 1px;
@@ -588,25 +573,29 @@
                 window.PhoneInputInjector.init();
             }
 
-            // Public Single-Select Logic for Services
+            // Public Single-Select Logic
             const multiSelect = document.getElementById('services-multi-select');
             const display = document.getElementById('selected-services-display');
             const searchInput = document.getElementById('service-search');
             const optionsContainer = document.getElementById('service-options');
-            const messageBox = document.getElementById('message');
+            const hiddenInput = document.getElementById('services-hidden-input');
             const otherHidden = document.getElementById('service-other-hidden');
+            const messageBox = document.getElementById('message');
             const originalPlaceholder = "Briefly describe your project requirements...";
 
             if (multiSelect) {
+                // Toggle Dropdown
                 display.addEventListener('click', () => {
                     multiSelect.classList.toggle('open');
                     if (multiSelect.classList.contains('open')) searchInput.focus();
                 });
 
+                // Close on outside click
                 document.addEventListener('click', (e) => {
                     if (!multiSelect.contains(e.target)) multiSelect.classList.remove('open');
                 });
 
+                // Search Filter
                 searchInput.addEventListener('input', (e) => {
                     const query = e.target.value.toLowerCase();
                     optionsContainer.querySelectorAll('.option-item').forEach(item => {
@@ -620,16 +609,21 @@
                     });
                 });
 
-                const updateDisplay = () => {
-                    const checked = optionsContainer.querySelector('input:radio:checked');
-                    if (!checked) {
-                        display.innerHTML = '<span class="placeholder">Select services...</span>';
-                        messageBox.placeholder = originalPlaceholder;
-                        otherHidden.value = "";
-                    } else {
-                        display.innerHTML = `<span class="selected-text">${checked.value}</span>`;
+                // Selection Logic
+                optionsContainer.querySelectorAll('.option-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const value = item.dataset.value;
+                        const text = item.textContent;
 
-                        if (checked.value === 'Other') {
+                        // Update Selected Visuals
+                        optionsContainer.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
+                        item.classList.add('selected');
+
+                        // Update Hidden Inputs & Display
+                        hiddenInput.value = value;
+                        display.innerHTML = `<span class="selected-text">${text}</span>`;
+
+                        if (value === 'Other') {
                             messageBox.placeholder = "Please specify the service(s) you are looking for...";
                             messageBox.focus();
                             otherHidden.value = "Selected (Detail in message)";
@@ -638,13 +632,9 @@
                             otherHidden.value = "";
                         }
 
-                        // Close dropdown after selection
+                        // Close dropdown
                         multiSelect.classList.remove('open');
-                    }
-                };
-
-                optionsContainer.addEventListener('change', (e) => {
-                    updateDisplay();
+                    });
                 });
             }
 

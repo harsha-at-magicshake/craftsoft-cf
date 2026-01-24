@@ -665,6 +665,7 @@
                                 <div class="selected-items-display" id="selected-courses-display">
                                     <span class="placeholder">Select courses...</span>
                                 </div>
+                                <input type="hidden" name="courses" id="courses-hidden-input">
                                 <input type="hidden" name="other_interest" id="course-other-hidden">
                                 <div class="multi-select-dropdown">
                                     <div class="dropdown-search">
@@ -673,69 +674,47 @@
                                     </div>
                                     <div class="dropdown-options" id="course-options">
                                         <div class="option-group">Design</div>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Graphic Design"> <span>Graphic Design</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="UI/UX Design"> <span>UI/UX Design</span></label>
+                                        <div class="option-item" data-value="Graphic Design">Graphic Design</div>
+                                        <div class="option-item" data-value="UI/UX Design">UI/UX Design</div>
 
                                         <div class="option-group">Development</div>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Full Stack MERN"> <span>Full Stack MERN</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Python Full Stack"> <span>Python Full Stack</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Java Full Stack"> <span>Java Full Stack</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="React Development"> <span>React Development</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="DSA Mastery"> <span>DSA Mastery</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="SQL Mastery"> <span>SQL Mastery</span></label>
+                                        <div class="option-item" data-value="Full Stack MERN">Full Stack MERN</div>
+                                        <div class="option-item" data-value="Python Full Stack">Python Full Stack</div>
+                                        <div class="option-item" data-value="Java Full Stack">Java Full Stack</div>
+                                        <div class="option-item" data-value="React Development">React Development</div>
+                                        <div class="option-item" data-value="DSA Mastery">DSA Mastery</div>
+                                        <div class="option-item" data-value="SQL Mastery">SQL Mastery</div>
 
                                         <div class="option-group">Cloud & Security</div>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="DevOps Engineering"> <span>DevOps Engineering</span></label>
-                                        <label class="option-item"><input type="radio" name="courses" value="AWS Cloud">
-                                            <span>AWS Cloud</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Microsoft Azure"> <span>Microsoft Azure</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Cyber Security"> <span>Cyber Security</span></label>
-                                        <label class="option-item"><input type="radio" name="courses" value="DevSecOps">
-                                            <span>DevSecOps</span></label>
+                                        <div class="option-item" data-value="DevOps Engineering">DevOps Engineering
+                                        </div>
+                                        <div class="option-item" data-value="AWS Cloud">AWS Cloud</div>
+                                        <div class="option-item" data-value="Microsoft Azure">Microsoft Azure</div>
+                                        <div class="option-item" data-value="Cyber Security">Cyber Security</div>
+                                        <div class="option-item" data-value="DevSecOps">DevSecOps</div>
 
                                         <div class="option-group">Enterprise</div>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Salesforce Admin"> <span>Salesforce Admin</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Salesforce Developer"> <span>Salesforce Developer</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Marketing Cloud"> <span>Marketing Cloud</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Oracle Fusion Cloud"> <span>Oracle Fusion Cloud</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="ServiceNow"> <span>ServiceNow</span></label>
+                                        <div class="option-item" data-value="Salesforce Admin">Salesforce Admin</div>
+                                        <div class="option-item" data-value="Salesforce Developer">Salesforce Developer
+                                        </div>
+                                        <div class="option-item" data-value="Marketing Cloud">Marketing Cloud</div>
+                                        <div class="option-item" data-value="Oracle Fusion Cloud">Oracle Fusion Cloud
+                                        </div>
+                                        <div class="option-item" data-value="ServiceNow">ServiceNow</div>
 
                                         <div class="option-group">Data & AI</div>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Data Analytics"> <span>Data Analytics</span></label>
-                                        <label class="option-item"><input type="radio" name="courses" value="AI & ML">
-                                            <span>AI & ML</span></label>
+                                        <div class="option-item" data-value="Data Analytics">Data Analytics</div>
+                                        <div class="option-item" data-value="AI & ML">AI & ML</div>
 
                                         <div class="option-group">Growth</div>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Spoken English"> <span>Spoken English</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Soft Skills"> <span>Soft Skills</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Resume & Interview"> <span>Resume & Interview</span></label>
-                                        <label class="option-item"><input type="radio" name="courses"
-                                                value="Handwriting"> <span>Handwriting</span></label>
+                                        <div class="option-item" data-value="Spoken English">Spoken English</div>
+                                        <div class="option-item" data-value="Soft Skills">Soft Skills</div>
+                                        <div class="option-item" data-value="Resume & Interview">Resume & Interview
+                                        </div>
+                                        <div class="option-item" data-value="Handwriting">Handwriting</div>
 
                                         <div class="option-divider"></div>
-                                        <label class="option-item special-option"><input type="radio" name="courses"
-                                                value="Other" id="course-other-checkbox"> <span>Other
-                                                Course...</span></label>
+                                        <div class="option-item special-option" data-value="Other">Other Course...</div>
                                     </div>
                                 </div>
                             </div>
@@ -824,8 +803,9 @@
             const display = document.getElementById('selected-courses-display');
             const searchInput = document.getElementById('course-search');
             const optionsContainer = document.getElementById('course-options');
-            const messageBox = document.getElementById('counseling-message');
+            const hiddenInput = document.getElementById('courses-hidden-input');
             const otherHidden = document.getElementById('course-other-hidden');
+            const messageBox = document.getElementById('counseling-message');
             const originalPlaceholder = "Tell us about your learning goals...";
 
             if (multiSelect) {
@@ -854,17 +834,21 @@
                     });
                 });
 
-                // Selection Change
-                const updateDisplay = () => {
-                    const checked = optionsContainer.querySelector('input:radio:checked');
-                    if (!checked) {
-                        display.innerHTML = '<span class="placeholder">Select courses...</span>';
-                        messageBox.placeholder = originalPlaceholder;
-                        otherHidden.value = "";
-                    } else {
-                        display.innerHTML = `<span class="selected-text">${checked.value}</span>`;
+                // Selection Logic
+                optionsContainer.querySelectorAll('.option-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const value = item.dataset.value;
+                        const text = item.textContent;
 
-                        if (checked.value === 'Other') {
+                        // Update Selected Visuals
+                        optionsContainer.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
+                        item.classList.add('selected');
+
+                        // Update Hidden Inputs & Display
+                        hiddenInput.value = value;
+                        display.innerHTML = `<span class="selected-text">${text}</span>`;
+
+                        if (value === 'Other') {
                             messageBox.placeholder = "Please specify the course(s) you are looking for...";
                             messageBox.focus();
                             otherHidden.value = "Selected (Detail in message)";
@@ -873,13 +857,9 @@
                             otherHidden.value = "";
                         }
 
-                        // Close dropdown after selection
+                        // Close dropdown
                         multiSelect.classList.remove('open');
-                    }
-                };
-
-                optionsContainer.addEventListener('change', (e) => {
-                    updateDisplay();
+                    });
                 });
             }
         });
