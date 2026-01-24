@@ -6,25 +6,26 @@
 (function () {
     // All available courses for dynamic footer
     const allCourses = [
-        { name: 'Python Full Stack', url: '/c-python/' },
-        { name: 'Full Stack MERN', url: '/c-full-stack/' },
-        { name: 'Graphic Design', url: '/c-graphic-design/' },
-        { name: 'UI/UX Design', url: '/c-ui-ux/' },
-        { name: 'Cloud & DevOps', url: '/c-devops/' },
-        { name: 'Cyber Security', url: '/c-cyber-security/' },
-        { name: 'Data Analytics', url: '/c-data-analytics/' },
-        { name: 'Salesforce Development', url: '/c-salesforce-developer/' },
-        { name: 'ServiceNow Administration', url: '/c-service-now/' }
+        { name: 'Python Full Stack', url: 'courses/python/' },
+        { name: 'Full Stack MERN', url: 'courses/full-stack/' },
+        { name: 'Graphic Design', url: 'courses/graphic-design/' },
+        { name: 'UI/UX Design', url: 'courses/ui-ux/' },
+        { name: 'Cloud & DevOps', url: 'courses/devops/' },
+        { name: 'Cyber Security', url: 'courses/cyber-security/' },
+        { name: 'Data Analytics', url: 'courses/data-analytics/' },
+        { name: 'Salesforce Developer', url: 'courses/salesforce-developer/' },
+        { name: 'ServiceNow Admin', url: 'courses/service-now/' },
+        { name: 'Java Full Stack', url: 'courses/java/' }
     ];
 
     // All available services
     const allServices = [
-        { name: 'Graphic Design', url: '/s-graphic-design/' },
-        { name: 'UI/UX Design', url: '/s-ui-ux-design/' },
-        { name: 'Web Development', url: '/s-web-development/' },
-        { name: 'Brand Identity', url: '/s-branding/' },
-        { name: 'Cloud Solutions', url: '/s-cloud-devops/' },
-        { name: 'Career Services', url: '/s-career-services/' }
+        { name: 'Graphic Design', url: 'acs_services/graphic-design/' },
+        { name: 'UI/UX Design', url: 'acs_services/ui-ux-design/' },
+        { name: 'Web Development', url: 'acs_services/web-development/' },
+        { name: 'Brand Identity', url: 'acs_services/branding/' },
+        { name: 'Cloud Solutions', url: 'acs_services/cloud-devops/' },
+        { name: 'Career Services', url: 'acs_services/career-services/' }
     ];
 
     // Shuffle helper
