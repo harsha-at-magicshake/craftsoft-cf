@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initHeroParallax();
     initWorkspaceTabs();
     initFormSecurity();
+    initScrollToTop();
 });
 
 /* ============================================
@@ -734,7 +735,7 @@ function initShareCourse() {
             let shareUrl = '';
 
             switch (shareType) {
-                                case 'whatsapp':
+                case 'whatsapp':
                     shareUrl = `https://wa.me/?text=${encodeURIComponent('Check out this course: ' + document.title + ' ' + window.location.href)}`;
                     window.open(shareUrl, '_blank');
                     break;
@@ -974,3 +975,72 @@ function initCardGlow() {
     });
 }
 
+/* ============================================
+    SCROLL TO TOP (BOTTOM-LEFT)
+    ============================================ */
+function initScrollToTop() {
+    // Only for Desktop & Medium Screens (Policy: Hidden on Mobile)
+    if (window.innerWidth <= 576) return;
+
+    // Create Button
+    const btn = document.createElement('button');
+    btn.id = 'scrollToTopBtn';
+    btn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    btn.setAttribute('aria-label', 'Scroll to top');
+    btn.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #2896cd 0%, #1a7eb0 100%);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        box-shadow: 0 10px 25px rgba(40, 150, 205, 0.4);
+        z-index: 99;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: translateY(20px);
+    `;
+
+    document.body.appendChild(btn);
+
+    // Show/Hide on Scroll
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            btn.style.opacity = '1';
+            btn.style.visibility = 'visible';
+            btn.style.transform = 'translateY(0)';
+        } else {
+            btn.style.opacity = '0';
+            btn.style.visibility = 'hidden';
+            btn.style.transform = 'translateY(20px)';
+        }
+    });
+
+    // Hover Effect
+    btn.addEventListener('mouseenter', () => {
+        btn.style.transform = 'translateY(-5px) scale(1.1)';
+        btn.style.boxShadow = '0 15px 30px rgba(40, 150, 205, 0.6)';
+    });
+
+    btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translateY(0) scale(1)';
+        btn.style.boxShadow = '0 10px 25px rgba(40, 150, 205, 0.4)';
+    });
+
+    // Scroll Logic
+    btn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}

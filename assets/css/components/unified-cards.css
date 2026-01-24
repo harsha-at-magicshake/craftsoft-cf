@@ -156,12 +156,18 @@
 }
 
 /* ============================================
-   RESPONSIVE - Tablet (Only if needed for specific tweaks)
+   RESPONSIVE - Tablet (Medium Screens)
    ============================================ */
 @media (max-width: 1024px) {
-    .unified-grid {
-        /* Grid handles itself via auto-fit, we just adjust gaps */
+    .unified-methods-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* Force 2 columns on tablet */
         gap: var(--spacing-lg);
+    }
+
+    .unified-method-card.full-width {
+        grid-column: span 2;
+        /* Keep Visit Us spanning full width */
     }
 }
 
@@ -176,7 +182,8 @@
 
     .unified-card {
         padding: var(--spacing-xl);
-        text-align: center;
+        text-align: left;
+        /* Fixed: Switched from center to left for form clarity */
     }
 
     .unified-card-icon {

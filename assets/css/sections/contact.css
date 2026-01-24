@@ -120,24 +120,28 @@
     color: #0f172a;
 }
 
-.method-card a,
 .method-card span {
-    color: #64748b;
-    font-size: 0.9rem;
+    color: #475569;
+    font-size: 1.05rem !important;
+    /* Made larger */
+    font-weight: 700 !important;
+    /* Made bold */
     text-decoration: none;
     transition: color 0.3s ease;
     display: block;
 }
 
-.method-card:hover a,
 .method-card:hover span {
     color: #3b82f6;
 }
 
 @media (max-width: 991px) {
     .contact-methods-grid {
+        grid-template-columns: 1fr 1fr;
+        /* 2 Columns on Tablet */
         max-width: 600px;
         margin: 1.5rem auto 0;
+        gap: 1.25rem;
     }
 }
 
@@ -393,9 +397,9 @@
         justify-content: center;
     }
 
-    .method-card span,
-    .method-card a {
-        text-align: center;
+    .method-card span {
+        text-align: left;
+        /* Left align card text on mobile */
     }
 }
 
@@ -454,6 +458,8 @@
     .contact-text-side {
         width: 100%;
         padding: 0;
+        text-align: left;
+        /* Keep text left aligned */
     }
 }
 
