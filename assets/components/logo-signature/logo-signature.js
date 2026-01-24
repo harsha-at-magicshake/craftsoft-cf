@@ -2,12 +2,14 @@
  * Logo Signature Component
  * Usage: <div class="logo-signature-component" data-link="../index.html"></div>
  */
-document.addEventListener('DOMContentLoaded', () => {
+function initLogoSignature() {
     const containers = document.querySelectorAll('.logo-signature-component');
 
     containers.forEach(container => {
-        const link = container.getAttribute('data-link') || '#home';
-        const isFooter = container.hasAttribute('data-footer');
+        // Skip if already initialized or if container is empty
+        if (container.children.length > 0) return;
+
+        const link = container.getAttribute('data-link') || 'index.html';
 
         container.innerHTML = `
             <a href="${link}" class="logo-component">
@@ -18,4 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
             </a>
         `;
     });
-});
+}
+
+// Auto-run on load for static elements (Navbar)
+document.addEventListener('DOMContentLoaded', initLogoSignature);
+
+// Export for dynamic elements (Footer)
+window.initLogoSignature = initLogoSignature;

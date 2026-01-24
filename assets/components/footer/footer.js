@@ -53,9 +53,17 @@
                 if (basePath) {
                     html = html.replace(/href="(?!http|mailto|tel|#)/g, `href="${basePath}`);
                     html = html.replace(/src="(?!http)/g, `src="${basePath}`);
+                    // Fix data-link for logo component specifically
+                    html = html.replace(/data-link="index.html"/g, `data-link="${basePath}index.html"`);
                 }
 
                 footerPlaceholder.innerHTML = html;
+
+                // RE-TRIGGER Logo initialization for dynamically added footer
+                if (window.initLogoSignature) {
+                    window.initLogoSignature();
+                }
+
                 populateDynamicFooter();
                 updateCopyrightYear();
             })
