@@ -739,11 +739,6 @@ function initShareCourse() {
                     window.open(shareUrl, '_blank');
                     break;
 
-                case 'facebook':
-                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-                    window.open(shareUrl, '_blank', 'width=600,height=400');
-                    break;
-
                 case 'linkedin':
                     shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}`;
                     window.open(shareUrl, '_blank', 'width=600,height=500');

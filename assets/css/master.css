@@ -1,4 +1,4 @@
-/* ============================================
+﻿/* ============================================
    Abhi's Craft Soft - Main Stylesheet
    This file imports all modular CSS files
    ============================================ */
@@ -10,6 +10,7 @@
 @import url('base/sections.css');
 
 /* Components */
+@import url('../components/logo-signature/logo-signature.css');
 @import url('components/navbar.css');
 @import url('components/buttons.css');
 @import url('components/testimonials.css');
