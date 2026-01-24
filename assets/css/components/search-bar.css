@@ -64,3 +64,16 @@
 .course-card-full.search-hidden {
     display: none !important;
 }
+
+/* Elastic search state: eliminates bottom gap */
+.courses-page.search-active {
+    padding-bottom: 0 !important;
+}
+
+.courses-page.search-active .course-category {
+    margin-bottom: 0 !important;
+}
+
+.courses-page.search-active .courses-list {
+    padding-bottom: 1rem !important;
+}

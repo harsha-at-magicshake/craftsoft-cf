@@ -9,11 +9,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const courseCards = document.querySelectorAll('.course-card-full');
     const courseCategories = document.querySelectorAll('.course-category');
     const filterTabsContainer = document.querySelector('.course-filter-tabs');
+    const coursesPageSection = document.querySelector('.courses-page');
 
     if (searchInput) {
         searchInput.addEventListener('input', function () {
             const query = this.value.toLowerCase().trim();
             if (searchClear) searchClear.style.display = query ? 'block' : 'none';
+
+            // Toggle Search Active state on main section
+            if (coursesPageSection) {
+                if (query) {
+                    coursesPageSection.classList.add('search-active');
+                } else {
+                    coursesPageSection.classList.remove('search-active');
+                }
+            }
 
             // Toggle Filter Tabs visibility
             if (filterTabsContainer) {
