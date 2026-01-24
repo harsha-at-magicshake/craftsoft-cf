@@ -141,25 +141,19 @@
 
 .hamburger {
     display: none;
-    flex-direction: column;
-    gap: 6px;
-    padding: var(--spacing-sm);
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xs);
     cursor: pointer;
-    background: var(--gray-50);
-    border-radius: var(--radius-md);
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #1e86c7;
     transition: var(--transition-base);
 }
 
 .hamburger:hover {
-    background: var(--gray-100);
-}
-
-.hamburger .bar {
-    width: 22px;
-    height: 2px;
-    background: var(--gray-700);
-    border-radius: var(--radius-full);
-    transition: all 0.3s ease;
+    transform: scale(1.1);
 }
 
 /* Admin Login Icon (Desktop) */

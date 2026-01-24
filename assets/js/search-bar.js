@@ -63,7 +63,9 @@ document.addEventListener('DOMContentLoaded', function () {
             // Update results count
             if (searchResultsCount) {
                 if (query) {
-                    searchResultsCount.textContent = `${matchCount} course${matchCount !== 1 ? 's' : ''} found`;
+                    const isServicesPage = window.location.pathname.includes('service');
+                    const itemType = isServicesPage ? 'service' : 'course';
+                    searchResultsCount.textContent = `${matchCount} ${itemType}${matchCount !== 1 ? 's' : ''} found`;
                     searchResultsCount.style.display = 'block';
                 } else {
                     searchResultsCount.style.display = 'none';

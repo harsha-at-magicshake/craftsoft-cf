@@ -16,6 +16,7 @@
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
     <link rel="stylesheet" href="../assets/css/master.css?v=2.0">
     <link rel="stylesheet" href="../assets/css/utilities/skeleton.css?v=1.0">
+    <link rel="stylesheet" href="../assets/css/components/search-bar.css?v=1.0">
     <!-- Logo Component Assets -->
     <link rel="stylesheet" href="../assets/components/logo-signature/logo-signature.css">
     <script src="../assets/components/logo-signature/logo-signature.js"></script>
@@ -56,9 +57,8 @@
                 <li><a href="../services/" class="nav-link active">Services</a></li>
                 <li><a href="../contact/" class="nav-link">Contact</a></li>
             </ul>
-            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-            </button>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu"><i
+                    class="fa-solid fa-align-right"></i></button>
         </div>
         <div class="nav-overlay" id="navOverlay"></div>
     </nav>
@@ -85,9 +85,16 @@
         </div>
     </nav>
 
-    <!-- Services Section -->
+    <!-- Services Content -->
     <section class="services-page">
         <div class="container">
+            <!-- Smart Search Bar -->
+            <div class="course-search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="courseSearchInput" placeholder="Search for a service..." autocomplete="off">
+                <span class="search-clear" id="searchClear" style="display: none;"><i class="fas fa-times"></i></span>
+            </div>
+            <p class="search-results-count" id="searchResultsCount" style="display: none;"></p>
 
             <!-- Service Filter Tabs -->
             <div class="course-filter-tabs">
@@ -434,6 +441,7 @@
     <script src="../assets/js/inquiry-sync.js?v=3.0"></script>
     <script src="../assets/js/custom-select.js?v=1.0"></script>
 
+    <script src="../assets/js/search-bar.js?v=1.0"></script>
     <script src="../assets/js/main.js?v=1.1"></script>
 
     <style>
