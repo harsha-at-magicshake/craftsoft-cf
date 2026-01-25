@@ -105,25 +105,31 @@
 
 @media (max-width: 992px) {
     .search-filter-wrapper {
-        flex-direction: column;
+        flex-direction: row;
+        /* Keep on one line for tablet */
         align-items: center;
+        justify-content: center;
         gap: 1.5rem;
+        flex-wrap: wrap;
     }
 
     /* Medium Screen Icon-Only State */
     .search-filter-wrapper:not(.is-expanded) .course-search-bar {
         flex: 0 0 54px;
         width: 54px;
-        padding: 0.85rem;
+        height: 54px;
+        padding: 0;
         justify-content: center;
         cursor: pointer;
         background: var(--white);
         border: 1px solid var(--primary-100);
+        margin: 0;
+        /* Align with tabs */
     }
 
     .search-filter-wrapper:not(.is-expanded) .course-search-bar input,
     .search-filter-wrapper:not(.is-expanded) .course-search-bar .search-clear {
-        display: none;
+        display: none !important;
     }
 
     .search-filter-wrapper:not(.is-expanded) .course-search-bar i.fa-search {
@@ -139,16 +145,24 @@
     .search-filter-wrapper .course-filter-tabs {
         justify-content: center;
         flex-wrap: wrap;
-        width: 100%;
+        width: auto;
+        /* Shrink to fit content */
     }
+}
 
-    /* Mobile Visibility Logic */
-    .filter-tab-all {
-        display: block !important;
-    }
-
-    .filter-clear {
+/* Hard Mobile Policy: NO SEARCH ON MOBILE */
+@media (max-width: 576px) {
+    .course-search-bar {
         display: none !important;
+    }
+
+    .search-filter-wrapper {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .search-filter-wrapper .course-filter-tabs {
+        width: 100%;
     }
 }
 

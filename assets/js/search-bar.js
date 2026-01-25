@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
+        // Search Input Logic
         searchInput.addEventListener('input', function () {
             const query = this.value.toLowerCase().trim();
             if (searchClear) searchClear.style.display = query ? 'block' : 'none';
@@ -46,9 +47,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     coursesPageSection.classList.remove('search-active');
                 }
             }
-
-            // Note: Filter Tabs visibility is now handled via the .is-expanded class in CSS
-            // which is toggled on focus/blur, allowing for smooth transitions.
 
             let matchCount = 0;
 
@@ -94,10 +92,17 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         if (searchClear) {
-            searchClear.addEventListener('click', function () {
+            searchClear.addEventListener('click', function (e) {
+                e.stopPropagation();
                 searchInput.value = '';
                 searchInput.dispatchEvent(new Event('input'));
-                searchInput.focus();
+
+                // Collapse bar on clear
+                const wrapper = searchInput.closest('.search-filter-wrapper');
+                if (wrapper) wrapper.classList.remove('is-expanded');
+
+                searchInput.blur();
+                searchClear.style.display = 'none';
             });
         }
     }
