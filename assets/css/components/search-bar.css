@@ -6,7 +6,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Center everything in the line */
     flex-wrap: nowrap;
     gap: 1.5rem;
     margin-bottom: 3.5rem;
@@ -15,24 +14,24 @@
     margin-right: auto;
     padding: 0 1.5rem;
     height: 60px;
-    /* Force consistent height */
     position: relative;
-    transition: all 0.4s ease;
+    /* transition: none; - Removed for instant snap */
 }
 
 .course-search-bar {
     display: flex;
     align-items: center;
+    justify-content: center;
+    /* Center icon when not expanded */
     background: linear-gradient(135deg, var(--primary-50) 0%, var(--white) 100%);
     border: 1px solid rgba(40, 150, 205, 0.1);
     border-radius: 50px;
-    padding: 0.75rem 1.5rem;
+    padding: 0;
+    /* No padding for perfect centering in fixed width */
     flex: 0 0 50px;
-    /* Start as small circle/icon container */
     width: 50px;
     height: 50px;
     overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 15px rgba(40, 150, 205, 0.08);
     cursor: pointer;
     position: relative;
@@ -46,9 +45,10 @@
 
 .search-filter-wrapper.is-expanded .course-search-bar {
     flex: 1;
-    /* Expand to take available line space */
     max-width: 800px;
-    /* Don't let it become pathologically wide */
+    padding: 0 1.5rem;
+    /* Add padding back when expanded */
+    justify-content: flex-start;
     cursor: text;
     background: var(--white);
     border-color: var(--primary-200);
@@ -59,7 +59,6 @@
     align-items: center;
     gap: 0.75rem;
     flex-shrink: 0;
-    transition: all 0.4s ease;
     opacity: 1;
     visibility: visible;
     margin-bottom: 0 !important;
@@ -82,6 +81,7 @@
 .filter-clear {
     display: inline-flex !important;
     align-items: center;
+    justify-content: center;
     gap: 0.6rem;
     background: rgba(40, 150, 205, 0.05);
     color: var(--primary-600);
@@ -89,7 +89,8 @@
     transition: all 0.3s ease;
     font-weight: 600;
     margin-left: 0.5rem;
-    /* Separate clear slightly */
+    padding: 0.6rem 1.2rem;
+    /* Added padding for better alignment */
 }
 
 .filter-clear:hover {
@@ -142,8 +143,14 @@
 
 .course-search-bar i.fa-search {
     color: var(--primary-500);
-    font-size: 1rem;
+    font-size: 1.1rem;
+    margin: 0;
+    /* Reset margin for circle state */
+}
+
+.search-filter-wrapper.is-expanded .course-search-bar i.fa-search {
     margin-right: 1.25rem;
+    /* Apply margin only when expanded */
 }
 
 .course-search-bar input {
