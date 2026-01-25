@@ -18,13 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (wrapper) wrapper.classList.add('is-expanded');
         });
 
-        // Collapse on Blur (if empty)
-        searchInput.addEventListener('blur', function () {
-            if (this.value.trim() === '') {
-                const wrapper = this.closest('.search-filter-wrapper');
-                if (wrapper) wrapper.classList.remove('is-expanded');
-            }
-        });
+        // REMOVED: Auto-collapse on Blur (As per user policy: Manual close ONLY via X)
 
         // Click on Bar (for medium screen icon-only state)
         const searchBarContainer = document.querySelector('.course-search-bar');

@@ -22,12 +22,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Center icon when not expanded */
+    /* PERFECT CENTERING */
     background: linear-gradient(135deg, var(--primary-50) 0%, var(--white) 100%);
     border: 1px solid rgba(40, 150, 205, 0.1);
-    border-radius: 50px;
+    border-radius: 50%;
+    /* Force perfect circle */
     padding: 0;
-    /* No padding for perfect centering in fixed width */
     flex: 0 0 50px;
     width: 50px;
     height: 50px;
@@ -36,6 +36,21 @@
     cursor: pointer;
     position: relative;
     z-index: 10;
+}
+
+.course-search-bar input {
+    display: none !important;
+    /* Hide strictly in circle state */
+}
+
+.search-filter-wrapper.is-expanded .course-search-bar {
+    border-radius: 50px;
+    /* Switch to pill when expanded */
+}
+
+.search-filter-wrapper.is-expanded .course-search-bar input {
+    display: block !important;
+    /* Show only when expanded */
 }
 
 .course-search-bar:hover {
@@ -113,9 +128,29 @@
 @media (max-width: 992px) {
     .search-filter-wrapper {
         flex-wrap: nowrap;
-        /* Force single line on tablets too */
-        gap: 1rem;
+        justify-content: center;
+        gap: 0.75rem;
+        /* Tighter gap for tablet to prevent overflow */
         padding: 0 1rem;
+        height: auto;
+        min-height: 60px;
+    }
+
+    .search-filter-wrapper .course-filter-tabs {
+        flex-wrap: nowrap;
+        /* Force one line */
+        overflow-x: auto;
+        /* Allow horizontal swipe if strictly needed */
+        scrollbar-width: none;
+        /* Hide scrollbar Firefox */
+        -ms-overflow-style: none;
+        /* Hide scrollbar IE/Edge */
+        padding: 0.5rem 0;
+    }
+
+    .search-filter-wrapper .course-filter-tabs::-webkit-scrollbar {
+        display: none;
+        /* Hide scrollbar Chrome/Safari */
     }
 }
 
