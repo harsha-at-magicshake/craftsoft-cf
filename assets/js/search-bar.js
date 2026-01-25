@@ -20,11 +20,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // REMOVED: Auto-collapse on Blur (As per user policy: Manual close ONLY via X)
 
-        // Click on Bar (for medium screen icon-only state)
+        // Click on Bar (Force expansion then focus)
         const searchBarContainer = document.querySelector('.course-search-bar');
         if (searchBarContainer) {
             searchBarContainer.addEventListener('click', function () {
-                searchInput.focus();
+                const wrapper = this.closest('.search-filter-wrapper');
+                if (wrapper) wrapper.classList.add('is-expanded');
+                setTimeout(() => searchInput.focus(), 10);
             });
         }
 

@@ -39,18 +39,31 @@
 }
 
 .course-search-bar input {
-    display: none !important;
-    /* Hide strictly in circle state */
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    border: none;
+    outline: none;
 }
 
 .search-filter-wrapper.is-expanded .course-search-bar {
+    flex: 1;
+    max-width: 800px;
+    width: auto;
+    /* Override fixed width */
+    padding: 0 1.5rem;
+    justify-content: flex-start;
+    cursor: text;
+    background: var(--white);
+    border-color: var(--primary-200);
     border-radius: 50px;
-    /* Switch to pill when expanded */
 }
 
 .search-filter-wrapper.is-expanded .course-search-bar input {
-    display: block !important;
-    /* Show only when expanded */
+    width: 100%;
+    opacity: 1;
+    display: block;
+    pointer-events: auto;
 }
 
 .course-search-bar:hover {
@@ -58,16 +71,7 @@
     box-shadow: 0 8px 25px rgba(40, 150, 205, 0.12);
 }
 
-.search-filter-wrapper.is-expanded .course-search-bar {
-    flex: 1;
-    max-width: 800px;
-    padding: 0 1.5rem;
-    /* Add padding back when expanded */
-    justify-content: flex-start;
-    cursor: text;
-    background: var(--white);
-    border-color: var(--primary-200);
-}
+/* Spanning block merged above */
 
 .search-filter-wrapper .course-filter-tabs {
     display: flex;
