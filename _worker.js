@@ -54,77 +54,38 @@ export default {
                 return env.ASSETS.fetch(new Request(newUrl, request));
             }
 
-            // 3. Exact-match admin rewrites (no regex, no recursion)
-            const adminRoutes = [
-                { path: '/dashboard', target: '/acs_subdomains/acs_admin/dashboard/index.html' },
-                { path: '/dashboard/', target: '/acs_subdomains/acs_admin/dashboard/index.html' },
-                { path: '/archived', target: '/acs_subdomains/acs_admin/records/archived/index.html' },
-                { path: '/archived/', target: '/acs_subdomains/acs_admin/records/archived/index.html' },
-                { path: '/recently-deleted', target: '/acs_subdomains/acs_admin/records/recently-deleted/index.html' },
-                { path: '/recently-deleted/', target: '/acs_subdomains/acs_admin/records/recently-deleted/index.html' },
-                { path: '/students', target: '/acs_subdomains/acs_admin/students-clients/students/index.html' },
-                { path: '/students/', target: '/acs_subdomains/acs_admin/students-clients/students/index.html' },
-                { path: '/clients', target: '/acs_subdomains/acs_admin/students-clients/clients/index.html' },
-                { path: '/clients/', target: '/acs_subdomains/acs_admin/students-clients/clients/index.html' },
-                { path: '/courses', target: '/acs_subdomains/acs_admin/courses-services/courses/index.html' },
-                { path: '/courses/', target: '/acs_subdomains/acs_admin/courses-services/courses/index.html' },
-                { path: '/services', target: '/acs_subdomains/acs_admin/courses-services/services/index.html' },
-                { path: '/services/', target: '/acs_subdomains/acs_admin/courses-services/services/index.html' },
-                { path: '/upload-materials', target: '/acs_subdomains/acs_admin/academics/upload-materials/index.html' },
-                { path: '/upload-materials/', target: '/acs_subdomains/acs_admin/academics/upload-materials/index.html' },
-                { path: '/assignments', target: '/acs_subdomains/acs_admin/academics/assignments/index.html' },
-                { path: '/assignments/', target: '/acs_subdomains/acs_admin/academics/assignments/index.html' },
-                { path: '/submissions', target: '/acs_subdomains/acs_admin/academics/submissions/index.html' },
-                { path: '/submissions/', target: '/acs_subdomains/acs_admin/academics/submissions/index.html' },
-                { path: '/record-payment', target: '/acs_subdomains/acs_admin/payments/record-payment/index.html' },
-                { path: '/record-payment/', target: '/acs_subdomains/acs_admin/payments/record-payment/index.html' },
-                { path: '/all-payments', target: '/acs_subdomains/acs_admin/payments/all-payments/index.html' },
-                { path: '/all-payments/', target: '/acs_subdomains/acs_admin/payments/all-payments/index.html' },
-                { path: '/payment-receipts', target: '/acs_subdomains/acs_admin/payments/receipts/index.html' },
-                { path: '/payment-receipts/', target: '/acs_subdomains/acs_admin/payments/receipts/index.html' },
-                { path: '/receipts', target: '/acs_subdomains/acs_admin/payments/receipts/index.html' },
-                { path: '/receipts/', target: '/acs_subdomains/acs_admin/payments/receipts/index.html' },
-                { path: '/tutors', target: '/acs_subdomains/acs_admin/tutors/index.html' },
-                { path: '/tutors/', target: '/acs_subdomains/acs_admin/tutors/index.html' },
-                { path: '/inquiries', target: '/acs_subdomains/acs_admin/inquiries/index.html' },
-                { path: '/inquiries/', target: '/acs_subdomains/acs_admin/inquiries/index.html' },
-                { path: '/settings', target: '/acs_subdomains/acs_admin/settings/index.html' },
-                { path: '/settings/', target: '/acs_subdomains/acs_admin/settings/index.html' },
-                { path: '/version-history', target: '/acs_subdomains/acs_admin/version-history/index.html' },
-                { path: '/version-history/', target: '/acs_subdomains/acs_admin/version-history/index.html' },
+
+            // 3. Exact-match and subfolder rewrites for all admin subpages
+            const adminFolders = [
+                { web: '/dashboard', fs: '/acs_subdomains/acs_admin/dashboard' },
+                { web: '/archived', fs: '/acs_subdomains/acs_admin/records/archived' },
+                { web: '/recently-deleted', fs: '/acs_subdomains/acs_admin/records/recently-deleted' },
+                { web: '/students', fs: '/acs_subdomains/acs_admin/students-clients/students' },
+                { web: '/clients', fs: '/acs_subdomains/acs_admin/students-clients/clients' },
+                { web: '/courses', fs: '/acs_subdomains/acs_admin/courses-services/courses' },
+                { web: '/services', fs: '/acs_subdomains/acs_admin/courses-services/services' },
+                { web: '/upload-materials', fs: '/acs_subdomains/acs_admin/academics/upload-materials' },
+                { web: '/assignments', fs: '/acs_subdomains/acs_admin/academics/assignments' },
+                { web: '/submissions', fs: '/acs_subdomains/acs_admin/academics/submissions' },
+                { web: '/record-payment', fs: '/acs_subdomains/acs_admin/payments/record-payment' },
+                { web: '/all-payments', fs: '/acs_subdomains/acs_admin/payments/all-payments' },
+                { web: '/payment-receipts', fs: '/acs_subdomains/acs_admin/payments/receipts' },
+                { web: '/receipts', fs: '/acs_subdomains/acs_admin/payments/receipts' },
+                { web: '/tutors', fs: '/acs_subdomains/acs_admin/tutors' },
+                { web: '/inquiries', fs: '/acs_subdomains/acs_admin/inquiries' },
+                { web: '/settings', fs: '/acs_subdomains/acs_admin/settings' },
+                { web: '/version-history', fs: '/acs_subdomains/acs_admin/version-history' },
             ];
-            for (const route of adminRoutes) {
-                if (pathname === route.path) {
-                    const newUrl = new URL(route.target, url);
+            for (const route of adminFolders) {
+                // /page or /page/ → /fs/index.html
+                if (pathname === route.web || pathname === route.web + '/') {
+                    const newUrl = new URL(route.fs + '/index.html', url);
                     return env.ASSETS.fetch(new Request(newUrl, request));
                 }
-            }
-
-            // 4. Subfolder rewrites (e.g. /students/abc → /acs_subdomains/acs_admin/students-clients/students/abc)
-            const subfolderRoutes = [
-                { prefix: '/dashboard/', target: '/acs_subdomains/acs_admin/dashboard' },
-                { prefix: '/archived/', target: '/acs_subdomains/acs_admin/records/archived' },
-                { prefix: '/recently-deleted/', target: '/acs_subdomains/acs_admin/records/recently-deleted' },
-                { prefix: '/students/', target: '/acs_subdomains/acs_admin/students-clients/students' },
-                { prefix: '/clients/', target: '/acs_subdomains/acs_admin/students-clients/clients' },
-                { prefix: '/courses/', target: '/acs_subdomains/acs_admin/courses-services/courses' },
-                { prefix: '/services/', target: '/acs_subdomains/acs_admin/courses-services/services' },
-                { prefix: '/upload-materials/', target: '/acs_subdomains/acs_admin/academics/upload-materials' },
-                { prefix: '/assignments/', target: '/acs_subdomains/acs_admin/academics/assignments' },
-                { prefix: '/submissions/', target: '/acs_subdomains/acs_admin/academics/submissions' },
-                { prefix: '/record-payment/', target: '/acs_subdomains/acs_admin/payments/record-payment' },
-                { prefix: '/all-payments/', target: '/acs_subdomains/acs_admin/payments/all-payments' },
-                { prefix: '/payment-receipts/', target: '/acs_subdomains/acs_admin/payments/receipts' },
-                { prefix: '/receipts/', target: '/acs_subdomains/acs_admin/payments/receipts' },
-                { prefix: '/tutors/', target: '/acs_subdomains/acs_admin/tutors' },
-                { prefix: '/inquiries/', target: '/acs_subdomains/acs_admin/inquiries' },
-                { prefix: '/settings/', target: '/acs_subdomains/acs_admin/settings' },
-                { prefix: '/version-history/', target: '/acs_subdomains/acs_admin/version-history' },
-            ];
-            for (const route of subfolderRoutes) {
-                if (pathname.startsWith(route.prefix)) {
-                    const rest = pathname.substring(route.prefix.length);
-                    const newUrl = new URL(`${route.target}/${rest}`, url);
+                // /page/anything → /fs/anything
+                if (pathname.startsWith(route.web + '/')) {
+                    const rest = pathname.substring((route.web + '/').length);
+                    const newUrl = new URL(route.fs + '/' + rest, url);
                     return env.ASSETS.fetch(new Request(newUrl, request));
                 }
             }
