@@ -1054,13 +1054,22 @@ function initScrollToTop() {
 
 /**
  * STEALTH MODE (BGV SHIELD)
- * Triggered by triple-tapping any Logo (Navbar/Footer)
+ * Triggered by triple-tapping the '15+ Courses' stat in Hero
  * Default: HIDDEN for first-time users
  */
 function initStealthMode() {
-    const logos = document.querySelectorAll('.logo-signature-component');
-    const body = document.body;
+    // Find the Courses stat item - look for the label 'Courses'
+    const statItems = document.querySelectorAll('.stat-item');
+    let coursesStat = null;
 
+    statItems.forEach(item => {
+        const label = item.querySelector('.stat-label');
+        if (label && label.textContent.trim() === 'Courses') {
+            coursesStat = item;
+        }
+    });
+
+    const body = document.body;
     const stealthState = localStorage.getItem('craftsoft_stealth_mode');
 
     // Apply state immediately
@@ -1070,7 +1079,22 @@ function initStealthMode() {
         body.classList.add('stealth-active');
     }
 
-    if (logos.length === 0) return;
+    // Helper to update pricing text
+    const updatePricing = () => {
+        const isStealth = body.classList.contains('stealth-active');
+        document.querySelectorAll('.price').forEach(el => {
+            if (!isStealth) {
+                el.innerHTML = 'Starts From <span class="rupee-symbol">&#8377;</span>9999';
+            } else {
+                el.innerText = 'Contact for Pricing';
+            }
+        });
+    };
+
+    // Initial check
+    updatePricing();
+
+    if (!coursesStat) return;
 
     let clickCount = 0;
     let lastClickTime = 0;
@@ -1092,7 +1116,10 @@ function initStealthMode() {
             const isActive = body.classList.toggle('stealth-active');
             localStorage.setItem('craftsoft_stealth_mode', isActive ? 'enabled' : 'disabled');
 
-            // Visual feedback on the clicked logo
+            // Update Pricing Text
+            updatePricing();
+
+            // Visual feedback on the clicked stat
             const target = e.currentTarget;
             target.style.transform = 'scale(1.1)';
             target.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
@@ -1103,8 +1130,7 @@ function initStealthMode() {
         }
     };
 
-    logos.forEach(logo => {
-        logo.addEventListener('click', handleTripleAction);
-        logo.addEventListener('touchstart', handleTripleAction, { passive: false });
-    });
+    coursesStat.style.cursor = 'pointer'; // Make it feel slightly interactive but only if you know
+    coursesStat.addEventListener('click', handleTripleAction);
+    coursesStat.addEventListener('touchstart', handleTripleAction, { passive: false });
 }
