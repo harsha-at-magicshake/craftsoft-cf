@@ -82,9 +82,19 @@ export default {
                     const newUrl = new URL(route.fs + '/index.html', url);
                     return env.ASSETS.fetch(new Request(newUrl, request));
                 }
-                // /page/anything → /fs/anything
+                // Prevent recursive /dashboard/dashboard... etc. by always serving index.html for /page/dashboard, /page/dashboard/, etc.
+                if (pathname === route.web + '/dashboard' || pathname === route.web + '/dashboard/') {
+                    const newUrl = new URL(route.fs + '/index.html', url);
+                    return env.ASSETS.fetch(new Request(newUrl, request));
+                }
+                // /page/anything → /fs/anything, but prevent infinite recursion
                 if (pathname.startsWith(route.web + '/')) {
                     const rest = pathname.substring((route.web + '/').length);
+                    // If rest contains another /dashboard or /students, serve index.html
+                    if (rest.startsWith('dashboard') || rest.startsWith('students') || rest.startsWith('clients')) {
+                        const newUrl = new URL(route.fs + '/index.html', url);
+                        return env.ASSETS.fetch(new Request(newUrl, request));
+                    }
                     const newUrl = new URL(route.fs + '/' + rest, url);
                     return env.ASSETS.fetch(new Request(newUrl, request));
                 }
