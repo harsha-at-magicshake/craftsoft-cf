@@ -1054,23 +1054,23 @@ function initScrollToTop() {
 
 /**
  * STEALTH MODE (BGV SHIELD)
- * Triggered by triple-tapping the Hero Badge
- * Default: VISIBLE (locally) but HIDDEN (first time users)
+ * Triggered by triple-tapping any Logo (Navbar/Footer)
+ * Default: HIDDEN for first-time users
  */
 function initStealthMode() {
-    const badge = document.querySelector('.hero-badge');
+    const logos = document.querySelectorAll('.logo-signature-component');
     const body = document.body;
 
-    // Default state: Stealth ON (Hidden) unless explicitly disabled in localStorage
     const stealthState = localStorage.getItem('craftsoft_stealth_mode');
 
+    // Apply state immediately
     if (stealthState === 'disabled') {
         body.classList.remove('stealth-active');
     } else {
         body.classList.add('stealth-active');
     }
 
-    if (!badge) return;
+    if (logos.length === 0) return;
 
     let clickCount = 0;
     let lastClickTime = 0;
@@ -1092,17 +1092,19 @@ function initStealthMode() {
             const isActive = body.classList.toggle('stealth-active');
             localStorage.setItem('craftsoft_stealth_mode', isActive ? 'enabled' : 'disabled');
 
-            // Visual feedback
-            badge.style.transform = 'scale(1.1)';
-            badge.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            setTimeout(() => badge.style.transform = '', 300);
+            // Visual feedback on the clicked logo
+            const target = e.currentTarget;
+            target.style.transform = 'scale(1.1)';
+            target.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            setTimeout(() => target.style.transform = '', 300);
 
             clickCount = 0;
-            // Force footer reload if exists
             if (window.loadFooter) window.loadFooter();
         }
     };
 
-    badge.addEventListener('click', handleTripleAction);
-    badge.addEventListener('touchstart', handleTripleAction, { passive: false });
+    logos.forEach(logo => {
+        logo.addEventListener('click', handleTripleAction);
+        logo.addEventListener('touchstart', handleTripleAction, { passive: false });
+    });
 }
