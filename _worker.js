@@ -77,11 +77,28 @@ export default {
                 { web: '/version-history', fs: '/acs_subdomains/acs_admin/version-history' },
             ];
             for (const route of adminFolders) {
-                // Always serve index.html for /page, /page/, or any subpath under /page/*
-                if (pathname === route.web || pathname === route.web + '/' || pathname.startsWith(route.web + '/')) {
+                // /page or /page/ → /fs/index.html
+                if (pathname === route.web || pathname === route.web + '/') {
                     const newUrl = new URL(route.fs + '/index.html', url);
                     return env.ASSETS.fetch(new Request(newUrl, request));
                 }
+                // /page/* → /fs/:splat (deep linking, not index.html)
+                if (pathname.startsWith(route.web + '/')) {
+                    const rest = pathname.substring((route.web + '/').length);
+                    const newUrl = new URL(route.fs + '/' + rest, url);
+                    return env.ASSETS.fetch(new Request(newUrl, request));
+                }
+            }
+
+            // Admin catch-all: serve /acs_subdomains/acs_admin/:splat for any other path
+            if (hostname.includes('admin')) {
+                if (pathname.startsWith('/acs_subdomains/acs_admin/')) {
+                    const newUrl = new URL(pathname, url);
+                    return env.ASSETS.fetch(new Request(newUrl, request));
+                }
+                // Serve 404 for anything not matched above
+                const notFoundUrl = new URL('/acs_subdomains/acs_admin/404/index.html', url);
+                return env.ASSETS.fetch(new Request(notFoundUrl, request));
             }
 
             // 5. If already inside /acs_subdomains/acs_admin/, serve directly (prevent recursion)
