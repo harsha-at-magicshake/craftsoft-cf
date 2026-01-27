@@ -14,10 +14,12 @@ export default {
         // 1. ADMIN SUBDOMAIN (admin.craftsoft.co.in)
         // ============================================
         if (hostname.includes("admin")) {
-            
-            // ALL /assets/* requests → serve from admin assets folder
-            if (pathname.startsWith("/assets/")) {
-                const assetPath = `/acs_subdomains/acs_admin${pathname}`;
+            // Match /assets/* or /<subdir>/assets/*
+            const assetRegex = /^\/(?:[\w-]+\/)?assets\/(.+)$/;
+            const assetMatch = pathname.match(assetRegex);
+            if (assetMatch) {
+                // Always serve from /acs_subdomains/acs_admin/assets/<rest>
+                const assetPath = `/acs_subdomains/acs_admin/assets/${assetMatch[1]}`;
                 const newUrl = new URL(assetPath, url);
                 return env.ASSETS.fetch(new Request(newUrl, request));
             }
@@ -30,7 +32,6 @@ export default {
 
             // All other paths → rewrite to admin folder
             let finalPath = `/acs_subdomains/acs_admin${pathname}`;
-            
             // Add trailing slash if no extension
             if (!pathname.includes(".") && !pathname.endsWith("/")) {
                 finalPath += "/";
