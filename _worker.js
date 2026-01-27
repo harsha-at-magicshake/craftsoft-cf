@@ -53,7 +53,7 @@ export default {
             return dispatchSubdomain('acs_students', pathname, url, request, env, false);
         }
 
-        // 4. MAIN WEBSITE REDIRECTS & COURSE ALIASES
+        // 4. MAIN WEBSITE REDIRECTS (301)
         const redirectMap = {
             '/about.html': '/about/',
             '/contact.html': '/contact/',
@@ -69,17 +69,46 @@ export default {
             return Response.redirect(new URL(redirectMap[pathname], url), 301);
         }
 
-        // Course Aliases (Proxy/Rewrite)
-        const courseAliases = {
+        // 5. NEAT LINKS / ALIASES (200 Rewrite)
+        const aliases = {
+            // Courses
+            '/c-python': '/courses/python/',
+            '/c-java': '/courses/java/',
+            '/c-full-stack': '/courses/full-stack/',
+            '/c-react': '/courses/react/',
+            '/c-devops': '/courses/devops/',
+            '/c-devsecops': '/courses/devsecops/',
+            '/c-aws': '/courses/aws/',
+            '/c-azure': '/courses/azure/',
+            '/c-salesforce': '/courses/salesforce/',
+            '/c-data-analytics': '/courses/data-analytics/',
+            '/c-dsa': '/courses/dsa/',
+            '/c-git-github': '/courses/git-github/',
+            '/c-automation-python': '/courses/automation-python/',
+            '/c-python-programming': '/courses/python-programming/',
+            '/c-ui-ux': '/courses/ui-ux/',
+            '/c-graphic-design': '/courses/graphic-design/',
+            '/c-soft-skills': '/courses/soft-skills/',
+            '/c-spoken-english': '/courses/spoken-english/',
+            '/c-handwriting': '/courses/handwriting/',
+            '/c-resume-interview': '/courses/resume-interview/',
             '/c-ai-ml': '/courses/ai-ml/',
             '/c-sql': '/courses/sql/',
             '/c-salesforce-developer': '/courses/salesforce-developer/',
             '/c-salesforce-marketing-cloud': '/courses/salesforce-marketing-cloud/',
             '/c-cyber-security': '/courses/cyber-security/',
-            '/c-oracle-fusion-cloud': '/courses/oracle-fusion-cloud/'
+            '/c-oracle-fusion-cloud': '/courses/oracle-fusion-cloud/',
+            // Services (s- prefix)
+            '/services': '/acs_services/',
+            '/s-web-development': '/acs_services/web-development/',
+            '/s-ui-ux-design': '/acs_services/ui-ux-design/',
+            '/s-branding': '/acs_services/branding/',
+            '/s-graphic-design': '/acs_services/graphic-design/',
+            '/s-cloud-devops': '/acs_services/cloud-devops/',
+            '/s-career-services': '/acs_services/career-services/'
         };
 
-        for (const [alias, target] of Object.entries(courseAliases)) {
+        for (const [alias, target] of Object.entries(aliases)) {
             if (pathname === alias || pathname === alias + '/') {
                 return env.ASSETS.fetch(new Request(new URL(target + 'index.html', url), request));
             }
