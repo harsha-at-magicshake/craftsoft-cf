@@ -15,12 +15,12 @@ export default {
         // ============================================
         if (hostname.includes("admin")) {
 
+
             // 1. /assets/admin/* → /acs_subdomains/acs_admin/assets/:splat
             if (pathname.startsWith('/assets/admin/')) {
                 const assetPath = `/acs_subdomains/acs_admin/assets/${pathname.replace('/assets/admin/', '')}`;
                 const newUrl = new URL(assetPath, url);
                 const res = await env.ASSETS.fetch(new Request(newUrl, request));
-                // Set correct headers for CSS/JS
                 return new Response(res.body, {
                     status: res.status,
                     headers: setAssetHeaders(assetPath, res.headers)
@@ -39,11 +39,13 @@ export default {
             }
 
 
+
             // Netlify parity: /signup/* always returns admin 404
             if (pathname.startsWith("/signup/")) {
                 const newUrl = new URL("/acs_subdomains/acs_admin/404/index.html", url);
                 return env.ASSETS.fetch(new Request(newUrl, request));
             }
+
 
 
             // Root or /login → admin login page
@@ -52,56 +54,90 @@ export default {
                 return env.ASSETS.fetch(new Request(newUrl, request));
             }
 
-            // Prevent recursive rewrites: if already inside /acs_subdomains/acs_admin/, serve directly
+            // 3. Exact-match admin rewrites (no regex, no recursion)
+            const adminRoutes = [
+                { path: '/dashboard', target: '/acs_subdomains/acs_admin/dashboard/index.html' },
+                { path: '/dashboard/', target: '/acs_subdomains/acs_admin/dashboard/index.html' },
+                { path: '/archived', target: '/acs_subdomains/acs_admin/records/archived/index.html' },
+                { path: '/archived/', target: '/acs_subdomains/acs_admin/records/archived/index.html' },
+                { path: '/recently-deleted', target: '/acs_subdomains/acs_admin/records/recently-deleted/index.html' },
+                { path: '/recently-deleted/', target: '/acs_subdomains/acs_admin/records/recently-deleted/index.html' },
+                { path: '/students', target: '/acs_subdomains/acs_admin/students-clients/students/index.html' },
+                { path: '/students/', target: '/acs_subdomains/acs_admin/students-clients/students/index.html' },
+                { path: '/clients', target: '/acs_subdomains/acs_admin/students-clients/clients/index.html' },
+                { path: '/clients/', target: '/acs_subdomains/acs_admin/students-clients/clients/index.html' },
+                { path: '/courses', target: '/acs_subdomains/acs_admin/courses-services/courses/index.html' },
+                { path: '/courses/', target: '/acs_subdomains/acs_admin/courses-services/courses/index.html' },
+                { path: '/services', target: '/acs_subdomains/acs_admin/courses-services/services/index.html' },
+                { path: '/services/', target: '/acs_subdomains/acs_admin/courses-services/services/index.html' },
+                { path: '/upload-materials', target: '/acs_subdomains/acs_admin/academics/upload-materials/index.html' },
+                { path: '/upload-materials/', target: '/acs_subdomains/acs_admin/academics/upload-materials/index.html' },
+                { path: '/assignments', target: '/acs_subdomains/acs_admin/academics/assignments/index.html' },
+                { path: '/assignments/', target: '/acs_subdomains/acs_admin/academics/assignments/index.html' },
+                { path: '/submissions', target: '/acs_subdomains/acs_admin/academics/submissions/index.html' },
+                { path: '/submissions/', target: '/acs_subdomains/acs_admin/academics/submissions/index.html' },
+                { path: '/record-payment', target: '/acs_subdomains/acs_admin/payments/record-payment/index.html' },
+                { path: '/record-payment/', target: '/acs_subdomains/acs_admin/payments/record-payment/index.html' },
+                { path: '/all-payments', target: '/acs_subdomains/acs_admin/payments/all-payments/index.html' },
+                { path: '/all-payments/', target: '/acs_subdomains/acs_admin/payments/all-payments/index.html' },
+                { path: '/payment-receipts', target: '/acs_subdomains/acs_admin/payments/receipts/index.html' },
+                { path: '/payment-receipts/', target: '/acs_subdomains/acs_admin/payments/receipts/index.html' },
+                { path: '/receipts', target: '/acs_subdomains/acs_admin/payments/receipts/index.html' },
+                { path: '/receipts/', target: '/acs_subdomains/acs_admin/payments/receipts/index.html' },
+                { path: '/tutors', target: '/acs_subdomains/acs_admin/tutors/index.html' },
+                { path: '/tutors/', target: '/acs_subdomains/acs_admin/tutors/index.html' },
+                { path: '/inquiries', target: '/acs_subdomains/acs_admin/inquiries/index.html' },
+                { path: '/inquiries/', target: '/acs_subdomains/acs_admin/inquiries/index.html' },
+                { path: '/settings', target: '/acs_subdomains/acs_admin/settings/index.html' },
+                { path: '/settings/', target: '/acs_subdomains/acs_admin/settings/index.html' },
+                { path: '/version-history', target: '/acs_subdomains/acs_admin/version-history/index.html' },
+                { path: '/version-history/', target: '/acs_subdomains/acs_admin/version-history/index.html' },
+            ];
+            for (const route of adminRoutes) {
+                if (pathname === route.path) {
+                    const newUrl = new URL(route.target, url);
+                    return env.ASSETS.fetch(new Request(newUrl, request));
+                }
+            }
+
+            // 4. Subfolder rewrites (e.g. /students/abc → /acs_subdomains/acs_admin/students-clients/students/abc)
+            const subfolderRoutes = [
+                { prefix: '/dashboard/', target: '/acs_subdomains/acs_admin/dashboard' },
+                { prefix: '/archived/', target: '/acs_subdomains/acs_admin/records/archived' },
+                { prefix: '/recently-deleted/', target: '/acs_subdomains/acs_admin/records/recently-deleted' },
+                { prefix: '/students/', target: '/acs_subdomains/acs_admin/students-clients/students' },
+                { prefix: '/clients/', target: '/acs_subdomains/acs_admin/students-clients/clients' },
+                { prefix: '/courses/', target: '/acs_subdomains/acs_admin/courses-services/courses' },
+                { prefix: '/services/', target: '/acs_subdomains/acs_admin/courses-services/services' },
+                { prefix: '/upload-materials/', target: '/acs_subdomains/acs_admin/academics/upload-materials' },
+                { prefix: '/assignments/', target: '/acs_subdomains/acs_admin/academics/assignments' },
+                { prefix: '/submissions/', target: '/acs_subdomains/acs_admin/academics/submissions' },
+                { prefix: '/record-payment/', target: '/acs_subdomains/acs_admin/payments/record-payment' },
+                { prefix: '/all-payments/', target: '/acs_subdomains/acs_admin/payments/all-payments' },
+                { prefix: '/payment-receipts/', target: '/acs_subdomains/acs_admin/payments/receipts' },
+                { prefix: '/receipts/', target: '/acs_subdomains/acs_admin/payments/receipts' },
+                { prefix: '/tutors/', target: '/acs_subdomains/acs_admin/tutors' },
+                { prefix: '/inquiries/', target: '/acs_subdomains/acs_admin/inquiries' },
+                { prefix: '/settings/', target: '/acs_subdomains/acs_admin/settings' },
+                { prefix: '/version-history/', target: '/acs_subdomains/acs_admin/version-history' },
+            ];
+            for (const route of subfolderRoutes) {
+                if (pathname.startsWith(route.prefix)) {
+                    const rest = pathname.substring(route.prefix.length);
+                    const newUrl = new URL(`${route.target}/${rest}`, url);
+                    return env.ASSETS.fetch(new Request(newUrl, request));
+                }
+            }
+
+            // 5. If already inside /acs_subdomains/acs_admin/, serve directly (prevent recursion)
             if (pathname.startsWith('/acs_subdomains/acs_admin/')) {
                 const newUrl = new URL(pathname, url);
                 return env.ASSETS.fetch(new Request(newUrl, request));
             }
 
-            // Major Netlify admin rewrites (dashboard, inquiries, etc.)
-            const adminRewrites = [
-                { from: /^\/dashboard(\/.*)?$/, to: '/acs_subdomains/acs_admin/dashboard$1' },
-                { from: /^\/archived(\/.*)?$/, to: '/acs_subdomains/acs_admin/records/archived$1' },
-                { from: /^\/recently-deleted(\/.*)?$/, to: '/acs_subdomains/acs_admin/records/recently-deleted$1' },
-                { from: /^\/students(\/.*)?$/, to: '/acs_subdomains/acs_admin/students-clients/students$1' },
-                { from: /^\/clients(\/.*)?$/, to: '/acs_subdomains/acs_admin/students-clients/clients$1' },
-                { from: /^\/courses(\/.*)?$/, to: '/acs_subdomains/acs_admin/courses-services/courses$1' },
-                { from: /^\/services(\/.*)?$/, to: '/acs_subdomains/acs_admin/courses-services/services$1' },
-                { from: /^\/upload-materials(\/.*)?$/, to: '/acs_subdomains/acs_admin/academics/upload-materials$1' },
-                { from: /^\/assignments(\/.*)?$/, to: '/acs_subdomains/acs_admin/academics/assignments$1' },
-                { from: /^\/submissions(\/.*)?$/, to: '/acs_subdomains/acs_admin/academics/submissions$1' },
-                { from: /^\/record-payment(\/.*)?$/, to: '/acs_subdomains/acs_admin/payments/record-payment$1' },
-                { from: /^\/all-payments(\/.*)?$/, to: '/acs_subdomains/acs_admin/payments/all-payments$1' },
-                { from: /^\/payment-receipts(\/.*)?$/, to: '/acs_subdomains/acs_admin/payments/receipts$1' },
-                { from: /^\/receipts(\/.*)?$/, to: '/acs_subdomains/acs_admin/payments/receipts$1' },
-                { from: /^\/tutors(\/.*)?$/, to: '/acs_subdomains/acs_admin/tutors$1' },
-                { from: /^\/inquiries(\/.*)?$/, to: '/acs_subdomains/acs_admin/inquiries$1' },
-                { from: /^\/settings(\/.*)?$/, to: '/acs_subdomains/acs_admin/settings$1' },
-                { from: /^\/version-history(\/.*)?$/, to: '/acs_subdomains/acs_admin/version-history$1' },
-            ];
-            for (const rule of adminRewrites) {
-                const m = pathname.match(rule.from);
-                if (m) {
-                    let target = rule.to.replace('$1', m[1] || '');
-                    // Add trailing slash if no extension
-                    if (!target.includes('.') && !target.endsWith('/')) target += '/';
-                    // Add index.html for directories
-                    if (target.endsWith('/')) target += 'index.html';
-                    const newUrl = new URL(target, url);
-                    return env.ASSETS.fetch(new Request(newUrl, request));
-                }
-            }
-
-            // All other paths → rewrite to admin folder
-            let finalPath = `/acs_subdomains/acs_admin${pathname}`;
-            if (!pathname.includes(".") && !pathname.endsWith("/")) {
-                finalPath += "/";
-            }
-            if (finalPath.endsWith("/")) {
-                finalPath += "index.html";
-            }
-            const newUrl = new URL(finalPath, url);
-            return env.ASSETS.fetch(new Request(newUrl, request));
+            // 6. All other paths → admin 404
+            const notFoundUrl = new URL('/acs_subdomains/acs_admin/404/index.html', url);
+            return env.ASSETS.fetch(new Request(notFoundUrl, request));
         }
 // Helper to set correct headers for CSS/JS assets
 function setAssetHeaders(assetPath, origHeaders) {
