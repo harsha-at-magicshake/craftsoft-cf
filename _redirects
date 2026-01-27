@@ -1,0 +1,58 @@
+# Cloudflare Pages Redirects
+# (Works for both Netlify and Cloudflare)
+
+# Admin assets redirect
+/assets/admin/*  /acs_subdomains/acs_admin/assets/:splat  200
+
+# Legacy HTML redirects
+/about.html      /about/       301
+/contact.html    /contact/     301
+/courses.html    /courses/     301
+/services.html   /services/    301
+
+# Services redirect
+/services/       /acs_services/  200
+
+# ============================================
+# Neat Links for SERVICES (S- prefix)
+# ============================================
+/s-web-development/     /acs_services/web-development/     200
+/s-ui-ux-design/        /acs_services/ui-ux-design/        200
+/s-branding/            /acs_services/branding/            200
+/s-graphic-design/      /acs_services/graphic-design/      200
+/s-cloud-devops/        /acs_services/cloud-devops/        200
+/s-career-services/     /acs_services/career-services/     200
+
+# ============================================
+# Neat Links for COURSES (C- prefix)
+# ============================================
+/c-python/                     /courses/python/                     200
+/c-java/                       /courses/java/                       200
+/c-full-stack/                 /courses/full-stack/                 200
+/c-react/                      /courses/react/                      200
+/c-devops/                     /courses/devops/                     200
+/c-devsecops/                  /courses/devsecops/                  200
+/c-aws/                        /courses/aws/                        200
+/c-azure/                      /courses/azure/                      200
+/c-salesforce/                 /courses/salesforce/                 200
+/c-data-analytics/             /courses/data-analytics/             200
+/c-dsa/                        /courses/dsa/                        200
+/c-git-github/                 /courses/git-github/                 200
+/c-automation-python/          /courses/automation-python/          200
+/c-python-programming/         /courses/python-programming/         200
+/c-ui-ux/                      /courses/ui-ux/                      200
+/c-graphic-design/             /courses/graphic-design/             200
+/c-soft-skills/                /courses/soft-skills/                200
+/c-spoken-english/             /courses/spoken-english/             200
+/c-handwriting/                /courses/handwriting/                200
+/c-resume-interview/           /courses/resume-interview/           200
+/c-ai-ml/                      /courses/ai-ml/                      200
+/c-sql/                        /courses/sql/                        200
+/c-salesforce-developer/       /courses/salesforce-developer/       200
+/c-salesforce-marketing-cloud/ /courses/salesforce-marketing-cloud/ 200
+/c-cyber-security/             /courses/cyber-security/             200
+/c-oracle-fusion-cloud/        /courses/oracle-fusion-cloud/        200
+/c-service-now/                /courses/service-now/                200
+
+# 404 catch-all (must be last)
+/*  /404.html  404
