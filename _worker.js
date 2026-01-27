@@ -52,6 +52,12 @@ export default {
                 return env.ASSETS.fetch(new Request(newUrl, request));
             }
 
+            // Prevent recursive rewrites: if already inside /acs_subdomains/acs_admin/, serve directly
+            if (pathname.startsWith('/acs_subdomains/acs_admin/')) {
+                const newUrl = new URL(pathname, url);
+                return env.ASSETS.fetch(new Request(newUrl, request));
+            }
+
             // Major Netlify admin rewrites (dashboard, inquiries, etc.)
             const adminRewrites = [
                 { from: /^\/dashboard(\/.*)?$/, to: '/acs_subdomains/acs_admin/dashboard$1' },
