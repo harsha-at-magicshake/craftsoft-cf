@@ -99,8 +99,15 @@ export default {
                 return env.ASSETS.fetch(new Request(new URL("/acs_subdomains/acs_students/index.html", url), request));
             }
             let targetPath = `/acs_subdomains/acs_students${pathname}`;
+            // Only add slash if no extension and no trailing slash
             if (!pathname.includes(".") && !pathname.endsWith("/")) targetPath += "/";
-            if (targetPath.endsWith("/")) targetPath += "index.html";
+
+            // If it ends in a slash, serve index.html
+            if (targetPath.endsWith("/")) {
+                const indexUrl = new URL(targetPath + "index.html", url);
+                return env.ASSETS.fetch(new Request(indexUrl, request));
+            }
+
             return env.ASSETS.fetch(new Request(new URL(targetPath, url), request));
         }
 
@@ -110,8 +117,15 @@ export default {
                 return env.ASSETS.fetch(new Request(new URL("/acs_subdomains/acs_signup/index.html", url), request));
             }
             let targetPath = `/acs_subdomains/acs_signup${pathname}`;
+            // Only add slash if no extension and no trailing slash
             if (!pathname.includes(".") && !pathname.endsWith("/")) targetPath += "/";
-            if (targetPath.endsWith("/")) targetPath += "index.html";
+
+            // If it ends in a slash, serve index.html
+            if (targetPath.endsWith("/")) {
+                const indexUrl = new URL(targetPath + "index.html", url);
+                return env.ASSETS.fetch(new Request(indexUrl, request));
+            }
+
             return env.ASSETS.fetch(new Request(new URL(targetPath, url), request));
         }
 
