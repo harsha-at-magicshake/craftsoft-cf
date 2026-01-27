@@ -2,21 +2,58 @@
 # Cloudflare Pages Configuration
 # Abhi's Craftsoft Website
 # ============================================
+# 
+# This project serves multiple subdomains:
+# - craftsoft.co.in / www.craftsoft.co.in (Main Website)
+# - admin.craftsoft.co.in (Admin Portal)
+# - acs-student.craftsoft.co.in (Student Portal)
+# - signup.craftsoft.co.in (Signup Portal)
+#
+# Routing is handled by _worker.js
+# Headers are handled by _headers file
+# Redirects are handled by _redirects file
+# ============================================
 
 name = "craftsoft-cf"
 compatibility_date = "2024-01-01"
 
-# Pages-specific settings
+# ============================================
+# Build Configuration
+# ============================================
+# Similar to netlify.toml [build] section
+# Runs inject-env.js to replace environment variable placeholders
+# ============================================
+
 [build]
 command = "npm run inject"
-output_directory = "/"
+cwd = "/"
 
-# Environment variables are set in Cloudflare Dashboard
+# ============================================
+# Environment Variables (Set in Cloudflare Dashboard)
+# ============================================
+# These are injected at build time by scripts/inject-env.js
+# into the following files:
+#   - assets/js/supabase-website-config.js
+#   - acs_subdomains/acs_admin/assets/js/supabase-config.js
+#   - acs_subdomains/acs_students/assets/js/supabase-config.js
+#   - acs_subdomains/acs_signup/assets/js/supabase-config.js
+#   - acs_subdomains/acs_students/login.js
+#
 # Required variables:
-# - SUPABASE_URL
-# - SUPABASE_ANON_KEY
-# - EMAILJS_PUBLIC_KEY
-# - EMAILJS_SERVICE_ID
-# - EMAILJS_TEMPLATE_ID
+#   - SUPABASE_URL
+#   - SUPABASE_ANON_KEY
+#   - EMAILJS_PUBLIC_KEY
+#   - EMAILJS_SERVICE_ID
+#   - EMAILJS_TEMPLATE_ID
+# ============================================
 
-# Note: The _worker.js file handles subdomain routing
+# ============================================
+# Directory Structure Reference
+# ============================================
+# /                         → Main website (craftsoft.co.in)
+# /acs_subdomains/acs_admin/    → Admin portal files
+# /acs_subdomains/acs_students/ → Student portal files
+# /acs_subdomains/acs_signup/   → Signup portal files
+# ============================================
+
+# Note: _worker.js handles all subdomain routing logic
