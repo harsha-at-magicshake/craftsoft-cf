@@ -2,19 +2,6 @@
    Abhi's Craftsoft - Main JavaScript
    ============================================ */
 
-// Register Service Worker for Offline Support
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-                console.log('SW registered:', registration.scope);
-            })
-            .catch(error => {
-                console.log('SW registration failed:', error);
-            });
-    });
-}
-
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize all modules
     initNavbar();
@@ -838,8 +825,8 @@ function initDynamicCopyright() {
     const currentYear = new Date().getFullYear();
 
     copyrightElements.forEach(el => {
-        if (el.textContent.includes('�')) {
-            el.textContent = el.textContent.replace(/� \d{4}/, `� ${currentYear}`);
+        if (el.textContent.includes('©')) {
+            el.textContent = el.textContent.replace(/© \d{4}/, `© ${currentYear}`);
         }
     });
 }

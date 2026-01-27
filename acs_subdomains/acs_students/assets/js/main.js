@@ -826,8 +826,8 @@ function initDynamicCopyright() {
     const currentYear = new Date().getFullYear();
 
     copyrightElements.forEach(el => {
-        if (el.textContent.includes('©')) {
-            el.textContent = el.textContent.replace(/© \d{4}/, `© ${currentYear}`);
+        if (el.textContent.includes('Â©')) {
+            el.textContent = el.textContent.replace(/Â© \d{4}/, `Â© ${currentYear}`);
         }
     });
 }
