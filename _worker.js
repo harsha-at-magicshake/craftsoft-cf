@@ -1,7 +1,7 @@
 /**
  * Cloudflare Pages Worker
  * Handles subdomain routing for craftsoft.co.in
- * Version: 3.2 - Robust routing with MIME type fixes
+ * Version: 3.3 - Optimized for Cloudflare Custom Domains
  */
 
 export default {
@@ -10,48 +10,38 @@ export default {
         const hostname = url.hostname.toLowerCase();
         const pathname = url.pathname;
 
-        // ============================================
-        // GLOBAL ASSET ROUTING (Remap virtual paths to physical folders)
-        // ============================================
+        // 1. GLOBAL ASSET REMAPPING (Virtual paths to Physical folders)
+        // This must happen before any static extension checks
 
-        // 1. /assets/admin/* → /acs_subdomains/acs_admin/assets/:splat
+        // Admin Assets: /assets/admin/* -> /acs_subdomains/acs_admin/assets/*
         if (pathname.startsWith('/assets/admin/')) {
-            const assetPath = `/acs_subdomains/acs_admin/assets/${pathname.replace('/assets/admin/', '')}`;
-            const newUrl = new URL(assetPath, url);
-            return fetchWithMimeType(request, newUrl, env);
+            const internalPath = `/acs_subdomains/acs_admin/assets/${pathname.replace('/assets/admin/', '')}`;
+            return serveAsset(internalPath, request, env);
         }
 
-        // 2. /assets/student/* → /acs_subdomains/acs_students/assets/:splat
+        // Student Assets: /assets/student/* -> /acs_subdomains/acs_students/assets/*
         if (pathname.startsWith('/assets/student/')) {
-            const assetPath = `/acs_subdomains/acs_students/assets/${pathname.replace('/assets/student/', '')}`;
-            const newUrl = new URL(assetPath, url);
-            return fetchWithMimeType(request, newUrl, env);
+            const internalPath = `/acs_subdomains/acs_students/assets/${pathname.replace('/assets/student/', '')}`;
+            return serveAsset(internalPath, request, env);
         }
 
-        // 3. /assets/* → /assets/:splat (Shared root assets)
+        // Shared Root Assets: /assets/* -> /assets/*
         if (pathname.startsWith('/assets/')) {
-            const assetPath = `/assets/${pathname.replace('/assets/', '')}`;
-            const newUrl = new URL(assetPath, url);
-            return fetchWithMimeType(request, newUrl, env);
+            return serveAsset(pathname, request, env);
         }
 
-        // 🚫 DO NOT TOUCH REAL FILES (serve as-is from assets if path exists)
-        const staticExtensions = [
-            '.js', '.css', '.map', '.json', '.svg', '.png', '.jpg', '.jpeg', '.gif',
-            '.woff', '.woff2', '.ttf', '.eot', '.ico'
-        ];
-        if (staticExtensions.some(ext => pathname.endsWith(ext))) {
+        // Favicon handling
+        if (pathname === '/favicon.ico' || pathname === '/favicon.svg') {
             return env.ASSETS.fetch(request);
         }
 
-        // ============================================
-        // 1. ADMIN SUBDOMAIN (admin.craftsoft.co.in)
-        // ============================================
+        // 2. SUBDOMAIN ROUTING
+
+        // --- ADMIN SUBDOMAIN ---
         if (hostname.includes("admin")) {
-            // Root or login → admin index
+            // Root or login -> admin index
             if (pathname === "/" || pathname === "" || pathname === "/login" || pathname === "/login/") {
-                const newUrl = new URL("/acs_subdomains/acs_admin/index.html", url);
-                return env.ASSETS.fetch(new Request(newUrl, request));
+                return env.ASSETS.fetch(new Request(new URL("/acs_subdomains/acs_admin/index.html", url), request));
             }
 
             // Virtual folder remappings for Admin
@@ -78,78 +68,74 @@ export default {
 
             for (const route of adminFolders) {
                 if (pathname === route.web || pathname === route.web + '/') {
-                    const newUrl = new URL(route.fs + '/index.html', url);
-                    return env.ASSETS.fetch(new Request(newUrl, request));
+                    return env.ASSETS.fetch(new Request(new URL(route.fs + '/index.html', url), request));
                 }
                 if (pathname.startsWith(route.web + '/')) {
                     const rest = pathname.substring((route.web + '/').length);
                     const fileUrl = new URL(route.fs + '/' + rest, url);
-                    const fileRes = await env.ASSETS.fetch(new Request(fileUrl, request));
-                    if (fileRes.status === 200) return fileRes;
-                    const newUrl = new URL(route.fs + '/index.html', url);
-                    return env.ASSETS.fetch(new Request(newUrl, request));
+                    const res = await env.ASSETS.fetch(new Request(fileUrl, request));
+                    if (res.status === 200) return res;
+                    return env.ASSETS.fetch(new Request(new URL(route.fs + '/index.html', url), request));
                 }
             }
 
-            // Admin catch-all 404
-            const notFoundUrl = new URL('/acs_subdomains/acs_admin/404/index.html', url);
-            return env.ASSETS.fetch(new Request(notFoundUrl, request));
+            // Fallback for files physically in the folder but not mapped
+            const directUrl = new URL(`/acs_subdomains/acs_admin${pathname}`, url);
+            const directRes = await env.ASSETS.fetch(new Request(directUrl, request));
+            if (directRes.status === 200) return directRes;
+
+            return env.ASSETS.fetch(new Request(new URL('/acs_subdomains/acs_admin/404/index.html', url), request));
         }
 
-        // ============================================
-        // 2. STUDENT PORTAL (acs-student.craftsoft.co.in)
-        // ============================================
+        // --- STUDENT PORTAL ---
         if (hostname.includes("acs-student")) {
             if (pathname === "/" || pathname === "") {
-                const newUrl = new URL("/acs_subdomains/acs_students/index.html", url);
-                return env.ASSETS.fetch(new Request(newUrl, request));
+                return env.ASSETS.fetch(new Request(new URL("/acs_subdomains/acs_students/index.html", url), request));
             }
-            let finalPath = `/acs_subdomains/acs_students${pathname}`;
-            if (!pathname.includes(".") && !pathname.endsWith("/")) finalPath += "/";
-            if (finalPath.endsWith("/")) finalPath += "index.html";
-            const newUrl = new URL(finalPath, url);
-            return env.ASSETS.fetch(new Request(newUrl, request));
+            let targetPath = `/acs_subdomains/acs_students${pathname}`;
+            if (!pathname.includes(".") && !pathname.endsWith("/")) targetPath += "/";
+            if (targetPath.endsWith("/")) targetPath += "index.html";
+            return env.ASSETS.fetch(new Request(new URL(targetPath, url), request));
         }
 
-        // ============================================
-        // 3. SIGNUP SUBDOMAIN (signup.craftsoft.co.in)
-        // ============================================
+        // --- SIGNUP SUBDOMAIN ---
         if (hostname.includes("signup")) {
             if (pathname === "/" || pathname === "") {
-                const newUrl = new URL("/acs_subdomains/acs_signup/index.html", url);
-                return env.ASSETS.fetch(new Request(newUrl, request));
+                return env.ASSETS.fetch(new Request(new URL("/acs_subdomains/acs_signup/index.html", url), request));
             }
-            let finalPath = `/acs_subdomains/acs_signup${pathname}`;
-            if (!pathname.includes(".") && !pathname.endsWith("/")) finalPath += "/";
-            if (finalPath.endsWith("/")) finalPath += "index.html";
-            const newUrl = new URL(finalPath, url);
-            return env.ASSETS.fetch(new Request(newUrl, request));
+            let targetPath = `/acs_subdomains/acs_signup${pathname}`;
+            if (!pathname.includes(".") && !pathname.endsWith("/")) targetPath += "/";
+            if (targetPath.endsWith("/")) targetPath += "index.html";
+            return env.ASSETS.fetch(new Request(new URL(targetPath, url), request));
         }
 
-        // Default: Main Website
+        // --- MAIN WEBSITE ---
         return env.ASSETS.fetch(request);
     }
 };
 
 /**
- * Ensures proper MIME types for virtual asset paths
+ * Serves an asset with correct MIME types, ignoring query strings
  */
-async function fetchWithMimeType(request, assetPath, env) {
-    const res = await env.ASSETS.fetch(new Request(assetPath, request));
+async function serveAsset(internalPath, request, env) {
+    const url = new URL(request.url);
+    const assetUrl = new URL(internalPath, url);
+    const res = await env.ASSETS.fetch(new Request(assetUrl, request));
+
+    // If file missing, handle it properly (avoid serving HTML for JS/CSS)
     if (res.status === 404) {
-        return new Response('File not found', {
+        return new Response('Asset not found', {
             status: 404,
             headers: { 'Content-Type': 'text/plain' }
         });
     }
 
     const headers = new Headers(res.headers);
-    // Use pathname to ignore query strings when checking extensions
-    const pathStr = (assetPath instanceof URL) ? assetPath.pathname : assetPath.split('?')[0];
+    const cleanPath = internalPath.split('?')[0].split('#')[0];
 
-    if (pathStr.endsWith('.css')) {
+    if (cleanPath.endsWith('.css')) {
         headers.set('Content-Type', 'text/css');
-    } else if (pathStr.endsWith('.js')) {
+    } else if (cleanPath.endsWith('.js')) {
         headers.set('Content-Type', 'application/javascript');
     }
 
