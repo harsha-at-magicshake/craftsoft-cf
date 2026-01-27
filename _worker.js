@@ -1,7 +1,7 @@
 /**
  * Cloudflare Pages Worker
  * Handles subdomain routing for craftsoft.co.in
- * Version: 3.4 - Loop-proof and Optimized
+ * Version: 3.5 - Clean Subdomain Isolation
  */
 
 export default {
@@ -10,130 +10,123 @@ export default {
         const hostname = url.hostname.toLowerCase();
         const pathname = url.pathname;
 
-        // 1. ASSET PROTECTION
-        // Ensure that any request already targeting /acs_subdomains/ is served as is
-        // to prevent recursive worker execution loops.
+        // 1. PREVENT LOOPING/EXPOSURE
+        // If the request directly contains the internal folder, serve it as-is if it's an asset,
+        // but otherwise we want to keep it hidden.
         if (pathname.startsWith('/acs_subdomains/')) {
             return env.ASSETS.fetch(request);
         }
 
-        // 2. GLOBAL ASSET REMAPPING (Virtual paths to Physical folders)
-
-        // Admin Assets: /assets/admin/* -> /acs_subdomains/acs_admin/assets/*
+        // 2. ASSET ROUTING (Remap virtual paths to physical folders)
+        // Admin & Signup use Admin assets
         if (pathname.startsWith('/assets/admin/')) {
-            const internalPath = `/acs_subdomains/acs_admin/assets/${pathname.replace('/assets/admin/', '')}`;
-            return serveAsset(internalPath, request, env);
+            const assetPath = `/acs_subdomains/acs_admin/assets/${pathname.replace('/assets/admin/', '')}`;
+            return serveAsset(assetPath, request, env);
         }
 
-        // Student Assets: /assets/student/* -> /acs_subdomains/acs_students/assets/*
+        // Student Portal Assets
         if (pathname.startsWith('/assets/student/')) {
-            const internalPath = `/acs_subdomains/acs_students/assets/${pathname.replace('/assets/student/', '')}`;
-            return serveAsset(internalPath, request, env);
+            const assetPath = `/acs_subdomains/acs_students/assets/${pathname.replace('/assets/student/', '')}`;
+            return serveAsset(assetPath, request, env);
         }
 
-        // Shared Root Assets: /assets/*, favicon, etc.
+        // Shared Root Assets (favicon, global assets)
         if (pathname.startsWith('/assets/') || pathname === '/favicon.ico' || pathname === '/favicon.svg') {
             return env.ASSETS.fetch(request);
         }
 
-        // 3. SUBDOMAIN ROUTING (Exact hostname checks for reliability)
+        // 3. SUBDOMAIN HANDLERS
 
-        // --- ADMIN SUBDOMAIN ---
-        // Handles: admin.craftsoft.co.in or local testing with 'admin' in name
-        if (hostname.startsWith("admin.")) {
-            if (pathname === "/" || pathname === "" || pathname === "/login" || pathname === "/login/") {
-                return env.ASSETS.fetch(new Request(new URL("/acs_subdomains/acs_admin/index.html", url), request));
-            }
-
-            // Virtual folder remappings for Admin
-            const adminFolders = [
-                '/dashboard', '/archived', '/recently-deleted', '/students', '/clients',
-                '/courses', '/services', '/upload-materials', '/assignments', '/submissions',
-                '/record-payment', '/all-payments', '/payment-receipts', '/receipts',
-                '/tutors', '/inquiries', '/settings', '/version-history'
-            ];
-
-            // Folders that need an internal mapping change (e.g., /students -> /students-clients/students)
-            const specialMappings = {
-                '/students': '/students-clients/students',
-                '/clients': '/students-clients/clients',
-                '/courses': '/courses-services/courses',
-                '/services': '/courses-services/services',
-                '/record-payment': '/payments/record-payment',
-                '/all-payments': '/payments/all-payments',
-                '/payment-receipts': '/payments/receipts',
-                '/receipts': '/payments/receipts',
-                '/upload-materials': '/academics/upload-materials',
-                '/assignments': '/academics/assignments',
-                '/submissions': '/academics/submissions',
-                '/archived': '/records/archived',
-                '/recently-deleted': '/records/recently-deleted'
-            };
-
-            for (const route of adminFolders) {
-                if (pathname === route || pathname === route + '/') {
-                    const fsPath = specialMappings[route] || route;
-                    return env.ASSETS.fetch(new Request(new URL(`/acs_subdomains/acs_admin${fsPath}/index.html`, url), request));
-                }
-                if (pathname.startsWith(route + '/')) {
-                    const fsPath = specialMappings[route] || route;
-                    const rest = pathname.substring(route.length);
-                    const fileUrl = new URL(`/acs_subdomains/acs_admin${fsPath}${rest}`, url);
-                    const res = await env.ASSETS.fetch(new Request(fileUrl, request));
-                    if (res.status === 200) return res;
-                    return env.ASSETS.fetch(new Request(new URL(`/acs_subdomains/acs_admin${fsPath}/index.html`, url), request));
-                }
-            }
-
-            // Direct file check for anything else in the admin folder
-            const directUrl = new URL(`/acs_subdomains/acs_admin${pathname}`, url);
-            const directRes = await env.ASSETS.fetch(new Request(directUrl, request));
-            if (directRes.status === 200) return directRes;
-
-            return env.ASSETS.fetch(new Request(new URL('/acs_subdomains/acs_admin/404/index.html', url), request));
+        // --- ADMNS ---
+        if (hostname.startsWith('admin.')) {
+            return handleSubdomainRequest('acs_admin', pathname, url, request, env, true);
         }
 
-        // --- STUDENT PORTAL ---
-        if (hostname.startsWith("acs-student.")) {
-            if (pathname === "/" || pathname === "") {
-                return env.ASSETS.fetch(new Request(new URL("/acs_subdomains/acs_students/index.html", url), request));
-            }
-            let targetPath = `/acs_subdomains/acs_students${pathname}`;
-            // Only add slash if no extension and no trailing slash
-            if (!pathname.includes(".") && !pathname.endsWith("/")) targetPath += "/";
-
-            // If it ends in a slash, serve index.html
-            if (targetPath.endsWith("/")) {
-                const indexUrl = new URL(targetPath + "index.html", url);
-                return env.ASSETS.fetch(new Request(indexUrl, request));
-            }
-
-            return env.ASSETS.fetch(new Request(new URL(targetPath, url), request));
+        // --- SIGNUP ---
+        if (hostname.startsWith('signup.')) {
+            return handleSubdomainRequest('acs_signup', pathname, url, request, env, false);
         }
 
-        // --- SIGNUP SUBDOMAIN ---
-        if (hostname.startsWith("signup.")) {
-            if (pathname === "/" || pathname === "") {
-                return env.ASSETS.fetch(new Request(new URL("/acs_subdomains/acs_signup/index.html", url), request));
-            }
-            let targetPath = `/acs_subdomains/acs_signup${pathname}`;
-            // Only add slash if no extension and no trailing slash
-            if (!pathname.includes(".") && !pathname.endsWith("/")) targetPath += "/";
-
-            // If it ends in a slash, serve index.html
-            if (targetPath.endsWith("/")) {
-                const indexUrl = new URL(targetPath + "index.html", url);
-                return env.ASSETS.fetch(new Request(indexUrl, request));
-            }
-
-            return env.ASSETS.fetch(new Request(new URL(targetPath, url), request));
+        // --- STUDENTS ---
+        if (hostname.startsWith('acs-student.')) {
+            return handleSubdomainRequest('acs_students', pathname, url, request, env, false);
         }
 
-        // --- MAIN WEBSITE ---
+        // --- DEFAULT (MAIN WEBSITE) ---
         return env.ASSETS.fetch(request);
     }
 };
 
+/**
+ * Robust subdomain request handler
+ */
+async function handleSubdomainRequest(folder, pathname, url, request, env, isAdmin) {
+    // 1. Root/Index handling
+    if (pathname === "/" || pathname === "" || pathname === "/login" || pathname === "/login/") {
+        const indexUrl = new URL(`/acs_subdomains/${folder}/index.html`, url);
+        return env.ASSETS.fetch(new Request(indexUrl, request));
+    }
+
+    // 2. Virtual Folder Remapping (for Admin Only)
+    if (isAdmin) {
+        const mappings = {
+            '/dashboard': '/dashboard',
+            '/students': '/students-clients/students',
+            '/clients': '/students-clients/clients',
+            '/courses': '/courses-services/courses',
+            '/services': '/courses-services/services',
+            '/record-payment': '/payments/record-payment',
+            '/all-payments': '/payments/all-payments',
+            '/payment-receipts': '/payments/receipts',
+            '/receipts': '/payments/receipts',
+            '/upload-materials': '/academics/upload-materials',
+            '/assignments': '/academics/assignments',
+            '/submissions': '/academics/submissions',
+            '/archived': '/records/archived',
+            '/recently-deleted': '/records/recently-deleted',
+            '/tutors': '/tutors',
+            '/inquiries': '/inquiries',
+            '/settings': '/settings',
+            '/version-history': '/version-history'
+        };
+
+        for (const [webPath, fsPath] of Object.entries(mappings)) {
+            if (pathname === webPath || pathname === webPath + '/') {
+                return env.ASSETS.fetch(new Request(new URL(`/acs_subdomains/${folder}${fsPath}/index.html`, url), request));
+            }
+            if (pathname.startsWith(webPath + '/')) {
+                const rest = pathname.substring(webPath.length);
+                const fileUrl = new URL(`/acs_subdomains/${folder}${fsPath}${rest}`, url);
+                const res = await env.ASSETS.fetch(new Request(fileUrl, request));
+                if (res.status === 200) return res;
+                return env.ASSETS.fetch(new Request(new URL(`/acs_subdomains/${folder}${fsPath}/index.html`, url), request));
+            }
+        }
+    }
+
+    // 3. General File/Folder Mapping
+    let targetPath = `/acs_subdomains/${folder}${pathname}`;
+
+    // If it looks like a directory (no extension), append index.html
+    if (!pathname.includes('.')) {
+        if (!targetPath.endsWith('/')) targetPath += '/';
+        targetPath += 'index.html';
+    }
+
+    const finalRequest = new Request(new URL(targetPath, url), request);
+    const response = await env.ASSETS.fetch(finalRequest);
+
+    // If 404 and it's Admin, show Admin 404
+    if (response.status === 404 && folder === 'acs_admin') {
+        return env.ASSETS.fetch(new Request(new URL('/acs_subdomains/acs_admin/404/index.html', url), request));
+    }
+
+    return response;
+}
+
+/**
+ * Serves an asset with correct MIME types
+ */
 async function serveAsset(internalPath, request, env) {
     const assetUrl = new URL(internalPath, new URL(request.url));
     const res = await env.ASSETS.fetch(new Request(assetUrl, request));
