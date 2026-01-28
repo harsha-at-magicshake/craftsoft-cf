@@ -1072,6 +1072,60 @@ function initStealthMode() {
     const body = document.body;
     const stealthState = localStorage.getItem('craftsoft_stealth_mode');
 
+    // Central static "starts from" pricing for each course (amounts in INR)
+    const coursePriceMap = {
+        // Design
+        'graphic-design': 12000,
+        'ui-ux': 28000,
+        // Software Development
+        'full-stack': 65000,           // Full Stack MERN
+        'python': 65000,               // Python Full Stack
+        'java': 65000,                 // Java Full Stack
+        'react': 40000,                // React Development
+        'dsa': 35000,                  // DSA Mastery
+        'sql': 20000,                  // SQL Mastery
+        // Cloud & Security
+        'devops': 60000,               // DevOps Engineering
+        'aws': 50000,                  // AWS Cloud
+        'azure': 50000,                // Microsoft Azure
+        'cyber-security': 55000,       // Cyber Security
+        'devsecops': 65000,            // DevSecOps
+        // Salesforce & Enterprise
+        'salesforce': 45000,           // Salesforce Admin
+        'salesforce-developer': 55000, // Salesforce Developer
+        'salesforce-marketing-cloud': 45000, // Marketing Cloud
+        'oracle-fusion-cloud': 60000,  // Oracle Fusion
+        'service-now': 45000,          // ServiceNow Administration
+        // Data & AI
+        'ai-ml': 75000,                // AI & ML
+        'data-analytics': 40000,       // Data Analytics
+        // Language & Growth
+        'spoken-english': 10000,       // Spoken English
+        'soft-skills': 8000,           // Soft Skills
+        'resume-interview': 7000,      // Resume & Interview
+        'handwriting': 5000            // Handwriting Improvement
+    };
+
+    const getCourseSlugFromPath = () => {
+        const path = (window.location && window.location.pathname ? window.location.pathname : '').toLowerCase();
+
+        // Handle short URLs like /c-full-stack/, /c-ui-ux/, etc.
+        const shortMatch = path.match(/\/c-([^/]+)\//);
+        if (shortMatch && shortMatch[1]) {
+            return shortMatch[1];
+        }
+
+        // Handle /courses/full-stack/ style URLs
+        const segments = path.split('/').filter(Boolean);
+        if (segments.length >= 2 && segments[0] === 'courses') {
+            return segments[1];
+        }
+
+        return null;
+    };
+
+    const courseSlug = getCourseSlugFromPath();
+
     // Apply state immediately
     if (stealthState === 'disabled') {
         body.classList.remove('stealth-active');
@@ -1085,7 +1139,12 @@ function initStealthMode() {
         document.querySelectorAll('.price').forEach(el => {
             if (isStealth) {
                 // BGV Mode (Active): Show Price
-                el.innerHTML = 'Starts From <span class="rupee-symbol">&#8377;</span>9999';
+                const defaultAmount = 9999;
+                const amount = (courseSlug && coursePriceMap[courseSlug]) ? coursePriceMap[courseSlug] : defaultAmount;
+                const formattedAmount = (typeof amount === 'number' && amount.toLocaleString)
+                    ? amount.toLocaleString('en-IN')
+                    : amount;
+                el.innerHTML = `Starts From <span class="rupee-symbol">&#8377;</span>${formattedAmount}`;
             } else {
                 // Normal Mode (Inactive): Show Contact for Pricing
                 el.innerText = 'Contact for Pricing';
