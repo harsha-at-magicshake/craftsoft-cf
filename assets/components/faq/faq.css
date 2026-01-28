@@ -1,7 +1,0 @@
-.faq-container { max-width: 700px; margin: 0 auto; }
-.faq-item { border-bottom: 1px solid #eee; padding: 16px 0; }
-.faq-question { background: none; border: none; font-size: 1.1em; font-weight: bold; width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
-.faq-answer { display: none; padding: 8px 0 0 0; color: #444; }
-.faq-item.active .faq-answer { display: block; }
-.faq-question i { margin-left: 8px; transition: transform 0.2s; }
-.faq-item.active .faq-question i { transform: rotate(180deg); }
